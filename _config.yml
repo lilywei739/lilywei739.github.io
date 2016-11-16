@@ -1,17 +1,8 @@
-<<<<<<< HEAD
-github: {
-    "version": {},
-    "author": "weili",
-    "hostname": "https://github.com/lilywei739/lilywei739.github.io",
-    "pages_hostname": "https://lilywei739.github.io"
-=======
-#参考http://jekyllrb.com/docs/configuration/
 github: {
     "version": {},
     "author": "weili",
     "hostname": "https://github.com/lilywei739/",
     "pages_hostname": "http://lilywei739.github.io/"
->>>>>>> 126a2805027f758209e4a180ea67080a9aba007b
 }
 #source: ./
 #destination: ./_site
@@ -27,13 +18,8 @@ gist:
 
 #markdown: rdiscount
 #rdiscount:
-<<<<<<< HEAD
 #   extensions:
 #     - footnotes
-=======
-#extensions:
-#- footnotes
->>>>>>> 126a2805027f758209e4a180ea67080a9aba007b
 markdown: kramdown
 
 kramdown:
