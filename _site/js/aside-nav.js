@@ -2,7 +2,8 @@
 (function(global){
     var $h2List = $('#main-cont').find('h2'),
         anchorArr = [],
-        li_html = '';
+        li_html = '',
+        layoutTop = 0;
     
     $h2List.each(function (i) {
         var anchorId = 'anchor' + i;
@@ -15,4 +16,20 @@
     });
     
     $('#sidebar').find('.side-nav').html(li_html);
+
+/*
+    $(document).scroll(function () {
+	if ($(window).scrollTop() <= 100) {
+	   layoutTop = 150;
+	} else {
+	   layoutTop = $(window).scrollTop() + 100;
+	}
+	$('#sidebar').css({
+	   'position': 'absolute',
+	   'right': 0,
+	   'top': layoutTop
+	});
+    })
+*/
+
 })(window);
