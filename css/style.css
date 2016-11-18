@@ -126,7 +126,6 @@ hr {
     height: 1px;
     margin-bottom: 5px;
     border: none;
-    background: url('../img/bg_hr.png') repeat-x center;
 }
 /*====================================*/
 
@@ -196,7 +195,6 @@ hr {
     bottom: -40px;
     right: 0;
     height: 70px;
-    background: url('../img/icon_download.png') no-repeat 0% 90%;
 }
 .zip_download_link {
     display: block;
@@ -205,7 +203,6 @@ hr {
     height: 70px;
     text-indent: -5000px;
     overflow: hidden;
-    background: url(../img/sprite_download.png) no-repeat bottom left;
 }
 .tar_download_link {
     display: block;
@@ -214,14 +211,11 @@ hr {
     height: 70px;
     text-indent: -5000px;
     overflow: hidden;
-    background: url(../img/sprite_download.png) no-repeat bottom right;
     margin-left: 10px;
 }
 .zip_download_link:hover {
-    background: url(../img/sprite_download.png) no-repeat top left;
 }
 .tar_download_link:hover {
-    background: url(../img/sprite_download.png) no-repeat top right;
 }
 #main_content_wrap {
     margin-top: -30px;
@@ -305,7 +299,6 @@ hr {
     }
     #sidebar {
         padding-left: 20px;
-        background: transparent url(../img/sidebar-bg.jpg) 0 0 no-repeat;
         float: right;
         width: 220px;
         font-size: 18px;
