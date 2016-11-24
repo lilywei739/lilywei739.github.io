@@ -23,15 +23,18 @@ css3提供了animation来实现动画，在JS中也有对应的 animation事件-
 
 格式如下：
 
->animationstart	     // 开始
->animationend	     // 结束
->animationiteration  // 迭代	
+``` 
+animationstart	     // 开始
+animationend	     // 结束
+animationiteration  // 迭代	
+``` 
 
-**copy过来的优点：**
+**copy 过来的优点：**
 
  >1. 能够非常容易地创建简单动画，你甚至不需要了解JavaScript就能创建动画。
  >2. 动画运行效果良好，甚至在低性能的系统上。渲染引擎会使用跳帧或者其他技术以保证动画表现尽可能的流畅。而使用JavaScript实现的动画通常表现不佳（除非经过很好的设计）。
  >3. 让浏览器控制动画序列，允许浏览器优化性能和效果，如降低位于隐藏选项卡中的动画更新频率。
+
 
 事件中的开始和结束指的是整个动画的"开始"和"结束"，只执行一次。而迭代是什么呢？在动画中有一个属性可以设置动画执行的次数，所以会有很多的开始和结束，这中间重复动画的结束并开始下一次将触发整个事件“迭代”事件。
 
@@ -52,7 +55,7 @@ JS:
 ![image01](https://lilywei739.github.io/img/161124-1.jpg)
 
 结果
-![image01](https://lilywei739.github.io/img/161124-2.jpg)
+![image01](https//lilywei739.github.io/img/161124-2.jpg)
 
 
 ## 总结

@@ -90,7 +90,7 @@ p img {
     display: inline-block;
     margin: 8px auto;
     padding: 0;
-    max-width: 640px;
+    max-width: 450px;
     width: 100%;
     display: block;
 }
@@ -258,11 +258,14 @@ hr {
     text-align: center;
 }
 #main-cont {
-    min-height: 520px
+    min-height: 520px;
+    width: 60%;
+    margin: 0 auto;
 }
 
 #main-cont h1{
    margin-bottom: 60px; 
+   color: #008cbb;
 }
 
 /*******************************************************************************
@@ -271,6 +274,7 @@ hr {
 
 /* pc 端*/
 #sidebar{
+    display: none;
     box-sizing: border-box;
 }
 #sidebar ul {
@@ -293,6 +297,7 @@ hr {
 
 
 @media only screen and (min-width: 768px) {
+/*
     #main-cont {
         margin-left: 10px;
         margin-right: 230px;
@@ -304,10 +309,11 @@ hr {
         font-size: 18px;
         min-height: 504px;
     }
+*/
 }
 @media only screen and (min-width: 320px) and (max-width: 767px) {
     #main-cont {
-        margin: 0 10px;
+	width: 90%;
     }
     #sidebar {
         padding: 0 10px;
