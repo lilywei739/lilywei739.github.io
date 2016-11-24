@@ -5,14 +5,4 @@ title: Hello Word!
 
 # Hello Word! 
 
-test
-test
-test
-test
-test
-test
-test
-test
-test
-test
-test
+每周一篇博文......
