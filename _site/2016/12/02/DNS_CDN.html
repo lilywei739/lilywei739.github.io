@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <meta name="robots" content="index,follow"/>
+        <meta name="renderer" content="webkit" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui" />
+        <meta name="keywords" content="浅谈 DNS、SDN">
+        <meta name="screen-orientation" content="portrait" />
+        <meta name="full-screen" content="yes" />
+        <meta name="browsermode" content="application" />
+        <meta name="x5-orientation" content="portrait" />
+        <meta name="x5-fullscreen" content="true" />
+        <meta name="x5-page-mode" content="app" />
+        <title>浅谈 DNS、SDN</title>
+        <link rel="shortcut icon" type="image/ico" href="/favicon.ico"/>
+        <link rel="stylesheet" href="/css/common/github-gist.min.css">
+        <link rel="stylesheet" href="/css/style.css">
+        <!--[if lt IE 9]>
+        <script src="/js/common/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <!-- HEADER -->
+        <div id="header_wrap" class="outer">
+            <header class="inner">
+                <h1 id="project_title"><a href="/index.html">Weili - GitHub.io</a></h1>
+                <h2 id="project_tagline"><a href="https://github.com/lilywei739/lilywei739.github.io" target="_blank">View on GitHub</a></h2>
+            </header>
+        </div>
+            
+        <div id="content-wrapper">
+            <div class="main clearfix">
+                <aside id="sidebar">
+                    <ul class="side-nav">
+                    </ul>
+                </aside>
+
+                <section id="main-cont">
+                    <h1 id="dnssdn">浅谈 DNS、SDN</h1>
+
+<p>我们领导特别喜欢面试这个问题，在此记录一下。</p>
+
+<h2 id="dns">什么是 DNS</h2>
+
+<blockquote>
+  <p>from  百度百科<br /> 
+DNS（Domain Name System，域名系统），因特网上作为域名和IP地址相互映射的一个分布式数据库，能够使用户更方便的访问互联网，而不用去记住能够被机器直接读取的IP数串。通过主机名，最终得到该主机名对应的IP地址的过程叫做域名解析（或主机名解析）。</p>
+</blockquote>
+
+<p>简而言之， 它只做一样工作，就是把用户输入的各种各样的网址转换成网络能够看得懂的语言IP地址。</p>
+
+<h2 id="cdn">什么是 CDN</h2>
+<blockquote>
+  <p>from  百度百科<br /> 
+CDN的全称是Content Delivery Network，即内容分发网络。其基本思路是尽可能避开互联网上有可能影响数据传输速度和稳定性的瓶颈和环节，使内容传输的更快、更稳定。通过在网络各处放置节点服务器所构成的在现有的互联网基础之上的一层智能虚拟网络，CDN系统能够实时地根据网络流量和各节点的连接、负载状况以及到用户的距离和响应时间等综合信息将用户的请求重新导向离用户最近的服务节点上。其目的是使用户可就近取得所需内容，解决 Internet网络拥挤的状况，提高用户访问网站的响应速度。</p>
+</blockquote>
+
+<p>怎么解释 CDN 呢？就是就近原则，比如你吃个肯德基，不用跑到国外去，就在楼底下能吃的到，而且楼底下的和国外的肯德基是一样的， 据说用的都是四条腿的鸡，这么高大上！</p>
+
+<h2 id="section">从用户输入了地址敲完回车键后发生了什么？</h2>
+
+<p>了解了DNS、CDN后，就能对这背后的事情了如指掌了，先看图吧~~</p>
+
+<p>没有用到CDN的请求过程</p>
+
+<p><img src="http://http://0.0.0.0//img/20161202/20161202-1.jpg" alt="image01" /></p>
+
+
+                    <!-- 多说评论框 start -->
+                    <div id="ds_ele" class="ds-thread" data-thread-key="" data-title="浅谈 DNS、SDN" data-url="http://yj1438.github.io/2016/12/02/DNS_CDN.html"></div>
+                    <!-- 多说评论框 end -->
+                    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+                    <script type="text/javascript">
+                        var url = window.location.pathname;
+                        url = url.substr(1, url.length -6).replace(/\//gi, '_');
+                        document.getElementById('ds_ele').dataset.threadKey = url;
+                        var duoshuoQuery = {short_name:"yj1438"};
+                        (function() {
+                            var ds = document.createElement('script');
+                            ds.type = 'text/javascript';ds.async = true;
+                            ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+                            ds.charset = 'UTF-8';
+                            (document.getElementsByTagName('head')[0] 
+                            || document.getElementsByTagName('body')[0]).appendChild(ds);
+                        })();
+                    </script>
+                    <!-- 多说公共JS代码 end -->
+                </section>
+            </div>
+        </div>
+            
+        <!-- FOOTER  -->
+        <div id="footer_wrap" class="outer">
+            <footer class="inner">
+                <p>© 2016  by Weili &nbsp;&nbsp;  |  &nbsp;&nbsp;托管在 - <a href="https://pages.github.com">GitHub</a></p>
+            </footer>
+        </div>
+        <script src="/js/common/jquery-2.2.4.min.js"></script>
+        <script src="/js/common/highlight.min.js"></script>
+        <script src="/js/aside-nav.js"></script>
+        <script>
+            // baidu 统计
+            var _hmt = _hmt || [];
+            (function() {
+                var hm = document.createElement("script");
+                hm.src = "//hm.baidu.com/hm.js?146fe495fee020bf0e4dd701aa73965f";
+                var s = document.getElementsByTagName("script")[0]; 
+                s.parentNode.insertBefore(hm, s);
+            })();
+            // highlight
+            hljs.initHighlightingOnLoad({useBR: true});
+            $(document).ready(function() {
+                $('pre code').each(function(i, block) {
+                    hljs.highlightBlock(block);
+                });
+
+                // http2
+                var img = new Image();
+                img.src = 'https://www.h2statistics.ml/';
+            });
+        </script>
+    </body>
+</html>
