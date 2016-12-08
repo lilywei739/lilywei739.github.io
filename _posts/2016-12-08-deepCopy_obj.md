@@ -121,7 +121,7 @@ console.log(y);   // Object {a: 2, b: 4, c: 6}
 
 思路如下：
 
-> 1、首先遍历所有该对象的属性<br />
+> 1、先判断对象的类型<br />
 > 2、如是该属性是object，则特殊处理<br />
 > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1) 如是该对象是个数组，就创建一个新的数组并深克隆数组里的元素<br />
 > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2) 如果是非数组对象，就对它递归调用深克隆方法<br />
