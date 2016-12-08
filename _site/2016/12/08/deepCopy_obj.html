@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <meta name="robots" content="index,follow"/>
+        <meta name="renderer" content="webkit" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui" />
+        <meta name="keywords" content="对象的克隆">
+        <meta name="screen-orientation" content="portrait" />
+        <meta name="full-screen" content="yes" />
+        <meta name="browsermode" content="application" />
+        <meta name="x5-orientation" content="portrait" />
+        <meta name="x5-fullscreen" content="true" />
+        <meta name="x5-page-mode" content="app" />
+        <title>对象的克隆</title>
+        <link rel="shortcut icon" type="image/ico" href="/favicon.ico"/>
+        <link rel="stylesheet" href="/css/common/github-gist.min.css">
+        <link rel="stylesheet" href="/css/style.css">
+        <!--[if lt IE 9]>
+        <script src="/js/common/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <!-- HEADER -->
+        <div id="header_wrap" class="outer">
+            <header class="inner">
+                <h1 id="project_title"><a href="/index.html">Weili - GitHub.io</a></h1>
+                <h2 id="project_tagline"><a href="https://github.com/lilywei739/lilywei739.github.io" target="_blank">View on GitHub</a></h2>
+            </header>
+        </div>
+            
+        <div id="content-wrapper">
+            <div class="main clearfix">
+                <aside id="sidebar">
+                    <ul class="side-nav">
+                    </ul>
+                </aside>
+
+                <section id="main-cont">
+                    <h1 id="section">对象的克隆</h1>
+
+<p>之前同事问过我这个问题，但是当时没有回答出来，今天有时间梳理记录一下；</p>
+
+<h2 id="section-1">什么是对象？</h2>
+<blockquote>
+  <p>from W3School <br /> 
+JavaScript 中的所有事物都是对象：字符串、数值、数组、函数…</p>
+</blockquote>
+
+<h2 id="section-2">对象的克隆又分哪几种？</h2>
+<blockquote>
+  <p>浅克隆<br />
+深克隆</p>
+</blockquote>
+
+<h2 id="section-3">对象的类型</h2>
+<p>javascript中一切实例都是对象，对象的类型又可以分为原始类型和引用类型两种。</p>
+
+<p><strong>原始类型</strong></p>
+
+<blockquote>
+  <p>Number<br />
+String<br />
+Boolean<br />
+underfined<br />
+null</p>
+</blockquote>
+
+<p><strong>引用类型</strong></p>
+
+<blockquote>
+  <p>Array<br />
+Object<br />
+Function</p>
+</blockquote>
+
+<h2 id="section-4">不同对象类型的克隆区别</h2>
+<p>1）原始对象的克隆，就相当于新建了一个新的对象，新的存储单元，两者互不干扰。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>//字符型
+var a="abc";
+var b=a;
+b="def";
+ 
+alert(a);   // "abc"
+alert(b);   // "def"
+</code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>//数值型
+var a=1;
+var b=a;
+b=2;
+ 
+alert(a);   // 1 
+alert(b);   // 2 
+</code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>//布尔型
+var a=true;
+var b=a;
+b=false;
+ 
+alert(a);   // true 
+alert(b);   // flase 
+</code></pre>
+</div>
+
+<p>2）引用对象的拷贝，就相当于新建了一个指针，新老对象都指向了同一个对象，其中任何一个有修改，另一个必会受到影响。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>// 数组类型的浅拷贝
+var a=[1,2];
+var b=a;
+b.push(3);
+
+alert(a);   // 1,2,3
+alert(b);   // 1,2,3
+</code></pre>
+</div>
+
+<p>由上可知，原始数组a，克隆数组b，修改了克隆数组b，但也同时修改了原始数组a，这就是引用对象的特点。</p>
+
+<p>那上面的例子怎样才能完整的拷贝呢？就是上文提到的—-<strong>深拷贝</strong>。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>// 数组类型的深拷贝
+var a=[1,2],
+    b=[];
+for(var i = 0; i &lt; a.length; i = i + 1){
+    b[i]=a[i];
+}
+b.push(3);
+ 
+console.log(a);   // [1,2]
+console.log(b);   // [1,2,3]
+</code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>// 对象类型的深拷贝
+var x={a:2,b:4},
+    y={},
+    i;
+for(i in x){
+    y[i]=x[i];
+}
+y.c=6;
+ 
+console.log(x);   // Object {a: 2, b: 4} 
+console.log(y);   // Object {a: 2, b: 4, c: 6}
+</code></pre>
+</div>
+
+<h3 id="section-5">思路</h3>
+
+<p>通过上面的例子可以看出，两种类型的拷贝是有区别的。要克隆引用型对象必须采用深克隆，包括对象的值也是一个对象的话，也要进行深克隆；原始类型对象直接用“=”就能拷贝。</p>
+
+<p>思路如下：</p>
+
+<blockquote>
+  <p>1、首先遍历所有该对象的属性<br />
+2、如是该属性是object，则特殊处理<br />
+     1) 如是该对象是个数组，就创建一个新的数组并深克隆数组里的元素<br />
+     2) 如果是非数组对象，就对它递归调用深克隆方法<br />
+3、如果不是object,就直接“=”克隆</p>
+</blockquote>
+
+<h3 id="section-6">实现：</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>function cloneObject(src) {
+    var result ;//返回的复制后的结果。
+    if (typeof(src)==="object"){
+        //对象为日期对象时也直接赋值。
+        if(Object.prototype.toString.call(src)==="[object Date]"){
+            result = src;
+        }else{
+            //判断对象的类型是Array还是Object，结果类型更改。
+            result = (Object.prototype.toString.call(src)==="[object Array]")? [] : {};
+            for (var i in src){
+                if (src.hasOwnProperty(i)) { //排除继承属性
+                    if (typeof src[i] === "object") {
+                        result[i] = cloneObject(src[i]); //递归赋值
+                    } else {
+                        result[i] = src[i]; //直接赋值
+                    }
+                }
+            }
+        }
+    }else{
+        //对于原始类型直接赋值。
+        result = src;
+    }
+    return result;
+}
+</code></pre>
+</div>
+
+
+                    <!-- 多说评论框 start -->
+                    <div id="ds_ele" class="ds-thread" data-thread-key="" data-title="对象的克隆" data-url="http://yj1438.github.io/2016/12/08/deepCopy_obj.html"></div>
+                    <!-- 多说评论框 end -->
+                    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+                    <script type="text/javascript">
+                        var url = window.location.pathname;
+                        url = url.substr(1, url.length -6).replace(/\//gi, '_');
+                        document.getElementById('ds_ele').dataset.threadKey = url;
+                        var duoshuoQuery = {short_name:"yj1438"};
+                        (function() {
+                            var ds = document.createElement('script');
+                            ds.type = 'text/javascript';ds.async = true;
+                            ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+                            ds.charset = 'UTF-8';
+                            (document.getElementsByTagName('head')[0] 
+                            || document.getElementsByTagName('body')[0]).appendChild(ds);
+                        })();
+                    </script>
+                    <!-- 多说公共JS代码 end -->
+                </section>
+            </div>
+        </div>
+            
+        <!-- FOOTER  -->
+        <div id="footer_wrap" class="outer">
+            <footer class="inner">
+                <p>© 2016  by Weili &nbsp;&nbsp;  |  &nbsp;&nbsp;托管在 - <a href="https://pages.github.com">GitHub</a></p>
+            </footer>
+        </div>
+        <script src="/js/common/jquery-2.2.4.min.js"></script>
+        <script src="/js/common/highlight.min.js"></script>
+        <script src="/js/aside-nav.js"></script>
+        <script>
+            // baidu 统计
+            var _hmt = _hmt || [];
+            (function() {
+                var hm = document.createElement("script");
+                hm.src = "//hm.baidu.com/hm.js?146fe495fee020bf0e4dd701aa73965f";
+                var s = document.getElementsByTagName("script")[0]; 
+                s.parentNode.insertBefore(hm, s);
+            })();
+            // highlight
+            hljs.initHighlightingOnLoad({useBR: true});
+            $(document).ready(function() {
+                $('pre code').each(function(i, block) {
+                    hljs.highlightBlock(block);
+                });
+
+                // http2
+                var img = new Image();
+                img.src = 'https://www.h2statistics.ml/';
+            });
+        </script>
+    </body>
+</html>
