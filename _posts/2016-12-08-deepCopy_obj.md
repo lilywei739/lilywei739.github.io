@@ -13,31 +13,7 @@ title: 对象的克隆
 > from W3School <br /> 
 > JavaScript 中的所有事物都是对象：字符串、数值、数组、函数...
 
-## 对象的克隆又分哪几种？
-> 浅克隆<br />
-> 深克隆
-
-
-
-## 对象的类型
-javascript中一切实例都是对象，对象的类型又可以分为原始类型和引用类型两种。
-
-**原始类型**
-
-> Number<br />
-> String<br />
-> Boolean<br />
-> underfined<br />
-> null
-
-**引用类型**
-
-> Array<br />
-> Object<br />
-> Function
-
-## 不同对象类型的克隆区别
-1）原始对象的克隆，就相当于新建了一个新的对象，新的存储单元，两者互不干扰。
+先看下面几种对象的克隆是什么情况的：
 
 ```
 //字符型
@@ -47,9 +23,8 @@ b="def";
  
 alert(a);   // "abc"
 alert(b);   // "def"
-```
 
-```
+
 //数值型
 var a=1;
 var b=a;
@@ -57,9 +32,8 @@ b=2;
  
 alert(a);   // 1 
 alert(b);   // 2 
-```
 
-```
+
 //布尔型
 var a=true;
 var b=a;
@@ -69,7 +43,7 @@ alert(a);   // true
 alert(b);   // flase 
 ```
 
-2）引用对象的拷贝，就相当于新建了一个指针，新老对象都指向了同一个对象，其中任何一个有修改，另一个必会受到影响。
+你会发现上面几种，直接用“=”就能达到克隆的效果，再往下看。
 
 
 ```
@@ -80,83 +54,146 @@ b.push(3);
 
 alert(a);   // 1,2,3
 alert(b);   // 1,2,3
-```
-
-由上可知，原始数组a，克隆数组b，修改了克隆数组b，但也同时修改了原始数组a，这就是引用对象的特点。
-
-那上面的例子怎样才能完整的拷贝呢？就是上文提到的----**深拷贝**。
 
 ```
-// 数组类型的深拷贝
-var a=[1,2],
+
+数组这种引用类型的对象，用“=”来克隆时，只是多建立了一个指针，其实指向的是同一个对象。修改其中任何一个数组，另一个都会受到影响，这就是引用对象的特点。
+
+那如何才能完整的克隆互不干扰呢？上代码
+
+
+```
+// 数组类型的克隆
+var a=[1,2,[1,5]],
     b=[];
 for(var i = 0; i < a.length; i = i + 1){
     b[i]=a[i];
 }
 b.push(3);
- 
-console.log(a);   // [1,2]
-console.log(b);   // [1,2,3]
+
+console.log(a);   // [1,2,[1,5]] 
+console.log(b);   // [1,2,[1,5],3]
 ```
 
+但如果把上面的代码改一下的话，会发现这种写法只实现了一层的克隆：
 
 ```
-// 对象类型的深拷贝
-var x={a:2,b:4},
-    y={},
-    i;
-for(i in x){
-    y[i]=x[i];
+var a=[1,2,[1,5]],
+    b=[];
+for(var i = 0; i < a.length; i = i + 1){
+    b[i]=a[i];
 }
-y.c=6;
- 
-console.log(x);   // Object {a: 2, b: 4} 
-console.log(y);   // Object {a: 2, b: 4, c: 6}
+b.push('str');
+b[2][0] = 100;
+
+console.log(a);   
+console.log(b);  
 ```
 
+![网页请求过程](https://lilywei739.github.io/img/20161209/20161209-1.jpg)
 
-### 思路
-
-通过上面的例子可以看出，要克隆引用型对象必须采用深克隆，包括对象的值也是一个对象的话，也要进行深克隆；原始类型对象直接用“=”就能拷贝。
-
-思路如下：
-
-> 1、先判断对象的类型<br />
-> 2、如是该属性是object，则特殊处理<br />
-> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1) 如是该对象是个数组，就创建一个新的数组并深克隆数组里的元素<br />
-> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2) 如果是非数组对象，就对它递归调用深克隆方法<br />
-> 3、如果不是object,就直接“=”克隆
-
-
-### 实现：
+换种写法：
 
 ```
-function cloneObject(src) {
-    var result ;//返回的复制后的结果。
-    if (typeof(src)==="object"){
-        //对象为日期对象时也直接赋值。
-        if(Object.prototype.toString.call(src)==="[object Date]"){
-            result = src;
+function clone(obj){
+    var o=[];
+    for(var i = 0;i < obj.length; i = i + 1){
+        if(typeof(obj[i])==="object"){
+            o[i]=clone(obj[i]);
         }else{
-            //判断对象的类型是Array还是Object，结果类型更改。
-            result = (Object.prototype.toString.call(src)==="[object Array]")? [] : {};
-            for (var i in src){
-                if (src.hasOwnProperty(i)) { //排除继承属性
-                    if (typeof src[i] === "object") {
-                        result[i] = cloneObject(src[i]); //递归赋值
-                    } else {
-                        result[i] = src[i]; //直接赋值
-                    }
-                }
+            o[i]=obj[i];
+        }
+    }
+    return o;
+}
+
+var a=a=[1,2,[1,5]],
+    b=clone(a);
+b[2][0] = 100;
+console.log(a);
+console.log(b);
+```
+
+![网页请求过程](https://lilywei739.github.io/img/20161209/20161209-2.jpg)
+
+如果把数组中加入对象类型再看下结果：
+
+
+```
+function clone(obj){
+    var o=[];
+    for(var i = 0;i < obj.length; i = i + 1){
+        if(typeof(obj[i])==="object"){
+            o[i]=clone(obj[i]);
+        }else{
+            o[i]=obj[i];
+        }
+    }
+    return o;
+}
+
+var a=a=[1,2,{a: 1, b: 2}],
+    b=clone(a);
+b[2][0] = 100;
+console.log(a);
+console.log(b);
+```
+
+![网页请求过程](https://lilywei739.github.io/img/20161209/20161209-3.jpg)
+
+所以这样的克隆不完美，改变了它的对象类型，再换种写法。
+
+```
+function clone(obj) {
+    var result = (Object.prototype.toString.call(obj)==="[object Array]")? [] : {};
+    for (var i in obj){
+        if (typeof obj[i] === "object") {
+            result[i] = clone(obj[i]); //递归赋值
+        } else {
+            result[i] = obj[i]; //直接赋值
+        }
+    }
+
+    return result;
+}
+
+
+var a=[1,2,{'a':1},{1:'b',2:'c'}],
+    b=clone(a);
+b[2][0] = 100;
+console.log(a);
+console.log(b);
+```
+
+![网页请求过程](https://lilywei739.github.io/img/20161209/20161209-4.jpg)
+
+
+文章中只例举了Array，{}也是引用型对象，结果和Array一样。
+
+
+最终整理如下：
+
+
+```
+function clone(obj) {
+    var result;
+    if (typeof(obj) === 'object') {
+        var result = (Object.prototype.toString.call(obj)==="[object Array]")? [] : {};
+        for (var i in obj){
+            if (typeof obj[i] === "object") {
+                result[i] = clone(obj[i]); //递归赋值
+            } else {
+                result[i] = obj[i]; //直接赋值
             }
         }
-    }else{
-        //对于原始类型直接赋值。
-        result = src;
+    } else {
+	result = obj;
     }
+
     return result;
 }
 ```
+
 
 
 
