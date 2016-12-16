@@ -1,7 +1,6 @@
 github: {
-    "version": {},
     "author": "Weili",
-    "hostname": "https://lilywei739.github.io/",
+    "hostname": "https://github.com/lilywei739/",
     "pages_hostname": "https://lilywei739.github.io/"
 }
 #source: ./
@@ -61,4 +60,3 @@ markdown_ext: markdown,mkd,mkdn,md
 
 
 
-duoshuo_shortname: lilywei739 
