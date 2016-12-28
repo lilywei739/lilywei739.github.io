@@ -82,7 +82,7 @@ for (var i = 0, len = arr.length; i &lt; len; i++){
 
 <p>循环结果：</p>
 
-<p><img src="http://0.0.0.0:4000//img/20161222/20161222-1.jpg" alt="" /></p>
+<p><img src="https://lilywei739.github.io/img/20161222/20161222-1.jpg" alt="" /></p>
 
 <p>用for会把数组中的每一项都循环出来，即使其中某一项没有定义也会用undefined表示。</p>
 
@@ -120,7 +120,7 @@ for (var i in arr){
 
 <p>循环结果：</p>
 
-<p><img src="http://0.0.0.0:4000//img/20161222/20161222-2.jpg" alt="for...in 循环数组" /></p>
+<p><img src="https://lilywei739.github.io/img/20161222/20161222-2.jpg" alt="for...in 循环数组" /></p>
 
 <p>通过这个例子可以得出，for…in实际是遍历对象的可枚举属性。</p>
 
@@ -137,7 +137,7 @@ for(index in arr) {
 
 <p>循环结果：</p>
 
-<p><img src="http://0.0.0.0:4000//img/20161222/20161222-2-2.jpg" alt="for...in 循环数组" /></p>
+<p><img src="https://lilywei739.github.io/img/20161222/20161222-2-2.jpg" alt="for...in 循环数组" /></p>
 
 <p>这个例子看到for-in循环访问了新增的”name”属性，因为for-in遍历了对象的所有属性，而不仅仅是“索引”。同时需要注意的是，此处输出的索引值，即 “0”、 “1”、 “2”不是Number类型的，而是String类型的，因为其就是作为属性输出，而不是索引。</p>
 
@@ -157,7 +157,7 @@ for(index in arr) {
 
 <p>循环结果：</p>
 
-<p><img src="http://0.0.0.0:4000//img/20161222/20161222-2-3.jpg" alt="for...in 循环数组" /></p>
+<p><img src="https://lilywei739.github.io/img/20161222/20161222-2-3.jpg" alt="for...in 循环数组" /></p>
 
 <p>从这个例子可以看到，答案是否定的。因为for-in不仅仅遍历array自身的属性，其还遍历array原型链上的所有可枚举的属性。</p>
 
@@ -181,7 +181,7 @@ for(key in arr) {
 
 <p>循环结果：</p>
 
-<p><img src="http://0.0.0.0:4000//img/20161222/20161222-2-4.jpg" alt="for...in 循环数组" /></p>
+<p><img src="https://lilywei739.github.io/img/20161222/20161222-2-4.jpg" alt="for...in 循环数组" /></p>
 
 <p>因为for-in只会遍历存在的实体，上面的例子中，for-in 遍历了3次（遍历属性分别为”0”、 “100”、 “10000”的元素，普通for循环则会遍历10001次）。所以，只要处理得当，for-in 在遍历Array中元素也能发挥巨大作用。</p>
 
@@ -257,7 +257,7 @@ arr.forEach(function(data, index, array) {
 </code></pre>
 </div>
 
-<p><img src="http://0.0.0.0:4000//img/20161222/20161222-3-2.jpg" alt="" /></p>
+<p><img src="https://lilywei739.github.io/img/20161222/20161222-3-2.jpg" alt="" /></p>
 
 <p>这个例子看出：</p>
 
@@ -269,7 +269,7 @@ arr.forEach(function(data, index, array) {
 
 <p>一张图来说明forEach， 加深一下记忆：</p>
 
-<p><img src="http://0.0.0.0:4000//img/20161222/20161222-3.jpg" alt="" /></p>
+<p><img src="https://lilywei739.github.io/img/20161222/20161222-3.jpg" alt="" /></p>
 
 <p><strong>特点</strong></p>
 
@@ -317,7 +317,7 @@ callback的参数：
 
 <p>运行结果：</p>
 
-<p><img src="http://0.0.0.0:4000//img/20161222/20161222-4-2.jpg" alt="" /></p>
+<p><img src="https://lilywei739.github.io/img/20161222/20161222-4-2.jpg" alt="" /></p>
 
 <p>这个例子就理解了，map按照索引的升序，对数组里<strong>存在的每个元素</strong>调用一次callbackfn，并用结果构造一个新数组。callbackfn<strong>只被实际存在的数组元素</strong>调用；它不会被缺少的数组元素调用。</p>
 
@@ -340,13 +340,13 @@ console.log(arr);    ===&gt;[1, 2, 3]
 
 <p>增加一下记忆</p>
 
-<p><img src="http://0.0.0.0:4000//img/20161222/20161222-4-1.jpg" alt="" /></p>
+<p><img src="https://lilywei739.github.io/img/20161222/20161222-4-1.jpg" alt="" /></p>
 
 <p>最后符上一张性能测试结果图：</p>
 
 <p><a href="https://dailc.github.io/jsPerformanceAnalysis/html/performanceAnalysis/demo_performanceAnalysis_jsarrayGoThrough.html">Js中几种常用数组遍历方式分析比较工具</a></p>
 
-<p><img src="http://0.0.0.0:4000//img/20161222/201222-special-1.jpg" alt="" /></p>
+<p><img src="https://lilywei739.github.io/img/20161222/201222-special-1.jpg" alt="" /></p>
 
 <p>从上面的性能测试图可以看出,for…in循环最慢。优化后的普通for循环最快</p>
 
