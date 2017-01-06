@@ -367,4 +367,29 @@ strong {
     margin: 0 .1rem;
 }
 
+#main-cont .from {    
+    overflow: hidden;
+}
+
+#main-cont .from p{    
+    float: right;
+}
+
+.PageNavigation {
+  font-size: 16px;
+  display: block;
+  width: auto;
+  overflow: hidden;
+}
+
+.PageNavigation a {
+  display: block;
+  width: 50%;
+  float: left;
+  margin: 1em 0;
+}
+
+.PageNavigation .next {
+  text-align: right;
+}
 
