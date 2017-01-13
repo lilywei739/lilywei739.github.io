@@ -201,7 +201,7 @@ true == 1, false == 0，[+true, +false] == [+1, +0]
 
 此题难点在于运算符的优先级
 
-![image01](http://0.0.0.0:4000/img/20170105/20170105-1.jpg)
+![image01](https://lilywei739.github.io/img/20170105/20170105-1.jpg)
 
 
 
@@ -327,8 +327,142 @@ vars = vars;
 
 结果为false.
 
+先看一下 delete 的特点
+
+> from MDN <br />
+> 一些对象的属性不能被delete 
+
+
+```
+x = 42;        // 隐式声明的全局变量
+var y = 43;    // 显式声明的全局变量
+myobj = {
+  h: 4,    
+  k: 5
+}    
+
+// 隐式声明的全局变量可以被删除
+delete x;       // 返回 true 
+
+// 显式声明的全局变量不能被删除,该属性不可配置（not configurable）
+delete y;       // 返回 false 
+
+//内置对象的内置属性不能被删除
+delete Math.PI; // 返回 false
+
+//用户定义的属性可以被删除
+delete myobj.h; // 返回 true 
+
+// myobj 是全局对象的属性，而不是变量
+//因此可以被删除
+delete myobj;   // 返回 true
+
+function f() {
+  var z = 44;
+
+  // delete doesn't affect local variable names
+  delete z;     // returns false
+}
+```
+
+> 不能删除一个对象从原型继承而来的属性(不过你可以从原型上直接删掉它)
+
+```
+function Foo(){}
+ Foo.prototype.bar = 42;
+ var foo = new Foo();
+
+ // 无效的操作
+ delete foo.bar;       
+   
+ // logs 42，继承的属性
+ console.log(foo.bar);       
+    
+ // 直接删除原型上的属性
+ delete Foo.prototype.bar;
+ 
+ // logs "undefined"，已经没有继承的属性
+ console.log(foo.bar);
+```
+
+
 delete用来删除对象属性，成功删除返回true, 如果对方防御很强删不动则返回false.
 
-数组中的length属性是不可删除的，因此这里返回的是false.
+如上面所述，数组中的length属性是不可删除的，因此这里返回的是false.
 
-delete相关的知识点是很多的，比说法window.x = 1这里的x可以被delete. var x =1这里的x就不能被delete. 图灵社区有篇不错的译文：“理解delete”，推荐阅读。
+
+
+
+
+## 22、RegExp.prototype.toString = function() {return this.source}; /3/-/2/;	//返回的是？
+
+结果是：1.
+
+正则表达式有如下一些属性：source, global, ignoreCase, multiline, lastIndex. 其中：source属性为构成正则表达式Pattern的字符串；global属性是一Boolean值，表示正则表达式flags是否有"g"；ignoreCase属性是一Boolean值，表示正则表达式flags是否有"i"；multiline属性是一Boolean值，表示正则表达式flags是否有"m"；lastIndex属性指定从何处开始下次匹配的一个字符串类型的位置索引，当需要时该值会转换为一个整型数。
+
+RegExp.prototype.toString扩展改变了默认的toString方法，当正则表达式需要应用toString方法进行字符串转换的时候，返回的就是正则表达式的source属性值。
+
+## 23、{break;4;}
+
+结果是报如下错误：SyntaxError: unlabeled break must be inside loop or switch.
+
+意思是——解析错误：未标记的break必须在循环或switch中。
+
+对照错误，我们加个标记，使之成为标记语句，就不会出错了。类似下面：
+
+```
+foo: { break foo; 4;} 
+```
+
+
+## 24、'foo' == new function(){ return String('foo'); };
+
+结果为：false.
+
+由于这里是==, 'foo'又是正宗的字符串，因此，后面的new...需要转换成字符串。
+
+```
+new function(){ return String('foo'); } + ""; // "[object Object]"
+```
+
+显然，'foo' == "[object Object]"为false.
+
+本题如果稍作一点修改，则结果完全不一样：
+
+```
+'foo' == new function(){ return new String('foo'); };	//返回的是？
+```
+
+结果为：true.
+
+
+为什么呢？JavaScript中有5种基本类型（Undefined类型、Null类型、Boolean类型、Number类型、String类型），如果new后面的function return的是这5中基本类型之一，new会认为你是纯屌丝，不理你，还是返回自己创建的匿名对象；当然，如果返回数组啊、函数、对象这类高富帅，new立马变龟孙子了，返回的就是这些高富帅。
+
+由于String("foo")是字符串，而new String("foo")是对象。因此，前者返回的是匿名函数对象——显然不等于"foo"；后者就是new String("foo")对象，加上"foo" == new String("foo")，于是，结果为true.
+
+
+## 25、'foo'.split('') + []	//返回的是？
+
+结果是："f,o,o".
+
+记住，数组加数组，字符成老母。'foo'.split('')结果为数组["f", "o", "o"]，其变身字符串就是"f,o,o"跟后面的[]也就是""相加，就是最终的"f,o,o"了。
+
+下面考考你，
+
+```
+[1, 2] + [3, 4]	//返回的是？
+```
+
+是不是"1,2,3,4"？恭喜你，，回答…………错误！
+
+这又是整哪样啊！哥，你只是稍微粗心了点。[1, 2]变成字符串是"1,2", [3, 4]变成字符串是"3,4"，因此两者相加是"1,23,4"而不是"1,2,3,4".
+
+空数组实际上是个很有意思的东西。
+
+```
+[] == 0 //true
+!0 // true
+![] // false
+```
+
+这些题目纯属是比较偏门的小知识点，查漏补缺记录一下。
