@@ -27,7 +27,7 @@ title: 数据算法之二叉树一
 ### 树的相关名词
 
 * 父节点，子节点，兄弟节点：这个不用解释都知道吧
-* 结点的度：就是分支数， 比如下图中“23”的度是2
+* 结点的度：就是分支数 
 * 树的度: 最大的结点度,最大也是2
 * 叶子结点：没有子节点的结点 
 * 结点的层数：就是树有几层
@@ -78,6 +78,9 @@ function BST() {
     this.getMin = getMin;
     this.getMax = getMax;
     this.find = find;
+
+    this.remove = remove;         //简单地接受待删除数据 
+    this.removeNode = removeNode; //删除
 }
 ```
 
@@ -302,7 +305,6 @@ function find(data) {
 ```
 
 
-二叉树的节点删除及计数在下期继续。
 
 
 
