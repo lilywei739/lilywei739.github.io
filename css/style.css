@@ -5,6 +5,7 @@ dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,
 }
 body {
     font-size:16px;
+    line-height: 1.5;
     margin-left:auto;
     margin-right:auto;
     font-family: "Microsoft YaHei", sans-serif;
@@ -393,3 +394,7 @@ strong {
   text-align: right;
 }
 
+
+li {
+    margin: .5rem 0;
+}
