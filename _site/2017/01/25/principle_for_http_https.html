@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <meta name="robots" content="index,follow"/>
+        <meta name="renderer" content="webkit" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui" />
+        <meta name="keywords" content="HTTP、HTTPS代理分析及原理">
+        <meta name="screen-orientation" content="portrait" />
+        <meta name="full-screen" content="yes" />
+        <meta name="browsermode" content="application" />
+        <meta name="x5-orientation" content="portrait" />
+        <meta name="x5-fullscreen" content="true" />
+        <meta name="x5-page-mode" content="app" />
+        <title>HTTP、HTTPS代理分析及原理</title>
+        <link rel="shortcut icon" type="image/ico" href="/favicon.ico"/>
+        <link rel="stylesheet" href="/css/common/github-gist.min.css">
+        <link rel="stylesheet" href="/css/style.css">
+        <!--[if lt IE 9]>
+        <script src="/js/common/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <!-- HEADER -->
+        <div id="header_wrap" class="outer">
+            <header class="inner">
+                <h1 id="project_title"><a href="/index.html">Weili - GitHub.io</a></h1>
+                <h2 id="project_tagline"><a href="https://github.com/lilywei739/lilywei739.github.io" target="_blank">View on GitHub</a></h2>
+            </header>
+        </div>
+            
+        <div id="content-wrapper">
+            <div class="main clearfix">
+                <aside id="sidebar">
+                    <ul class="side-nav">
+                    </ul>
+                </aside>
+
+                <section id="main-cont">
+                    <p>曾经的一个面试题。没答下来，收录一下，文章参考《HTTP权威指南》一书。</p>
+
+<h1 id="httphttps">HTTP、HTTPS代理分析及原理</h1>
+
+<h2 id="http">HTTP代理的原理</h2>
+
+<p>HTTP代理服务器会自动提取请求数据包的HTTP Request数据，并且把HTTP Response的数据转发给发送请求的客户端；HTTP代理服务器使用的端口通常是8080，如下图所示：</p>
+
+<p><img src="http://0.0.0.0:4000/img/20170125/20170125-1.jpg" alt="" /></p>
+
+<ul>
+  <li>对于Web客户端来说，代理扮演的服务器角色，接收请求（Request），返回响应（Response）。</li>
+  <li>对于Web服务器来说，代理扮演的客户端角色，发送请求（Request），接收响应（Response）。</li>
+</ul>
+
+<h3 id="http-">HTTP 代理步骤</h3>
+
+<ul>
+  <li>用户向代理发起TCP连接；</li>
+  <li>代理接收用户的连接，双方建立连接；</li>
+  <li>用户向代理发送HTTP请求，请求内容和没有HTTP代理的内容完全相同；</li>
+  <li>代理解析HTTP请求；</li>
+  <li>代理向服务器发起TCP连接；</li>
+  <li>服务器接收代理的连接；</li>
+  <li>代理向服务器发送HTTP请求（这个HTTP请求是基于用户的HTTP请求，可能会有修改）</li>
+  <li>服务器发送响应给代理；</li>
+  <li>P发送响应给U；</li>
+</ul>
+
+<h3 id="http-1">HTTP请求协议（不使用代理协议）报文：</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>GET / HTTP/1.1
+Accept: application/x-ms-application, image/jpeg, application/xaml+xml, image/gif, image/pjpeg, application/x-ms-xbap, application/vnd.ms-excel, application/vnd.ms-powerpoint, application/msword, */*
+Accept-Language: zh-CN
+User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2; .NET4.0C; .NET4.0E)
+Accept-Encoding: gzip, deflate
+Host: www.what21.com
+Connection: Keep-Alive
+Cookie: CNZZDATA1252995935=579722882-1456319452-%7C1472176395;
+</code></pre>
+</div>
+
+<h3 id="http-2">HTTP请求协议（使用代理协议）报文：</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>GET http://www.what21.com/ HTTP/1.1
+Accept: application/x-ms-application, image/jpeg, application/xaml+xml, image/gif, image/pjpeg, application/x-ms-xbap, application/vnd.ms-excel, application/vnd.ms-powerpoint, application/msword, */*
+Accept-Language: zh-CN
+User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2; .NET4.0C; .NET4.0E)
+Accept-Encoding: gzip, deflate
+Proxy-Connection: Keep-Alive
+Host: www.what21.com
+Cookie: CNZZDATA1252995935=579722882-1456319452-%7C1472176395;
+</code></pre>
+</div>
+
+<h3 id="section">相关概念：</h3>
+
+<blockquote>
+  <p>Accept：请求报头域用于指定客户端接受哪些类型的信息。<br />
+Accept：text/html，表明客户端希望接受html文本。<br />
+Accept-Language请求报头域类似于Accept，但是它是用于指定一种自然语言。<br />
+User-Agent：请求报头域允许客户端将它的操作系统、浏览器和其它属性告诉服务器。如果不使用User-Agent请求报头域，服务器端就无法得知客户端的属性信息。<br />
+HTTP协议中Connection是用来对HTTP协议连接进行的说明，如果是多个说明，使用英文逗号分隔。<br />
+Proxy代表了代理。</p>
+</blockquote>
+
+<h3 id="http118">HTTP/1.1协议中共定义了8种方法（也叫“动作”）来以不同方式操作指定的资源：</h3>
+
+<ul>
+  <li>OPTIONS方法：这个方法可使服务器传回该资源所支持的所有HTTP请求方法。用’*‘来代替资源名称，向Web服务器发送OPTIONS请求，可以测试服务器功能是否正常运作。</li>
+  <li>HEAD方法：与GET方法一样，都是向服务器发出指定资源的请求。只不过服务器将不传回资源的本文部份。它的好处在于，使用这个方法可以在不必传输全部内容的情况下，就可以获取其中“关于该资源的信息”(元信息或称元数据)。</li>
+  <li>GET方法：向指定的资源发出“显示”请求。使用GET方法应该只用在读取数据，而不应当被用于产生“副作用”的操作中，例如在Web Application中。其中一个原因是GET可能会被网络蜘蛛等随意访问。参见安全方法</li>
+  <li>POST方法：向指定资源提交数据，请求服务器进行处理(例如提交表单或者上传文件)。数据被包含在请求本文中。这个请求可能会创建新的资源或修改现有资源，或二者皆有。</li>
+  <li>PUT方法：向指定资源位置上传其最新内容。</li>
+  <li>DELETE方法：请求服务器删除Request-URI所标识的资源。</li>
+  <li>TRACE方法：回显服务器收到的请求，主要用于测试或诊断。</li>
+  <li>CONNECT方法：HTTP/1.1协议中预留给能够将连接改为管道方式的代理服务器。通常用于SSL加密服务器的链接(经由非加密的HTTP代理服务器)。</li>
+</ul>
+
+<p>connect方法的通常就是把服务器作为跳板机，让服务器直接代理客户端访问，然后把数据原原本本的返回给客户端，connect方法的原理就是TCP直连。</p>
+
+<p>connect方法请求协议：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>CONNECT http://www.what21.com:80/ HTTP/1.1
+Accept: application/x-ms-application, image/jpeg, application/xaml+xml, image/gif, image/pjpeg, application/x-ms-xbap, application/vnd.ms-excel, application/vnd.ms-powerpoint, application/msword, */*
+Accept-Language: zh-CN
+User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2; .NET4.0C; .NET4.0E)
+Accept-Encoding: gzip, deflate
+Proxy-Connection: Keep-Alive
+Host: www.what21.com
+</code></pre>
+</div>
+
+<h3 id="http-3">HTTP代理功能上名称的区别：</h3>
+<ul>
+  <li>全匿名代理，不改变客户端的request fields（请求信息），使服务器端看来就像有个真正的客户浏览器在访问。客户端的真实IP是隐藏起来的。</li>
+  <li>普通匿名代理，能隐藏客户端的真实IP，但会更改客户端的request fields（请求信息），服务器端有可能会被认为使用了代理。</li>
+  <li>透明代理（简单代理），改变客户端的request fields（请求信息），并会传送真实IP地址。</li>
+</ul>
+
+<h3 id="https">HTTPS代理</h3>
+
+<p>HTTPS代理有多种做法，通常使用CONNECT method，通过proxy建立一条隧道(隧道代理)，这样，proxy无法解密数据；此外，还有一种类似于中间人攻击的代理手法。</p>
+
+<h3 id="httpsconnect">HTTPS代理中CONNECT方法代理步骤</h3>
+
+<ul>
+  <li>用户向代理发起CONNECT请求；</li>
+  <li>代理向Targe发起TCP连接请求；</li>
+  <li>代理向用户返回”HTTP/1.0 OK\r\n\r\n”，隧道建立完成；</li>
+  <li>代理转发用户的数据给Target，转发Target的数据给用户，直到任何一方连接结束；</li>
+</ul>
+
+<p>如下图所示：</p>
+
+<p><img src="http://0.0.0.0:4000/img/20170125/20170125-2.jpg" alt="" /></p>
+
+<p>详细的解释参考博文：</p>
+
+<p><a href="https://imququ.com/post/web-proxy.html">HTTP 代理原理及实现（一）</a> <br />
+<a href="https://imququ.com/post/web-proxy-2.html">HTTP 代理原理及实现（二）</a></p>
+
+
+		<div class="PageNavigation">
+		  
+		    <a class="prev" href="/2017/01/06/data_algorithm_two_tree_2.html">&laquo; 数据算法之二叉树二</a>
+		  
+		  
+		</div>
+		<!-- 多说评论框 start -->
+<div id="ds_ele" class="ds-thread" data-thread-key="" data-title="HTTP、HTTPS代理分析及原理" data-url="http://lilywei739.github.io/2017/01/25/principle_for_http_https.html"></div>
+                    <!-- 多说评论框 end -->
+                    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+		    <script type="text/javascript">
+                        var url = window.location.pathname;
+                        url = url.substr(1, url.length -6).replace(/\//gi, '_');
+                        document.getElementById('ds_ele').dataset.threadKey = url;
+                        var duoshuoQuery = {short_name:"github"};
+                        (function() {
+                            var ds = document.createElement('script');
+                            ds.type = 'text/javascript';ds.async = true;
+                            ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+                            ds.charset = 'UTF-8';
+                            (document.getElementsByTagName('head')[0] 
+                            || document.getElementsByTagName('body')[0]).appendChild(ds);
+                        })();
+                    </script>
+		<!-- 多说公共JS代码 end -->
+                </section>
+            </div>
+        </div>
+            
+        <!-- FOOTER  -->
+        <div id="footer_wrap" class="outer">
+            <footer class="inner">
+                <p>© 2016  by Weili &nbsp;&nbsp;  |  &nbsp;&nbsp;托管在 - <a href="https://pages.github.com">GitHub</a></p>
+            </footer>
+        </div>
+        <script src="/js/common/jquery-2.2.4.min.js"></script>
+        <script src="/js/common/highlight.min.js"></script>
+        <script src="/js/aside-nav.js"></script>
+        <script>
+            // baidu 统计
+            var _hmt = _hmt || [];
+            (function() {
+                var hm = document.createElement("script");
+                hm.src = "//hm.baidu.com/hm.js?146fe495fee020bf0e4dd701aa73965f";
+                var s = document.getElementsByTagName("script")[0]; 
+                s.parentNode.insertBefore(hm, s);
+            })();
+            // highlight
+            hljs.initHighlightingOnLoad({useBR: true});
+            $(document).ready(function() {
+                $('pre code').each(function(i, block) {
+                    hljs.highlightBlock(block);
+                });
+
+                // http2
+                var img = new Image();
+                img.src = 'https://www.h2statistics.ml/';
+            });
+        </script>
+    </body>
+</html>
