@@ -11,7 +11,7 @@ title:  HTTP、HTTPS代理分析及原理
 
 HTTP代理服务器会自动提取请求数据包的HTTP Request数据，并且把HTTP Response的数据转发给发送请求的客户端；HTTP代理服务器使用的端口通常是8080，如下图所示：
 
-![](http://0.0.0.0:4000/img/20170125/20170125-1.jpg)
+![](https://lilywei739.github.io/img/20170125/20170125-1.jpg)
 
 * 对于Web客户端来说，代理扮演的服务器角色，接收请求（Request），返回响应（Response）。
 * 对于Web服务器来说，代理扮演的客户端角色，发送请求（Request），接收响应（Response）。
@@ -113,7 +113,7 @@ HTTPS代理有多种做法，通常使用CONNECT method，通过proxy建立一�
 
 如下图所示：
 
-![](http://0.0.0.0:4000/img/20170125/20170125-2.jpg)
+![](https://lilywei739.github.io/img/20170125/20170125-2.jpg)
 
 
 
