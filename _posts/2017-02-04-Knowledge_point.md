@@ -7,7 +7,7 @@ title:  JS小知识点记录
 
 # JS小知识点记录
 
-## undefined与null的区别
+## 一、undefined与null的区别
 
 undefined与null均表示无的意思，用到的地方不一样。
 
@@ -35,8 +35,14 @@ o.p // undefined
 
 var x = f();
 x // undefined
+
+
+typeof null ==>"object"
+typeof undefined ==> "undefined"
 ```
 
+
+## 二、
 
 
 

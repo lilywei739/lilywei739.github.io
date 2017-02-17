@@ -7,14 +7,14 @@
         <meta name="robots" content="index,follow"/>
         <meta name="renderer" content="webkit" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui" />
-        <meta name="keywords" content="JS小知识点记录">
+        <meta name="keywords" content="Angularjs 进阶">
         <meta name="screen-orientation" content="portrait" />
         <meta name="full-screen" content="yes" />
         <meta name="browsermode" content="application" />
         <meta name="x5-orientation" content="portrait" />
         <meta name="x5-fullscreen" content="true" />
         <meta name="x5-page-mode" content="app" />
-        <title>JS小知识点记录</title>
+        <title>Angularjs 进阶</title>
         <link rel="shortcut icon" type="image/ico" href="/favicon.ico"/>
         <link rel="stylesheet" href="/css/common/github-gist.min.css">
         <link rel="stylesheet" href="/css/style.css">
@@ -39,59 +39,46 @@
                 </aside>
 
                 <section id="main-cont">
-                    <h1 id="js">JS小知识点记录</h1>
+                    <h1 id="angularjs">Angularjs</h1>
 
-<h2 id="undefinednull">一、undefined与null的区别</h2>
+<h4 id="section">库？框架？</h4>
 
-<p>undefined与null均表示无的意思，用到的地方不一样。</p>
+<p><img src="http://0.0.0.0:4000/img/20170214/20170214-4.jpg" alt="网页请求过程" /></p>
 
-<p>null表示”没有对象”，即该处不应该有值。典型用法是：</p>
+<ul>
+  <li>
+    <p>jQuery是一个库，库总是被动的，就像工具，应用的开发逻辑是你的，在某一点上需要用一下工具，就用好了。</p>
+  </li>
+  <li>
+    <p>框架则非常不同，这意味着AngularJS为应用已经搭起了一个架子，约定了 一些组成部分，并且实现了这些部分的拼装运行。换句话说， 应用的开发逻辑是AngularJS的，你得跟着它走。</p>
+  </li>
+</ul>
 
-<blockquote>
-  <p>（1） 作为函数的参数，表示该函数的参数不是对象。<br />
-（2） 作为对象原型链的终点。</p>
-</blockquote>
+<p>所以， 框架AngularJS 相当对库要难学一些，因为它有一个架子在那，不了解这个架子， 基本没法下手。</p>
 
-<p>undefined表示”缺少值”，就是此处应该有一个值，但是还没有定义。典型用法是：</p>
+<h4 id="jquery">向jQuery致敬</h4>
 
-<blockquote>
-  <p>（1）变量被声明了，但没有赋值时，就等于undefined。<br />
-（2) 调用函数时，应该提供的参数没有提供，该参数等于undefined。<br />
-（3）对象没有赋值的属性，该属性的值为undefined。<br />
-（4）函数没有返回值时，默认返回undefined。</p>
-</blockquote>
+<p>在DOM操作方面，没有人比jQuery做的更好。AngularJS以一种特殊的方式 向jQuery表达了敬意：内置精简版的jQuery - jqLite。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>var i;
-i // undefined
+<p>和jQuery一样，jqLite兼容多个浏览器。</p>
 
-function f(x){console.log(x)}
-f() // undefined
+<p>jqLite以angular.element接口提供出来，兼容jQuery API的一个子集。 在AngularJS的所有API中的element对象，都不是纯粹的DOM对象，而是经过jqLite 封装过的。</p>
 
-var  o = new Object();
-o.p // undefined
+<h5 id="section-1">选择符</h5>
 
-var x = f();
-x // undefined
+<p>从开发者的角度，jqLite最明显的精简是不支持选择符。你只能向 angular.element传入一个DOM对象。看起来AngularJS将这部分功能让位给浏览器 原生的支持了，我们可以先使用浏览器的querySelector获得一个DOM对象：</p>
 
-
-typeof null ==&gt;"object"
-typeof undefined ==&gt; "undefined"
+<div class="highlighter-rouge"><pre class="highlight"><code>var tpl = document.querySelector('#clock');
+angular.element(tpl).text(...);
 </code></pre>
 </div>
 
-<h2 id="section">二、</h2>
-
-
 		<div class="PageNavigation">
 		  
-		    <a class="prev" href="/2017/01/26/http_GET_POST.html">&laquo; HTTP中GET与POST的区别</a>
-		  
-		  
-		    <a class="next" href="/2017/02/06/lazyload_Img.html">懒加载和预加载 &raquo;</a>
 		  
 		</div>
 		<!-- 多说评论框 start -->
-<div id="ds_ele" class="ds-thread" data-thread-key="" data-title="JS小知识点记录" data-url="http://lilywei739.github.io/2017/02/04/Knowledge_point.html"></div>
+<div id="ds_ele" class="ds-thread" data-thread-key="" data-title="Angularjs 进阶" data-url="http://lilywei739.github.io/2017-02-14-angularjs_2.html"></div>
                     <!-- 多说评论框 end -->
                     <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 		    <script type="text/javascript">
