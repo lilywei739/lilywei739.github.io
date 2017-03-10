@@ -173,7 +173,7 @@ ReactDOM.render(
 
 <h4 id="props-2">默认 Props</h4>
 
-<p><strong>getDefaultProps()</strong> 方法为 props 设置默认值，当父级没有传入 props 时，getDefaultProps() 可以保证 this.props.value 有默认值，注意 getDefaultProps 的结果会被缓存，得益于此，可以直接使用 props，而不必写手动编写一些重复或无意义的代码。</p>
+<p><strong>getDefaultProps()</strong> 方法为 props 设置默认值</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>var HelloMessage = React.createClass({
     getDefaultProps: function () {
@@ -228,47 +228,101 @@ ReactDOM.render(&lt;WebSite /&gt;, document.getElementById('box'));      //WebSi
 </code></pre>
 </div>
 
-<h4 id="thispropschildren">this.props.children</h4>
+<h4 id="props-">Props 验证</h4>
 
-<p>this.props 对象的属性与组件的属性一一对应，但是有一个例外，就是 this.props.children 属性。它表示组件的所有子节点。</p>
+<p>Props 验证使用 <strong>propTypes</strong>，它可以保证我们的应用组件被正确使用，<strong>React.PropTypes</strong> 提供很多验证器 (validator) 来验证传入数据是否有效。当向 props 传入无效数据时，JavaScript 控制台会抛出警告。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>var NotesList = React.createClass({
-  render: function() {
-    return (
-      &lt;ol&gt;
-      {
-        this.props.children.map(function (child) {
-          return &lt;li&gt;{child}&lt;/li&gt;
-        })
-      }
-      &lt;/ol&gt;
+<div class="highlighter-rouge"><pre class="highlight"><code>    var title = "宝宝树";
+    //var title = 123;
+    var MyTitle = React.createClass({
+      propTypes: {
+        title: React.PropTypes.string.isRequired,
+      },
+
+      render: function() {
+         return &lt;h1&gt; {this.props.title} &lt;/h1&gt;;
+       }
+    });
+    ReactDOM.render(
+        &lt;MyTitle title={title} /&gt;,
+        document.getElementById('example')
     );
-  }
-});
 
-React.render(
-  &lt;NotesList&gt;
-    &lt;span&gt;hello&lt;/span&gt;
-    &lt;span&gt;world&lt;/span&gt;
-  &lt;/NotesList&gt;,
-  document.body
-);
 </code></pre>
 </div>
 
-<p>代码的 NoteList 组件有两个 span 子节点，它们都可以通过 this.props.children 读取，需要注意，只有当子节点多余1个时，this.props.children 才是一个数组，否则是不能用 map 方法的， 会报错。</p>
+<p>React.PropTypes.string.isRequired  必须是字符串，如果是数字会报错。</p>
 
+<p>更多的检验器：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>React.createClass({
+  propTypes: {
+    // 可以声明 prop 为指定的 JS 基本数据类型，默认情况，这些数据是可选的
+   optionalArray: React.PropTypes.array,
+    optionalBool: React.PropTypes.bool,
+    optionalFunc: React.PropTypes.func,
+    optionalNumber: React.PropTypes.number,
+    optionalObject: React.PropTypes.object,
+    optionalString: React.PropTypes.string,
+ 
+    // 可以被渲染的对象 numbers, strings, elements 或 array
+    optionalNode: React.PropTypes.node,
+ 
+    //  React 元素
+    optionalElement: React.PropTypes.element,
+ 
+    // 用 JS 的 instanceof 操作符声明 prop 为类的实例。
+    optionalMessage: React.PropTypes.instanceOf(Message),
+ 
+    // 用 enum 来限制 prop 只接受指定的值。
+    optionalEnum: React.PropTypes.oneOf(['News', 'Photos']),
+ 
+    // 可以是多个对象类型中的一个
+    optionalUnion: React.PropTypes.oneOfType([
+      React.PropTypes.string,
+      React.PropTypes.number,
+      React.PropTypes.instanceOf(Message)
+    ]),
+ 
+    // 指定类型组成的数组
+    optionalArrayOf: React.PropTypes.arrayOf(React.PropTypes.number),
+ 
+    // 指定类型的属性构成的对象
+    optionalObjectOf: React.PropTypes.objectOf(React.PropTypes.number),
+ 
+    // 特定 shape 参数的对象
+    optionalObjectWithShape: React.PropTypes.shape({
+      color: React.PropTypes.string,
+      fontSize: React.PropTypes.number
+    }),
+ 
+    // 任意类型加上 `isRequired` 来使 prop 不可空。
+    requiredFunc: React.PropTypes.func.isRequired,
+ 
+    // 不可空的任意类型
+    requiredAny: React.PropTypes.any.isRequired,
+ 
+    // 自定义验证器。如果验证失败需要返回一个 Error 对象。不要直接使用 `console.warn` 或抛异常，因为这样 `oneOfType` 会失效。
+    customProp: function(props, propName, componentName) {
+      if (!/matchme/.test(props[propName])) {
+        return new Error('Validation failed!');
+      }
+    }
+  },
+  /* ... */
+});
+
+</code></pre>
+</div>
 
 		<div class="PageNavigation">
 		  
-		    <a class="prev" href="/2017/02/22/React_1.html">&laquo; React（一）</a>
+		    <a class="prev" href="/2017/03/02/React_2.html">&laquo; React（二）</a>
 		  
-		  
-		    <a class="next" href="/2017/03/06/React_3.html">React（三） &raquo;</a>
 		  
 		</div>
 		<!-- 多说评论框 start -->
-<div id="ds_ele" class="ds-thread" data-thread-key="" data-title="React（二）" data-url="http://lilywei739.github.io/2017/03/02/React_2.html"></div>
+<div id="ds_ele" class="ds-thread" data-thread-key="" data-title="React（二）" data-url="http://lilywei739.github.io/2017/03/02/React_3.html"></div>
                     <!-- 多说评论框 end -->
                     <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 		    <script type="text/javascript">
