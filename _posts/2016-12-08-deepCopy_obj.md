@@ -1,6 +1,11 @@
 ---
 layout: post
 title: 对象的克隆  
+subtitle: "对象克隆"
+tags:
+    - JS 
+    - 对象克隆 
+    - 前端  
 ---
 
 

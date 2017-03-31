@@ -1,6 +1,11 @@
 ---
 layout: post
 title: Js实现继承的几种方式  
+subtitle: "Js继承"
+tags:
+    - JS 
+    - 继承 
+    - 前端  
 ---
 
 # Js实现继承的几种方式 

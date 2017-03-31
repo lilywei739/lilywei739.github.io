@@ -6,7 +6,7 @@ github: {
 #source: ./
 #destination: ./_site
 #plugins: ./_plugins
-safe: true
+safe: false 
 
 # Conversion
 #highlighter: pygments

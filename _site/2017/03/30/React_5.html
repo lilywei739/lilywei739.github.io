@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <meta name="robots" content="index,follow"/>
+        <meta name="renderer" content="webkit" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui" />
+        <meta name="keywords" content="React（五）">
+        <meta name="screen-orientation" content="portrait" />
+        <meta name="full-screen" content="yes" />
+        <meta name="browsermode" content="application" />
+        <meta name="x5-orientation" content="portrait" />
+        <meta name="x5-fullscreen" content="true" />
+        <meta name="x5-page-mode" content="app" />
+        <title>React（五）</title>
+        <link rel="shortcut icon" type="image/ico" href="/favicon.ico"/>
+        <link rel="stylesheet" href="/css/common/github-gist.min.css">
+        <link rel="stylesheet" href="/css/style.css">
+        <!--[if lt IE 9]>
+        <script src="/js/common/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <!-- HEADER -->
+        <div id="header_wrap" class="outer">
+            <header class="inner">
+                <h1 id="project_title"><a href="/index.html">Weili - GitHub.io</a></h1>
+                <h2 id="project_tagline"><a href="https://github.com/lilywei739/lilywei739.github.io" target="_blank">View on GitHub</a></h2>
+            </header>
+        </div>
+            
+        <div id="content-wrapper">
+            <div class="main clearfix">
+                <aside id="sidebar">
+                    <ul class="side-nav">
+                    </ul>
+                </aside>
+
+                <section id="main-cont">
+                    <h1 id="react">React（五）</h1>
+
+<h4 id="react-">React 组件生命周期</h4>
+
+<p>组件的生命周期可分成三个状态：</p>
+
+<blockquote>
+  <p>Mounting：已插入真实 DOM —初始化阶段<br />
+Updating：正在被重新渲染 —运行中阶段<br />
+Unmounting：已移出真实 DOM —销毁阶段</p>
+</blockquote>
+
+<p>生命周期的方法有：</p>
+
+<h5 id="componentwillmount">componentWillMount</h5>
+
+<p>在渲染前调用，在客户端也在服务端，这个方法始终只执行一次，所以如果在这里定义了setState方法之后，页面永远都只会在加载前更新一次。</p>
+
+<h5 id="componentdidmount">componentDidMount</h5>
+
+<p>这个方法会在组件加载完毕之后立即执行。 这时组件已经生成了对应的DOM结构，可以通过this.getDOMNode()来进行访问。</p>
+
+<p>如果想和其他JavaScript框架一起使用，可以在这个方法中调用setTimeout, setInterval或者发送AJAX请求等操作(防止异部操作阻塞UI)。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>componentDidMount: function() {
+  setTimeout(function() {
+    this.setState({items: {name: 'test'}})
+  }, 1000)
+}
+</code></pre>
+</div>
+
+<h5 id="componentwillreceiveprops">componentWillReceiveProps</h5>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>componentWillReceiveProps(object nextProps)
+</code></pre>
+</div>
+<p>在组件接收到一个新的prop时被调用。</p>
+
+<p>旧的props可以通过this.props来获取。在这个函数内调用this.setState()方法不会增加一次新的render.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>componentWillReceiveProps: function(nextProps) {
+  this.setState({
+    likesIncreasing: nextProps.likeCount &gt; this.props.likeCount
+  });
+}
+</code></pre>
+</div>
+
+<h5 id="shouldcomponentupdate">shouldComponentUpdate</h5>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>boolean shouldComponentUpdate(object nextProps, object nextState)
+</code></pre>
+</div>
+
+<p>返回一个布尔值。在组件接收到新的props或者state时被调用。在初始化时或者使用forceUpdate时不被调用。</p>
+
+<p>可以在确认不需要更新组件时使用。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>shouldComponentUpdate: function(nextProps, nextState) {
+  return nextProps.id !== this.props.id;
+}
+</code></pre>
+</div>
+
+<p>如果shouldComponentUpdate返回false, render()则会在下一个state change之前被完全跳过。(另外componentWillUpdate和 componentDidUpdate也不会被执行)</p>
+
+<p>默认情况下shouldComponentUpdate会返回true.</p>
+
+<p>如果你需要考虑性能，特别是在有上百个组件时，可以使用shouldComponentUpdate来提升应用速度。</p>
+
+<h5 id="componentwillupdate">componentWillUpdate</h5>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>componentWillUpdate(object nextProps, object nextState)
+</code></pre>
+</div>
+
+<p>在组件接收到新的props或者state但还没有render时被调用。在初始化时不会被调用。</p>
+
+<p>一般用在组件发生更新之前。</p>
+
+<h5 id="componentdidupdate">componentDidUpdate</h5>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>componentDidUpdate(object prevProps, object prevState)
+</code></pre>
+</div>
+
+<p>在组件完成更新后立即调用。在初始化时不会被调用。</p>
+
+<h5 id="componentwillunmount">componentWillUnmount</h5>
+
+<p>在组件从 DOM 中移除的时候立刻被调用。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>componentDidMount:function(){
+    this.inc = setInterval(this.update,500)
+},
+componentWillUnmount:function(){
+    console.log("goodbye cruel world!")
+    clearInterval(this.inc)
+}
+</code></pre>
+</div>
+
+<p>主要用来执行一些必要的清理任务。例如清除setTimeout等函数，或者任意的在componentDidMount创建的DOM元素。</p>
+
+<h4 id="section">总结</h4>
+
+<p>初始化阶段</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var MyFirstComponent = React.createClass({
+
+  // 只调用一次，实例之间共享引用
+  getDefaultProps: function () {
+    console.log("getDefaultProps,1");
+    return {name: 'babytree'}
+  },
+
+  getInitialState: function () {
+    console.log("getInitialState, 2");
+    return {age: 5};
+  },
+
+  // render之前最后一次修改状态的机会
+  componentWillMount: function () {
+    console.log("componentWillMount, 3");
+    this.setState({age: 10});
+  },
+
+  // 只能访问this.props和this.state，只有一个顶层组件，不可以修改状态和DOM输出
+  render: function () {
+    console.log("render, 4");
+    return (
+      &lt;p&gt;name: {this.props.name}; age: {this.state.age}&lt;/p&gt;
+    )
+  },
+
+  // 成功render并渲染完成真实DOM之后触发，可以修改DOM
+  componentDidMount: function () {
+    console.log("componentDidMount, 5");
+  }
+});
+
+ReactDOM.render(
+  &lt;MyFirstComponent /&gt;,
+  document.getElementById('example')
+);
+</code></pre>
+</div>
+
+<p>控制台显示的结果如下，可以很直观的看到各个函数的执行顺序</p>
+
+<p><img src="https://lilywei739.github.io/img/20170330/20170330-1.png" alt="网页请求过程" /></p>
+
+<p>运行中阶段</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var ChildComponent = React.createClass({
+  // 组件将要接受到属性时触发
+  componentWillReceiveProps: function () {
+    console.log('componentWillReceiveProps 1');
+  },
+
+  // 组件是否需要更新，返回false则阻止render调用
+  // 这个函数我们一般谨慎使用，只有在性能调优时会使用
+  shouldComponentUpdate: function () {
+    console.log('shouldComponentUpdate 2');
+    return true;
+  },
+
+  // 组件接收到新的props或者state后，进行渲染之前触发
+  // 但它不能修改props和state
+  componentWillUpdate: function () {
+    console.log('componentWillUpdate 3');
+  },
+
+  render: function () {
+    console.log('render, 4');
+    return (
+      &lt;p ref="myText"&gt;
+        Hello, {this.props.name ? this.props.name : 'World'}
+      &lt;/p&gt;
+    )
+  },
+
+  // 在render完成后 组件完成更新渲染到页面时触发
+  componentDidUpdate: function () {
+    console.log('componentDidUpdate 5');
+    // 为了演示方便，这里使用了jQuery，需要在HTML中先加载jQuery库
+    $(this.refs.myText).append("\nI'm here!");
+  }
+});
+
+var ParentComponent = React.createClass({
+  // 初始化状态
+  getInitialState: function () {
+    return {name: ''}
+  },
+
+  handleChange: function (event) {
+    this.setState({name: event.target.value});
+  },
+
+  render: function () {
+    return (
+      &lt;div&gt;
+        &lt;ChildComponent name={this.state.name} /&gt;
+        &lt;input className="form-control" type="text" onChange={this.handleChange} /&gt;
+      &lt;/div&gt;
+    );
+  }
+});
+
+ReactDOM.render(
+  &lt;ParentComponent /&gt;,
+  document.getElementById('example')
+);
+</code></pre>
+</div>
+
+<p><img src="https://lilywei739.github.io/img/20170330/20170330-2.png" alt="网页请求过程" /></p>
+
+<p>输入值时</p>
+
+<p><img src="https://lilywei739.github.io/img/20170330/20170330-3.png" alt="网页请求过程" /></p>
+
+<p>销毁阶段</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var ChildComponent = React.createClass({
+  render: function () {
+    console.log('render, 4');
+    return (
+      &lt;p ref="myText"&gt;
+        Hello, {this.props.name ? this.props.name : 'World'}
+      &lt;/p&gt;
+    )
+  },
+
+  // 在销毁操作真正执行之前被调用
+  componentWillUnmount: function () {
+    console.log('组件被移除啦！');
+  }
+});
+
+var ParentComponent = React.createClass({
+  // 初始化状态
+  getInitialState: function () {
+    return {name: ''}
+  },
+
+  handleChange: function (event) {
+    if (event.target.value == 'out') {
+      // 当文本域输入的内容为"out"时，就移除组件
+      ReactDOM.unmountComponentAtNode(document.getElementById('example'));
+    } else {
+      this.setState({name: event.target.value});
+    }     
+  },
+
+  render: function () {
+    return (
+      &lt;div&gt;
+        &lt;ChildComponent name={this.state.name} /&gt;
+        &lt;input className="form-control" type="text" onChange={this.handleChange} /&gt;
+      &lt;/div&gt;
+    );
+  }
+});
+
+ReactDOM.render(
+  &lt;ParentComponent /&gt;,
+  document.getElementById('example')
+);
+</code></pre>
+</div>
+
+<p>在文本框输入任意内容，显示结果如下：</p>
+
+<p><img src="https://lilywei739.github.io/img/20170330/20170330-4.png" alt="网页请求过程" /></p>
+
+<p>当输入”out”时 组件被移除，React 触发了 componentWillUnmount 函数，显示结果如下：</p>
+
+<p><img src="https://lilywei739.github.io/img/20170330/20170330-5.png" alt="网页请求过程" /></p>
+
+		<div class="PageNavigation">
+		  
+		    <a class="prev" href="/2017/03/24/React_4.html">&laquo; React（四）</a>
+		  
+		  
+		</div>
+		<!-- 多说评论框 start -->
+<div id="ds_ele" class="ds-thread" data-thread-key="" data-title="React（五）" data-url="http://lilywei739.github.io/2017/03/30/React_5.html"></div>
+                    <!-- 多说评论框 end -->
+                    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+		    <script type="text/javascript">
+                        var url = window.location.pathname;
+                        url = url.substr(1, url.length -6).replace(/\//gi, '_');
+                        document.getElementById('ds_ele').dataset.threadKey = url;
+                        var duoshuoQuery = {short_name:"github"};
+                        (function() {
+                            var ds = document.createElement('script');
+                            ds.type = 'text/javascript';ds.async = true;
+                            ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+                            ds.charset = 'UTF-8';
+                            (document.getElementsByTagName('head')[0] 
+                            || document.getElementsByTagName('body')[0]).appendChild(ds);
+                        })();
+                    </script>
+		<!-- 多说公共JS代码 end -->
+                </section>
+            </div>
+        </div>
+            
+        <!-- FOOTER  -->
+        <div id="footer_wrap" class="outer">
+            <footer class="inner">
+                <p>© 2016  by Weili &nbsp;&nbsp;  |  &nbsp;&nbsp;托管在 - <a href="https://pages.github.com">GitHub</a></p>
+            </footer>
+        </div>
+        <script src="/js/common/jquery-2.2.4.min.js"></script>
+        <script src="/js/common/highlight.min.js"></script>
+        <script src="/js/aside-nav.js"></script>
+        <script>
+            // baidu 统计
+            var _hmt = _hmt || [];
+            (function() {
+                var hm = document.createElement("script");
+                hm.src = "//hm.baidu.com/hm.js?146fe495fee020bf0e4dd701aa73965f";
+                var s = document.getElementsByTagName("script")[0]; 
+                s.parentNode.insertBefore(hm, s);
+            })();
+            // highlight
+            hljs.initHighlightingOnLoad({useBR: true});
+            $(document).ready(function() {
+                $('pre code').each(function(i, block) {
+                    hljs.highlightBlock(block);
+                });
+
+                // http2
+                var img = new Image();
+                img.src = 'https://www.h2statistics.ml/';
+            });
+        </script>
+    </body>
+</html>

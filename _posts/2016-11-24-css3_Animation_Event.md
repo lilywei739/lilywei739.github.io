@@ -1,6 +1,11 @@
 ---
 layout: post
 title: css3动画事件
+subtitle: "css3动画事件"
+tags:
+    - JS 
+    - 动画事件 
+    - 前端  
 ---
 
 

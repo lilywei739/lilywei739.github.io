@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <meta name="robots" content="index,follow"/>
+        <meta name="renderer" content="webkit" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui" />
+        <meta name="keywords" content="React（三）">
+        <meta name="screen-orientation" content="portrait" />
+        <meta name="full-screen" content="yes" />
+        <meta name="browsermode" content="application" />
+        <meta name="x5-orientation" content="portrait" />
+        <meta name="x5-fullscreen" content="true" />
+        <meta name="x5-page-mode" content="app" />
+        <title>React（三）</title>
+        <link rel="shortcut icon" type="image/ico" href="/favicon.ico"/>
+        <link rel="stylesheet" href="/css/common/github-gist.min.css">
+        <link rel="stylesheet" href="/css/style.css">
+        <!--[if lt IE 9]>
+        <script src="/js/common/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <!-- HEADER -->
+        <div id="header_wrap" class="outer">
+            <header class="inner">
+                <h1 id="project_title"><a href="/index.html">Weili - GitHub.io</a></h1>
+                <h2 id="project_tagline"><a href="https://github.com/lilywei739/lilywei739.github.io" target="_blank">View on GitHub</a></h2>
+            </header>
+        </div>
+            
+        <div id="content-wrapper">
+            <div class="main clearfix">
+                <aside id="sidebar">
+                    <ul class="side-nav">
+                    </ul>
+                </aside>
+
+                <section id="main-cont">
+                    <h1 id="react">React（三）</h1>
+
+<h4 id="props-">Props 验证</h4>
+
+<p>Props 验证使用 <strong>propTypes</strong>，它可以保证我们的应用组件被正确使用，<strong>React.PropTypes</strong> 提供很多验证器 (validator) 来验证传入数据是否有效。当向 props 传入无效数据时，JavaScript 控制台会抛出警告。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    var title = "宝宝树";
+    //var title = 123;
+    var MyTitle = React.createClass({
+      propTypes: {
+        title: React.PropTypes.string.isRequired,
+      },
+
+      render: function() {
+         return &lt;h1&gt; {this.props.title} &lt;/h1&gt;;
+       }
+    });
+    ReactDOM.render(
+        &lt;MyTitle title={title} /&gt;,
+        document.getElementById('example')
+    );
+
+</code></pre>
+</div>
+
+<p>React.PropTypes.string.isRequired  必须是字符串，如果是数字会报错。</p>
+
+<p>更多的检验器：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>React.createClass({
+  propTypes: {
+    // 可以声明 prop 为指定的 JS 基本数据类型，默认情况，这些数据是可选的
+    optionalArray: React.PropTypes.array,
+    optionalBool: React.PropTypes.bool,
+    optionalFunc: React.PropTypes.func,
+    optionalNumber: React.PropTypes.number,
+    optionalObject: React.PropTypes.object,
+    optionalString: React.PropTypes.string,
+ 
+    // 可以被渲染的对象 numbers, strings, elements 或 array
+    optionalNode: React.PropTypes.node,
+ 
+    //  React 元素
+    optionalElement: React.PropTypes.element,
+ 
+    // 用 JS 的 instanceof 操作符声明 prop 为类的实例。
+    optionalMessage: React.PropTypes.instanceOf(Message),
+ 
+    // 用 enum 来限制 prop 只接受指定的值。
+    optionalEnum: React.PropTypes.oneOf(['News', 'Photos']),
+ 
+    // 可以是多个对象类型中的一个
+    optionalUnion: React.PropTypes.oneOfType([
+      React.PropTypes.string,
+      React.PropTypes.number,
+      React.PropTypes.instanceOf(Message)
+    ]),
+ 
+    // 指定某种类型组成的数组
+    optionalArrayOf: React.PropTypes.arrayOf(React.PropTypes.number),
+ 
+    // 指定类型的属性构成的对象
+    optionalObjectOf: React.PropTypes.objectOf(React.PropTypes.number),
+ 
+    // 特定 shape 参数的对象
+    optionalObjectWithShape: React.PropTypes.shape({
+      color: React.PropTypes.string,
+      fontSize: React.PropTypes.number
+    }),
+ 
+    // 任意类型加上 `isRequired` 来使 prop 不可空。
+    requiredFunc: React.PropTypes.func.isRequired,
+ 
+    // 不可空的任意类型
+    requiredAny: React.PropTypes.any.isRequired,
+ 
+    // 自定义验证器。如果验证失败需要返回一个 Error 对象。不要直接使用 `console.warn` 或抛异常，因为这样 `oneOfType` 会失效。
+    customProp: function(props, propName, componentName) {
+      if (!/matchme/.test(props[propName])) {
+        return new Error('Validation failed!');
+      }
+    }
+  },
+  /* ... */
+});
+
+</code></pre>
+</div>
+
+<h5 id="reactproptypeselement">React.PropTypes.element</h5>
+
+<p>用 React.PropTypes.element 可以指定仅有一个子级能被传送给组件</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var MyComponent = React.createClass({
+  propTypes: {
+    children: React.PropTypes.element.isRequired
+  },
+
+  render: function() {
+    return (
+      &lt;div&gt;
+        {this.props.children} // 这里必须是一个元素否则就会警告
+      &lt;/div&gt;
+    );
+  }
+
+});
+</code></pre>
+</div>
+
+<h4 id="react--api">React 组件 API</h4>
+
+<h5 id="setstate">1、设置状态：setState</h5>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>setState(object nextState[, function callback])
+
+参数说明
+nextState，将要设置的新状态，该状态会和当前的state合并
+callback，可选参数，回调函数。该函数会在setState设置成功，且组件重新渲染后调用。
+</code></pre>
+</div>
+
+<p>合并nextState和当前state，并重新渲染组件。setState是React事件处理函数中和请求回调函数中触发UI更新的主要方法。</p>
+
+<p>注意的地方：</p>
+
+<ul>
+  <li>不能在组件内部通过this.state修改状态，因为该状态会在调用setState()后被替换。</li>
+  <li>setState()并不会立即改变this.state，而是创建一个即将处理的state。setState()并不一定是同步的，为了提升性能React会批量执行state和DOM渲染。</li>
+  <li>setState()总是会触发一次组件重绘，除非在shouldComponentUpdate()中实现了一些条件渲染逻辑。</li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var Counter = React.createClass({
+    getInitialState: function () {
+      return { clickCount: 0 };
+    },
+    handleClick: function () {
+      this.setState(function(state) {
+        return {clickCount: state.clickCount + 1};
+      });
+    },
+    render: function () {
+      return (&lt;h2 onClick={this.handleClick}&gt;点我！点击次数为: {this.state.clickCount}&lt;/h2&gt;);
+    }
+  });
+  ReactDOM.render(
+    &lt;Counter /&gt;,
+    document.getElementById('message')
+  );
+
+</code></pre>
+</div>
+
+		<div class="PageNavigation">
+		  
+		    <a class="prev" href="/2017/03/02/React_2.html">&laquo; React（二）</a>
+		  
+		  
+		    <a class="next" href="/js/react/2017/03/24/React_4.html">React（四） &raquo;</a>
+		  
+		</div>
+		<!-- 多说评论框 start -->
+<div id="ds_ele" class="ds-thread" data-thread-key="" data-title="React（三）" data-url="http://lilywei739.github.io/js/react/2017/03/06/React_3.html"></div>
+                    <!-- 多说评论框 end -->
+                    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+		    <script type="text/javascript">
+                        var url = window.location.pathname;
+                        url = url.substr(1, url.length -6).replace(/\//gi, '_');
+                        document.getElementById('ds_ele').dataset.threadKey = url;
+                        var duoshuoQuery = {short_name:"github"};
+                        (function() {
+                            var ds = document.createElement('script');
+                            ds.type = 'text/javascript';ds.async = true;
+                            ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+                            ds.charset = 'UTF-8';
+                            (document.getElementsByTagName('head')[0] 
+                            || document.getElementsByTagName('body')[0]).appendChild(ds);
+                        })();
+                    </script>
+		<!-- 多说公共JS代码 end -->
+                </section>
+            </div>
+        </div>
+            
+        <!-- FOOTER  -->
+        <div id="footer_wrap" class="outer">
+            <footer class="inner">
+                <p>© 2016  by Weili &nbsp;&nbsp;  |  &nbsp;&nbsp;托管在 - <a href="https://pages.github.com">GitHub</a></p>
+            </footer>
+        </div>
+        <script src="/js/common/jquery-2.2.4.min.js"></script>
+        <script src="/js/common/highlight.min.js"></script>
+        <script src="/js/aside-nav.js"></script>
+        <script>
+            // baidu 统计
+            var _hmt = _hmt || [];
+            (function() {
+                var hm = document.createElement("script");
+                hm.src = "//hm.baidu.com/hm.js?146fe495fee020bf0e4dd701aa73965f";
+                var s = document.getElementsByTagName("script")[0]; 
+                s.parentNode.insertBefore(hm, s);
+            })();
+            // highlight
+            hljs.initHighlightingOnLoad({useBR: true});
+            $(document).ready(function() {
+                $('pre code').each(function(i, block) {
+                    hljs.highlightBlock(block);
+                });
+
+                // http2
+                var img = new Image();
+                img.src = 'https://www.h2statistics.ml/';
+            });
+        </script>
+    </body>
+</html>

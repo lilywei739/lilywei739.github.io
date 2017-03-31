@@ -1,6 +1,11 @@
 ---
 layout: post
 title:  JS小知识点记录 
+subtitle: "JS小知识点"
+tags:
+    - JS 
+    - JS小知识点 
+    - 前端  
 ---
 
 

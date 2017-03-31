@@ -2,7 +2,18 @@
 layout: homepage
 title: Weili's HOME
 ---
-        <h2>最新文章</h2>
+        <h2>文章分类</h2>
+
+	<ul>
+	    {% for category in site.categories %}
+	    <li><a href="/categories/{{ category | first }}/" title="view all
+	posts">{{ category | first }} {{ category | last | size }}</a>
+	    </li>
+	    {% endfor %}
+	</ul>
+
+
+        <h2>文章列表</h2>
         {% for post in site.posts %}
         <h3><a href="{{site.baseurl}}{{post.url}}">{{post.title}}</a><span class="date" style="float: right;">{{post.date | date_to_string}} </span></h3>
         {% endfor %}

@@ -398,3 +398,57 @@ strong {
 li {
     margin: .5rem 0;
 }
+
+
+
+
+
+#tag_cloud {
+    margin: 20px 0 15px 0;
+}
+
+#tag_cloud a, #tag_cloud .tag{
+    display: inline-block;
+    border-radius: 999em;
+    padding: 0 10px;
+    color: #fff;
+    font-size: 14px;
+    border: none;
+    line-height: 28px;
+    margin: 0 2px;
+    margin-bottom: 8px;
+    background: rgb(51, 148, 182);
+}
+
+#tag_cloud a:hover {
+    background: rgb(187, 187, 238);
+}
+
+.row .tag-text {
+    background: url(tag.jpg) no-repeat;
+    background-size: 24px 24px;
+    padding-left: 30px;
+    color: #0085a1;
+    font-size: 20px;
+}
+
+.row hr {
+    background: #eee;
+}
+
+.post-preview {
+    margin-top: 1rem;
+}
+.post-preview a{
+    display: block;
+}
+
+.post-preview .post-title {
+    font-size: 16px;
+    margin: 0 0 .5rem;
+}
+
+.post-preview h3 {
+    font-size: 12px;
+    margin: 0;
+}
