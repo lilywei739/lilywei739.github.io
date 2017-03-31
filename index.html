@@ -2,15 +2,14 @@
 layout: homepage
 title: Weili's HOME
 ---
-        <h2>文章分类</h2>
+        <h2>文章标签</h2>
 
-	<ul>
-	    {% for category in site.categories %}
-	    <li><a href="/categories/{{ category | first }}/" title="view all
-	posts">{{ category | first }} {{ category | last | size }}</a>
-	    </li>
-	    {% endfor %}
-	</ul>
+            <!-- 标签云 -->
+			<div id='tag_cloud' class="tags">
+				{% for tag in site.tags %}
+				<a href="/tags/{{ tag[0] }}" title="{{ tag[0] }}" rel="{{ tag[1].size }}">{{ tag[0] }}</a>
+				{% endfor %}
+			</div>
 
 
         <h2>文章列表</h2>
