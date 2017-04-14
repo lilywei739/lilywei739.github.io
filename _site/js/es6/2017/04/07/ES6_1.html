@@ -39,7 +39,7 @@
                 </aside>
 
                 <section id="main-cont">
-                    <h1 id="ecmascript-6">ECMAScript 6</h1>
+                    <h1 id="ecmascript-6----let-vs-const">ECMAScript 6 – let-vs-const</h1>
 
 <p>从今天开始学习ECMAScript 6系列语法</p>
 
@@ -206,7 +206,7 @@ if (true) {
 
 <p>ES6明确规定，如果区块中存在let和const命令，这个区块对这些命令声明的变量，从一开始就形成了封闭作用域。凡是在声明之前就使用这些变量，就会报错。</p>
 
-<p>总之，在代码块内，使用let命令声明变量之前，该变量都是不可用的。这在语法上，称为“暂时性死区”（temporal dead zone，简称 TDZ）。</p>
+<p>总之，<strong>在代码块内，使用let命令声明变量之前，该变量都是不可用的</strong>。这在语法上，<strong>称为“暂时性死区”</strong>（temporal dead zone，简称 TDZ）。</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>if (true) {
   // TDZ开始
@@ -255,6 +255,22 @@ function func(arg) {
 }
 </code></pre>
 </div>
+
+<p>例六：typeof</p>
+
+<p>因为“暂时性死区”的问题，也意味着 typeof 不再是一个百分之百安全的操作。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>typeof a; ==&gt; ReferenceError
+let a; 
+</code></pre>
+</div>
+<p>变量x使用let命令声明，所以在声明之前，都属于x的“死区”，只要用到该变量就会报错。因此，typeof运行时就会抛出一个ReferenceError</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>typeof b ==&gt;undefined
+</code></pre>
+</div>
+
+<p>b 是一个不存在的变量名，结果返回 undefined，所以，在没有let之前，typeof运算符是百分之百安全的，永远不会报错，现在这一点不成立了。这样的设计是为了让大家养成良好的编程习惯，变量一定要在声明之后使用，否则就报错。</p>
 
 <h4 id="const-">const ？？</h4>
 
@@ -312,6 +328,8 @@ MY_OBJECT.key = "otherValue";
 		  
 		    <a class="prev" href="/2017/03/30/React_5.html">&laquo; React（五）</a>
 		  
+		  
+		    <a class="next" href="/js/es6/2017/04/12/ES6_2.html">ES6二：变量的解构赋值 &raquo;</a>
 		  
 		</div>
 		<!-- 多说评论框 start -->
