@@ -20,7 +20,7 @@
 
 <ul>
   <li>父节点，子节点，兄弟节点：这个不用解释都知道吧</li>
-  <li>结点的度：就是分支数， 比如下图中“23”的度是2</li>
+  <li>结点的度：就是分支数</li>
   <li>树的度: 最大的结点度,最大也是2</li>
   <li>叶子结点：没有子节点的结点</li>
   <li>结点的层数：就是树有几层</li>
@@ -68,6 +68,9 @@ function show() {
     this.getMin = getMin;
     this.getMax = getMax;
     this.find = find;
+
+    this.remove = remove;         //简单地接受待删除数据 
+    this.removeNode = removeNode; //删除
 }
 </code></pre>
 </div>
@@ -277,6 +280,4 @@ console.log(inOrder(nums.root));
 }
 </code></pre>
 </div>
-
-<p>二叉树的节点删除及计数在下期继续。</p>
 
