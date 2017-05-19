@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <meta name="robots" content="index,follow"/>
+        <meta name="renderer" content="webkit" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui" />
+        <meta name="keywords" content="AMD  与 CMD">
+        <meta name="screen-orientation" content="portrait" />
+        <meta name="full-screen" content="yes" />
+        <meta name="browsermode" content="application" />
+        <meta name="x5-orientation" content="portrait" />
+        <meta name="x5-fullscreen" content="true" />
+        <meta name="x5-page-mode" content="app" />
+        <title>AMD  与 CMD</title>
+        <link rel="shortcut icon" type="image/ico" href="/favicon.ico"/>
+        <link rel="stylesheet" href="/css/common/github-gist.min.css">
+        <link rel="stylesheet" href="/css/style.css">
+        <!--[if lt IE 9]>
+        <script src="/js/common/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <!-- HEADER -->
+        <div id="header_wrap" class="outer">
+            <header class="inner">
+                <h1 id="project_title"><a href="/index.html">Weili - GitHub.io</a></h1>
+                <h2 id="project_tagline"><a href="https://github.com/lilywei739/lilywei739.github.io" target="_blank">View on GitHub</a></h2>
+            </header>
+        </div>
+            
+        <div id="content-wrapper">
+            <div class="main clearfix">
+                <aside id="sidebar">
+                    <ul class="side-nav">
+                    </ul>
+                </aside>
+
+                <section id="main-cont">
+                    <h1 id="amd---cmd">AMD  与 CMD</h1>
+
+<p>最近小时光项目中需要引用一个插件， 公司用的是sea.js， 就需要把这个JS 改造成 CMD 模式的格式封装，今天在里补充一下模块化相关的知识。</p>
+
+<p>下面介绍几种 JS 的模块化的规范。</p>
+
+<h2 id="script">script标签</h2>
+
+<p>这是最原始的 JavaScript 文件加载方式，如果把每一个文件看做是一个模块，那么他们的接口通常是暴露在全局作用域下，也就是定义在 window 对象中，不同模块的接口调用都是一个作用域中，一些复杂的框架，会使用命名空间的概念来组织这些模块的接口。</p>
+
+<p>缺点:</p>
+
+<ul>
+  <li>污染全局作用域</li>
+  <li>开发人员必须主观解决模块和代码库的依赖关系</li>
+  <li>文件只能按照script标签的书写顺序进行加载</li>
+  <li>在大型项目中各种资源难以管理，长期积累的问题导致代码库混乱不堪</li>
+</ul>
+
+<h2 id="commonjs">CommonJS规范</h2>
+
+<p>该规范的核心思想是允许模块通过require方法来同步加载所要依赖的其他模块，然后通过exports或module.exports来导出需要暴露的接口。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>require("fullPage");
+require("../abc.js");
+exports.doStuff = function() {};
+module.exports = someValue;
+</code></pre>
+</div>
+
+<p>优点：</p>
+
+<ul>
+  <li>简单并容易使用</li>
+  <li>服务器端模块便于重用</li>
+</ul>
+
+<p>缺点:</p>
+
+<ul>
+  <li>同步的模块加载方式不适合在浏览器环境中，同步意味着阻塞加载，浏览器资源是异步加载的</li>
+  <li>不能非阻塞的并行加载多个模块</li>
+</ul>
+
+<h2 id="moduleexportsexports">module.exports与exports的区别</h2>
+
+<ul>
+  <li>exports 是指向的 module.exports 的引用</li>
+  <li>module.exports 初始值为一个空对象 {}，所以 exports 初始值也是 {}</li>
+  <li>require() 返回的是 module.exports 而不是 exports</li>
+</ul>
+
+<p>exports示例：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>// app.js
+var circle = require('./circle');
+console.log(circle.area(4));
+// circle.js
+exports.area = function(r) {
+  return r * r * Math.PI;
+}
+</code></pre>
+</div>
+
+<p>module.exports示例：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>// app.js
+var area = require('./area');
+console.log(area(4));
+// area.js
+module.exports = function(r) {
+  return r * r * Math.PI;
+}
+</code></pre>
+</div>
+
+<h2 id="amd">AMD规范</h2>
+
+<p>AMD标准中定义了以下两个API</p>
+
+<blockquote>
+  <p>require([module], callback); <br />
+define(id, [depends], callback);</p>
+</blockquote>
+
+<p>require接口用来加载一系列模块，define接口用来定义并暴露一个模块。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>define("module", ["dep1", "dep2"], function(d1, d2) {
+  return someExportedValue;
+});
+require(["module", "../file"], function(module, file) { /* ... */ });
+</code></pre>
+</div>
+
+<p>优点：
+* 适合在浏览器环境中异步加载模块
+* 可以并行加载多个模块</p>
+
+<p>缺点：
+* 提高了开发成本，代码的阅读和书写比较困难，模块定义方式的语义不顺畅
+* 不符合通用的模块化思维方式，是一种妥协的实现</p>
+
+<h2 id="cmd">CMD规范</h2>
+
+<p>CMD(Common Module Definition)规范和AMD很相似，尽量保持简单，并与CommonJS和Node.js的 Modules 规范保持了很大的兼容性。在CMD规范中，一个模块就是一个文件。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>define(function(require, exports, module) {
+  var $ = require('jquery');
+  var Spinning = require('./spinning');
+  exports.doSomething = ...
+  module.exports = ...
+})
+</code></pre>
+</div>
+
+<p>优点：
+* 依赖就近，延迟执行
+* 可以很容易在 Node.js 中运行</p>
+
+<p>缺点：
+* 依赖 SPM 打包，模块的加载逻辑偏重</p>
+
+<h2 id="amdcmd">AMD和CMD的区别</h2>
+
+<ul>
+  <li>对于依赖的模块，AMD是提前执行，CMD是延迟执行</li>
+  <li>AMD推崇依赖前置；CMD推崇依赖就近，只有在用到某个模块的时候再去require。</li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>// AMD
+define(['./a', './b'], function(a, b) {  // 依赖必须一开始就写好  
+   a.doSomething()    
+   // 此处略去 100 行    
+   b.doSomething()    
+   ...
+});
+
+
+
+// CMD
+define(function(require, exports, module) {
+   var a = require('./a')   
+   a.doSomething()   
+   // 此处略去 100 行   
+   var b = require('./b') 
+   // 依赖可以就近书写   
+   b.doSomething()
+   // ... 
+});
+</code></pre>
+</div>
+
+<ul>
+  <li>AMD 的 API 默认是一个当多个用，CMD 的 API 严格区分，推崇职责单一</li>
+</ul>
+
+<h2 id="es6">ES6模块化</h2>
+
+<p>EcmaScript6标准增加了JavaScript语言层面的模块体系定义。ES6 模块的设计思想，是尽量的静态化，使得编译时就能确定模块的依赖关系，以及输入和输出的变量。CommonJS和AMD模块，都只能在运行时确定这些东西。</p>
+
+<p>在 ES6 中，我们使用export关键字来导出模块，使用import关键字引用模块。需要说明的是，ES6的这套标准和目前的标准没有直接关系，目前也很少有JS引擎能直接支持。因此Babel的做法实际上是将不被支持的import翻译成目前已被支持的require。</p>
+
+<p>尽管目前使用import和require的区别不大(本质上是一回事)，但依然强烈推荐使用import关键字，因为一旦JS引擎能够解析ES6的import关键字，整个实现方式就会和目前发生比较大的变化。如果目前就开始使用import关键字，将来代码的改动会非常小。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>import "jquery";
+export function doStuff() {}
+module "localModule" {}
+</code></pre>
+</div>
+
+<p>优点：</p>
+
+<ul>
+  <li>容易进行静态分析</li>
+  <li>面向未来的 EcmaScript 标准</li>
+</ul>
+
+<p>优点：</p>
+
+<ul>
+  <li>原生浏览器端还没有实现该标准</li>
+  <li>全新的命令字，新版的 Node.js才支持</li>
+</ul>
+
+
+		<div class="PageNavigation">
+		  
+		    <a class="prev" href="/react/react%20router/2017/05/10/React_Router_1.html">&laquo; React Router</a>
+		  
+		  
+		</div>
+		<!-- 多说评论框 start -->
+        <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+        <!--
+<div id="ds_ele" class="ds-thread" data-thread-key="" data-title="AMD  与 CMD" data-url="http://lilywei739.github.io/%20%E6%A8%A1%E5%9D%97%E5%8C%96/cmd/amd/2017/05/19/CMD_AMD.html"></div>
+		    <script type="text/javascript">
+                        var url = window.location.pathname;
+                        url = url.substr(1, url.length -6).replace(/\//gi, '_');
+                        document.getElementById('ds_ele').dataset.threadKey = url;
+                        var duoshuoQuery = {short_name:"github"};
+                        (function() {
+                            var ds = document.createElement('script');
+                            ds.type = 'text/javascript';ds.async = true;
+                            ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+                            ds.charset = 'UTF-8';
+                            (document.getElementsByTagName('head')[0] 
+                            || document.getElementsByTagName('body')[0]).appendChild(ds);
+                        })();
+
+                    </script>
+                    -->
+		<!-- 多说公共JS代码 end -->
+                </section>
+            </div>
+        </div>
+            
+        <!-- FOOTER  -->
+        <div id="footer_wrap" class="outer">
+            <footer class="inner">
+                <p>© 2016  by Weili &nbsp;&nbsp;  |  &nbsp;&nbsp;托管在 - <a href="https://pages.github.com">GitHub</a></p>
+            </footer>
+        </div>
+        <script src="/js/common/jquery-2.2.4.min.js"></script>
+        <script src="/js/common/highlight.min.js"></script>
+        <script src="/js/aside-nav.js"></script>
+        <script>
+            // baidu 统计
+            var _hmt = _hmt || [];
+            (function() {
+                var hm = document.createElement("script");
+                hm.src = "//hm.baidu.com/hm.js?146fe495fee020bf0e4dd701aa73965f";
+                var s = document.getElementsByTagName("script")[0]; 
+                s.parentNode.insertBefore(hm, s);
+            })();
+            // highlight
+            hljs.initHighlightingOnLoad({useBR: true});
+            $(document).ready(function() {
+                $('pre code').each(function(i, block) {
+                    hljs.highlightBlock(block);
+                });
+
+                // http2
+                var img = new Image();
+                img.src = 'https://www.h2statistics.ml/';
+            });
+        </script>
+    </body>
+</html>
