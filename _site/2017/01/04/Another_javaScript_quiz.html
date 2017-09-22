@@ -39,13 +39,13 @@
                 </aside>
 
                 <section id="main-cont">
-                    <h1 id="another-javascript-quiz">Another JavaScript quiz试题解析</h1>
+                    <h1 id="another-javascript-quiz试题解析">Another JavaScript quiz试题解析</h1>
 
 <p><strong>转载于 <a href="http://www.zhangxinxu.com/wordpress/2013/05/%E7%90%86%E8%A7%A3another-javascript-quiz-%E9%A2%98%E7%9B%AE/">鑫空间，鑫生活</a></strong></p>
 
 <p>这里要介绍的”<a href="http://james.padolsey.com/javascript/another-javascript-quiz/">Another JavaScript quiz“</a>(by james)中的题目不是属于变态题目，而是确实属于变态题目，不过是表面上的，很多内容确实可能会遇到的。综合评价下就是：面试价值不及格，学习价值是很赞的，因此，探讨分享很有意义。</p>
 
-<h2 id="section">1、1 &amp;&amp; 3</h2>
+<h2 id="11--3">1、1 &amp;&amp; 3</h2>
 
 <p>结果是3</p>
 
@@ -79,7 +79,7 @@ dom &amp;&amp; dom.addEventListener("click", function() {});
 </code></pre>
 </div>
 
-<h2 id="foo--0">2、1 &amp;&amp; “foo” || 0</h2>
+<h2 id="21--foo--0">2、1 &amp;&amp; “foo” || 0</h2>
 
 <p>结果是 foo</p>
 
@@ -102,7 +102,7 @@ dom &amp;&amp; dom.addEventListener("click", function() {});
 </code></pre>
 </div>
 
-<h2 id="foo--0-1">3、1 || “foo” &amp;&amp; 0</h2>
+<h2 id="31--foo--0">3、1 || “foo” &amp;&amp; 0</h2>
 
 <p>结果是1</p>
 
@@ -110,7 +110,7 @@ dom &amp;&amp; dom.addEventListener("click", function() {});
   <p>逻辑与运算符(&amp;&amp;)优先级要大于逻辑或(||)。</p>
 </blockquote>
 
-<h2 id="section-1">4、(1, 2, 3)</h2>
+<h2 id="41-2-3">4、(1, 2, 3)</h2>
 
 <p>结果是3</p>
 
@@ -137,7 +137,7 @@ dom &amp;&amp; dom.addEventListener("click", function() {});
 
 <p>它的返回值就是3。</p>
 
-<h2 id="shift">5、 shift</h2>
+<h2 id="5-shift">5、 shift</h2>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>x = { shift: [].shift };
 x.shift();
@@ -157,9 +157,11 @@ pop 和 shift 都是做删除工作的  //字母少的都是做删除工作的�
 </div>
 
 <blockquote>
-  <p>from MDN <br />
-1. shift 方法移除索引为 0 的元素(即第一个元素)，并返回被移除的元素，其他元素的索引值随之减 1。如果 length 属性的值为 0 (长度为 0)，则返回 undefined。 <br />
-2. shift 方法并不局限于数组：该方法亦可通过<strong>call或apply</strong>作用于对象上。<strong>对于不包含length属性的对象，将添加一个值为0的length属性。</strong></p>
+  <p>from MDN <br /></p>
+  <ol>
+    <li>shift 方法移除索引为 0 的元素(即第一个元素)，并返回被移除的元素，其他元素的索引值随之减 1。如果 length 属性的值为 0 (长度为 0)，则返回 undefined。 <br /></li>
+    <li>shift 方法并不局限于数组：该方法亦可通过<strong>call或apply</strong>作用于对象上。<strong>对于不包含length属性的对象，将添加一个值为0的length属性。</strong></li>
+  </ol>
 </blockquote>
 
 <p>因为shift 删除第一个元素后，也会改变使其它元素的索引值，所以比pop方法要慢。</p>
@@ -183,7 +185,7 @@ x.shift();
 
 <p>这条题目中x对象的shift属性名实际上是用来干扰，提高解答难度的刻意命名。我们使用其他命名，结果也是一样的。</p>
 
-<h2 id="foo10">6、{foo:1}[0]</h2>
+<h2 id="6foo10">6、{foo:1}[0]</h2>
 
 <p>结果是[0], 或者这种表现形式0 { 0 : 0 } – 来自IE控制台.</p>
 
@@ -214,7 +216,7 @@ foo: 1 // 返回值为1
 
 <p>因此，这里的答案就不难理解了，{foo:1}[0]实际上就是foo:1; [0]. 返回的就是[0]本身。</p>
 
-<h2 id="true-falsetrue-false">7、[true, false][+true, +false]</h2>
+<h2 id="7true-falsetrue-false">7、[true, false][+true, +false]</h2>
 
 <p>结果是true</p>
 
@@ -222,7 +224,7 @@ foo: 1 // 返回值为1
 
 <p>[true, false]为数组，后面的[+true, +false]实际为索引，然而索引只需要一个值，因此，[+true, +false]返回的实际是我们上面提到的逗号运算——返回最后一个值，也就是+0, 也就是0，所以答案为 true。</p>
 
-<h2 id="split0">8、++’52’.split(‘’)[0]</h2>
+<h2 id="852split0">8、++’52’.split(‘’)[0]</h2>
 
 <p>结果是6</p>
 
@@ -230,7 +232,7 @@ foo: 1 // 返回值为1
 
 <p><img src="https://lilywei739.github.io/img/20170105/20170105-1.jpg" alt="image01" /></p>
 
-<h2 id="a-b-c-d-e-f-g-1-2-3-4-5">9、a: b: c: d: e: f: g: 1, 2, 3, 4, 5;</h2>
+<h2 id="9a-b-c-d-e-f-g-1-2-3-4-5">9、a: b: c: d: e: f: g: 1, 2, 3, 4, 5;</h2>
 
 <p>结果是：5</p>
 
@@ -241,7 +243,7 @@ abcdefg: 1, 2, 3, 4, 5. 1, 2, 3, 4, 5一开始有说明的逗号多重运算啦�
 </code></pre>
 </div>
 
-<h2 id="a-1-b-2b">9、{a: 1, b: 2}[[“b”]]</h2>
+<h2 id="9a-1-b-2b">9、{a: 1, b: 2}[[“b”]]</h2>
 
 <p>第6题中，我们已经讲过，JavaScript没有块作用域，块本身几乎是个酱油，因此这里的测试题实际等同于：</p>
 
@@ -259,7 +261,7 @@ abcdefg: 1, 2, 3, 4, 5. 1, 2, 3, 4, 5一开始有说明的逗号多重运算啦�
   <p>逗号运算符右侧必须是个表达式,不能是非表达式的语句,这个例子中a: 1, b: 2的右侧的b: 2是一个LabelledStatement, 不是表达式。</p>
 </blockquote>
 
-<h2 id="b--45">10、”b” + 45</h2>
+<h2 id="10b--45">10、”b” + 45</h2>
 
 <p>结果是：”b45”</p>
 
@@ -267,21 +269,21 @@ abcdefg: 1, 2, 3, 4, 5. 1, 2, 3, 4, 5一开始有说明的逗号多重运算啦�
   <p>字符串+数值=字符串</p>
 </blockquote>
 
-<h2 id="ab2">12、{a:{b:2}}</h2>
+<h2 id="12ab2">12、{a:{b:2}}</h2>
 
 <p>结果是：2</p>
 
 <p>{a:{b:2}}近乎于a:b:2, 想起a,b,c,…g的例子没有，显然，这里返回值是2.</p>
 
-<h2 id="function">13、(function(){}())</h2>
+<h2 id="13function">13、(function(){}())</h2>
 
 <p>结果是：undefined.</p>
 
-<h2 id="tostringlength">14、[1,2$,3,4,5][0..toString.length]??????????</h2>
+<h2 id="14123450tostringlength">14、[1,2$,3,4,5][0..toString.length]??????????</h2>
 
 <p>结果还是：2</p>
 
-<h2 id="b----a">15、({} + ‘b’ &gt; {} + ‘a’)</h2>
+<h2 id="15--b----a">15、({} + ‘b’ &gt; {} + ‘a’)</h2>
 
 <p>结果是：true.</p>
 
@@ -289,7 +291,7 @@ abcdefg: 1, 2, 3, 4, 5. 1, 2, 3, 4, 5一开始有说明的逗号多重运算啦�
 
 <p>说点题外的，如果最外部没有括号，{} + ‘b’返回的是NaN. 于是{} + ‘b’ &gt; {} + ‘a’变成了比较NaN &gt; NaN, 结果为false.</p>
 
-<h2 id="numberprototypex--function-return-this--123---123x">16、Number.prototype.x = function(){ return this === 123; };  (123).x();</h2>
+<h2 id="16numberprototypex--function-return-this--123---123x">16、Number.prototype.x = function(){ return this === 123; };  (123).x();</h2>
 
 <p>结果是：false.</p>
 
@@ -307,13 +309,13 @@ typeof 123 === “number”
 </code></pre>
 </div>
 
-<h2 id="array2join">17、Array(2).join()</h2>
+<h2 id="17array2join">17、Array(2).join()</h2>
 
 <p>结果是”,”</p>
 
 <p>Array(2)的返回值是[undefined, undefined]，因此，其使用join连接之后，就是个逗号”,”（数组join为指定连接符时候使用默认的逗号”,”）。</p>
 
-<h2 id="vars-var-vars--vars">18、vars: var vars = vars;</h2>
+<h2 id="18vars-var-vars--vars">18、vars: var vars = vars;</h2>
 
 <p>结果是：undefined.</p>
 
@@ -326,17 +328,17 @@ vars = vars;
 </code></pre>
 </div>
 
-<h2 id="foo--123-">19、{ foo = 123 }</h2>
+<h2 id="19-foo--123-">19、{ foo = 123 }</h2>
 
 <p>结果是：123.</p>
 
-<h2 id="x--1-functionreturn-x-var-x--2">20、x = 1; (function(){return x; var x = 2;}())</h2>
+<h2 id="20x--1-functionreturn-x-var-x--2">20、x = 1; (function(){return x; var x = 2;}())</h2>
 
 <p>结果是：undefined</p>
 
 <p>涉及到作用域的问题。</p>
 
-<h2 id="delete-length">21、delete [].length;</h2>
+<h2 id="21delete-length">21、delete [].length;</h2>
 
 <p>结果为false.</p>
 
@@ -405,7 +407,7 @@ function f() {
 
 <p>如上面所述，数组中的length属性是不可删除的，因此这里返回的是false.</p>
 
-<h2 id="regexpprototypetostring--function-return-thissource-3-2">22、RegExp.prototype.toString = function() {return this.source}; /3/-/2/;	//返回的是？</h2>
+<h2 id="22regexpprototypetostring--function-return-thissource-3-2-返回的是">22、RegExp.prototype.toString = function() {return this.source}; /3/-/2/;	//返回的是？</h2>
 
 <p>结果是：1.</p>
 
@@ -413,7 +415,7 @@ function f() {
 
 <p>RegExp.prototype.toString扩展改变了默认的toString方法，当正则表达式需要应用toString方法进行字符串转换的时候，返回的就是正则表达式的source属性值。</p>
 
-<h2 id="break4">23、{break;4;}</h2>
+<h2 id="23break4">23、{break;4;}</h2>
 
 <p>结果是报如下错误：SyntaxError: unlabeled break must be inside loop or switch.</p>
 
@@ -425,7 +427,7 @@ function f() {
 </code></pre>
 </div>
 
-<h2 id="foo--new-function-return-stringfoo-">24、’foo’ == new function(){ return String(‘foo’); };</h2>
+<h2 id="24foo--new-function-return-stringfoo-">24、’foo’ == new function(){ return String(‘foo’); };</h2>
 
 <p>结果为：false.</p>
 
@@ -449,7 +451,7 @@ function f() {
 
 <p>由于String(“foo”)是字符串，而new String(“foo”)是对象。因此，前者返回的是匿名函数对象——显然不等于”foo”；后者就是new String(“foo”)对象，加上”foo” == new String(“foo”)，于是，结果为true.</p>
 
-<h2 id="foosplit--">25、’foo’.split(‘’) + []	//返回的是？</h2>
+<h2 id="25foosplit---返回的是">25、’foo’.split(‘’) + []	//返回的是？</h2>
 
 <p>结果是：”f,o,o”.</p>
 

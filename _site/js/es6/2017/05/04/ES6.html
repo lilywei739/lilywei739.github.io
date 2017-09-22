@@ -47,7 +47,7 @@
 
 <p><a href="https://github.com/jigsawye/javascript#naming-conventions">参考文档</a></p>
 
-<h2 id="types">类型(Types)</h2>
+<h2 id="类型types">类型(Types)</h2>
 
 <p>1.1 基本类型(Primitives): 直接存取基本类型</p>
 
@@ -85,7 +85,7 @@ console.log(foo[0], bar[0]); // =&gt; 9, 9
 </code></pre>
 </div>
 
-<h2 id="references">引用(References)</h2>
+<h2 id="引用references">引用(References)</h2>
 
 <p>2.1 对所有的引用使用 const；避免使用 var。</p>
 
@@ -135,7 +135,7 @@ console.log(b); // ReferenceError
 </code></pre>
 </div>
 
-<h2 id="objects">对象(Objects)</h2>
+<h2 id="对象objects">对象(Objects)</h2>
 
 <p>3.1 使用字面值创建对象。</p>
 
@@ -309,7 +309,7 @@ const obj = {
 </code></pre>
 </div>
 
-<h2 id="arrays">数组(Arrays)</h2>
+<h2 id="数组arrays">数组(Arrays)</h2>
 
 <p>4.1 使用字面值创建数组。</p>
 
@@ -440,7 +440,7 @@ inbox.filter((msg) =&gt; {
 </code></pre>
 </div>
 
-<h2 id="destructuring">解构(Destructuring)</h2>
+<h2 id="解构destructuring">解构(Destructuring)</h2>
 
 <p>5.1 使用解构存取和使用多属性对象。</p>
 
@@ -508,7 +508,7 @@ const { left, right } = processInput(input);
 </code></pre>
 </div>
 
-<h2 id="section">字符串</h2>
+<h2 id="字符串">字符串</h2>
 
 <p>6.1 字符串使用单引号 ‘  ’ 。</p>
 
@@ -579,7 +579,7 @@ function sayHi(name) {
 </code></pre>
 </div>
 
-<h2 id="section-1">函数</h2>
+<h2 id="函数">函数</h2>
 
 <p>7.1 使用函数声明代替函数表达式。</p>
 
@@ -859,7 +859,7 @@ const y = function a() {};
 </code></pre>
 </div>
 
-<h2 id="arrow-functions">箭头函数(Arrow-Functions)</h2>
+<h2 id="箭头函数arrow-functions">箭头函数(Arrow-Functions)</h2>
 
 <p>8.1 当你必须使用函数表达式（或传递一个匿名函数）时，使用箭头函数符号。</p>
 
@@ -985,7 +985,7 @@ const y = function a() {};
 </code></pre>
 </div>
 
-<h2 id="constructors">构造器(Constructors)</h2>
+<h2 id="构造器constructors">构造器(Constructors)</h2>
 
 <p>9.1 总是使用 class。避免直接操作 prototype 。</p>
 
@@ -1151,7 +1151,7 @@ luke.jump()
 </code></pre>
 </div>
 
-<h2 id="section-2">模块</h2>
+<h2 id="模块">模块</h2>
 
 <p>10.1 总是使用模组 (import/export) 而不是其他非标准模块系统。你可以编译为你喜欢的模块系统。</p>
 
@@ -1309,7 +1309,7 @@ export default es6;
 </code></pre>
 </div>
 
-<h2 id="iterators-and-generators">迭代器和生成器(Iterators and Generators)</h2>
+<h2 id="迭代器和生成器iterators-and-generators">迭代器和生成器(Iterators and Generators)</h2>
 
 <p>11.1 不要使用迭代器。使用高阶函数例如 map() 和 reduce() 替代 for-in或者for-of。</p>
 
@@ -1419,7 +1419,7 @@ export default es6;
 </code></pre>
 </div>
 
-<h2 id="properties">属性(Properties)</h2>
+<h2 id="属性properties">属性(Properties)</h2>
 
 <p>12.1 使用 . 来访问对象的属性。</p>
 
@@ -1452,7 +1452,7 @@ const isJedi = getProp('jedi');
 </code></pre>
 </div>
 
-<h2 id="variables">变量(Variables)</h2>
+<h2 id="变量variables">变量(Variables)</h2>
 
 <p>13.1 一直使用 const 来声明变量，如果不这样做就会产生全局变量。我们需要避免全局命名空间的污染。</p>
 
@@ -1625,7 +1625,7 @@ let length;
 </code></pre>
 </div>
 
-<h2 id="hoisting">提升(Hoisting)</h2>
+<h2 id="提升hoisting">提升(Hoisting)</h2>
 
 <p>14.1 var 声明会被提升至该作用域的顶部，但它们赋值不会提升。let 和 const 被赋予了一种称为「暂时性死区（Temporal Dead Zones, TDZ）」的概念。这对于了解为什么 type of 不再安全相当重要。</p>
 
@@ -1714,7 +1714,7 @@ let length;
 </code></pre>
 </div>
 
-<h2 id="section-3">比较运算符、等号</h2>
+<h2 id="比较运算符等号">比较运算符、等号</h2>
 
 <p>15.1 优先使用 === 和 !== 而不是 == 和 !=。</p>
 
@@ -1857,7 +1857,7 @@ let length;
 </code></pre>
 </div>
 
-<h2 id="blocks">代码块(Blocks)</h2>
+<h2 id="代码块blocks">代码块(Blocks)</h2>
 
 <p>16.1 使用大括号包裹所有的多行代码块。</p>
 
@@ -1905,7 +1905,7 @@ if (test) {
 </code></pre>
 </div>
 
-<h2 id="comments">注释(Comments)</h2>
+<h2 id="注释comments">注释(Comments)</h2>
 
 <p>17.1 使用 /** … */ 作为多行注释。包含描述、指定所有参数和返回值的类型和值。</p>
 
@@ -2038,7 +2038,7 @@ function make(tag) {
 </code></pre>
 </div>
 
-<h2 id="section-4">空白</h2>
+<h2 id="空白">空白</h2>
 
 <p>18.1 使用 4 个空格作为缩进。</p>
 
@@ -2357,7 +2357,7 @@ const leds = stage.selectAll('.led')
 </code></pre>
 </div>
 
-<h2 id="commas">逗号(Commas)</h2>
+<h2 id="逗号commas">逗号(Commas)</h2>
 
 <p>19.1 不要在行首添加逗号。</p>
 
@@ -2438,7 +2438,7 @@ const heroes = [
 </code></pre>
 </div>
 
-<h2 id="semicolons">分号(Semicolons)</h2>
+<h2 id="分号semicolons">分号(Semicolons)</h2>
 
 <p>20.1 使用分号</p>
 
@@ -2462,7 +2462,7 @@ const heroes = [
 </code></pre>
 </div>
 
-<h2 id="type-casting--coercion">类型转换(Type Casting &amp; Coercion)</h2>
+<h2 id="类型转换type-casting--coercion">类型转换(Type Casting &amp; Coercion)</h2>
 
 <p>21.1 在语句开始时执行类型转换。</p>
 
@@ -2725,7 +2725,7 @@ const hasAge = !!age;
 </code></pre>
 </div>
 
-<h2 id="naming-conventions">命名规则(Naming Conventions)</h2>
+<h2 id="命名规则naming-conventions">命名规则(Naming Conventions)</h2>
 
 <p>22.1 避免单字母命名。命名应具备描述性。</p>
 
@@ -2909,7 +2909,7 @@ const Requests = [
 </code></pre>
 </div>
 
-<h2 id="accessors">存取器(Accessors)</h2>
+<h2 id="存取器accessors">存取器(Accessors)</h2>
 
 <p>23.1 属性的存取函数不是必须的。</p>
 
@@ -2964,7 +2964,7 @@ if (!dragon.hasAge()) {
 </code></pre>
 </div>
 
-<h2 id="events">事件(Events)</h2>
+<h2 id="事件events">事件(Events)</h2>
 
 <p>24.1 当给事件附加数据时（无论是 DOM 事件还是私有事件），传入一个哈希而不是原始值。这样可以让后面的贡献者增加更多数据到事件数据而无需找出并更新事件的每一个处理器。例如，不好的写法：</p>
 

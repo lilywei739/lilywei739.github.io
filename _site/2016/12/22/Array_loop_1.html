@@ -39,11 +39,11 @@
                 </aside>
 
                 <section id="main-cont">
-                    <h1 id="javascript">JavaScript中数组的迭代方法详解（一）</h1>
+                    <h1 id="javascript中数组的迭代方法详解一">JavaScript中数组的迭代方法详解（一）</h1>
 
 <p>目前为止，学习了很多的数组方法，其中迭代方法就有很多，这些方法都很像，到底有什么区别?</p>
 
-<h2 id="for">1、for</h2>
+<h2 id="1for">1、for</h2>
 
 <p>最常用的循环， 虽然性能堪忧但可优化，基本程序代码如下。</p>
 
@@ -86,7 +86,7 @@ for (var i = 0, len = arr.length; i &lt; len; i++){
 
 <p>用for会把数组中的每一项都循环出来，即使其中某一项没有定义也会用undefined表示。</p>
 
-<h2 id="forin">2、for…in</h2>
+<h2 id="2forin">2、for…in</h2>
 
 <p>for…in可以用于遍历数组和对象。</p>
 
@@ -213,7 +213,7 @@ for (var prop in obj) {
 
 <p>通过上面的几个例子可以发现如果不是特殊情况，最好不用for-in遍历Array，其更适合遍历对象。</p>
 
-<h2 id="foreach">3、forEach</h2>
+<h2 id="3foreach">3、forEach</h2>
 
 <blockquote>
   <p>from MDN<br />
@@ -282,7 +282,7 @@ arr.forEach(function(data, index, array) {
 
 <p>在数组中，想让其中的每个元素都干同一件事的时候，就用forEach</p>
 
-<h2 id="map">4、map</h2>
+<h2 id="4map">4、map</h2>
 
 <p>这里的map不是“地图”的意思，而是指“映射”，也就是原数组被“映射”成对应新数组。</p>
 

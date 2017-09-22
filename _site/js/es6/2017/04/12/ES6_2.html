@@ -39,11 +39,11 @@
                 </aside>
 
                 <section id="main-cont">
-                    <h1 id="ecmascript-6----">ECMAScript 6 – 变量的解构赋值</h1>
+                    <h1 id="ecmascript-6--变量的解构赋值">ECMAScript 6 – 变量的解构赋值</h1>
 
 <p>解构赋值，语法是一个Javascript表达式，这使得可以将数据从数组或对象提取到不同的变量中。</p>
 
-<h2 id="section">数组的解构赋值</h2>
+<h2 id="数组的解构赋值">数组的解构赋值</h2>
 
 <p>变量的赋值, ES6允许写成下面这样</p>
 
@@ -96,7 +96,7 @@ let [x = y, y = 1] = [];     // ReferenceError
 </code></pre>
 </div>
 
-<h2 id="section-1">对象的解构赋值</h2>
+<h2 id="对象的解构赋值">对象的解构赋值</h2>
 
 <ul>
   <li>变量名与属性名一致</li>
@@ -159,7 +159,7 @@ msg // "Something went wrong"
 </code></pre>
 </div>
 
-<h2 id="section-2">字符串的解构赋值</h2>
+<h2 id="字符串的解构赋值">字符串的解构赋值</h2>
 
 <p>字符串也可以解构赋值。这是因为此时，字符串被转换成了一个类似数组的对象</p>
 
@@ -181,7 +181,7 @@ len // 5
 </code></pre>
 </div>
 
-<h2 id="section-3">数值和布尔值的解构赋值</h2>
+<h2 id="数值和布尔值的解构赋值">数值和布尔值的解构赋值</h2>
 
 <p>解构赋值时，如果等号右边是数值和布尔值，则会先转为对象。</p>
 
@@ -202,7 +202,7 @@ let { prop: y } = null; // TypeError
 </code></pre>
 </div>
 
-<h2 id="section-4">函数能数的解构赋值</h2>
+<h2 id="函数能数的解构赋值">函数能数的解构赋值</h2>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>function add([x, y]){
   return x + y;

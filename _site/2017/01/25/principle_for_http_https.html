@@ -41,9 +41,9 @@
                 <section id="main-cont">
                     <p>曾经的一个面试题。没答下来，收录一下，文章参考《HTTP权威指南》一书。</p>
 
-<h1 id="httphttps">HTTP、HTTPS代理分析及原理</h1>
+<h1 id="httphttps代理分析及原理">HTTP、HTTPS代理分析及原理</h1>
 
-<h2 id="http">HTTP代理的原理</h2>
+<h2 id="http代理的原理">HTTP代理的原理</h2>
 
 <p>HTTP代理服务器会自动提取请求数据包的HTTP Request数据，并且把HTTP Response的数据转发给发送请求的客户端；HTTP代理服务器使用的端口通常是8080，如下图所示：</p>
 
@@ -54,7 +54,7 @@
   <li>对于Web服务器来说，代理扮演的客户端角色，发送请求（Request），接收响应（Response）。</li>
 </ul>
 
-<h3 id="http-">HTTP 代理步骤</h3>
+<h3 id="http-代理步骤">HTTP 代理步骤</h3>
 
 <ul>
   <li>用户向代理发起TCP连接；</li>
@@ -68,7 +68,7 @@
   <li>P发送响应给U；</li>
 </ul>
 
-<h3 id="http-1">HTTP请求协议（不使用代理协议）报文：</h3>
+<h3 id="http请求协议不使用代理协议报文">HTTP请求协议（不使用代理协议）报文：</h3>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>GET / HTTP/1.1
 Accept: application/x-ms-application, image/jpeg, application/xaml+xml, image/gif, image/pjpeg, application/x-ms-xbap, application/vnd.ms-excel, application/vnd.ms-powerpoint, application/msword, */*
@@ -81,7 +81,7 @@ Cookie: CNZZDATA1252995935=579722882-1456319452-%7C1472176395;
 </code></pre>
 </div>
 
-<h3 id="http-2">HTTP请求协议（使用代理协议）报文：</h3>
+<h3 id="http请求协议使用代理协议报文">HTTP请求协议（使用代理协议）报文：</h3>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>GET http://www.what21.com/ HTTP/1.1
 Accept: application/x-ms-application, image/jpeg, application/xaml+xml, image/gif, image/pjpeg, application/x-ms-xbap, application/vnd.ms-excel, application/vnd.ms-powerpoint, application/msword, */*
@@ -94,7 +94,7 @@ Cookie: CNZZDATA1252995935=579722882-1456319452-%7C1472176395;
 </code></pre>
 </div>
 
-<h3 id="section">相关概念：</h3>
+<h3 id="相关概念">相关概念：</h3>
 
 <blockquote>
   <p>Accept：请求报头域用于指定客户端接受哪些类型的信息。<br />
@@ -105,7 +105,7 @@ HTTP协议中Connection是用来对HTTP协议连接进行的说明，如果是�
 Proxy代表了代理。</p>
 </blockquote>
 
-<h3 id="http118">HTTP/1.1协议中共定义了8种方法（也叫“动作”）来以不同方式操作指定的资源：</h3>
+<h3 id="http11协议中共定义了8种方法也叫动作来以不同方式操作指定的资源">HTTP/1.1协议中共定义了8种方法（也叫“动作”）来以不同方式操作指定的资源：</h3>
 
 <ul>
   <li>OPTIONS方法：这个方法可使服务器传回该资源所支持的所有HTTP请求方法。用’*‘来代替资源名称，向Web服务器发送OPTIONS请求，可以测试服务器功能是否正常运作。</li>
@@ -132,18 +132,18 @@ Host: www.what21.com
 </code></pre>
 </div>
 
-<h3 id="http-3">HTTP代理功能上名称的区别：</h3>
+<h3 id="http代理功能上名称的区别">HTTP代理功能上名称的区别：</h3>
 <ul>
   <li>全匿名代理，不改变客户端的request fields（请求信息），使服务器端看来就像有个真正的客户浏览器在访问。客户端的真实IP是隐藏起来的。</li>
   <li>普通匿名代理，能隐藏客户端的真实IP，但会更改客户端的request fields（请求信息），服务器端有可能会被认为使用了代理。</li>
   <li>透明代理（简单代理），改变客户端的request fields（请求信息），并会传送真实IP地址。</li>
 </ul>
 
-<h3 id="https">HTTPS代理</h3>
+<h3 id="https代理">HTTPS代理</h3>
 
 <p>HTTPS代理有多种做法，通常使用CONNECT method，通过proxy建立一条隧道(隧道代理)，这样，proxy无法解密数据；此外，还有一种类似于中间人攻击的代理手法。</p>
 
-<h3 id="httpsconnect">HTTPS代理中CONNECT方法代理步骤</h3>
+<h3 id="https代理中connect方法代理步骤">HTTPS代理中CONNECT方法代理步骤</h3>
 
 <ul>
   <li>用户向代理发起CONNECT请求；</li>

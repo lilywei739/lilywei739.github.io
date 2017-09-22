@@ -59,7 +59,7 @@
   <p>import { Router, Route, browserHistory } from ‘react-router’;</p>
 </blockquote>
 
-<h2 id="router---route-">&lt;Router /&gt; 和 &lt;Route /&gt;</h2>
+<h2 id="router--和-route-">&lt;Router /&gt; 和 &lt;Route /&gt;</h2>
 
 <p>在 React 应用中，通常你会用 &lt;Router /&gt; 包裹 &lt;Route /&gt;。 如此，当 URL 变化的时候，&lt;Router /&gt; 将会匹配到指定的路由，然后渲染路由绑定的组件。 &lt;Route /&gt; 用来显式地把路由映射到应用的组件结构上。 用 path 指定 URL，用 component 指定路由跳转到 URL 后需要渲染的那个组件。</p>
 
@@ -95,7 +95,7 @@
 </code></pre>
 </div>
 
-<h2 id="filter-">:filter 参数</h2>
+<h2 id="filter-参数">:filter 参数</h2>
 
 <p>此外，我们将在 ‘/’ 后面增加参数 (:filter), 当我们尝试从 URL 中读取参数 (:filter)，需要以下代码：</p>
 
@@ -127,7 +127,7 @@
   <p>import { Router, Route, browserHistory } from ‘react-router’;</p>
 </blockquote>
 
-<p>然后将它传给 <router></router> 来移除 URL 中的 ‘#’：</p>
+<p>然后将它传给 <Router></Router> 来移除 URL 中的 ‘#’：</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>&lt;Router history={browserHistory}&gt;
   &lt;Route path="/(:filter)" component={App} /&gt;
@@ -187,7 +187,7 @@ render(
 
 <p>React Router 提供了 &lt;Link /&gt; 来实现导航功能。</p>
 
-<p>下面将举例演示。现在，修改我们的容器组件 <filterlink></filterlink> ，这样我们就可以使用 <filterlink></filterlink> 来改变 URL。你可以通过 activeStyle 属性来指定激活状态的样式。</p>
+<p>下面将举例演示。现在，修改我们的容器组件 <FilterLink></FilterLink> ，这样我们就可以使用 <FilterLink></FilterLink> 来改变 URL。你可以通过 activeStyle 属性来指定激活状态的样式。</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>containers/FilterLink.js
 
@@ -240,7 +240,7 @@ export default Footer
 
 <p>如果希望当前的路由与其他路由有不同样式，这时可以使用Link组件的<strong>activeStyle</strong> 或<strong>activeClassName</strong>属性。</p>
 
-<h2 id="url-">从 URL 中读取数据</h2>
+<h2 id="从-url-中读取数据">从 URL 中读取数据</h2>
 
 <p>params 是一个包含 url 中所有指定参数的对象。</p>
 
@@ -250,7 +250,7 @@ export default Footer
 
 <p>如上面的代码，由路由渲染的组件都会自动的往组件中传递一个参数，这个参数包含了路由信息，这使得可以在 App 中获取 params 的属性。</p>
 
-<p>例如：如果访问 localhost:3000/completed，那么 params 将等价于 { filter: ‘completed’ }。 现在，我们可以在 <app></app> 中读取 URL 参数了。</p>
+<p>例如：如果访问 localhost:3000/completed，那么 params 将等价于 { filter: ‘completed’ }。 现在，我们可以在 <App></App> 中读取 URL 参数了。</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>components/App.js
 

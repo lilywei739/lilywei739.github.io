@@ -39,13 +39,13 @@
                 </aside>
 
                 <section id="main-cont">
-                    <h1 id="amd---cmd">AMD  与 CMD</h1>
+                    <h1 id="amd--与-cmd">AMD  与 CMD</h1>
 
 <p>最近小时光项目中需要引用一个插件， 公司用的是sea.js， 就需要把这个JS 改造成 CMD 模式的格式封装，今天在里补充一下模块化相关的知识。</p>
 
 <p>下面介绍几种 JS 的模块化的规范。</p>
 
-<h2 id="script">script标签</h2>
+<h2 id="script标签">script标签</h2>
 
 <p>这是最原始的 JavaScript 文件加载方式，如果把每一个文件看做是一个模块，那么他们的接口通常是暴露在全局作用域下，也就是定义在 window 对象中，不同模块的接口调用都是一个作用域中，一些复杂的框架，会使用命名空间的概念来组织这些模块的接口。</p>
 
@@ -58,7 +58,7 @@
   <li>在大型项目中各种资源难以管理，长期积累的问题导致代码库混乱不堪</li>
 </ul>
 
-<h2 id="commonjs">CommonJS规范</h2>
+<h2 id="commonjs规范">CommonJS规范</h2>
 
 <p>该规范的核心思想是允许模块通过require方法来同步加载所要依赖的其他模块，然后通过exports或module.exports来导出需要暴露的接口。</p>
 
@@ -83,7 +83,7 @@ module.exports = someValue;
   <li>不能非阻塞的并行加载多个模块</li>
 </ul>
 
-<h2 id="moduleexportsexports">module.exports与exports的区别</h2>
+<h2 id="moduleexports与exports的区别">module.exports与exports的区别</h2>
 
 <ul>
   <li>exports 是指向的 module.exports 的引用</li>
@@ -115,7 +115,7 @@ module.exports = function(r) {
 </code></pre>
 </div>
 
-<h2 id="amd">AMD规范</h2>
+<h2 id="amd规范">AMD规范</h2>
 
 <p>AMD标准中定义了以下两个API</p>
 
@@ -133,15 +133,19 @@ require(["module", "../file"], function(module, file) { /* ... */ });
 </code></pre>
 </div>
 
-<p>优点：
-* 适合在浏览器环境中异步加载模块
-* 可以并行加载多个模块</p>
+<p>优点：</p>
+<ul>
+  <li>适合在浏览器环境中异步加载模块</li>
+  <li>可以并行加载多个模块</li>
+</ul>
 
-<p>缺点：
-* 提高了开发成本，代码的阅读和书写比较困难，模块定义方式的语义不顺畅
-* 不符合通用的模块化思维方式，是一种妥协的实现</p>
+<p>缺点：</p>
+<ul>
+  <li>提高了开发成本，代码的阅读和书写比较困难，模块定义方式的语义不顺畅</li>
+  <li>不符合通用的模块化思维方式，是一种妥协的实现</li>
+</ul>
 
-<h2 id="cmd">CMD规范</h2>
+<h2 id="cmd规范">CMD规范</h2>
 
 <p>CMD(Common Module Definition)规范和AMD很相似，尽量保持简单，并与CommonJS和Node.js的 Modules 规范保持了很大的兼容性。在CMD规范中，一个模块就是一个文件。</p>
 
@@ -154,14 +158,18 @@ require(["module", "../file"], function(module, file) { /* ... */ });
 </code></pre>
 </div>
 
-<p>优点：
-* 依赖就近，延迟执行
-* 可以很容易在 Node.js 中运行</p>
+<p>优点：</p>
+<ul>
+  <li>依赖就近，延迟执行</li>
+  <li>可以很容易在 Node.js 中运行</li>
+</ul>
 
-<p>缺点：
-* 依赖 SPM 打包，模块的加载逻辑偏重</p>
+<p>缺点：</p>
+<ul>
+  <li>依赖 SPM 打包，模块的加载逻辑偏重</li>
+</ul>
 
-<h2 id="amdcmd">AMD和CMD的区别</h2>
+<h2 id="amd和cmd的区别">AMD和CMD的区别</h2>
 
 <ul>
   <li>对于依赖的模块，AMD是提前执行，CMD是延迟执行</li>
@@ -195,7 +203,7 @@ define(function(require, exports, module) {
   <li>AMD 的 API 默认是一个当多个用，CMD 的 API 严格区分，推崇职责单一</li>
 </ul>
 
-<h2 id="es6">ES6模块化</h2>
+<h2 id="es6模块化">ES6模块化</h2>
 
 <p>EcmaScript6标准增加了JavaScript语言层面的模块体系定义。ES6 模块的设计思想，是尽量的静态化，使得编译时就能确定模块的依赖关系，以及输入和输出的变量。CommonJS和AMD模块，都只能在运行时确定这些东西。</p>
 
