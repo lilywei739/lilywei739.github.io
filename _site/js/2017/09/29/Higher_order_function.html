@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <meta name="robots" content="index,follow"/>
+        <meta name="renderer" content="webkit" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui" />
+        <meta name="keywords" content="JS基础--高阶函数（一）">
+        <meta name="screen-orientation" content="portrait" />
+        <meta name="full-screen" content="yes" />
+        <meta name="browsermode" content="application" />
+        <meta name="x5-orientation" content="portrait" />
+        <meta name="x5-fullscreen" content="true" />
+        <meta name="x5-page-mode" content="app" />
+        <title>JS基础--高阶函数（一）</title>
+        <link rel="shortcut icon" type="image/ico" href="/favicon.ico"/>
+        <link rel="stylesheet" href="/css/common/github-gist.min.css">
+        <link rel="stylesheet" href="/css/style.css">
+        <!--[if lt IE 9]>
+        <script src="/js/common/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <!-- HEADER -->
+        <div id="header_wrap" class="outer">
+            <header class="inner">
+                <h1 id="project_title"><a href="/index.html">Weili - GitHub.io</a></h1>
+                <h2 id="project_tagline"><a href="https://github.com/lilywei739/lilywei739.github.io" target="_blank">View on GitHub</a></h2>
+            </header>
+        </div>
+            
+        <div id="content-wrapper">
+            <div class="main clearfix">
+                <aside id="sidebar">
+                    <ul class="side-nav">
+                    </ul>
+                </aside>
+
+                <section id="main-cont">
+                    <h1 id="js基础高阶函数一">JS基础–高阶函数（一）</h1>
+
+<p>有一种函数，它可以接受另一个函数作为参数，这种函数，我为称之为高阶函数（Higher-order function）。
+经常在写的带callback的函数，就是属于高阶函数；如常见的setTimeOut、setInterval、Array.sort都是高阶函数；</p>
+
+<h3 id="使用场景">使用场景</h3>
+
+<p>在很多程序中，有一些基本的算法会被编写多次，但是可能每次稍有不同。这就是发挥使用函数作为参数所长的地方。</p>
+
+<p>可以做的事情是将算法的基本结构编写到一个函数中。然后，对少许部分进行修改，并将其作为函数参数补充回来。这样可以在一个函数中增加很多可定制的因素。</p>
+
+<p>还可以添加其他函数参数为将来进行扩展。这种组合函数可以减少编程的冗余，通过扩展，还可以减少在一个程序中反复编写相同的算法所引起的错误。</p>
+
+<p>如果在代码中出现大量重复或者相似的地方，那么就很有可能可以用高阶函数来代替。</p>
+
+<p>举个例子：</p>
+
+<p>1、程序一：使用英文字母构造一个字符串：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var aIndex = 'a'.charCodeAt(0); //97
+
+var alphabet = "";
+for(var i = 0; i &lt; 26; i++){
+    alphabet += String.fromCharCode(aIndex + i)
+}
+alphabet; // "abcdefghijklmnopqrstuvwxyz"
+</code></pre>
+</div>
+
+<p>2、程序二：生成一个包含数字的字符串:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var digits = "";
+for(var i = 0; i &lt; 10; i++){
+    digits += i;
+}
+digits; //"0123456789"
+</code></pre>
+</div>
+
+<p>3、程序三：再创建一个随机的字符串：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var random = "";
+
+for(var i = 0; i &lt; 8; i++){
+    random += String.fromCharCode(Math.floor(Math.random()*26) + aIndex);
+}
+random; //"qejkoitv"
+</code></pre>
+</div>
+
+<p>上面三段代码都用共同的逻辑。每个循环都是通过连接每个独立部分的积算结果来创建一个字符串。可以提取出共用的部分，将它们移到单个工具函数里：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>function buildString(n, callback){
+    var result = "";
+    for(var i = 0; i &lt; n; i++){
+        result += callback(i);
+    }
+    return result;
+}
+</code></pre>
+</div>
+
+<p>buildString函数的实现包含了每个循环的所有共用部分，并使用参数来替代变化的部分。循环迭代的次数由变量n来替代，每个字符串片段的构造由callback函数替代。那么以上三个例子就可以简化如下：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var alphabet = buildString(26, function(i){
+    return String.fromCharCode(aIndex + i);
+});
+
+var digits = buildString(10, function(i){
+    return i;
+});
+
+var random = buildString(8, function(){
+    return String.fromCharCode(Math.floor(Math.random() * 26) + aIndex);
+});
+</code></pre>
+</div>
+
+
+		<div class="PageNavigation">
+		  
+		    <a class="prev" href="/js/2017/09/22/js_Closure.html">&laquo; JS基础--闭包</a>
+		  
+		  
+		</div>
+		<!-- 多说评论框 start -->
+        <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+        <!--
+<div id="ds_ele" class="ds-thread" data-thread-key="" data-title="JS基础--高阶函数（一）" data-url="http://lilywei739.github.io/js/2017/09/29/Higher_order_function.html"></div>
+		    <script type="text/javascript">
+                        var url = window.location.pathname;
+                        url = url.substr(1, url.length -6).replace(/\//gi, '_');
+                        document.getElementById('ds_ele').dataset.threadKey = url;
+                        var duoshuoQuery = {short_name:"github"};
+                        (function() {
+                            var ds = document.createElement('script');
+                            ds.type = 'text/javascript';ds.async = true;
+                            ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+                            ds.charset = 'UTF-8';
+                            (document.getElementsByTagName('head')[0] 
+                            || document.getElementsByTagName('body')[0]).appendChild(ds);
+                        })();
+
+                    </script>
+                    -->
+		<!-- 多说公共JS代码 end -->
+                </section>
+            </div>
+        </div>
+            
+        <!-- FOOTER  -->
+        <div id="footer_wrap" class="outer">
+            <footer class="inner">
+                <p>© 2016  by Weili &nbsp;&nbsp;  |  &nbsp;&nbsp;托管在 - <a href="https://pages.github.com">GitHub</a></p>
+            </footer>
+        </div>
+        <script src="/js/common/jquery-2.2.4.min.js"></script>
+        <script src="/js/common/highlight.min.js"></script>
+        <script src="/js/aside-nav.js"></script>
+        <script>
+            // baidu 统计
+            var _hmt = _hmt || [];
+            (function() {
+                var hm = document.createElement("script");
+                hm.src = "//hm.baidu.com/hm.js?146fe495fee020bf0e4dd701aa73965f";
+                var s = document.getElementsByTagName("script")[0]; 
+                s.parentNode.insertBefore(hm, s);
+            })();
+            // highlight
+            hljs.initHighlightingOnLoad({useBR: true});
+            $(document).ready(function() {
+                $('pre code').each(function(i, block) {
+                    hljs.highlightBlock(block);
+                });
+
+                // http2
+                var img = new Image();
+                img.src = 'https://www.h2statistics.ml/';
+            });
+        </script>
+    </body>
+</html>
