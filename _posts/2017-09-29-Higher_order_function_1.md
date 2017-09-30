@@ -9,7 +9,13 @@ category: ['JS']
 # JS基础--高阶函数（一） 
 
 有一种函数，它可以接受另一个函数作为参数，这种函数，我为称之为高阶函数（Higher-order function）。
-经常在写的带callback的函数，就是属于高阶函数；如常见的setTimeOut、setInterval、Array.sort都是高阶函数；
+经常在写的带callback的函数，就是属于高阶函数；如常见的setTimeOut、setInterval、Array.sort等都是高阶函数；
+
+高阶函数是指满足至少下列条件之一的函数。
+
+* 函数可以作为参数被传递；       
+* 函数可以作为返回值被输出;
+
 
 ### 使用场景 
 
