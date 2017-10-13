@@ -1,0 +1,529 @@
+<h1 id="数组">数组</h1>
+
+<h5 id="javascript中对数组的定义">JavaScript中对数组的定义</h5>
+
+<p>数组的标准定义是:一个存储元素的线性集合(collection)，元素可以通过索引来任意存 取，索引通常是数字，用来计算元素之间存储位置的偏移量。</p>
+
+<h5 id="创建数组的几种方法">创建数组的几种方法</h5>
+
+<ul>
+  <li>var numbers = [];</li>
+  <li>var numbers = [1，2 ，3];</li>
+  <li>var numbers = new Array();     //调用 Array 的构造函数创建数组</li>
+  <li>var numbers = new Array(1, 2 , 3);   //[1, 2, 3]</li>
+  <li>var numbers = new Array(3);    //[undefined, undefined, undefined]</li>
+</ul>
+
+<p>用Array 的构造函数创建数组时，不传入参数是创建一个空数组，传入一组元素时是为这个数组设置了初始值，传入一个参数时是指定创建的这个数组的长度。</p>
+
+<h5 id="判断是否是一个数组">判断是否是一个数组</h5>
+
+<p>Array.isArray() 来判断一个对象是否是数组</p>
+
+<h5 id="延伸知识点-类型检测">延伸知识点—-类型检测</h5>
+
+<p>JavaScript有四种方法，可以确定一个值到底是什么类型。</p>
+
+<ul>
+  <li>typeof运算符   —-返回的都是字符串
+    <ul>
+      <li>‘number’</li>
+      <li>‘string’</li>
+      <li>‘boolean’</li>
+      <li>‘undefined’</li>
+      <li>‘object’</li>
+      <li>‘function’</li>
+    </ul>
+  </li>
+  <li>
+    <p>instanceof运算符  —-表示指定对象是否为某个构造函数的实例</p>
+
+    <p>instanceof只能用来判断对象和函数，不能用来判断字符串和数字等</p>
+
+    <p>instanceof运算符的左边是实例对象，右边是构造函数。它会检查右边构建函数的原型对象，是否在左边对象的原型链上。因此，下面两种写法是等价的。</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>  var v = new Vehicle();
+  v instanceof Vehicle // true
+
+  v instanceof Vehicle
+  // 等同于
+  Vehicle.prototype.isPrototypeOf(v)
+</code></pre>
+    </div>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>  eg:
+  v instanceof Function
+  v instanceof Object
+  v instanceof Array
+  v instanceof Date
+  ......
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>constructor</p>
+
+    <p>每一个对象实例都可以通过 constrcutor 对象访问它的构造函数</p>
+
+    <p>但是constructor是不可靠的，在继承的时候会出现问题，看代码</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>  function A () {}
+  function B () {}
+  A.prototype = new B(); //A继承B
+  var aObj = new A();
+
+  AObj.constructor === B // true
+  AObj.constructor === A // false
+
+  而instanceof方法不会出现该问题，对象直接继承和间接继承的都会报true：
+		
+  aObj instanceof A // true 
+  aObj instanceof B // true
+</code></pre>
+    </div>
+
+    <p>解决construtor的问题通常是让对象的constructor手动指向自己</p>
+  </li>
+  <li>
+    <p>Object.prototype.toString方法   —-用来判断一个对象是否是另一个对象的原型</p>
+
+    <p>通用但很管繁锁的方法</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>
+  Object.prototype.toString.call(a) === '[object String]';
+  Object.prototype.toString.call(b) === '[object Number]';
+  Object.prototype.toString.call(c) === '[object Array]';
+  Object.prototype.toString.call(d) === '[object Date]';
+  Object.prototype.toString.call(e) === '[object Function]';
+
+</code></pre>
+    </div>
+  </li>
+</ul>
+
+<p>一个检测数据类型的对象：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var valide = (function(){
+    // 是否是字符串
+    function isString(value){
+        return Object.prototype.toString.call(value) == "[object String]";
+    }
+    // 是否是数字
+    function isNumber(value){
+        return Object.prototype.toString.call(value) == "[object Number]";
+    }
+    // 是否是布尔值
+    function isBoolean(value){
+        return Object.prototype.toString.call(value) == "[object Boolean]";
+    }
+    // 是否undefined
+    function isUndefined(value){
+        return Object.prototype.toString.call(value) == "[object Undefined]";
+    }
+    // 是否是null
+    function isNull(value){
+        return Object.prototype.toString.call(value) == "[object Null]";
+    }
+    // 是否数组
+    function isArray(value){
+        return Object.prototype.toString.call(value) == "[object Array]";
+    }
+    // 是否是函数
+    function isFunction(value){
+        return Object.prototype.toString.call(value) == "[object Function]";
+    }
+    // 是否是对象
+    function isObject(value){
+        return Object.prototype.toString.call(value) == "[object Object]";
+    }
+    // 是否是正则表达式
+    function isRegExp(value){
+        return Object.prototype.toString.call(value) == "[object RegExp]";
+    }
+    // 是否是日期对象
+    function isDate(value){
+        return Object.prototype.toString.call(value) == "[object Date]";
+    }
+    return {
+        isString: isString,
+        isNumber: isNumber,
+        isBoolean: isBoolean,
+        isUndefined: isUndefined,
+        isNull: isNull,
+        isArray: isArray,
+        isFunction: isFunction,
+        isObject: isObject,
+        isRegExp: isRegExp,
+        isDate: isDate
+    };
+})();
+
+valide.isArray([])   //true
+</code></pre>
+</div>
+
+<h5 id="字符串转数组">字符串转数组</h5>
+
+<ul>
+  <li>split()</li>
+</ul>
+
+<h5 id="数组的浅拷贝">数组的浅拷贝</h5>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var nums = [];
+     for (var i = 0; i &lt; 10; ++i) {
+        nums[i] = i+1;
+     }
+ var samenums = nums;
+
+nums[0] = 400; 
+console.log(samenums[0]) // 显示 400
+
+</code></pre>
+</div>
+<p>当把一个数组赋给另外一个数组时，只是为被赋值的数组增加了一个新的引用。当 你通过原引用修改了数组的值，另外一个引用也会感知到这个变化。这种行为被称为浅复制，新数组依然指向原来的数组。</p>
+
+<h5 id="数组的深拷贝">数组的深拷贝</h5>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>function copy(arr1, arr2) {
+   for (var i = 0; i &lt; arr1.length; ++i) {
+      arr2[i] = arr1[i];
+   }
+}
+
+var nums = [];
+for (var i = 0; i &lt; 10; ++i) {
+   nums[i] = i+1;
+}
+
+var samenums = [];
+copy(nums, samenums);
+
+nums[0] = 400;
+console.log(samenums[0]) // 显示 1
+</code></pre>
+</div>
+
+<h5 id="存取函数">存取函数</h5>
+
+<ul>
+  <li>
+    <p>indexOf()</p>
+
+    <p>如果目标数组包含该参数，就返回该元素在数组中的索引;如果不包含，就返回 -1，如果在数组中有多个重复的值 ，indexOf只会返回重复的第一个值的索引。</p>
+  </li>
+  <li>
+    <p>lastIndexOf()</p>
+
+    <p>返回相同元素中最后一个元素的索引，如果没找到相同元素，则返回 -1</p>
+  </li>
+</ul>
+
+<h5 id="数组转字符串">数组转字符串</h5>
+
+<ul>
+  <li>join()</li>
+  <li>toString()</li>
+</ul>
+
+<h5 id="由已有数组创建新数组">由已有数组创建新数组</h5>
+
+<ul>
+  <li>concat  合并多个数组生成一个新的数组</li>
+  <li>splice  截取一个数组的子集创建一个新数组</li>
+</ul>
+
+<h5 id="为数组添加元素">为数组添加元素</h5>
+
+<ul>
+  <li>push</li>
+  <li>unshift</li>
+</ul>
+
+<p>也可以使用数组的 length 属性为数组添加元素，但 push() 方法看起来更直观</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var nums = [1,2,3,4,5];
+nums[nums.length] = 6;
+console.log(nums); // 1,2,3,4,5,6
+</code></pre>
+</div>
+
+<p>和在数组的末尾添加元素比起来，在数组的开头添加元素更难。如果不利用数组提供的可 变函数，则新的元素添加进来后，需要把后面的每个元素都相应地向后移一个位置。下面的代码展示了这一过程:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var nums = [1,2,3,4,5];
+for(var i = nums.length; i &gt;= 0; --i) {
+	nums[i] = nums[i-1]
+}
+console.log(nums)   //(6) [undefined, 1, 2, 3, 4, 5]
+nums[0] = 1; 
+console.log(nums)  //(6) [1, 1, 2, 3, 4, 5]
+</code></pre>
+</div>
+
+<p>随着数组中存储的元素越来越多，上述代码将会变得越来越低效。</p>
+
+<h5 id="从数组中删除元素">从数组中删除元素</h5>
+
+<ul>
+  <li>pop</li>
+  <li>shift</li>
+</ul>
+
+<p>用一代码实现shift()方法</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var nums = [1,2,3,4,5];
+for (var i = 0; i &lt; nums.length; i++) {
+	nums[i] = nums[i +1]; 
+}
+nums.length = nums.length - 1;
+console.log(nums);   // (5) [2, 3, 4, 5]
+</code></pre>
+</div>
+
+<h5 id="从数组中间位置添加和删除元素">从数组中间位置添加和删除元素</h5>
+
+<ul>
+  <li>splice</li>
+</ul>
+
+<h5 id="为数组排序">为数组排序</h5>
+
+<ul>
+  <li>reverse()  //反转数组</li>
+  <li>sort()
+    <ul>
+      <li>如果元素是字符串类型，那么数组的可变方法 sort() 就非常好使:</li>
+      <li>如果数组元素是数字类型，sort() 需要传一个比较函数</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> function compare(num1, num2) {
+     return num1 - num2;
+}
+var nums = [3,1,2,100,4,200];
+nums.sort(compare);
+console.log(nums); // 1,2,3,4,100,200
+</code></pre>
+</div>
+
+<h4 id="迭代器方法">迭代器方法</h4>
+
+<h5 id="不生成新数组的迭代器方法">不生成新数组的迭代器方法</h5>
+
+<ul>
+  <li>
+    <p>forEach</p>
+
+    <p>它们要么对于数组中的每个元素执行某种操作，要么返回一个值</p>
+
+    <p>该方法接受一个函数作为参数，对数组中的每个元素 使用该函数。</p>
+  </li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>function square(num) {
+	document.write(num, num * num);
+}
+var nums = [1,2,3,4,5,6,7,8,9,10];
+nums.forEach(square);
+</code></pre>
+</div>
+
+<ul>
+  <li>
+    <p>every()</p>
+
+    <p>该方法接受一个返回值为布尔类型的函数，对数组中的每 个元素使用该函数。如果对于所有的元素，该函数均返回 true，则该方法返回 true。</p>
+  </li>
+  <li>
+    <p>some()</p>
+
+    <p>该方法接受一个返回值为布尔类型的函数，只要有一个元素使得该函数返回 true，该方法就返回 true。</p>
+  </li>
+  <li>
+    <p>reduce()</p>
+
+    <p>reduce() 方法接受一个函数，返回一个值。该方法会从一个累加值开始，不断对累加值和 数组中的后续元素调用该函数，直到数组中的最后一个元素，最后返回得到的累加值。</p>
+  </li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>function add(num1, num2) {
+	return num1 + num2;
+}
+var nums = [1,2,3,4,5,6,7,8,9,10]; 
+var sum = nums.reduce(add); 
+console.log(sum)  // 55
+</code></pre>
+</div>
+
+<p>reduce() 方法和 add() 函数一起，从左到右，依次对数组中的元素求和，其执行过程如下 所示:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>add(1,2) -&gt; 3
+add(3,3) -&gt; 6
+add(6,4) -&gt; 10
+add(10,5) -&gt; 15
+add(15,6) -&gt; 21
+add(21,7) -&gt; 28
+add(28,8) -&gt; 36
+add(36,9) -&gt; 45
+add(45,10) -&gt; 55
+</code></pre>
+</div>
+
+<ul>
+  <li>
+    <p>reduceRight()</p>
+
+    <p>和 reduce() 方法不同，它是从右到左执行， reduceRight() 方法可以将数组中的元素进行翻转。</p>
+  </li>
+</ul>
+
+<h5 id="生成新数组的迭代器方法">生成新数组的迭代器方法</h5>
+
+<ul>
+  <li>map()</li>
+</ul>
+
+<p>map() 和 forEach() 有点儿像，对数组中的每个元素使用某个函数。两者的区别是 map() 返回一个新的数组，新数组的元素是对原有元素应用某个函数得到的结果。</p>
+
+<ul>
+  <li>filter()</li>
+</ul>
+
+<p>filter() 和 every() 类似，传入一个返回值为布尔类型的函数。</p>
+
+<p>和 every() 方法不同的是， 当对数组中的所有元素应用该函数，结果均为 true 时，该方法并不返回 true，而是返回 一个新数组，该数组包含应用该函数后结果为 true 的元素。</p>
+
+<h4 id="二维和多维数组">二维和多维数组</h4>
+
+<h5 id="创建二维数组">创建二维数组</h5>
+
+<p>二维数组类似一种由行和列构成的数据表格。在 JavaScript 中创建二维数组，需要先创建 一个数组，然后让数组的每个元素也是一个数组。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Array.matrix = function(numrows, numcols, initial) {
+    var arr = [];
+    for (var i = 0; i &lt; numrows; ++i) {
+        var columns = [];
+        for (var j = 0; j &lt; numcols; ++j) {
+           columns[j] = initial;
+        }
+        arr[i] = columns;
+    }
+    return arr;
+}
+
+var names = Array.matrix(3,4,0);
+console.log(names);
+
+//输出结果：
+(3) [Array(4), Array(4), Array(4)]
+0:(4) [0, 0, 0, 0]
+1:(4) [0, 0, 0, 0]
+2:(4) [0, 0, 0, 0]
+</code></pre>
+</div>
+
+<p>这种循环同理做一个九九乘法表：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>document.write('&lt;table&gt;');
+ for (var i = 1; i &lt; 10; i++) {
+    document.write('&lt;tr&gt;');
+    for (var j = 1; j &lt;= i; j++) {
+	document.write('&lt;td&gt;' + i  + '*' + j + '=' + (i * j) + '&lt;/td&gt;');
+    }
+    document.write('&lt;/tr&gt;');
+}
+document.write('&lt;/table&gt;');
+</code></pre>
+</div>
+
+<p>结果如下图：</p>
+
+<p><img src="http://0.0.0.0:4000/img/20171011/20171011-1.png" alt="99乘法表" /></p>
+
+<h5 id="处理二维数组的元素">处理二维数组的元素</h5>
+
+<p>有两种最基本的方式</p>
+
+<ul>
+  <li>按行访问</li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var grades = [[89, 77, 78],[76, 82, 81],[91, 94, 89]];
+ for (var row = 0; row &lt; grades.length; row++) {
+ 	var num = 0;
+ 	var average = 0;
+ 	for (var col = 0; col &lt; grades[row].length; col++) {
+ 		num = num + grades[row][col];
+ 	}
+ 	average = num / grades[row].length;
+ 	document.write("Student " + parseInt(row+1) + " average: " +
+      average.toFixed(2));
+}
+
+Student 1 average: 81.33
+Student 2 average: 79.67
+Student 3 average: 91.33
+</code></pre>
+</div>
+
+<ul>
+  <li>按列访问</li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var grades = [[89, 77, 78],[76, 82, 81],[91, 94, 89]];
+		 
+for (var col = 0; col &lt; grades.length; col++) {
+	var num = 0;
+	var average = 0;
+	for (var row = 0; row &lt; grades[col].length; row++) {
+		num = num + grades[row][col];
+	}
+	average = num / grades[col].length;
+	document.write("Student " + parseInt(col+1) + " average: " + average.toFixed(2));
+}
+
+Student 1 average: 85.33
+Student 2 average: 84.33
+Student 3 average: 82.67
+</code></pre>
+</div>
+
+<p>#####
+#####
+#####
+#####
+#####
+#####
+#####
+#####
+#####
+#####
+#####
+#####
+#####
+#####
+#####
+#####
+#####
+#####
+#####
+#####
+#####
+#####
+#####
+#####
+#####
+#####
+#####
+#####
+#####
+#####
+#####
+#####
+#####
+#####
+#####
+#####
+#####</p>
+
