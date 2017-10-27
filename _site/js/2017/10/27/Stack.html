@@ -61,8 +61,8 @@
     this.dataStore = [];//用数组 dataStore 保存栈内元素 
     this.top = 0;       //用于记录哪个位置加入新元素
     this.push = push;   //入栈
-    this.pop = pop;     
-    this.peek = peek;   
+    this.pop = pop;     //返回移出的栈顶元素 
+    this.peek = peek;   //返回当前的栈顶元素 
     this.clear = clear; //清空
     this.length = length; //返回栈内元素个数
 }
@@ -82,7 +82,7 @@
 </div>
 
 <ul>
-  <li>返回栈顶元素</li>
+  <li>返回移出的栈顶元素</li>
 </ul>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>function pop() {
