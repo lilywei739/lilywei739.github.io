@@ -7,14 +7,14 @@
         <meta name="robots" content="index,follow"/>
         <meta name="renderer" content="webkit" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui" />
-        <meta name="keywords" content="JS基础--字典">
+        <meta name="keywords" content="react基础--知识点小记">
         <meta name="screen-orientation" content="portrait" />
         <meta name="full-screen" content="yes" />
         <meta name="browsermode" content="application" />
         <meta name="x5-orientation" content="portrait" />
         <meta name="x5-fullscreen" content="true" />
         <meta name="x5-page-mode" content="app" />
-        <title>JS基础--字典</title>
+        <title>react基础--知识点小记</title>
         <link rel="shortcut icon" type="image/ico" href="/favicon.ico"/>
         <link rel="stylesheet" href="/css/common/github-gist.min.css">
         <link rel="stylesheet" href="/css/style.css">
@@ -39,155 +39,104 @@
                 </aside>
 
                 <section id="main-cont">
-                    <h1 id="字典">字典</h1>
+                    <h1 id="react-随手笔记">react 随手笔记</h1>
 
-<h5 id="什么是字典">什么是字典？</h5>
+<p>项目中遇到的小问题，好记性不如烂笔头，用于记录一下</p>
 
-<blockquote>
-  <p>字典是一种以键 - 值对形式存储数据的数据结构，就像电话号码簿里的名字和电话号码一样,要找一个电话时，先找名字，名字找到了，紧挨着它的电话号码也就找到了。这里的 键是指你用来查找的东西，值是查找得到的结果。</p>
-</blockquote>
+<p>1、触发事件</p>
 
-<p>Dictionay 类的基础是 Array 类，而不是 Object 类，所以某些方法是不能执行的，这里只注重思想</p>
+<p>当触发某个事件时，请求一个ajax，改变一个state值，根据这个state值更改后续的状态。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function Dictionary() {
-    this.datastore = new Array();
-    this.add = add; 
-    this.find = find;
-    this.remove = remove;
-    this.showAll = showAll;
+<p>场景：一个入口，根据请求接口返回的数据，非成功的状态会出现弹框，成功的状态是一个路由，然后直接跳转</p>
+
+<p>实现思路：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>js:
+
+handleClick = () =&gt; {
+    fetch ...
+     当请求成功后setState
+	setState({
+	    ...
+	    newState: ,
+        })
+
+	
+        !success{
+	    出弹框
+        }
 }
+
+&lt;p onClick={this.handleClick}&gt;
+    newState === 'success' ?
+        &lt;Link to='' /&gt;
+    :
+        &lt;span&gt;&lt;/span&gt; 
+&lt;/p&gt;
+
 </code></pre>
 </div>
 
-<ul>
-  <li>向列表添加元素</li>
-</ul>
+<p>问题：显然是有问题的，因为是异步的，所以当请求了接口为成功时，入口不会即时的变为路由，而是需点击两下才能路由走</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function append(ele) {
-    this.store[this.listSize++] = ele;
+<p>解决一：请求前置</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>componentDidMount = () =&gt; {
+    fetch ....
 }
-</code></pre>
-</div>
 
-<ul>
-  <li>add方法–两个参数:键和值</li>
-</ul>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>function add(key, value) {
-    this.datastore[key] = value;
-}
-</code></pre>
-</div>
-
-<ul>
-  <li>find 方法</li>
-</ul>
-
-<p>该方法以键作为参数，返回和其关联的值</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>function find(key) {
-    return this.datastore[key];
-}
-</code></pre>
-</div>
-
-<ul>
-  <li>remove 方法</li>
-</ul>
-
-<p>从字典中删除键 - 值对需要使用 JavaScript 中的一个内置函数:delete。该函数是 Object 类的一部分，使用对键的引用作为参数。该函数同时删掉键和与其关联的值。</p>
-
-<p>在这里要新建一个remove方法，delete掉索引所对应的值</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>function remove(key) {
-    delete this.datastore[key];
-}
-</code></pre>
-</div>
-
-<ul>
-  <li>showAll 方法</li>
-</ul>
-
-<p>显示字典中所有的键 - 值对</p>
-
-<p>调用 Object 类的 keys() 方法可以返回传入参数中存储的所有键</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>function showAll() {
-    for(var key in Object.keys(this.datastore)) {
-       print(key + " -&gt; " + this.datastore[key]);
+handleClick = () =&gt; {
+    if (this.state.newState !== 'success') {
+	出弹框
     }
 }
+
+&lt;p onClick={this.handleClick}&gt;
+    newState === 'success' ?
+        &lt;Link to='' /&gt;
+    :
+        &lt;span&gt;&lt;/span&gt; 
+&lt;/p&gt;
 </code></pre>
 </div>
 
-<ul>
-  <li>count 方法</li>
-</ul>
+<p>在用户点击之前就请求接口，早些改变newState的值，虽然功能上是实现了，但这种情况会有限制性，逻辑不允许的时候，这种方法行不通</p>
 
-<p>能知道字典中的元素个数</p>
+<p>解决二：在触发事件时就做跳转</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function count() {
-    var n = 0;
-    for(var key in Object.keys(this.datastore)) {
-       ++n;
-    }
-    return n; 
+<div class="highlighter-rouge"><pre class="highlight"><code>handleClick = () =&gt; {
+	fetch ... 
+	.then((data) =&gt; {
+	    this.setState({
+		newState: data.status
+	    });
+
+	    if (data.status !== 'success') {  //注意这里，不是用newState，而是用返回值直接处理
+		出弹框
+	    } else {
+		window.location.hash = `/pull/${this.props.hasmoney}`;  //注意这里的写法，用于实现跳转
+	    }
+	});
 }
+
+
+&lt;p onClick={this.handleClick}&gt;&lt;/p&gt;
 </code></pre>
 </div>
 
-<ul>
-  <li>clear 方法</li>
-</ul>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>function clear() {
-    for each (var key in Object.keys(this.datastore)) {
-       delete this.datastore[key];
-    }
-}
-</code></pre>
-</div>
-
-<ul>
-  <li>添加排序功能</li>
-</ul>
-
-<p>字典的主要用途是通过键取值，无须太关心数据在字典中的实际存储顺序。但如果要做到一个有序的字典，该如何规划？我们都知道数组是可以排序的。</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>var a = new Array();
-a[0] = "Mike";
-a[1] = "David";
-console.log(a); //显示Mike,David a.sort();
-console.log(a); //显示David,Mike
-</code></pre>
-</div>
-
-<p>但是上面这种做法对以字符串作为键的字典是无效的，程序会没有任何输出。这和前面定义 count() 方法时碰到的情况一样，不过，这也不是大问题。用户关心的是显示字典的内容时，结果是有序的。可以使用Object.keys() 函数解决这个问题</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>function showAll() {
-    for(var key in Object.keys(this.datastore).sort()) {
-       console.log(key + " -&gt; " + this.datastore[key]);
-    }
-}
-</code></pre>
-</div>
-
-<p>巧妙之处就是从数组 datastore 拿到键后，调用 sort() 方法对键重新排了序，以达到排序的功能。</p>
+<p>其实不用react，原生的js请求返回的结果去处理页面中的元素就是这样控制的，但是当时脑袋秀逗了，没这样做，以后会不断的更新记录工作中遇到的小问题。</p>
 
 
 		<div class="PageNavigation">
 		  
-		    <a class="prev" href="/js/2017/11/10/lianbiao.html">&laquo; JS基础--链表</a>
+		    <a class="prev" href="/js/2017/11/18/dictionary.html">&laquo; JS基础--字典</a>
 		  
-		  
-		    <a class="next" href="/js/2017/11/20/react_recode.html">react基础--知识点小记 &raquo;</a>
 		  
 		</div>
 		<!-- 多说评论框 start -->
         <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
         <!--
-<div id="ds_ele" class="ds-thread" data-thread-key="" data-title="JS基础--字典" data-url="http://lilywei739.github.io/js/2017/11/18/dictionary.html"></div>
+<div id="ds_ele" class="ds-thread" data-thread-key="" data-title="react基础--知识点小记" data-url="http://lilywei739.github.io/js/2017/11/20/react_recode.html"></div>
 		    <script type="text/javascript">
                         var url = window.location.pathname;
                         url = url.substr(1, url.length -6).replace(/\//gi, '_');
