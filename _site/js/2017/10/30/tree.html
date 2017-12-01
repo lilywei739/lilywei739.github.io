@@ -184,21 +184,19 @@ function show() {
 <p>实例化一个例子：</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>var nums = new BST();
-nums.insert(23);
-nums.insert(45);
-nums.insert(16);
-nums.insert(37);
-nums.insert(3);
-nums.insert(99);
+nums.insert(56);
+nums.insert(81);
 nums.insert(22);
+nums.insert(30);
+nums.insert(77);
+nums.insert(92);
+nums.insert(10);
 document.write("Inorder traversal: ");
 inOrder(nums.root);
+
+运行结果： 10 22 30 56 77 81 92
 </code></pre>
 </div>
-
-<p>运行结果：</p>
-
-<p><img src="https://lilywei739.github.io/img/20171130/20171130-2-2.jpg" alt="image01" /></p>
 
 <p><img src="https://lilywei739.github.io/img/20171130/20171130-2.jpg" alt="image01" /></p>
 
@@ -218,9 +216,20 @@ inOrder(nums.root);
 </code></pre>
 </div>
 
-<p>运行结果：</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>var nums = new BST();
+nums.insert(50);
+nums.insert(70);
+nums.insert(10);
+nums.insert(15);
+nums.insert(60);
+nums.insert(5);
+nums.insert(80);
+document.write("preOrder traversal: ");
+preOrder(nums.root);
 
-<p><img src="https://lilywei739.github.io/img/20171130/20171130-3-2.jpg" alt="image01" /></p>
+运行结果：50 10 5 15 70 60 80
+</code></pre>
+</div>
 
 <p><img src="https://lilywei739.github.io/img/20171130/20171130-3.jpg" alt="image01" /></p>
 
@@ -245,9 +254,20 @@ inOrder(nums.root);
 </code></pre>
 </div>
 
-<p>运行结果：</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>var nums = new BST();
+nums.insert(23);
+nums.insert(45);
+nums.insert(16);
+nums.insert(37);
+nums.insert(3);
+nums.insert(99);
+nums.insert(22);
+document.write("postOrder traversal: ");
+preOrder(nums.root);
 
-<p><img src="https://lilywei739.github.io/img/20171130/20171130-4-2.jpg" alt="image01" /></p>
+运行结果： 3 22 16 37 99 45 23
+</code></pre>
+</div>
 
 <p><img src="https://lilywei739.github.io/img/20171130/20171130-4.jpg" alt="image01" /></p>
 
@@ -290,13 +310,14 @@ inOrder(nums.root);
 <p>初始化个例子：</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>var nums = new BST();
-nums.insert(23);
-nums.insert(45);
-nums.insert(16);
-nums.insert(37);
-nums.insert(3);
-nums.insert(99);
+nums.insert(56);
+nums.insert(81);
 nums.insert(22);
+nums.insert(30);
+nums.insert(77);
+nums.insert(92);
+nums.insert(10);
+
 var min = nums.getMin();
 document.write("The minimum value of the BST is: " + min);
 document.write("--------");
