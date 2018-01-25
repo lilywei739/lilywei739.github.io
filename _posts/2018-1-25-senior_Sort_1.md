@@ -51,7 +51,7 @@ this.gaps = [5,3,1];
 
 **希尔排序原理图：**
 
-![](https://lilywei739.github.io/img/20180125/20180125-1.jpg)
+![图](https://lilywei739.github.io/img/20180125/20180125-1.jpg)
 
 
 
@@ -69,7 +69,7 @@ this.gaps = [5,3,1];
     document.write(nums.toString());
 ```
 
-![](https://lilywei739.github.io/img/20180125/20180125-2.jpg)
+![图](https://lilywei739.github.io/img/20180125/20180125-2.jpg)
 
 要理解希尔排序是如何运行的，可以对比数组的初始状态和执行完间隔序列为 5 的排序后的状态。初始状态时的第一个元素 6，和它后面的第 5 个元素 5，进行了互换，因为 5 < 6。
 
@@ -117,7 +117,7 @@ function shellsort1() {
 同样初始化10个数，shellsort1后的结果：
 
 
-![](https://lilywei739.github.io/img/20180125/20180125-3.jpg)
+![图](https://lilywei739.github.io/img/20180125/20180125-3.jpg)
 
 
 ### 比较 shellsort() 算法
@@ -141,6 +141,6 @@ function shellsort1() {
 
 
 
-![](https://lilywei739.github.io/img/20180125/20180125-4.jpg)
+![图](https://lilywei739.github.io/img/20180125/20180125-4.jpg)
 
 很明显，这两个希尔排序算法的效率是一样的，因此你可以根据需要随意使用
