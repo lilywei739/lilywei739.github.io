@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <meta name="robots" content="index,follow"/>
+        <meta name="renderer" content="webkit" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui" />
+        <meta name="keywords" content="JS基础--高级排序(一)">
+        <meta name="screen-orientation" content="portrait" />
+        <meta name="full-screen" content="yes" />
+        <meta name="browsermode" content="application" />
+        <meta name="x5-orientation" content="portrait" />
+        <meta name="x5-fullscreen" content="true" />
+        <meta name="x5-page-mode" content="app" />
+        <title>Weili - GitHub.io</title>
+        <link rel="shortcut icon" type="image/ico" href="/favicon.ico"/>
+        <link rel="stylesheet" href="/css/common/github-gist.min.css">
+        <link rel="stylesheet" href="/css/style.css">
+        <!--[if lt IE 9]>
+        <script src="/js/common/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <!-- HEADER -->
+        <div id="header_wrap" class="outer">
+            <header class="inner">
+                <h1 id="project_title"><a href="/index.html">Weili - GitHub.io</a></h1>
+                <h2 id="project_tagline"><a href="https://github.com/lilywei739/lilywei739.github.io" target="_blank">View on GitHub</a></h2>
+            </header>
+        </div>
+            
+        <div id="content-wrapper">
+            <div class="main clearfix">
+                <aside id="sidebar">
+                    <ul class="side-nav">
+                    </ul>
+                </aside>
+
+                <section id="main-cont">
+                    <h1 id="高级排序-希尔排序">高级排序— 希尔排序</h1>
+
+<p>本章讲解的高级排序算法，通常被认为是处理大型数据集的最高效排序算法，它们处理的数据集可以达到上百万个元素，而不仅仅是几百个或者几千个。</p>
+
+<h3 id="希尔排序">希尔排序</h3>
+
+<p>这个算法在插入排序的基础上做了很大的改善。希尔排序的核心理念与插入排序 不同，它会首先比较距离较远的元素，而非相邻的元素。和简单地比较相邻元素相比，使 用这种方案可以使离正确位置很远的元素更快地回到合适的位置。当开始用这个算法遍历 数据集时，所有元素之间的距离会不断减小，直到处理到数据集的末尾，这时算法比较的 就是相邻元素了。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>//希尔排序
+function shellsort() {
+    for (var g = 0; g &lt; this.gaps.length; ++g) {
+       for (var i = this.gaps[g]; i &lt; this.dataStore.length; ++i) {
+          var temp = this.dataStore[i];
+          for (var j = i; j &gt;= this.gaps[g] &amp;&amp;
+                this.dataStore[j-this.gaps[g]] &gt; temp;
+               j -= this.gaps[g]) {
+             this.dataStore[j] = this.dataStore[j - this.gaps[g]];
+          }
+          this.dataStore[j] = temp;
+       }
+        document.write('&lt;br /&gt;');
+        document.write(this.toString());
+        document.write('&lt;br /&gt;');
+    } 
+}
+
+function setGaps(arr) {
+    this.gaps = arr;
+}
+
+</code></pre>
+</div>
+
+<p>为了能让这个程序在 CArray 类测试平台中运行，我们需要在这个类的定义里增加一个对间 隔序列的定义。请将下面代码添加到 CArray 的构造函数中</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>this.gaps = [5,3,1];
+</code></pre>
+</div>
+
+<p>外循环控制间隔序列的移动。也就是说，算法在第一次处理数据集时，会检查所有间隔为 5 的元素。下一次遍历会检查所有间隔为 3 的元素。最后一次则会对间隔为 1 的元素，也 就是相邻元素执行标准插入排序。在开始做最后一次处理时，大部分元素都将在正确的位 置，算法就不必对很多元素进行交换。这就是希尔排序比插入排序更高效的地方。下图演示了如何使用间隔序列为5, 3, 1的希尔排序算法。</p>
+
+<p><strong>希尔排序原理图：</strong></p>
+
+<p><img src="https://lilywei739.github.io/img/20180125/20180125-1.jpg" alt="" /></p>
+
+<p>初始化一个例子，对10个数字进行希尔排序，跟踪这个算法的执行过程</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    var nums = new CArray(100);
+    nums.setData();
+    document.write("希尔排序前:&lt;br /&gt;"); 
+    document.write(nums.toString()); 
+    document.write("&lt;br /&gt;希尔排序中:&lt;br /&gt;"); 
+    nums.shellsort();
+    document.write("&lt;br /&gt;希尔排序后:&lt;br /&gt;"); 
+    document.write(nums.toString());
+</code></pre>
+</div>
+
+<p><img src="https://lilywei739.github.io/img/20180125/20180125-2.jpg" alt="" /></p>
+
+<p>要理解希尔排序是如何运行的，可以对比数组的初始状态和执行完间隔序列为 5 的排序后的状态。初始状态时的第一个元素 6，和它后面的第 5 个元素 5，进行了互换，因为 5 &lt; 6。</p>
+
+<p>再来比较 gap 5 和 gap 3 这两行。在 gap 5 这行中的数字 3 和数字 2 进行了互换， 因为 2 &lt; 3，并且 2 是 3 后面的第 3 个元素。从循环中当前元素所在位置往后数，简单地数到第 gap 个数的位置，然后比较这个位置和当前元素所在位置上的两个数字，就可以对希 尔排序过程中的任何步骤进行跟踪。</p>
+
+<h3 id="动态计算间隔序列的希尔排序">动态计算间隔序列的希尔排序</h3>
+
+<p>《算法(第4版)》(人民邮电出版社)的合著者Robert Sedgewick定义了一个shellsort() 函数，在这个函数中可以通过一个公式来对希尔排序用到的间隔序列进行动态计算。 Sedgewick 的算法是通过下面的代码片段来决定初始间隔值的:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    var N = this.dataStore.length;
+    var h = 1;
+    while (h &lt; N/3) {
+        h = 3 * h + 1; 
+    }
+</code></pre>
+</div>
+
+<p>间隔值确定好后，这个函数就可以像之前定义的 shellsort() 函数一样运行了，唯一的区 别是，回到外循环之前的最后一条语句会计算一个新的间隔值:</p>
+
+<blockquote>
+  <p>h = (h-1)/3;</p>
+</blockquote>
+
+<p>修改后的shellsort1函数如下：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>function shellsort1() {
+    var N = this.dataStore.length;
+    var h = 1;
+    while (h &lt; N/3) {
+      h = 3 * h + 1; 
+    }
+    while (h &gt;= 1) {
+       for (var i = h; i &lt; N; i++) {
+          for (var j = i; j &gt;= h &amp;&amp; this.dataStore[j] &lt; this.dataStore[j-h];
+               j -= h) {
+             swap(this.dataStore, j, j-h);
+          }
+      }
+      h = (h-1)/3; 
+    }
+}
+</code></pre>
+</div>
+
+<p>同样初始化10个数，shellsort1后的结果：</p>
+
+<p><img src="https://lilywei739.github.io/img/20180125/20180125-3.jpg" alt="" /></p>
+
+<h3 id="比较-shellsort-算法">比较 shellsort() 算法</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    var nums = new CArray(100000);
+    nums.setData();
+    var start = new Date().getTime();
+    nums.shellsort();
+    var stop = new Date().getTime();
+    var elapsed = stop - start;
+    document.write(" 硬编码间隔序列的希尔排序消耗的时间为:" + elapsed + " 毫秒。"); 
+    nums.clear();
+
+    nums.setData();
+    start = new Date().getTime();
+    nums.shellsort1();
+    stop = new Date().getTime();
+    document.write(" 动态间隔序列的希尔排序消耗的时间为:" + elapsed + " 毫秒。");
+</code></pre>
+</div>
+
+<p><img src="https://lilywei739.github.io/img/20180125/20180125-4.jpg" alt="" /></p>
+
+<p>很明显，这两个希尔排序算法的效率是一样的，因此你可以根据需要随意使用</p>
+
+		<div class="PageNavigation">
+		  
+		    <a class="prev" href="/js/2018/01/11/basic_Sort.html">&laquo; JS基础-- 基本排序</a>
+		  
+		  
+		</div>
+		<!-- 多说评论框 start -->
+        <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+        <!--
+<div id="ds_ele" class="ds-thread" data-thread-key="" data-title="JS基础--高级排序(一)" data-url="http://lilywei739.github.io/js/2018/01/25/senior_Sort_1.html"></div>
+		    <script type="text/javascript">
+                        var url = window.location.pathname;
+                        url = url.substr(1, url.length -6).replace(/\//gi, '_');
+                        document.getElementById('ds_ele').dataset.threadKey = url;
+                        var duoshuoQuery = {short_name:"github"};
+                        (function() {
+                            var ds = document.createElement('script');
+                            ds.type = 'text/javascript';ds.async = true;
+                            ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+                            ds.charset = 'UTF-8';
+                            (document.getElementsByTagName('head')[0] 
+                            || document.getElementsByTagName('body')[0]).appendChild(ds);
+                        })();
+
+                    </script>
+                    -->
+		<!-- 多说公共JS代码 end -->
+                </section>
+            </div>
+        </div>
+            
+        <!-- FOOTER  -->
+        <div id="footer_wrap" class="outer">
+            <footer class="inner">
+                <p>© 2016  by Weili &nbsp;&nbsp;  |  &nbsp;&nbsp;托管在 - <a href="https://pages.github.com">GitHub</a></p>
+            </footer>
+        </div>
+        <script src="/js/common/jquery-2.2.4.min.js"></script>
+        <script src="/js/common/highlight.min.js"></script>
+        <script src="/js/aside-nav.js"></script>
+        <script>
+            // baidu 统计
+            var _hmt = _hmt || [];
+            (function() {
+                var hm = document.createElement("script");
+                hm.src = "//hm.baidu.com/hm.js?146fe495fee020bf0e4dd701aa73965f";
+                var s = document.getElementsByTagName("script")[0]; 
+                s.parentNode.insertBefore(hm, s);
+            })();
+            // highlight
+            hljs.initHighlightingOnLoad({useBR: true});
+            $(document).ready(function() {
+                $('pre code').each(function(i, block) {
+                    hljs.highlightBlock(block);
+                });
+
+                // http2
+                var img = new Image();
+                img.src = 'https://www.h2statistics.ml/';
+            });
+        </script>
+    </body>
+</html>
