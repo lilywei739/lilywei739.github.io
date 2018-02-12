@@ -1,0 +1,378 @@
+<!DOCTYPE html><html lang="en">
+  <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>JS基础--集合 - Someone's blog</title>
+<meta name="description" content="集合集合(set)是一种包含不同元素的数据结构集合特性  集合中的成员是无序的  集合中不允许相同成员存在在很多编程语言中，并不把集合当成一种数据类型。当你想要创建一个数据结构，用来保存一些独一无二的元素时，比如一段文本中用到 的单词，集合就变得非常有用相关概念  空集: 不包含任何成员的集合称为空集  全集: ...">
+<link rel="canonical" href="http://localhost:4000/js/2017/12/22/set.html"><link rel="alternate" type="application/rss+xml" title="Someone's blog" href="http://localhost:4000/feed.xml">
+<!-- for Safari on iOS https://developer.apple.com/ios/human-interface-guidelines/icons-and-images/app-icon/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/images/logo/icon-180x180.png"><link rel="apple-touch-icon" sizes="167x167" href="/assets/images/logo/icon-167x167.png"><link rel="apple-touch-icon" sizes="152x152" href="/assets/images/logo/icon-152x152.png"><link rel="apple-touch-icon" sizes="120x120" href="/assets/images/logo/icon-120x120.png"><link rel="shortcut icon" href="/assets/images/logo/icon-120x120.png">
+<!-- for Chrome on Android https://developer.chrome.com/multidevice/android/installtohomescreen -->
+<meta name="mobile-web-app-capable" content="yes"><link rel="icon" sizes="192x192" href="/assets/images/logo/icon-192x192.png">
+<!-- for Edge on Windows 10 https://msdn.microsoft.com/en-us/library/dn255024(v=vs.85).aspx --><meta name="msapplication-TileImage" content="/assets/images/logo/icon-144x144.png"><meta name="msapplication-square310x310logo" content="/assets/images/logo/icon-310x310.png"><meta name="msapplication-wide310x150logo" content="/assets/images/logo/icon-310x150.png"><meta name="msapplication-square150x150logo" content="/assets/images/logo/icon-150x150.png"><meta name="msapplication-square70x70logo" content="/assets/images/logo/icon-70x70.png">
+<meta name="msapplication-TileColor" content="#eeeeee"><link rel="stylesheet" href="/assets/css/blog.css">
+    <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="m-page-stage js-page-stage"><div class="m-page-content"><header class="m-page-header">
+  <div class="main clearfix">
+    <div class='site-logo'><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="24px" height="24px" viewBox="0 0 24 24">
+<style type="text/css">
+	.st0{fill:#666666;}
+</style>
+<path class="st0" d="M1.7,22.3c5.7-5.7,11.3-5.7,17,0c3.3-3.3,3.5-5.3,0.8-6c2.7,0.7,3.5-1.1,2.3-5.6s-3.3-5.2-6.3-2.1
+	c3-3,2.3-5.2-2.1-6.3S7,1.8,7.7,4.6C7,1.8,5,2.1,1.7,5.3C7.3,11,7.3,16.7,1.7,22.3"/>
+</svg><a title="Someone's Blog
+" href="/">Someone's blog</a></div>
+    <nav>
+      <ul><li><a href="/">Home</a></li><li><a href="/all.html">All</a></li><li><a href="/about.html">About</a></li><li><a type="application/rss+xml" href="/feed.xml">RSS</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<div class="m-page-main"><div class="m-post">
+	<div class="main js-main clearfix">
+		<div class="col-2 js-col-2">
+			<aside class="js-article-aside"><div class="m-toc js-toc"></div></aside>
+		</div>
+		<div class="col-1">
+			<article itemscope itemtype="http://schema.org/BlogPosting">
+				<meta itemprop="mainEntityOfPage" itemscope itemType="https://schema.org/WebPage"/>
+				<header class="main-header"><h1 itemprop="headline" itemprop="name headline">JS基础--集合</h1><div class="m-article-data clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Someone"/></meta><div class="other-wrapper"><div class="date-wrapper"><time class="article-meta" datetime="2017-12-22T00:00:00+08:00"
+          itemprop="datePublished">Dec 22, 2017
+        </time></div>
+  </div>
+</div>
+</header>
+				<div class="m-article-content js-article-content" itemprop="articleBody"><h1 id="集合">集合</h1>
+
+<p>集合(set)是一种包含不同元素的数据结构</p>
+
+<p><strong>集合特性</strong></p>
+
+<ul>
+  <li>集合中的成员是无序的</li>
+  <li>集合中不允许相同成员存在</li>
+</ul>
+
+<p>在很多编程语言中，并不把集合当成一种数据类型。当你想要创建一个数据结构，用来保存一些独一无二的元素时，比如一段文本中用到 的单词，集合就变得非常有用</p>
+
+<h5 id="相关概念">相关概念</h5>
+
+<ul>
+  <li>空集: 不包含任何成员的集合称为空集</li>
+  <li>全集: 则是包含一切可能成员的集合</li>
+  <li>集合相等: 如果两个集合的成员完全相同，则称两个集合相等</li>
+  <li>子集: 如果一个集合中所有的成员都属于另外一个集合，则前一集合称为后一集合的子集</li>
+</ul>
+
+<h5 id="对集合的操作">对集合的操作</h5>
+
+<ul>
+  <li>并集: 将两个集合中的成员进行合并，得到一个新集合</li>
+  <li>交集: 两个集合中共同存在的成员组成一个新的集合</li>
+  <li>补集: 属于一个集合而不属于另一个集合的成员组成的集合</li>
+</ul>
+
+<h5 id="set类">Set类</h5>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function Set() {
+    this.dataStore = [];
+    this.add = add;
+    this.remove = remove;
+    this.size = size;
+    this.union = union;
+    this.intersect = intersect;
+    this.subset = subset;
+    this.difference = difference;
+    this.show = show;
+}
+</code></pre></div></div>
+
+<ul>
+  <li>show（）</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function show() {
+    return this.dataStore;
+}
+</code></pre></div></div>
+
+<ul>
+  <li>add 方法</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function add(data) {
+    if (this.dataStore.indexOf(data) &lt; 0) {
+           this.dataStore.push(data);
+           return true;
+        } else {
+           return false;
+    } 
+}
+</code></pre></div></div>
+
+<p>思路：先要确保数 组中不存在该数据。我们使用 indexOf() 检查新加入的元素在数组中是否存在。如果找到， 该方法返回该元素在数组中的位置;如果没有找到，该方法返回 -1。如果数组中还未包含该 元素，add() 方法会将新加元素保存到数组中并返回 true;否则，返回 false。</p>
+
+<ul>
+  <li>remove 方法</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function remove(data) {
+    var pos = this.dataStore.indexOf(data);
+        if (pos &gt; -1) {
+           this.dataStore.splice(pos,1);
+           return true;
+        } else {
+           return false;
+    } 
+}
+</code></pre></div></div>
+
+<ul>
+  <li>union() 并集操作</li>
+</ul>
+
+<p>思路：首先将第一个集合里的成员悉数加入一个临时集合，然后检 查第二个集合中的成员，看它们是否也同时属于第一个集合。如果属于，则跳过该成员， 否则就将该成员加入临时集合</p>
+
+<p>在定义 union() 方法前，先需要定义一个辅助方法 contains()，该方法检查一个成员是否 属于该集合</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function contains(data) {
+    if (this.dataStore.indexOf(data) &gt; -1) {
+       return true;
+        } else {
+       return false;
+    } 
+}
+
+
+function union(set) {
+     var tempSet = new Set();
+     for (var i = 0; i &lt; this.dataStore.length; ++i) {
+          tempSet.add(this.dataStore[i]);
+     }
+     for (var i = 0; i &lt; set.dataStore.length; ++i) {
+          if (!tempSet.contains(set.dataStore[i])) {
+             tempSet.dataStore.push(set.dataStore[i]);
+          }
+     }
+     return tempSet;
+}
+</code></pre></div></div>
+
+<ul>
+  <li>intersect() 交集</li>
+</ul>
+
+<p>每当发现第一 个集合的成员也属于第二个集合时，便将该成员加入一个新集合，这个新集合即为方法的 返回值</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function intersect(set) {
+       var tempSet = new Set();
+       for (var i = 0; i &lt; this.dataStore.length; ++i) {
+          if (set.contains(this.dataStore[i])) {
+             tempSet.add(this.dataStore[i]);
+          } 
+       }
+       return tempSet;
+}
+</code></pre></div></div>
+
+<ul>
+  <li>subset()</li>
+</ul>
+
+<p>在判断每个元素是否属于待比较集合前，该方法先使用 size() 方法对比两个集合的大小</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function size() {
+        return this.dataStore.length;
+}
+</code></pre></div></div>
+
+<p>思路：</p>
+
+<p>subset() 方法首先要确定该集合的长度是否小于待比较集合。如果该集合比待比较集合还要大，那么该集合肯定不会是待比较集合的一个子集。 当该集合的长度小于待比较集合时，再判断该集合内的成员是否都属于待比较集合。如果有任意一个成员不属于待比较集合，则返回 false，程序终止。如果一直比较完该集合的 最后一个元素，所有元素都属于待比较集合，那么该集合就是待比较集合的一个子集，该方法返回true。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function subset(set) {
+    if (this.size() &gt; set.size()) {
+	return false;
+    } else {
+       for each (var member in this.dataStore) {
+          if (!set.contains(member)) {
+             return false;
+          } 
+       }
+    }
+    return true;
+}
+
+</code></pre></div></div>
+
+<ul>
+  <li>difference() 返回一个新集合</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function difference(set) {
+    var tempSet = new Set();
+    for (var i = 0; i &lt; this.dataStore.length; ++i) {
+       if (!set.contains(this.dataStore[i])) {
+          tempSet.add(this.dataStore[i]);
+       } 
+    }
+    return tempSet;
+}
+</code></pre></div></div>
+
+</div>
+				<footer><meta itemprop="dateModified" content="2017-12-22T00:00:00+08:00"><div class="article-license"><div class="m-license"><div class="clearfix"><p>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> license.</p><a class="license" rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+      <img alt="Creative Commons License" src="/assets/images/license-cc4.png" />
+    </a><p></p>
+  </div>
+</div></div>
+				</footer></article>
+		</div>
+	</div>
+</div><script src="//cdn.bootcss.com/toc/0.3.2/toc.min.js"></script>
+<script type="text/javascript">
+	window.throttle = function(func, wait) {
+	  var args, result, thisArg, timeoutId, lastCalled = 0;
+
+	  function trailingCall() {
+	    lastCalled = new Date;
+	    timeoutId = null;
+	    result = func.apply(thisArg, args);
+	  }
+	  return function() {
+	    var now = new Date,
+	      remaining = wait - (now - lastCalled);
+
+	    args = arguments;
+	    thisArg = this;
+
+	    if (remaining <= 0) {
+	      clearTimeout(timeoutId);
+	      timeoutId = null;
+	      lastCalled = now;
+	      result = func.apply(thisArg, args);
+	    } else if (!timeoutId) {
+	      timeoutId = setTimeout(trailingCall, remaining);
+	    }
+	    return result;
+	  };
+	}
+	$(function() {
+	  var $window = $(window);
+	  var $pageStage = $('.js-page-stage');
+	  var $pageMain = $('.js-main');
+	  var $pageFooter = $('.js-page-footer');
+	  var $articleContent = $('.js-article-content');
+	  var $articleAside = $('.js-article-aside');
+	  var $toc = $('.js-toc');
+		var $col2 = $('.js-col-2');
+	  var hasTitle = $articleContent.find('h1,h2,h3').length > 0;
+	  function asideSticky() {
+	    return $col2.css('display') !== 'none' && $pageStage.hasClass('has-toc');
+	  }
+
+	  function setTocClass() {
+	    if (hasTitle) {
+	      !$pageStage.hasClass('has-toc') && $pageStage.addClass('has-toc');
+	    }
+	  }
+
+	  setTocClass();
+
+	  function setAsideTOC() {
+	    var asideTop, asideLeft, scrollBottom, asideBottomTop, lastScrollTop;
+
+	    function init() {
+	      var asideOffset = $articleAside.offset();
+	      var footerOffset = $pageFooter.offset();
+	      var mainOffset = $pageMain.offset();
+	      asideTop = mainOffset.top;
+	      asideHeight = $toc.outerHeight() + parseInt($articleAside.css('padding-top'), 10) + parseInt($articleAside.css('padding-bottom'), 10);
+	      asideLeft = mainOffset.left + $pageMain.outerWidth() - $articleAside.outerWidth() - parseInt($pageMain.css('padding-right'), 10);
+	      scrollBottom = footerOffset.top - asideHeight;
+	      asideBottomTop = scrollBottom - mainOffset.top;
+	    }
+
+	    function setAside(force) {
+	      force !== true && (force = false);
+	      var scrollTop = $window.scrollTop();
+	      if (scrollTop >= asideTop && scrollTop <= scrollBottom) {
+	        (!force && lastScrollTop >= asideTop && lastScrollTop <= scrollBottom) ||
+	        $articleAside.addClass('fixed').css({
+	          left: asideLeft + 'px',
+	          top: 0
+	        });
+	      } else if (scrollTop < asideTop) {
+	        (!force && lastScrollTop < asideTop) ||
+	        $articleAside.removeClass('fixed').css({
+	          left: 0,
+	          top: 0
+	        });
+	      } else {
+	        (!force && lastScrollTop > scrollBottom) ||
+	        $articleAside.removeClass('fixed').css({
+	          left: 0,
+	          top: asideBottomTop + 'px'
+	        });
+	      }
+	      lastScrollTop = scrollTop;
+	    }
+	    asideSticky() && (init(), setAside());
+	    $window.on('scroll', function() {
+	      asideSticky() && setAside();
+	    });
+	    $window.on('resize', throttle(function() {
+	      setTocClass();
+	      asideSticky() && (init(), setAside(true));
+	    }, 100));
+	    setTimeout(init, 4000);
+	  }
+	  setTimeout(setAsideTOC, 1000);
+
+	  $toc.toc({
+	    'selectors': 'h1,h2,h3',
+	    'container': '.js-article-content',
+	  });
+	});
+</script></div>
+</div>
+</div><div class="m-page-footer js-page-footer">
+  <div class="main">
+    <aside><div class="follow-me"><ul itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Someone">
+    <link itemprop="url" href="http://localhost:4000/"></ul></div>
+</aside>
+    <footer class="site-info">
+      <p>© Someone's blog 2018</p>
+      <p>Powered by <a title="Jekyll is a simple, blog-aware, static site generator." href="http://jekyllrb.com/">Jekyll</a> & <a
+        title="TeXt is a succinct theme for blogging." href="https://github.com/kitian616/jekyll-TeXt-theme">TeXt Theme</a>.</p>
+    </footer>
+  </div>
+</div><script>
+      $(function() {
+        // display coding language
+        var $articleContent = $('.m-post, .m-page').find('.m-article-content'), $this;
+        $articleContent.children('.highlight').each(function() {
+          $this = $(this);
+          $this.attr('data-lang', $this.find('code').attr('data-lang'));
+        });
+        $articleContent.children('h1, h2, h3, h4, h5, h6').each(function() {
+          $this = $(this);
+          $this.append($('<a class="anchor" aria-hidden="true"></a>').text('#'));
+        });
+        $articleContent.on('click', '.anchor', function(e) {
+          var targetId = $(this).parent().attr('id');
+          scrollAnimateTo($('#' + targetId).offset().top, 400, function() {
+            console.log(666)
+            window.history.replaceState(null, '', window.location.href.split('#')[0] + '#' + targetId);
+          });
+        });
+        function scrollAnimateTo(destination, duration, callback) {
+          var $body = $('html, body'), bodyScrollTop = $body.scrollTop();
+          if(bodyScrollTop === destination) { return; }
+          $body.animate({ scrollTop: destination }, duration, callback);
+        }
+      });
+    </script></body>
+</html>

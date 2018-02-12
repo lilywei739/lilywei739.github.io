@@ -1,0 +1,209 @@
+.m-article-content {
+  word-wrap: break-word;
+  line-height: map-get($base, line-height-large);
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    position: relative;
+    margin: map-get($base, vertical-space-large) + .5rem 0 map-get($base, vertical-space-large) 0;
+    & > .anchor {
+      @include link-text-colors($border-color, $main-color-1);
+      @include transform(translate(-100% ,0));
+      text-decoration: none;
+      margin: .5rem;
+      display: none;
+    }
+    &:hover {
+      & > .anchor {
+        display: inline;
+        cursor: pointer;
+      }
+    }
+  }
+  h1,
+  h2 {
+    border: 0 dashed $border-color;
+    border-bottom-width: 2px;
+  }
+  p {
+    margin: map-get($base, vertical-space-large) 0;
+  }
+  blockquote {
+    padding: 0 0 0 1rem;
+    border: 0 solid $border-color;
+    border-left-width: 4px;
+    margin: map-get($base, vertical-space-large) 0;
+    font-size: map-get($base, font-size-sub);
+    color: $text-color-l;
+    p {
+      margin: .4rem 0;
+    }
+    &>:last-child {
+      margin-bottom: 0;
+    }
+  }
+  img:not(.emoji) {
+    max-width: 100%;
+    max-height: 37rem;
+    vertical-align: middle;
+  }
+  .emoji {
+    display: inline-block;
+    vertical-align: text-bottom;
+    width: map-get($base, line-height-large) * .7rem;
+    height: map-get($base, line-height-large) * .7rem;
+  }
+  code {
+    @include round-rect(default, .2rem .5rem);
+    background-color: $text-background-color;
+    span {
+      padding: 0;
+      margin: 0;
+    }
+  }
+  pre {
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    &>code {
+      padding: 0;
+      background-color: transparent;
+      word-wrap: normal;
+      &.language-mermaid, &.language-chart {
+        display: none;
+        &[data-processed] {
+          display: block;
+        }
+      }
+    }
+  }
+  .highlighter-rouge, figure.highlight, pre {
+    margin: map-get($base, vertical-space-large) 0;
+  }
+  .highlighter-rouge>.highlight, figure.highlight {
+    &>pre {
+      @include round-rect(default, 1rem 1rem);
+      margin: 0;
+      background-color: $text-background-color;
+      &>code {
+        display: block;
+        line-height: map-get($base, line-height);
+
+      }
+    }
+  }
+  figure.highlight {
+    &:before {
+      content: attr(data-lang);
+      display: block;
+      border-top-left-radius: map-get($shape, round-rect-radius);
+      border-top-right-radius: map-get($shape, round-rect-radius);
+      padding: .5rem 1rem .5rem 0;
+      color: $decorate-color;
+      background-color: $text-background-color;
+      font-weight: map-get($base, font-weight-bold);
+      text-align: right;
+      text-transform: uppercase;
+    }
+    &>pre {
+      padding-top: 0;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      &>code {
+        &>.rouge-table {
+          width: auto;
+          margin: -1rem;
+          margin-top: 0rem;
+          tbody, tr, td {
+            border: none;
+            padding-top: 0;
+            padding-bottom: 0;
+          }
+          &>tbody {
+            @include flexbox;
+            &>tr {
+              width: 100%;
+              @include flexbox;
+              &>.code {
+                padding: 0 1rem 1rem 1rem;
+                overflow: auto;
+                -webkit-overflow-scrolling: touch;
+              }
+            }
+          }
+          tbody td {
+            &.gl {
+              padding-left: 1rem;
+            }
+            &>pre {
+              @include round-rect(0, 0);
+              display: block;
+              overflow: visible;
+              margin: 0;
+              &.lineno {
+                color: $text-color-l;
+                @include user-select(none);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  ul,
+  ol {
+    margin: map-get($base, vertical-space-large) 0 map-get($base, vertical-space-large) 1.4rem;
+    li {
+      margin: 0;
+      p {
+        margin: 0;
+      }
+    }
+  }
+  dl {
+    margin: map-get($base, vertical-space-large) 0;
+    dt,
+    dd {
+      margin: 0;
+      p {
+        margin: 0;
+      }
+    }
+    dt {
+      font-weight: map-get($base, font-weight-bold);
+    }
+    dd {
+      margin-left: 2rem;
+    }
+  }
+  table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: map-get($base, vertical-space-large) 0;
+    border-collapse: collapse;
+    th,
+    td {
+      border: 1px solid $border-color-l;
+      padding: .5rem;
+    }
+    thead,
+    tbody {
+      border: 1px solid $border-color-l;
+    }
+    thead {
+      border-bottom-width: 2px;
+    }
+    tbody>tr:nth-child(even) {
+      background-color: $text-background-color;
+    }
+  }
+  hr {
+    border: 0 dashed $border-color;
+    border-top-width: 2px;
+    margin: 1rem 0;
+  }
+}

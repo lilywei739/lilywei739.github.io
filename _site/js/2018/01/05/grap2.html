@@ -1,0 +1,333 @@
+<!DOCTYPE html><html lang="en">
+  <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>JS基础--图和图算法(二) - Someone's blog</title>
+<meta name="description" content="图和图算法(二)查找最短路径图最常见的操作之一就是寻找从一个顶点到另一个顶点的最短路径。广度优先搜索对应的最短路径在执行广度优先搜索时，会自动查找从一个顶点到另一个相连顶点的最短路径。例如，要查找从顶点 A 到顶点 D 的最短路径，我们首先会查找从 A 到 D 是否有任何一条单边路径，接着查找两条边的路径，以此类...">
+<link rel="canonical" href="http://localhost:4000/js/2018/01/05/grap2.html"><link rel="alternate" type="application/rss+xml" title="Someone's blog" href="http://localhost:4000/feed.xml">
+<!-- for Safari on iOS https://developer.apple.com/ios/human-interface-guidelines/icons-and-images/app-icon/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/images/logo/icon-180x180.png"><link rel="apple-touch-icon" sizes="167x167" href="/assets/images/logo/icon-167x167.png"><link rel="apple-touch-icon" sizes="152x152" href="/assets/images/logo/icon-152x152.png"><link rel="apple-touch-icon" sizes="120x120" href="/assets/images/logo/icon-120x120.png"><link rel="shortcut icon" href="/assets/images/logo/icon-120x120.png">
+<!-- for Chrome on Android https://developer.chrome.com/multidevice/android/installtohomescreen -->
+<meta name="mobile-web-app-capable" content="yes"><link rel="icon" sizes="192x192" href="/assets/images/logo/icon-192x192.png">
+<!-- for Edge on Windows 10 https://msdn.microsoft.com/en-us/library/dn255024(v=vs.85).aspx --><meta name="msapplication-TileImage" content="/assets/images/logo/icon-144x144.png"><meta name="msapplication-square310x310logo" content="/assets/images/logo/icon-310x310.png"><meta name="msapplication-wide310x150logo" content="/assets/images/logo/icon-310x150.png"><meta name="msapplication-square150x150logo" content="/assets/images/logo/icon-150x150.png"><meta name="msapplication-square70x70logo" content="/assets/images/logo/icon-70x70.png">
+<meta name="msapplication-TileColor" content="#eeeeee"><link rel="stylesheet" href="/assets/css/blog.css">
+    <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="m-page-stage js-page-stage"><div class="m-page-content"><header class="m-page-header">
+  <div class="main clearfix">
+    <div class='site-logo'><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="24px" height="24px" viewBox="0 0 24 24">
+<style type="text/css">
+	.st0{fill:#666666;}
+</style>
+<path class="st0" d="M1.7,22.3c5.7-5.7,11.3-5.7,17,0c3.3-3.3,3.5-5.3,0.8-6c2.7,0.7,3.5-1.1,2.3-5.6s-3.3-5.2-6.3-2.1
+	c3-3,2.3-5.2-2.1-6.3S7,1.8,7.7,4.6C7,1.8,5,2.1,1.7,5.3C7.3,11,7.3,16.7,1.7,22.3"/>
+</svg><a title="Someone's Blog
+" href="/">Someone's blog</a></div>
+    <nav>
+      <ul><li><a href="/">Home</a></li><li><a href="/all.html">All</a></li><li><a href="/about.html">About</a></li><li><a type="application/rss+xml" href="/feed.xml">RSS</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<div class="m-page-main"><div class="m-post">
+	<div class="main js-main clearfix">
+		<div class="col-2 js-col-2">
+			<aside class="js-article-aside"><div class="m-toc js-toc"></div></aside>
+		</div>
+		<div class="col-1">
+			<article itemscope itemtype="http://schema.org/BlogPosting">
+				<meta itemprop="mainEntityOfPage" itemscope itemType="https://schema.org/WebPage"/>
+				<header class="main-header"><h1 itemprop="headline" itemprop="name headline">JS基础--图和图算法(二)</h1><div class="m-article-data clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Someone"/></meta><div class="other-wrapper"><div class="date-wrapper"><time class="article-meta" datetime="2018-01-05T00:00:00+08:00"
+          itemprop="datePublished">Jan 05, 2018
+        </time></div>
+  </div>
+</div>
+</header>
+				<div class="m-article-content js-article-content" itemprop="articleBody"><h1 id="图和图算法二">图和图算法(二)</h1>
+
+<h2 id="查找最短路径">查找最短路径</h2>
+
+<p>图最常见的操作之一就是寻找从一个顶点到另一个顶点的最短路径。</p>
+
+<h3 id="广度优先搜索对应的最短路径">广度优先搜索对应的最短路径</h3>
+
+<p>在执行广度优先搜索时，会自动查找从一个顶点到另一个相连顶点的最短路径。例如，要查找从顶点 A 到顶点 D 的最短路径，我们首先会查找从 A 到 D 是否有任何一条单边路径，接着查找两条边的路径，以此类推。这正是广度优先搜索的搜索过程，因此我们可以轻松地修改广度优先搜索算法，找出最短路径。</p>
+
+<h3 id="确定路径">确定路径</h3>
+
+<p>要查找最短路径，需要修改广度优先搜索算法来记录从一个顶点到另一个顶点的路径。这需要对 Graph 类做一些修改。</p>
+
+<p>首先，需要一个数组来保存从一个顶点到下一个顶点的所有边。将这个数组命名为edgeTo 。因为从始至终使用的都是广度优先搜索函数，所以每次都会遇到一个没有标记的顶点，除了对它进行标记外，还会从邻接列表中我们正在探索的那个顶点添加一条边到这个顶点。这是新的 bfs()函数，以及需要添加到 Graph 类的代码：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// 将这行添加到 Graph 类
+this.edgeTo = [];
+
+function bfs(s) {
+	var queue = [];
+	this.marked[s] = true;
+	queue.push(s); // 添加到队尾
+	while (queue.length &gt; 0) {
+	var v = queue.shift(); // 从队首移除
+	if (v == undefined) {
+		document.write("Visisted vertex: " + v);
+	}
+		for each(var w in this.adj[v]) {
+			if (!this.marked[w]) {
+				this.edgeTo[w] = v;
+				this.marked[w] = true;
+				queue.push(w);
+			}
+		}
+	}
+}
+</code></pre></div></div>
+
+<p>其次，现在需要一个函数，用于展示图中连接到不同顶点的路径。函数 pathTo() 创建了一个栈，用来存储与指定顶点有共同边的所有顶点。以下是 pathTo() 函数的代码，以及一个简单的辅助函数：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// 将这两行添加到 Graph 类
+this.pathTo = pathTo;
+this.hasPathTo = hashPathTo;
+
+function pathTo(v) {
+	var source = 0;
+	if (!this.hasPathTo(v)) {
+		return undefined;
+	}
+
+	var path = [];
+	for (var i = v; i != source; i = this.edgeTo[i]) {
+		path.push(i);
+	}
+
+	path.push(s);
+	return path;
+}
+
+function hashPathTo(v) {
+	return this.marked[v];
+}
+</code></pre></div></div>
+
+<h2 id="拓扑排序">拓扑排序</h2>
+
+<p>拓扑排序会对有向图的所有顶点进行排序，使有向边从前面的顶点指向后面的顶点。</p>
+
+<h3 id="拓扑排序算法">拓扑排序算法</h3>
+
+<p>拓扑排序算法与深度优先搜索类似。不同的是，拓扑排序算法不会立即输出已访问的顶点，而是访问当前顶点邻接表中的所有相邻顶点，直到这个列表穷尽时，才将当前顶点压入栈中。</p>
+
+<p>拓扑排序算法被拆分为两个函数。第一个函数 topSort() ，会设置排序进程并调用一个辅助函数 topSortHelper() ，然后显示排序好的顶点列表。</p>
+
+<p>主要工作是在递归函数 topSortHelper() 中完成的。这个函数会将当前顶点标记为已访问，然后递归访问当前顶点邻接表中的每个相邻顶点，标记这些顶点为已访问。最后，将当前顶点压入栈。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function topSort() {
+	var stack = [];
+	var visited = [];
+	for (var i = 0; i &lt; this.vertices; i++) {
+		visited[i] = false;
+	}
+	for (var i = 0; i &lt; this.vertices; i++) {
+		if (visited[i] == false) {
+			this.topSortHelper(i, visited, stack);
+		}
+	}
+	for (var i = 0; i &lt; stack.length; i++) {
+		if (stack[i] != undefined &amp;&amp; stack[i] != false) {
+			document.write(this.vertexList[stack[i]]);
+		}
+	}
+}
+
+function topSortHelper(v, visited, stack) {
+	visited[v] = true;
+	for each(var w in this.adj[v]) {
+		if (!visited[w]) {
+			this.topSortHelper(visited[w], visited, stack);
+		}
+	}
+	stack.push(v);
+}
+</code></pre></div></div>
+
+<p>最终的Graph类</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function Graph(v) {
+	this.vertices = v;
+	this.vertexList = [];
+	this.edges = 0;
+	this.adj = [];
+	for (var i = 0; i &lt; this.vertices; ++i) {
+		this.adj[i] = [];
+		this.ajd[i].push("");
+	}
+	this.addEdge = addEdge;
+	this.showGraph = showGraph;
+	this.dfs = dfs;
+	this.marked = [];
+	for (var i = 0; i &lt; this.vertices; ++i) {
+		this.marked[i] = false;
+	}
+	this.bfs = bfs;
+	this.edgeTo = [];
+	this.hasPathTo = hasPathTo;
+	this.topSortHelper = topSortHelper;
+	this.topSort = topSort;
+}
+
+</code></pre></div></div>
+
+</div>
+				<footer><meta itemprop="dateModified" content="2018-01-05T00:00:00+08:00"><div class="article-license"><div class="m-license"><div class="clearfix"><p>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> license.</p><a class="license" rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+      <img alt="Creative Commons License" src="/assets/images/license-cc4.png" />
+    </a><p></p>
+  </div>
+</div></div>
+				</footer></article>
+		</div>
+	</div>
+</div><script src="//cdn.bootcss.com/toc/0.3.2/toc.min.js"></script>
+<script type="text/javascript">
+	window.throttle = function(func, wait) {
+	  var args, result, thisArg, timeoutId, lastCalled = 0;
+
+	  function trailingCall() {
+	    lastCalled = new Date;
+	    timeoutId = null;
+	    result = func.apply(thisArg, args);
+	  }
+	  return function() {
+	    var now = new Date,
+	      remaining = wait - (now - lastCalled);
+
+	    args = arguments;
+	    thisArg = this;
+
+	    if (remaining <= 0) {
+	      clearTimeout(timeoutId);
+	      timeoutId = null;
+	      lastCalled = now;
+	      result = func.apply(thisArg, args);
+	    } else if (!timeoutId) {
+	      timeoutId = setTimeout(trailingCall, remaining);
+	    }
+	    return result;
+	  };
+	}
+	$(function() {
+	  var $window = $(window);
+	  var $pageStage = $('.js-page-stage');
+	  var $pageMain = $('.js-main');
+	  var $pageFooter = $('.js-page-footer');
+	  var $articleContent = $('.js-article-content');
+	  var $articleAside = $('.js-article-aside');
+	  var $toc = $('.js-toc');
+		var $col2 = $('.js-col-2');
+	  var hasTitle = $articleContent.find('h1,h2,h3').length > 0;
+	  function asideSticky() {
+	    return $col2.css('display') !== 'none' && $pageStage.hasClass('has-toc');
+	  }
+
+	  function setTocClass() {
+	    if (hasTitle) {
+	      !$pageStage.hasClass('has-toc') && $pageStage.addClass('has-toc');
+	    }
+	  }
+
+	  setTocClass();
+
+	  function setAsideTOC() {
+	    var asideTop, asideLeft, scrollBottom, asideBottomTop, lastScrollTop;
+
+	    function init() {
+	      var asideOffset = $articleAside.offset();
+	      var footerOffset = $pageFooter.offset();
+	      var mainOffset = $pageMain.offset();
+	      asideTop = mainOffset.top;
+	      asideHeight = $toc.outerHeight() + parseInt($articleAside.css('padding-top'), 10) + parseInt($articleAside.css('padding-bottom'), 10);
+	      asideLeft = mainOffset.left + $pageMain.outerWidth() - $articleAside.outerWidth() - parseInt($pageMain.css('padding-right'), 10);
+	      scrollBottom = footerOffset.top - asideHeight;
+	      asideBottomTop = scrollBottom - mainOffset.top;
+	    }
+
+	    function setAside(force) {
+	      force !== true && (force = false);
+	      var scrollTop = $window.scrollTop();
+	      if (scrollTop >= asideTop && scrollTop <= scrollBottom) {
+	        (!force && lastScrollTop >= asideTop && lastScrollTop <= scrollBottom) ||
+	        $articleAside.addClass('fixed').css({
+	          left: asideLeft + 'px',
+	          top: 0
+	        });
+	      } else if (scrollTop < asideTop) {
+	        (!force && lastScrollTop < asideTop) ||
+	        $articleAside.removeClass('fixed').css({
+	          left: 0,
+	          top: 0
+	        });
+	      } else {
+	        (!force && lastScrollTop > scrollBottom) ||
+	        $articleAside.removeClass('fixed').css({
+	          left: 0,
+	          top: asideBottomTop + 'px'
+	        });
+	      }
+	      lastScrollTop = scrollTop;
+	    }
+	    asideSticky() && (init(), setAside());
+	    $window.on('scroll', function() {
+	      asideSticky() && setAside();
+	    });
+	    $window.on('resize', throttle(function() {
+	      setTocClass();
+	      asideSticky() && (init(), setAside(true));
+	    }, 100));
+	    setTimeout(init, 4000);
+	  }
+	  setTimeout(setAsideTOC, 1000);
+
+	  $toc.toc({
+	    'selectors': 'h1,h2,h3',
+	    'container': '.js-article-content',
+	  });
+	});
+</script></div>
+</div>
+</div><div class="m-page-footer js-page-footer">
+  <div class="main">
+    <aside><div class="follow-me"><ul itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Someone">
+    <link itemprop="url" href="http://localhost:4000/"></ul></div>
+</aside>
+    <footer class="site-info">
+      <p>© Someone's blog 2018</p>
+      <p>Powered by <a title="Jekyll is a simple, blog-aware, static site generator." href="http://jekyllrb.com/">Jekyll</a> & <a
+        title="TeXt is a succinct theme for blogging." href="https://github.com/kitian616/jekyll-TeXt-theme">TeXt Theme</a>.</p>
+    </footer>
+  </div>
+</div><script>
+      $(function() {
+        // display coding language
+        var $articleContent = $('.m-post, .m-page').find('.m-article-content'), $this;
+        $articleContent.children('.highlight').each(function() {
+          $this = $(this);
+          $this.attr('data-lang', $this.find('code').attr('data-lang'));
+        });
+        $articleContent.children('h1, h2, h3, h4, h5, h6').each(function() {
+          $this = $(this);
+          $this.append($('<a class="anchor" aria-hidden="true"></a>').text('#'));
+        });
+        $articleContent.on('click', '.anchor', function(e) {
+          var targetId = $(this).parent().attr('id');
+          scrollAnimateTo($('#' + targetId).offset().top, 400, function() {
+            console.log(666)
+            window.history.replaceState(null, '', window.location.href.split('#')[0] + '#' + targetId);
+          });
+        });
+        function scrollAnimateTo(destination, duration, callback) {
+          var $body = $('html, body'), bodyScrollTop = $body.scrollTop();
+          if(bodyScrollTop === destination) { return; }
+          $body.animate({ scrollTop: destination }, duration, callback);
+        }
+      });
+    </script></body>
+</html>

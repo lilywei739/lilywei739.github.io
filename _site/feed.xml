@@ -1,0 +1,1497 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.7.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2018-02-12T16:31:52+08:00</updated><id>http://localhost:4000/</id><title type="html">Someone’s blog</title><subtitle>Someone's Blog
+</subtitle><author><name>Someone</name></author><entry><title type="html">JS基础–高级排序(三)</title><link href="http://localhost:4000/js/2018/02/11/senior_Sort_3.html" rel="alternate" type="text/html" title="JS基础--高级排序(三)" /><published>2018-02-11T00:00:00+08:00</published><updated>2018-02-11T00:00:00+08:00</updated><id>http://localhost:4000/js/2018/02/11/senior_Sort_3</id><content type="html" xml:base="http://localhost:4000/js/2018/02/11/senior_Sort_3.html">&lt;h1 id=&quot;高级排序快速排序&quot;&gt;高级排序—快速排序&lt;/h1&gt;
+
+&lt;p&gt;快速排序是处理大数据集最快的排序算法之一。&lt;/p&gt;
+
+&lt;p&gt;它是一种分而治之的算法，通过递归的方式将数据依次分解为包含较小元素和较大元素的不同子序列。该算法不断重复这个步骤直到所有数据都是有序的。&lt;/p&gt;
+
+&lt;h3 id=&quot;快速排序&quot;&gt;快速排序&lt;/h3&gt;
+
+&lt;p&gt;这个算法首先要在列表中选择一个元素作为基准值(pivot)。数据排序围绕基准值进行， 将列表中小于基准值的元素移到数组的底部，将大于基准值的元素移到数组的顶部。&lt;/p&gt;
+
+&lt;h4 id=&quot;自底向上的归并排序&quot;&gt;自底向上的归并排序&lt;/h4&gt;
+
+&lt;p&gt;采用非递归或者迭代版本的归并排序是一个自底向上的过程。这个算法首先将数据集分解 为一组只有一个元素的数组。然后通过创建一组左右子数组将它们慢慢合并起来，每次合 并都保存一部分排好序的数据，直到最后剩下的这个数组所有的数据都已完美排序。&lt;/p&gt;
+
+&lt;p&gt;下图演示了自底向上的归并排序算法是如何运行的&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://0.0.0.0:4000/img/20180201/20180201-1.jpg&quot; alt=&quot;图&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;JavaScript 实现的自底向上归并排序算法:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function mergeSort() {
+    if (this.dataStore.length &amp;lt; 2) {
+        return; 
+    }
+    var step = 1;
+    var left, right;
+    while (step &amp;lt; this.dataStore.length) {
+       left = 0;
+       right = step;
+       while (right + step &amp;lt;= this.dataStore.length) {
+          mergeArrays(this.dataStore, left, left+step, right, right+step);
+          left = right + step;
+          right = left + step;
+       }
+       if (right &amp;lt; this.dataStore.length) {
+            mergeArrays(this.dataStore, left, left+step, right, this.dataStore.length); 
+        }
+        step *= 2;
+    }
+}
+
+function mergeArrays(arr,startLeft, stopLeft, startRight, stopRight) {
+   var rightArr = new Array(stopRight - startRight + 1);
+   var leftArr = new Array(stopLeft - startLeft + 1);
+   k = startRight;
+   for (var i = 0; i &amp;lt; (rightArr.length-1); ++i) {
+      rightArr[i] = arr[k];
+      ++k;
+   } 
+   k = startLeft;
+   for (var i = 0; i &amp;lt; (leftArr.length-1); ++i) {
+        leftArr[i] = arr[k];
+        ++k; 
+   }
+
+    rightArr[rightArr.length-1] = Infinity; // 哨兵值 
+    leftArr[leftArr.length-1] = Infinity; // 哨兵值 
+    var m = 0;
+    var n = 0;
+   for (var k = startLeft; k &amp;lt; stopRight; ++k) {
+        if (leftArr[m] &amp;lt;= rightArr[n]) {
+            arr[k] = leftArr[m];
+            m++; 
+        } else {
+            arr[k] = rightArr[n];
+            n++;
+        } 
+    }
+    document.write(&quot;left array - &quot;, leftArr + '&amp;lt;br /&amp;gt;');
+    document.write(&quot;right array - &quot;, rightArr + '&amp;lt;br /&amp;gt;');
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;mergeSort() 函数中的关键点就是 step 这个变量，它用来控制 mergeArrays() 函数生成的 leftArr 和 rightArr 这两个子序列的大小。通过控制子序列的大小，处理排序是比较高效 的，因为它在对小数组进行排序时不需要花费太多时间。合并之所以高效，还有一个原 因，由于未合并的数据已经是排好序的，将它们合并到一个有序数组的过程非常容易。&lt;/p&gt;
+
+&lt;p&gt;初始化10数的结果：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var nums = new CArray(10);
+nums.setData();
+document.write(nums.toString() + '&amp;lt;br /&amp;gt;');
+nums.mergeSort();
+document.write(nums.toString() + '&amp;lt;br /&amp;gt;');
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://0.0.0.0:4000/img/20180201/20180201-2.jpg&quot; alt=&quot;图&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;一开始每个元素都在左子序列或右子序列中。然后将左右子序列合并，首先每次合并成两 个元素的子序列，然后合并成四个元素的子序列，3 和 5 除外，它们会一直保留到最后一次 迭代，那时会把它们合并成右子序列，然后再与最后的左子序列合并成最终的有序数组。&lt;/p&gt;</content><author><name>Someone</name></author><category term="[&quot;JS&quot;]" /><summary type="html">高级排序—快速排序 快速排序是处理大数据集最快的排序算法之一。 它是一种分而治之的算法，通过递归的方式将数据依次分解为包含较小元素和较大元素的不同子序列。该算法不断重复这个步骤直到所有数据都是有序的。 快速排序 这个算法首先要在列表中选择一个元素作为基准值(pivot)。数据排序围绕基准值进行， 将列表中小于基准值的元素移到数组的底部，将大于基准值的元素移到数组的顶部。 自底向上的归并排序 采用非递归或者迭代版本的归并排序是一个自底向上的过程。这个算法首先将数据集分解 为一组只有一个元素的数组。然后通过创建一组左右子数组将它们慢慢合并起来，每次合 并都保存一部分排好序的数据，直到最后剩下的这个数组所有的数据都已完美排序。 下图演示了自底向上的归并排序算法是如何运行的 JavaScript 实现的自底向上归并排序算法: function mergeSort() { if (this.dataStore.length &amp;lt; 2) { return; } var step = 1; var left, right; while (step &amp;lt; this.dataStore.length) { left = 0; right = step; while (right + step &amp;lt;= this.dataStore.length) { mergeArrays(this.dataStore, left, left+step, right, right+step); left = right + step; right = left + step; } if (right &amp;lt; this.dataStore.length) { mergeArrays(this.dataStore, left, left+step, right, this.dataStore.length); } step *= 2; } } function mergeArrays(arr,startLeft, stopLeft, startRight, stopRight) { var rightArr = new Array(stopRight - startRight + 1); var leftArr = new Array(stopLeft - startLeft + 1); k = startRight; for (var i = 0; i &amp;lt; (rightArr.length-1); ++i) { rightArr[i] = arr[k]; ++k; } k = startLeft; for (var i = 0; i &amp;lt; (leftArr.length-1); ++i) { leftArr[i] = arr[k]; ++k; } rightArr[rightArr.length-1] = Infinity; // 哨兵值 leftArr[leftArr.length-1] = Infinity; // 哨兵值 var m = 0; var n = 0; for (var k = startLeft; k &amp;lt; stopRight; ++k) { if (leftArr[m] &amp;lt;= rightArr[n]) { arr[k] = leftArr[m]; m++; } else { arr[k] = rightArr[n]; n++; } } document.write(&quot;left array - &quot;, leftArr + '&amp;lt;br /&amp;gt;'); document.write(&quot;right array - &quot;, rightArr + '&amp;lt;br /&amp;gt;'); } mergeSort() 函数中的关键点就是 step 这个变量，它用来控制 mergeArrays() 函数生成的 leftArr 和 rightArr 这两个子序列的大小。通过控制子序列的大小，处理排序是比较高效 的，因为它在对小数组进行排序时不需要花费太多时间。合并之所以高效，还有一个原 因，由于未合并的数据已经是排好序的，将它们合并到一个有序数组的过程非常容易。 初始化10数的结果： var nums = new CArray(10); nums.setData(); document.write(nums.toString() + '&amp;lt;br /&amp;gt;'); nums.mergeSort(); document.write(nums.toString() + '&amp;lt;br /&amp;gt;'); 一开始每个元素都在左子序列或右子序列中。然后将左右子序列合并，首先每次合并成两 个元素的子序列，然后合并成四个元素的子序列，3 和 5 除外，它们会一直保留到最后一次 迭代，那时会把它们合并成右子序列，然后再与最后的左子序列合并成最终的有序数组。</summary></entry><entry><title type="html">JS基础–高级排序(二)</title><link href="http://localhost:4000/js/2018/02/01/senior_Sort_2.html" rel="alternate" type="text/html" title="JS基础--高级排序(二)" /><published>2018-02-01T00:00:00+08:00</published><updated>2018-02-01T00:00:00+08:00</updated><id>http://localhost:4000/js/2018/02/01/senior_Sort_2</id><content type="html" xml:base="http://localhost:4000/js/2018/02/01/senior_Sort_2.html">&lt;h1 id=&quot;高级排序归并排序&quot;&gt;高级排序—归并排序&lt;/h1&gt;
+
+&lt;p&gt;实现原理:把一系列排好序的子序列合并成一个大的完整有序序列。&lt;/p&gt;
+
+&lt;h3 id=&quot;归并排序&quot;&gt;归并排序&lt;/h3&gt;
+
+&lt;p&gt;从理论上讲，这个算法很容易实现。我们需要两个排好序的子数组，然后通过比较数据大小，先从最小的数据开始插入，最后合并得到第三个数组。&lt;/p&gt;
+
+&lt;p&gt;然而，在实际情况中，归并排序还有一些问题，当用这个算法对一个很大的数据集进行排序时，需要相当大的空间来合并存储两个子数组。就现在来讲，内存不那么昂贵，空间不是问题，因此值得我们去实现一下归并排序，比较它和其他排序算法的执行效率。&lt;/p&gt;
+
+&lt;h4 id=&quot;自底向上的归并排序&quot;&gt;自底向上的归并排序&lt;/h4&gt;
+
+&lt;p&gt;采用非递归或者迭代版本的归并排序是一个自底向上的过程。这个算法首先将数据集分解 为一组只有一个元素的数组。然后通过创建一组左右子数组将它们慢慢合并起来，每次合 并都保存一部分排好序的数据，直到最后剩下的这个数组所有的数据都已完美排序。&lt;/p&gt;
+
+&lt;p&gt;下图演示了自底向上的归并排序算法是如何运行的&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://0.0.0.0:4000/img/20180201/20180201-1.jpg&quot; alt=&quot;图&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;JavaScript 实现的自底向上归并排序算法:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function mergeSort() {
+    if (this.dataStore.length &amp;lt; 2) {
+        return; 
+    }
+    var step = 1;
+    var left, right;
+    while (step &amp;lt; this.dataStore.length) {
+       left = 0;
+       right = step;
+       while (right + step &amp;lt;= this.dataStore.length) {
+          mergeArrays(this.dataStore, left, left+step, right, right+step);
+          left = right + step;
+          right = left + step;
+       }
+       if (right &amp;lt; this.dataStore.length) {
+            mergeArrays(this.dataStore, left, left+step, right, this.dataStore.length); 
+        }
+        step *= 2;
+    }
+}
+
+function mergeArrays(arr,startLeft, stopLeft, startRight, stopRight) {
+   var rightArr = new Array(stopRight - startRight + 1);
+   var leftArr = new Array(stopLeft - startLeft + 1);
+   k = startRight;
+   for (var i = 0; i &amp;lt; (rightArr.length-1); ++i) {
+      rightArr[i] = arr[k];
+      ++k;
+   } 
+   k = startLeft;
+   for (var i = 0; i &amp;lt; (leftArr.length-1); ++i) {
+        leftArr[i] = arr[k];
+        ++k; 
+   }
+
+    rightArr[rightArr.length-1] = Infinity; // 哨兵值 
+    leftArr[leftArr.length-1] = Infinity; // 哨兵值 
+    var m = 0;
+    var n = 0;
+   for (var k = startLeft; k &amp;lt; stopRight; ++k) {
+        if (leftArr[m] &amp;lt;= rightArr[n]) {
+            arr[k] = leftArr[m];
+            m++; 
+        } else {
+            arr[k] = rightArr[n];
+            n++;
+        } 
+    }
+    document.write(&quot;left array - &quot;, leftArr + '&amp;lt;br /&amp;gt;');
+    document.write(&quot;right array - &quot;, rightArr + '&amp;lt;br /&amp;gt;');
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;mergeSort() 函数中的关键点就是 step 这个变量，它用来控制 mergeArrays() 函数生成的 leftArr 和 rightArr 这两个子序列的大小。通过控制子序列的大小，处理排序是比较高效 的，因为它在对小数组进行排序时不需要花费太多时间。合并之所以高效，还有一个原 因，由于未合并的数据已经是排好序的，将它们合并到一个有序数组的过程非常容易。&lt;/p&gt;
+
+&lt;p&gt;初始化10数的结果：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var nums = new CArray(10);
+nums.setData();
+document.write(nums.toString() + '&amp;lt;br /&amp;gt;');
+nums.mergeSort();
+document.write(nums.toString() + '&amp;lt;br /&amp;gt;');
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://0.0.0.0:4000/img/20180201/20180201-2.jpg&quot; alt=&quot;图&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;一开始每个元素都在左子序列或右子序列中。然后将左右子序列合并，首先每次合并成两 个元素的子序列，然后合并成四个元素的子序列，3 和 5 除外，它们会一直保留到最后一次 迭代，那时会把它们合并成右子序列，然后再与最后的左子序列合并成最终的有序数组。&lt;/p&gt;</content><author><name>Someone</name></author><category term="[&quot;JS&quot;]" /><summary type="html">高级排序—归并排序 实现原理:把一系列排好序的子序列合并成一个大的完整有序序列。 归并排序 从理论上讲，这个算法很容易实现。我们需要两个排好序的子数组，然后通过比较数据大小，先从最小的数据开始插入，最后合并得到第三个数组。 然而，在实际情况中，归并排序还有一些问题，当用这个算法对一个很大的数据集进行排序时，需要相当大的空间来合并存储两个子数组。就现在来讲，内存不那么昂贵，空间不是问题，因此值得我们去实现一下归并排序，比较它和其他排序算法的执行效率。 自底向上的归并排序 采用非递归或者迭代版本的归并排序是一个自底向上的过程。这个算法首先将数据集分解 为一组只有一个元素的数组。然后通过创建一组左右子数组将它们慢慢合并起来，每次合 并都保存一部分排好序的数据，直到最后剩下的这个数组所有的数据都已完美排序。 下图演示了自底向上的归并排序算法是如何运行的 JavaScript 实现的自底向上归并排序算法: function mergeSort() { if (this.dataStore.length &amp;lt; 2) { return; } var step = 1; var left, right; while (step &amp;lt; this.dataStore.length) { left = 0; right = step; while (right + step &amp;lt;= this.dataStore.length) { mergeArrays(this.dataStore, left, left+step, right, right+step); left = right + step; right = left + step; } if (right &amp;lt; this.dataStore.length) { mergeArrays(this.dataStore, left, left+step, right, this.dataStore.length); } step *= 2; } } function mergeArrays(arr,startLeft, stopLeft, startRight, stopRight) { var rightArr = new Array(stopRight - startRight + 1); var leftArr = new Array(stopLeft - startLeft + 1); k = startRight; for (var i = 0; i &amp;lt; (rightArr.length-1); ++i) { rightArr[i] = arr[k]; ++k; } k = startLeft; for (var i = 0; i &amp;lt; (leftArr.length-1); ++i) { leftArr[i] = arr[k]; ++k; } rightArr[rightArr.length-1] = Infinity; // 哨兵值 leftArr[leftArr.length-1] = Infinity; // 哨兵值 var m = 0; var n = 0; for (var k = startLeft; k &amp;lt; stopRight; ++k) { if (leftArr[m] &amp;lt;= rightArr[n]) { arr[k] = leftArr[m]; m++; } else { arr[k] = rightArr[n]; n++; } } document.write(&quot;left array - &quot;, leftArr + '&amp;lt;br /&amp;gt;'); document.write(&quot;right array - &quot;, rightArr + '&amp;lt;br /&amp;gt;'); } mergeSort() 函数中的关键点就是 step 这个变量，它用来控制 mergeArrays() 函数生成的 leftArr 和 rightArr 这两个子序列的大小。通过控制子序列的大小，处理排序是比较高效 的，因为它在对小数组进行排序时不需要花费太多时间。合并之所以高效，还有一个原 因，由于未合并的数据已经是排好序的，将它们合并到一个有序数组的过程非常容易。 初始化10数的结果： var nums = new CArray(10); nums.setData(); document.write(nums.toString() + '&amp;lt;br /&amp;gt;'); nums.mergeSort(); document.write(nums.toString() + '&amp;lt;br /&amp;gt;'); 一开始每个元素都在左子序列或右子序列中。然后将左右子序列合并，首先每次合并成两 个元素的子序列，然后合并成四个元素的子序列，3 和 5 除外，它们会一直保留到最后一次 迭代，那时会把它们合并成右子序列，然后再与最后的左子序列合并成最终的有序数组。</summary></entry><entry><title type="html">JS基础–高级排序(一)</title><link href="http://localhost:4000/js/2018/01/25/senior_Sort_1.html" rel="alternate" type="text/html" title="JS基础--高级排序(一)" /><published>2018-01-25T00:00:00+08:00</published><updated>2018-01-25T00:00:00+08:00</updated><id>http://localhost:4000/js/2018/01/25/senior_Sort_1</id><content type="html" xml:base="http://localhost:4000/js/2018/01/25/senior_Sort_1.html">&lt;h1 id=&quot;高级排序-希尔排序&quot;&gt;高级排序— 希尔排序&lt;/h1&gt;
+
+&lt;p&gt;本章讲解的高级排序算法，通常被认为是处理大型数据集的最高效排序算法，它们处理的数据集可以达到上百万个元素，而不仅仅是几百个或者几千个。&lt;/p&gt;
+
+&lt;h3 id=&quot;希尔排序&quot;&gt;希尔排序&lt;/h3&gt;
+
+&lt;p&gt;这个算法在插入排序的基础上做了很大的改善。希尔排序的核心理念与插入排序 不同，它会首先比较距离较远的元素，而非相邻的元素。和简单地比较相邻元素相比，使 用这种方案可以使离正确位置很远的元素更快地回到合适的位置。当开始用这个算法遍历 数据集时，所有元素之间的距离会不断减小，直到处理到数据集的末尾，这时算法比较的 就是相邻元素了。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//希尔排序
+function shellsort() {
+    for (var g = 0; g &amp;lt; this.gaps.length; ++g) {
+       for (var i = this.gaps[g]; i &amp;lt; this.dataStore.length; ++i) {
+          var temp = this.dataStore[i];
+          for (var j = i; j &amp;gt;= this.gaps[g] &amp;amp;&amp;amp;
+                this.dataStore[j-this.gaps[g]] &amp;gt; temp;
+               j -= this.gaps[g]) {
+             this.dataStore[j] = this.dataStore[j - this.gaps[g]];
+          }
+          this.dataStore[j] = temp;
+       }
+        document.write('&amp;lt;br /&amp;gt;');
+        document.write(this.toString());
+        document.write('&amp;lt;br /&amp;gt;');
+    } 
+}
+
+function setGaps(arr) {
+    this.gaps = arr;
+}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;为了能让这个程序在 CArray 类测试平台中运行，我们需要在这个类的定义里增加一个对间 隔序列的定义。请将下面代码添加到 CArray 的构造函数中&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;this.gaps = [5,3,1];
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;外循环控制间隔序列的移动。也就是说，算法在第一次处理数据集时，会检查所有间隔为 5 的元素。下一次遍历会检查所有间隔为 3 的元素。最后一次则会对间隔为 1 的元素，也 就是相邻元素执行标准插入排序。在开始做最后一次处理时，大部分元素都将在正确的位 置，算法就不必对很多元素进行交换。这就是希尔排序比插入排序更高效的地方。下图演示了如何使用间隔序列为5, 3, 1的希尔排序算法。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;希尔排序原理图：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20180125/20180125-1.jpg&quot; alt=&quot;图&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;初始化一个例子，对10个数字进行希尔排序，跟踪这个算法的执行过程&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    var nums = new CArray(100);
+    nums.setData();
+    document.write(&quot;希尔排序前:&amp;lt;br /&amp;gt;&quot;); 
+    document.write(nums.toString()); 
+    document.write(&quot;&amp;lt;br /&amp;gt;希尔排序中:&amp;lt;br /&amp;gt;&quot;); 
+    nums.shellsort();
+    document.write(&quot;&amp;lt;br /&amp;gt;希尔排序后:&amp;lt;br /&amp;gt;&quot;); 
+    document.write(nums.toString());
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20180125/20180125-2.jpg&quot; alt=&quot;图&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;要理解希尔排序是如何运行的，可以对比数组的初始状态和执行完间隔序列为 5 的排序后的状态。初始状态时的第一个元素 6，和它后面的第 5 个元素 5，进行了互换，因为 5 &amp;lt; 6。&lt;/p&gt;
+
+&lt;p&gt;再来比较 gap 5 和 gap 3 这两行。在 gap 5 这行中的数字 3 和数字 2 进行了互换， 因为 2 &amp;lt; 3，并且 2 是 3 后面的第 3 个元素。从循环中当前元素所在位置往后数，简单地数到第 gap 个数的位置，然后比较这个位置和当前元素所在位置上的两个数字，就可以对希 尔排序过程中的任何步骤进行跟踪。&lt;/p&gt;
+
+&lt;h3 id=&quot;动态计算间隔序列的希尔排序&quot;&gt;动态计算间隔序列的希尔排序&lt;/h3&gt;
+
+&lt;p&gt;《算法(第4版)》(人民邮电出版社)的合著者Robert Sedgewick定义了一个shellsort() 函数，在这个函数中可以通过一个公式来对希尔排序用到的间隔序列进行动态计算。 Sedgewick 的算法是通过下面的代码片段来决定初始间隔值的:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    var N = this.dataStore.length;
+    var h = 1;
+    while (h &amp;lt; N/3) {
+        h = 3 * h + 1; 
+    }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;间隔值确定好后，这个函数就可以像之前定义的 shellsort() 函数一样运行了，唯一的区 别是，回到外循环之前的最后一条语句会计算一个新的间隔值:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;h = (h-1)/3;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;修改后的shellsort1函数如下：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function shellsort1() {
+    var N = this.dataStore.length;
+    var h = 1;
+    while (h &amp;lt; N/3) {
+      h = 3 * h + 1; 
+    }
+    while (h &amp;gt;= 1) {
+       for (var i = h; i &amp;lt; N; i++) {
+          for (var j = i; j &amp;gt;= h &amp;amp;&amp;amp; this.dataStore[j] &amp;lt; this.dataStore[j-h];
+               j -= h) {
+             swap(this.dataStore, j, j-h);
+          }
+      }
+      h = (h-1)/3; 
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;同样初始化10个数，shellsort1后的结果：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20180125/20180125-3.jpg&quot; alt=&quot;图&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;比较-shellsort-算法&quot;&gt;比较 shellsort() 算法&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    var nums = new CArray(100000);
+    nums.setData();
+    var start = new Date().getTime();
+    nums.shellsort();
+    var stop = new Date().getTime();
+    var elapsed = stop - start;
+    document.write(&quot; 硬编码间隔序列的希尔排序消耗的时间为:&quot; + elapsed + &quot; 毫秒。&quot;); 
+    nums.clear();
+
+    nums.setData();
+    start = new Date().getTime();
+    nums.shellsort1();
+    stop = new Date().getTime();
+    document.write(&quot; 动态间隔序列的希尔排序消耗的时间为:&quot; + elapsed + &quot; 毫秒。&quot;);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20180125/20180125-4.jpg&quot; alt=&quot;图&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;很明显，这两个希尔排序算法的效率是一样的，因此你可以根据需要随意使用&lt;/p&gt;</content><author><name>Someone</name></author><category term="[&quot;JS&quot;]" /><summary type="html">高级排序— 希尔排序 本章讲解的高级排序算法，通常被认为是处理大型数据集的最高效排序算法，它们处理的数据集可以达到上百万个元素，而不仅仅是几百个或者几千个。 希尔排序 这个算法在插入排序的基础上做了很大的改善。希尔排序的核心理念与插入排序 不同，它会首先比较距离较远的元素，而非相邻的元素。和简单地比较相邻元素相比，使 用这种方案可以使离正确位置很远的元素更快地回到合适的位置。当开始用这个算法遍历 数据集时，所有元素之间的距离会不断减小，直到处理到数据集的末尾，这时算法比较的 就是相邻元素了。 //希尔排序 function shellsort() { for (var g = 0; g &amp;lt; this.gaps.length; ++g) { for (var i = this.gaps[g]; i &amp;lt; this.dataStore.length; ++i) { var temp = this.dataStore[i]; for (var j = i; j &amp;gt;= this.gaps[g] &amp;amp;&amp;amp; this.dataStore[j-this.gaps[g]] &amp;gt; temp; j -= this.gaps[g]) { this.dataStore[j] = this.dataStore[j - this.gaps[g]]; } this.dataStore[j] = temp; } document.write('&amp;lt;br /&amp;gt;'); document.write(this.toString()); document.write('&amp;lt;br /&amp;gt;'); } } function setGaps(arr) { this.gaps = arr; } 为了能让这个程序在 CArray 类测试平台中运行，我们需要在这个类的定义里增加一个对间 隔序列的定义。请将下面代码添加到 CArray 的构造函数中 this.gaps = [5,3,1]; 外循环控制间隔序列的移动。也就是说，算法在第一次处理数据集时，会检查所有间隔为 5 的元素。下一次遍历会检查所有间隔为 3 的元素。最后一次则会对间隔为 1 的元素，也 就是相邻元素执行标准插入排序。在开始做最后一次处理时，大部分元素都将在正确的位 置，算法就不必对很多元素进行交换。这就是希尔排序比插入排序更高效的地方。下图演示了如何使用间隔序列为5, 3, 1的希尔排序算法。 希尔排序原理图： 初始化一个例子，对10个数字进行希尔排序，跟踪这个算法的执行过程 var nums = new CArray(100); nums.setData(); document.write(&quot;希尔排序前:&amp;lt;br /&amp;gt;&quot;); document.write(nums.toString()); document.write(&quot;&amp;lt;br /&amp;gt;希尔排序中:&amp;lt;br /&amp;gt;&quot;); nums.shellsort(); document.write(&quot;&amp;lt;br /&amp;gt;希尔排序后:&amp;lt;br /&amp;gt;&quot;); document.write(nums.toString()); 要理解希尔排序是如何运行的，可以对比数组的初始状态和执行完间隔序列为 5 的排序后的状态。初始状态时的第一个元素 6，和它后面的第 5 个元素 5，进行了互换，因为 5 &amp;lt; 6。 再来比较 gap 5 和 gap 3 这两行。在 gap 5 这行中的数字 3 和数字 2 进行了互换， 因为 2 &amp;lt; 3，并且 2 是 3 后面的第 3 个元素。从循环中当前元素所在位置往后数，简单地数到第 gap 个数的位置，然后比较这个位置和当前元素所在位置上的两个数字，就可以对希 尔排序过程中的任何步骤进行跟踪。 动态计算间隔序列的希尔排序 《算法(第4版)》(人民邮电出版社)的合著者Robert Sedgewick定义了一个shellsort() 函数，在这个函数中可以通过一个公式来对希尔排序用到的间隔序列进行动态计算。 Sedgewick 的算法是通过下面的代码片段来决定初始间隔值的: var N = this.dataStore.length; var h = 1; while (h &amp;lt; N/3) { h = 3 * h + 1; } 间隔值确定好后，这个函数就可以像之前定义的 shellsort() 函数一样运行了，唯一的区 别是，回到外循环之前的最后一条语句会计算一个新的间隔值: h = (h-1)/3; 修改后的shellsort1函数如下： function shellsort1() { var N = this.dataStore.length; var h = 1; while (h &amp;lt; N/3) { h = 3 * h + 1; } while (h &amp;gt;= 1) { for (var i = h; i &amp;lt; N; i++) { for (var j = i; j &amp;gt;= h &amp;amp;&amp;amp; this.dataStore[j] &amp;lt; this.dataStore[j-h]; j -= h) { swap(this.dataStore, j, j-h); } } h = (h-1)/3; } } 同样初始化10个数，shellsort1后的结果： 比较 shellsort() 算法 var nums = new CArray(100000); nums.setData(); var start = new Date().getTime(); nums.shellsort(); var stop = new Date().getTime(); var elapsed = stop - start; document.write(&quot; 硬编码间隔序列的希尔排序消耗的时间为:&quot; + elapsed + &quot; 毫秒。&quot;); nums.clear(); nums.setData(); start = new Date().getTime(); nums.shellsort1(); stop = new Date().getTime(); document.write(&quot; 动态间隔序列的希尔排序消耗的时间为:&quot; + elapsed + &quot; 毫秒。&quot;); 很明显，这两个希尔排序算法的效率是一样的，因此你可以根据需要随意使用</summary></entry><entry><title type="html">JS基础– 基本排序</title><link href="http://localhost:4000/js/2018/01/11/basic_Sort.html" rel="alternate" type="text/html" title="JS基础-- 基本排序" /><published>2018-01-11T00:00:00+08:00</published><updated>2018-01-11T00:00:00+08:00</updated><id>http://localhost:4000/js/2018/01/11/basic_Sort</id><content type="html" xml:base="http://localhost:4000/js/2018/01/11/basic_Sort.html">&lt;h1 id=&quot;基本排序算法&quot;&gt;基本排序算法&lt;/h1&gt;
+
+&lt;p&gt;这里介绍的基本排序算法其核心思想是指对一组数据按照一定的顺序重新排列。重新排列时用到的技术是一组嵌套的 for 循环。其中外循环会遍历数组的每一项，内循环则用于比较元素。&lt;/p&gt;
+
+&lt;p&gt;在讲这几个基本排序之前，先初始化一个类，因为下面所有的排序都是基于这个类实现的。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function CArray(numElements) {
+    this.dataStore = [];
+    this.pos = 0;
+    this.numElements = numElements;
+    this.insert = insert;
+    this.toString = toString;
+    this.clear = clear;
+    this.setData = setData;
+    this.bubbleSort = bubbleSort;
+    this.swap = swap;
+	for ( var i = 0; i &amp;lt; numElements; ++i ) {
+		this.dataStore[i] = i;
+	} 
+}
+
+function setData() {
+    for ( var i = 0; i &amp;lt; this.numElements; ++i ) {
+       this.dataStore[i] = Math.floor(Math.random() * (this.numElements + 1));
+    }
+}
+
+function clear() {
+	for ( var i = 0; i &amp;lt; this.dataStore.length; ++i ) {
+	   this.dataStore[i] = 0;
+	}
+}
+
+
+function insert(element) {
+    this.dataStore[this.pos++] = element;
+}
+
+
+function toString() {
+	var retstr = &quot;&quot;;
+	for ( var i = 0; i &amp;lt; this.dataStore.length; ++i ) {
+	   retstr += this.dataStore[i] + &quot; &quot;;
+	   if (i &amp;gt; 0 &amp;amp; i % 10 == 0) {
+	      retstr += &quot;\n&quot;;
+	   }
+	}
+	return retstr;
+}
+
+
+function swap(arr, index1, index2) {
+	var temp = arr[index1];
+	arr[index1] = arr[index2];
+	arr[index2] = temp;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;上面的类包含下面几个功能&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;插入新数据&lt;/li&gt;
+  &lt;li&gt;显示数组数据&lt;/li&gt;
+  &lt;li&gt;调用不同的排序算法&lt;/li&gt;
+  &lt;li&gt;交换数组元素&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;冒泡排序&quot;&gt;冒泡排序&lt;/h4&gt;
+
+&lt;p&gt;冒泡排序算法，它是最慢的排序算法之一，但也是一种最容易实现的排序算法&lt;/p&gt;
+
+&lt;p&gt;之所以叫冒泡排序是因为使用这种排序算法排序时，数据值会像气泡一样从数组的一端漂 浮到另一端。假设正在将一组数字按照升序排列，较大的值会浮动到数组的右侧，而较小 的值则会浮动到数组的左侧。之所以会产生这种现象是因为算法会多次在数组中移动，比 较相邻的数据，当左侧值大于右侧值时将它们进行互换&lt;/p&gt;
+
+&lt;p&gt;如下图演示了如何对一个大的数字数据集合进行冒泡排序的过程&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://lilywei739.github.io/img/20180112/20180112-1.jpg&quot; alt=&quot;冒泡排序的过程&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function bubbleSort() {
+        var numElements = this.dataStore.length;
+        var temp;
+        for ( var outer = numElements; outer &amp;gt;= 2; --outer) {
+           for ( var inner = 0; inner &amp;lt;= outer - 1; ++inner ) {
+              if (this.dataStore[inner] &amp;gt; this.dataStore[inner + 1]) {
+                 swap(this.dataStore, inner, inner + 1);
+              }
+ 	   } 
+ 	}
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;初始化个例子：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var numElements = 10;
+var mynums = new CArray(numElements);
+mynums.setData();
+document.write(mynums.toString());
+mynums.bubbleSort();
+document.write('&amp;lt;br /&amp;gt;');
+document.write(mynums.toString());
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;排序结果如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://lilywei739.github.io/img/20180112/20180112-2.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;增加一行代码，就可看到这个数组在排序过程中的当前状态&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function bubbleSort() {
+    var numElements = this.dataStore.length;
+    var temp;
+    for (var outer = numElements; outer &amp;gt;= 2; --outer) {
+       for (var inner = 0; inner &amp;lt;= outer - 1; ++inner) {
+
+          if (this.dataStore[inner] &amp;gt; this.dataStore[inner + 1]) {
+             swap(this.dataStore, inner, inner + 1);
+          }
+		}
+        document.write('&amp;lt;br /&amp;gt;');
+        document.write(this.toString());
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;排序结果如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://lilywei739.github.io/img/20180112/20180112-3.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;通过这个输出结果，我们可以更加容易地看出小的值是如何移到数组开头的，大的值又是 如何移到数组末尾的。&lt;/p&gt;
+
+&lt;h4 id=&quot;选择排序&quot;&gt;选择排序&lt;/h4&gt;
+
+&lt;p&gt;选择排序从数组的开头开始，将第一个元素和其他元 素进行比较。检查完所有元素后，最小的元素会被放到数组的第一个位置，然后算法会从 第二个位置继续。这个过程一直进行，当进行到数组的倒数第二个位置时，所有的数据便 完成了排序。&lt;/p&gt;
+
+&lt;p&gt;选择排序会用到嵌套循环。外循环从数组的第一个元素移动到倒数第二个元素;内循环从第 二个数组元素移动到最后一个元素，查找比当前外循环所指向的元素小的元素。每次内循环 迭代后，数组中最小的值都会被赋值到合适的位置。&lt;/p&gt;
+
+&lt;p&gt;选择排序算法的原理：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://lilywei739.github.io/img/20180112/20180112-4.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function selectionSort() {
+    var min, temp;
+    for (var outer = 0; outer &amp;lt;= this.dataStore.length-2; ++outer) {
+       min = outer;
+       for (var inner = outer + 1;
+           inner &amp;lt;= this.dataStore.length-1; ++inner) {
+          if (this.dataStore[inner] &amp;lt; this.dataStore[min]) {
+			  min = inner; 
+		  }
+          swap(this.dataStore, outer, min);
+          document.write('&amp;lt;br /&amp;gt;');
+          document.write(this.toString());
+       }
+    } 
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var numElements = 10;
+var mynums = new CArray(numElements);
+mynums.setData();
+mynums.selectionSort();
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;排序结果如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://lilywei739.github.io/img/20180112/20180112-5.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;插入排序&quot;&gt;插入排序&lt;/h4&gt;
+
+&lt;p&gt;插入排序类似于人类按数字或字母顺序对数据进行排序&lt;/p&gt;
+
+&lt;p&gt;举个例子，将卡片带回办公室，清理好书桌，然后拿起第一张卡片。卡片上的姓氏是 Smith。我把 它放到桌子的左上角，然后再拿起第二张卡片。这张卡片上的姓氏是 Brown。我把 Smith 移右，把 Brown 放到 Smith 的前面。下一张卡片是 Williams，可以把它放到桌面最右边， 而不用移动其他任何卡片。下一张卡片是 Acklin。这张卡片必须放在这些卡片的最前面， 因此其他所有卡片必须向右移动一个位置来为 Acklin 这张卡片腾出位置。这就是插入排序 的排序原理。&lt;/p&gt;
+
+&lt;p&gt;插入排序有两个循环。外循环将数组元素挨个移动，而内循环则对外循环中选中的元素及 它后面的那个元素进行比较。如果外循环中选中的元素比内循环中选中的元素小，那么数 组元素会向右移动，为内循环中的这个元素腾出位置，就像之前介绍的姓氏卡片一样。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function insertionSort() {
+        var temp, inner;
+        for (var outer = 1; outer &amp;lt;= this.dataStore.length - 1; ++outer) {
+           temp = this.dataStore[outer];
+           inner = outer;
+           while (inner &amp;gt; 0 &amp;amp;&amp;amp; (this.dataStore[inner - 1] &amp;gt;= temp)) {
+              this.dataStore[inner] = this.dataStore[inner - 1];
+--inner; }
+           this.dataStore[inner] = temp;
+           document.write('&amp;lt;br /&amp;gt;');
+       	   document.write(this.toString());
+        }
+}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var numElements = 10;
+var mynums = new CArray(numElements);
+mynums.setData();
+mynums.insertionSort();
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;排序结果如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://lilywei739.github.io/img/20180112/20180112-6.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;这段输出结果清楚地显示了插入排序的运行并非通过数据交换，而是通过将较大的数组元 素移动到右侧，为数组左侧的较小元素腾出位置。&lt;/p&gt;
+
+&lt;h4 id=&quot;基本排序算法的计时比较&quot;&gt;基本排序算法的计时比较&lt;/h4&gt;
+
+&lt;p&gt;这三种排序算法的复杂度非常相似，从理论上来说，它们的执行效率也应该差不多。要确 定这三种算法的性能差异，我们可以使用一个非正式的计时系统来比较它们对数据集合进 行排序所花费的时间。能够对算法进行计时非常重要，因为，对 100 个或 1000 个元素进 行排序时，你看不出这些排序算法的差异。但是如果对上百万个元素进行排序，这些排序 算法之间可能存在巨大的不同。&lt;/p&gt;
+
+&lt;p&gt;这个函数的运行方式如下所示:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var start = new Date().getTime();
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;要记录代码执行的时间，首先启动计时器，执行代码，然后在代码执行结束时停止计时 器。计时器停止时记录的时间与计时器启动时记录的时间之差就是排序所花费的时间。&lt;/p&gt;
+
+&lt;p&gt;有了度量排序算法效率的工具，那我们就来做一些测试，对它们进行比较&lt;/p&gt;
+
+&lt;p&gt;为了比较基本排序算法，我们将在数组大小分别为100、1000和10 000时对这三种排序算 法计时。我们预期在数据大小为 100 和 1000 的情况下看不出这些算法的差异，但是在数 据大小为 10000时可以看到。&lt;/p&gt;
+
+&lt;p&gt;测试代码如下：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var numElements = 100;    //测试数据100、1000、10000
+var nums = new CArray(numElements);
+nums.setData();
+var start = new Date().getTime();
+nums.bubbleSort();
+var stop = new Date().getTime();
+var elapsed = stop - start;
+document.write(&quot;对&quot; + numElements + &quot;个元素执行冒泡排序消耗的时间为:&quot; +
+elapsed + &quot;毫秒。&amp;lt;br /&amp;gt;&quot;);
+start = new Date().getTime();
+nums.selectionSort();
+stop = new Date().getTime();
+elapsed = stop - start;
+document.write(&quot;对&quot; + numElements + &quot;个元素执行选择排序消耗的时间为:&quot; +
+elapsed + &quot;毫秒。&amp;lt;br /&amp;gt;&quot;);
+start = new Date().getTime();
+nums.insertionSort();
+stop = new Date().getTime();
+elapsed = stop - start;
+document.write(&quot;对&quot; + numElements + &quot;个元素执行插入排序消耗的时间为:&quot; +
+elapsed + &quot;毫秒。&quot;);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;测试数据100结果：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://lilywei739.github.io/img/20180112/20180112-7.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;测试数据1000结果：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://lilywei739.github.io/img/20180112/20180112-8.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;测试数据10000结果：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://lilywei739.github.io/img/20180112/20180112-9.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;通过上面的结果，可得出选择排序和插入排序要比冒泡排序快，插入排序是这三种算法中最快的。不过要记住，这些测试必须经过多次的运行， 最后得到的结果才可被视为是有效的统计。&lt;/p&gt;</content><author><name>Someone</name></author><category term="[&quot;JS&quot;]" /><summary type="html">基本排序算法 这里介绍的基本排序算法其核心思想是指对一组数据按照一定的顺序重新排列。重新排列时用到的技术是一组嵌套的 for 循环。其中外循环会遍历数组的每一项，内循环则用于比较元素。 在讲这几个基本排序之前，先初始化一个类，因为下面所有的排序都是基于这个类实现的。 function CArray(numElements) { this.dataStore = []; this.pos = 0; this.numElements = numElements; this.insert = insert; this.toString = toString; this.clear = clear; this.setData = setData; this.bubbleSort = bubbleSort; this.swap = swap; for ( var i = 0; i &amp;lt; numElements; ++i ) { this.dataStore[i] = i; } } function setData() { for ( var i = 0; i &amp;lt; this.numElements; ++i ) { this.dataStore[i] = Math.floor(Math.random() * (this.numElements + 1)); } } function clear() { for ( var i = 0; i &amp;lt; this.dataStore.length; ++i ) { this.dataStore[i] = 0; } } function insert(element) { this.dataStore[this.pos++] = element; } function toString() { var retstr = &quot;&quot;; for ( var i = 0; i &amp;lt; this.dataStore.length; ++i ) { retstr += this.dataStore[i] + &quot; &quot;; if (i &amp;gt; 0 &amp;amp; i % 10 == 0) { retstr += &quot;\n&quot;; } } return retstr; } function swap(arr, index1, index2) { var temp = arr[index1]; arr[index1] = arr[index2]; arr[index2] = temp; } 上面的类包含下面几个功能 插入新数据 显示数组数据 调用不同的排序算法 交换数组元素 冒泡排序 冒泡排序算法，它是最慢的排序算法之一，但也是一种最容易实现的排序算法 之所以叫冒泡排序是因为使用这种排序算法排序时，数据值会像气泡一样从数组的一端漂 浮到另一端。假设正在将一组数字按照升序排列，较大的值会浮动到数组的右侧，而较小 的值则会浮动到数组的左侧。之所以会产生这种现象是因为算法会多次在数组中移动，比 较相邻的数据，当左侧值大于右侧值时将它们进行互换 如下图演示了如何对一个大的数字数据集合进行冒泡排序的过程 function bubbleSort() { var numElements = this.dataStore.length; var temp; for ( var outer = numElements; outer &amp;gt;= 2; --outer) { for ( var inner = 0; inner &amp;lt;= outer - 1; ++inner ) { if (this.dataStore[inner] &amp;gt; this.dataStore[inner + 1]) { swap(this.dataStore, inner, inner + 1); } } } } 初始化个例子： var numElements = 10; var mynums = new CArray(numElements); mynums.setData(); document.write(mynums.toString()); mynums.bubbleSort(); document.write('&amp;lt;br /&amp;gt;'); document.write(mynums.toString()); 排序结果如下： 增加一行代码，就可看到这个数组在排序过程中的当前状态 function bubbleSort() { var numElements = this.dataStore.length; var temp; for (var outer = numElements; outer &amp;gt;= 2; --outer) { for (var inner = 0; inner &amp;lt;= outer - 1; ++inner) { if (this.dataStore[inner] &amp;gt; this.dataStore[inner + 1]) { swap(this.dataStore, inner, inner + 1); } } document.write('&amp;lt;br /&amp;gt;'); document.write(this.toString()); } } 排序结果如下： 通过这个输出结果，我们可以更加容易地看出小的值是如何移到数组开头的，大的值又是 如何移到数组末尾的。 选择排序 选择排序从数组的开头开始，将第一个元素和其他元 素进行比较。检查完所有元素后，最小的元素会被放到数组的第一个位置，然后算法会从 第二个位置继续。这个过程一直进行，当进行到数组的倒数第二个位置时，所有的数据便 完成了排序。 选择排序会用到嵌套循环。外循环从数组的第一个元素移动到倒数第二个元素;内循环从第 二个数组元素移动到最后一个元素，查找比当前外循环所指向的元素小的元素。每次内循环 迭代后，数组中最小的值都会被赋值到合适的位置。 选择排序算法的原理： function selectionSort() { var min, temp; for (var outer = 0; outer &amp;lt;= this.dataStore.length-2; ++outer) { min = outer; for (var inner = outer + 1; inner &amp;lt;= this.dataStore.length-1; ++inner) { if (this.dataStore[inner] &amp;lt; this.dataStore[min]) { min = inner; } swap(this.dataStore, outer, min); document.write('&amp;lt;br /&amp;gt;'); document.write(this.toString()); } } } var numElements = 10; var mynums = new CArray(numElements); mynums.setData(); mynums.selectionSort(); 排序结果如下： 插入排序 插入排序类似于人类按数字或字母顺序对数据进行排序 举个例子，将卡片带回办公室，清理好书桌，然后拿起第一张卡片。卡片上的姓氏是 Smith。我把 它放到桌子的左上角，然后再拿起第二张卡片。这张卡片上的姓氏是 Brown。我把 Smith 移右，把 Brown 放到 Smith 的前面。下一张卡片是 Williams，可以把它放到桌面最右边， 而不用移动其他任何卡片。下一张卡片是 Acklin。这张卡片必须放在这些卡片的最前面， 因此其他所有卡片必须向右移动一个位置来为 Acklin 这张卡片腾出位置。这就是插入排序 的排序原理。 插入排序有两个循环。外循环将数组元素挨个移动，而内循环则对外循环中选中的元素及 它后面的那个元素进行比较。如果外循环中选中的元素比内循环中选中的元素小，那么数 组元素会向右移动，为内循环中的这个元素腾出位置，就像之前介绍的姓氏卡片一样。 function insertionSort() { var temp, inner; for (var outer = 1; outer &amp;lt;= this.dataStore.length - 1; ++outer) { temp = this.dataStore[outer]; inner = outer; while (inner &amp;gt; 0 &amp;amp;&amp;amp; (this.dataStore[inner - 1] &amp;gt;= temp)) { this.dataStore[inner] = this.dataStore[inner - 1]; --inner; } this.dataStore[inner] = temp; document.write('&amp;lt;br /&amp;gt;'); document.write(this.toString()); } } var numElements = 10; var mynums = new CArray(numElements); mynums.setData(); mynums.insertionSort(); 排序结果如下： 这段输出结果清楚地显示了插入排序的运行并非通过数据交换，而是通过将较大的数组元 素移动到右侧，为数组左侧的较小元素腾出位置。 基本排序算法的计时比较 这三种排序算法的复杂度非常相似，从理论上来说，它们的执行效率也应该差不多。要确 定这三种算法的性能差异，我们可以使用一个非正式的计时系统来比较它们对数据集合进 行排序所花费的时间。能够对算法进行计时非常重要，因为，对 100 个或 1000 个元素进 行排序时，你看不出这些排序算法的差异。但是如果对上百万个元素进行排序，这些排序 算法之间可能存在巨大的不同。 这个函数的运行方式如下所示: var start = new Date().getTime(); 要记录代码执行的时间，首先启动计时器，执行代码，然后在代码执行结束时停止计时 器。计时器停止时记录的时间与计时器启动时记录的时间之差就是排序所花费的时间。 有了度量排序算法效率的工具，那我们就来做一些测试，对它们进行比较 为了比较基本排序算法，我们将在数组大小分别为100、1000和10 000时对这三种排序算 法计时。我们预期在数据大小为 100 和 1000 的情况下看不出这些算法的差异，但是在数 据大小为 10000时可以看到。 测试代码如下： var numElements = 100; //测试数据100、1000、10000 var nums = new CArray(numElements); nums.setData(); var start = new Date().getTime(); nums.bubbleSort(); var stop = new Date().getTime(); var elapsed = stop - start; document.write(&quot;对&quot; + numElements + &quot;个元素执行冒泡排序消耗的时间为:&quot; + elapsed + &quot;毫秒。&amp;lt;br /&amp;gt;&quot;); start = new Date().getTime(); nums.selectionSort(); stop = new Date().getTime(); elapsed = stop - start; document.write(&quot;对&quot; + numElements + &quot;个元素执行选择排序消耗的时间为:&quot; + elapsed + &quot;毫秒。&amp;lt;br /&amp;gt;&quot;); start = new Date().getTime(); nums.insertionSort(); stop = new Date().getTime(); elapsed = stop - start; document.write(&quot;对&quot; + numElements + &quot;个元素执行插入排序消耗的时间为:&quot; + elapsed + &quot;毫秒。&quot;); 测试数据100结果： 测试数据1000结果： 测试数据10000结果： 通过上面的结果，可得出选择排序和插入排序要比冒泡排序快，插入排序是这三种算法中最快的。不过要记住，这些测试必须经过多次的运行， 最后得到的结果才可被视为是有效的统计。</summary></entry><entry><title type="html">JS基础–图和图算法(二)</title><link href="http://localhost:4000/js/2018/01/05/grap2.html" rel="alternate" type="text/html" title="JS基础--图和图算法(二)" /><published>2018-01-05T00:00:00+08:00</published><updated>2018-01-05T00:00:00+08:00</updated><id>http://localhost:4000/js/2018/01/05/grap2</id><content type="html" xml:base="http://localhost:4000/js/2018/01/05/grap2.html">&lt;h1 id=&quot;图和图算法二&quot;&gt;图和图算法(二)&lt;/h1&gt;
+
+&lt;h2 id=&quot;查找最短路径&quot;&gt;查找最短路径&lt;/h2&gt;
+
+&lt;p&gt;图最常见的操作之一就是寻找从一个顶点到另一个顶点的最短路径。&lt;/p&gt;
+
+&lt;h3 id=&quot;广度优先搜索对应的最短路径&quot;&gt;广度优先搜索对应的最短路径&lt;/h3&gt;
+
+&lt;p&gt;在执行广度优先搜索时，会自动查找从一个顶点到另一个相连顶点的最短路径。例如，要查找从顶点 A 到顶点 D 的最短路径，我们首先会查找从 A 到 D 是否有任何一条单边路径，接着查找两条边的路径，以此类推。这正是广度优先搜索的搜索过程，因此我们可以轻松地修改广度优先搜索算法，找出最短路径。&lt;/p&gt;
+
+&lt;h3 id=&quot;确定路径&quot;&gt;确定路径&lt;/h3&gt;
+
+&lt;p&gt;要查找最短路径，需要修改广度优先搜索算法来记录从一个顶点到另一个顶点的路径。这需要对 Graph 类做一些修改。&lt;/p&gt;
+
+&lt;p&gt;首先，需要一个数组来保存从一个顶点到下一个顶点的所有边。将这个数组命名为edgeTo 。因为从始至终使用的都是广度优先搜索函数，所以每次都会遇到一个没有标记的顶点，除了对它进行标记外，还会从邻接列表中我们正在探索的那个顶点添加一条边到这个顶点。这是新的 bfs()函数，以及需要添加到 Graph 类的代码：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// 将这行添加到 Graph 类
+this.edgeTo = [];
+
+function bfs(s) {
+	var queue = [];
+	this.marked[s] = true;
+	queue.push(s); // 添加到队尾
+	while (queue.length &amp;gt; 0) {
+	var v = queue.shift(); // 从队首移除
+	if (v == undefined) {
+		document.write(&quot;Visisted vertex: &quot; + v);
+	}
+		for each(var w in this.adj[v]) {
+			if (!this.marked[w]) {
+				this.edgeTo[w] = v;
+				this.marked[w] = true;
+				queue.push(w);
+			}
+		}
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;其次，现在需要一个函数，用于展示图中连接到不同顶点的路径。函数 pathTo() 创建了一个栈，用来存储与指定顶点有共同边的所有顶点。以下是 pathTo() 函数的代码，以及一个简单的辅助函数：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// 将这两行添加到 Graph 类
+this.pathTo = pathTo;
+this.hasPathTo = hashPathTo;
+
+function pathTo(v) {
+	var source = 0;
+	if (!this.hasPathTo(v)) {
+		return undefined;
+	}
+
+	var path = [];
+	for (var i = v; i != source; i = this.edgeTo[i]) {
+		path.push(i);
+	}
+
+	path.push(s);
+	return path;
+}
+
+function hashPathTo(v) {
+	return this.marked[v];
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;拓扑排序&quot;&gt;拓扑排序&lt;/h2&gt;
+
+&lt;p&gt;拓扑排序会对有向图的所有顶点进行排序，使有向边从前面的顶点指向后面的顶点。&lt;/p&gt;
+
+&lt;h3 id=&quot;拓扑排序算法&quot;&gt;拓扑排序算法&lt;/h3&gt;
+
+&lt;p&gt;拓扑排序算法与深度优先搜索类似。不同的是，拓扑排序算法不会立即输出已访问的顶点，而是访问当前顶点邻接表中的所有相邻顶点，直到这个列表穷尽时，才将当前顶点压入栈中。&lt;/p&gt;
+
+&lt;p&gt;拓扑排序算法被拆分为两个函数。第一个函数 topSort() ，会设置排序进程并调用一个辅助函数 topSortHelper() ，然后显示排序好的顶点列表。&lt;/p&gt;
+
+&lt;p&gt;主要工作是在递归函数 topSortHelper() 中完成的。这个函数会将当前顶点标记为已访问，然后递归访问当前顶点邻接表中的每个相邻顶点，标记这些顶点为已访问。最后，将当前顶点压入栈。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function topSort() {
+	var stack = [];
+	var visited = [];
+	for (var i = 0; i &amp;lt; this.vertices; i++) {
+		visited[i] = false;
+	}
+	for (var i = 0; i &amp;lt; this.vertices; i++) {
+		if (visited[i] == false) {
+			this.topSortHelper(i, visited, stack);
+		}
+	}
+	for (var i = 0; i &amp;lt; stack.length; i++) {
+		if (stack[i] != undefined &amp;amp;&amp;amp; stack[i] != false) {
+			document.write(this.vertexList[stack[i]]);
+		}
+	}
+}
+
+function topSortHelper(v, visited, stack) {
+	visited[v] = true;
+	for each(var w in this.adj[v]) {
+		if (!visited[w]) {
+			this.topSortHelper(visited[w], visited, stack);
+		}
+	}
+	stack.push(v);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;最终的Graph类&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function Graph(v) {
+	this.vertices = v;
+	this.vertexList = [];
+	this.edges = 0;
+	this.adj = [];
+	for (var i = 0; i &amp;lt; this.vertices; ++i) {
+		this.adj[i] = [];
+		this.ajd[i].push(&quot;&quot;);
+	}
+	this.addEdge = addEdge;
+	this.showGraph = showGraph;
+	this.dfs = dfs;
+	this.marked = [];
+	for (var i = 0; i &amp;lt; this.vertices; ++i) {
+		this.marked[i] = false;
+	}
+	this.bfs = bfs;
+	this.edgeTo = [];
+	this.hasPathTo = hasPathTo;
+	this.topSortHelper = topSortHelper;
+	this.topSort = topSort;
+}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>Someone</name></author><category term="[&quot;JS&quot;]" /><summary type="html">图和图算法(二) 查找最短路径 图最常见的操作之一就是寻找从一个顶点到另一个顶点的最短路径。 广度优先搜索对应的最短路径 在执行广度优先搜索时，会自动查找从一个顶点到另一个相连顶点的最短路径。例如，要查找从顶点 A 到顶点 D 的最短路径，我们首先会查找从 A 到 D 是否有任何一条单边路径，接着查找两条边的路径，以此类推。这正是广度优先搜索的搜索过程，因此我们可以轻松地修改广度优先搜索算法，找出最短路径。 确定路径 要查找最短路径，需要修改广度优先搜索算法来记录从一个顶点到另一个顶点的路径。这需要对 Graph 类做一些修改。 首先，需要一个数组来保存从一个顶点到下一个顶点的所有边。将这个数组命名为edgeTo 。因为从始至终使用的都是广度优先搜索函数，所以每次都会遇到一个没有标记的顶点，除了对它进行标记外，还会从邻接列表中我们正在探索的那个顶点添加一条边到这个顶点。这是新的 bfs()函数，以及需要添加到 Graph 类的代码： // 将这行添加到 Graph 类 this.edgeTo = []; function bfs(s) { var queue = []; this.marked[s] = true; queue.push(s); // 添加到队尾 while (queue.length &amp;gt; 0) { var v = queue.shift(); // 从队首移除 if (v == undefined) { document.write(&quot;Visisted vertex: &quot; + v); } for each(var w in this.adj[v]) { if (!this.marked[w]) { this.edgeTo[w] = v; this.marked[w] = true; queue.push(w); } } } } 其次，现在需要一个函数，用于展示图中连接到不同顶点的路径。函数 pathTo() 创建了一个栈，用来存储与指定顶点有共同边的所有顶点。以下是 pathTo() 函数的代码，以及一个简单的辅助函数： // 将这两行添加到 Graph 类 this.pathTo = pathTo; this.hasPathTo = hashPathTo; function pathTo(v) { var source = 0; if (!this.hasPathTo(v)) { return undefined; } var path = []; for (var i = v; i != source; i = this.edgeTo[i]) { path.push(i); } path.push(s); return path; } function hashPathTo(v) { return this.marked[v]; } 拓扑排序 拓扑排序会对有向图的所有顶点进行排序，使有向边从前面的顶点指向后面的顶点。 拓扑排序算法 拓扑排序算法与深度优先搜索类似。不同的是，拓扑排序算法不会立即输出已访问的顶点，而是访问当前顶点邻接表中的所有相邻顶点，直到这个列表穷尽时，才将当前顶点压入栈中。 拓扑排序算法被拆分为两个函数。第一个函数 topSort() ，会设置排序进程并调用一个辅助函数 topSortHelper() ，然后显示排序好的顶点列表。 主要工作是在递归函数 topSortHelper() 中完成的。这个函数会将当前顶点标记为已访问，然后递归访问当前顶点邻接表中的每个相邻顶点，标记这些顶点为已访问。最后，将当前顶点压入栈。 function topSort() { var stack = []; var visited = []; for (var i = 0; i &amp;lt; this.vertices; i++) { visited[i] = false; } for (var i = 0; i &amp;lt; this.vertices; i++) { if (visited[i] == false) { this.topSortHelper(i, visited, stack); } } for (var i = 0; i &amp;lt; stack.length; i++) { if (stack[i] != undefined &amp;amp;&amp;amp; stack[i] != false) { document.write(this.vertexList[stack[i]]); } } } function topSortHelper(v, visited, stack) { visited[v] = true; for each(var w in this.adj[v]) { if (!visited[w]) { this.topSortHelper(visited[w], visited, stack); } } stack.push(v); } 最终的Graph类 function Graph(v) { this.vertices = v; this.vertexList = []; this.edges = 0; this.adj = []; for (var i = 0; i &amp;lt; this.vertices; ++i) { this.adj[i] = []; this.ajd[i].push(&quot;&quot;); } this.addEdge = addEdge; this.showGraph = showGraph; this.dfs = dfs; this.marked = []; for (var i = 0; i &amp;lt; this.vertices; ++i) { this.marked[i] = false; } this.bfs = bfs; this.edgeTo = []; this.hasPathTo = hasPathTo; this.topSortHelper = topSortHelper; this.topSort = topSort; }</summary></entry><entry><title type="html">JS基础–图和图算法(一)</title><link href="http://localhost:4000/js/2017/12/28/grap1.html" rel="alternate" type="text/html" title="JS基础--图和图算法(一)" /><published>2017-12-28T00:00:00+08:00</published><updated>2017-12-28T00:00:00+08:00</updated><id>http://localhost:4000/js/2017/12/28/grap1</id><content type="html" xml:base="http://localhost:4000/js/2017/12/28/grap1.html">&lt;h1 id=&quot;图和图算法一&quot;&gt;图和图算法(一)&lt;/h1&gt;
+
+&lt;p&gt;这一章不好理解，所以分为两期来做。&lt;/p&gt;
+
+&lt;p&gt;如何用图给网络建模? 如何用 JavaScript 表示图? 如何实现重要的图算法?&lt;/p&gt;
+
+&lt;p&gt;带着这几个问题开始今天的学习&lt;/p&gt;
+
+&lt;h3 id=&quot;相关概念&quot;&gt;相关概念&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;图: 图由边的集合及顶点的集合组成&lt;/li&gt;
+  &lt;li&gt;有向图: 如果一个图的顶点对是有序的，则可以称之为有向图，有向图表明了顶点的流向&lt;/li&gt;
+  &lt;li&gt;无向图: 如果图是无序的，则称之为无序图，或无向图&lt;/li&gt;
+  &lt;li&gt;路径: 图中的一系列顶点构成路径,&lt;/li&gt;
+  &lt;li&gt;路径的长度: 用路径中第一个顶点到最后一个顶点之间边的数量表示&lt;/li&gt;
+  &lt;li&gt;环: 由指向自身的顶点组成的路径称, 环的长度为0&lt;/li&gt;
+  &lt;li&gt;圈: 是至少有一条边的路径，且路径的第一个顶点和最后一个顶点相同&lt;/li&gt;
+  &lt;li&gt;简单圈: 无论是有向图还是 无向图，只要是没有重复边或重复顶点的圈&lt;/li&gt;
+  &lt;li&gt;平凡圈: 除了第一个和最后一个顶点以外，路径的其他顶点有重复的圈&lt;/li&gt;
+  &lt;li&gt;如果两个顶点之间有路径，那么这两个顶点就是强连通的，反之亦然。如果有向图的所有 的顶点都是强连通的，那么这个有向图也是强连通的&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;有向图&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20171229/20171229-1.jpg&quot; alt=&quot;有向图&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;无向图&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20171229/20171229-2.jpg&quot; alt=&quot;无向图&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;表示顶点&quot;&gt;表示顶点&lt;/h4&gt;
+
+&lt;p&gt;创建图类的第一步就是要创建一个 Vertex 类来保存顶点和边。这个类的作用与链表和二叉搜索树的 Node 类一样。&lt;/p&gt;
+
+&lt;p&gt;Vertex 类有两个数据成员:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;用于标识顶点，被命名为 label&lt;/li&gt;
+  &lt;li&gt;表明这个顶点是否被访问过的布尔值, 被命名为wasVisited&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function Vertex(label) {
+    this.label = label;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;表示边&quot;&gt;表示边&lt;/h4&gt;
+
+&lt;p&gt;图的实际信息都保存在边上面，因为它们描述了图的结构&lt;/p&gt;
+
+&lt;p&gt;表示边两种方法实现：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;将表示图的边的方法称为邻接表或者邻接表数组，这种方法将边存储为由顶点的相邻顶点列表构成的数组，并以此顶点作为索引。使用这种方案，当在程序中引用一个顶点时，可以高效地访问与这个顶点相连的所有顶点的列表, 本节将选用这种表示方法。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;邻接表&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20171229/20171229-3.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;看上图，如果顶点 2 与顶点 0、1、3、4 相连，并且它存储在数组中索引为 2 的位置，那么，访问这个元素，我们可以访问到索引为 2 的位置处由顶点 0、1、3、4 组成的数组&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;另一种表示图边的方法被称为邻接矩阵。它是一个二维数组，其中的元素表示两个顶点之间是否有一条边&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;构建图&quot;&gt;构建图&lt;/h4&gt;
+
+&lt;p&gt;确定了如何在代码中表示图之后，构建一个表示图的类就很容易了。下面是第一个Graph类的定义&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function Graph(v) {
+    this.vertices = v;
+    this.edges = 0;
+    this.adj = [];
+    for (var i = 0; i &amp;lt; this.vertices; ++i) {
+       this.adj[i] = [];
+       this.adj[i].push(&quot;&quot;);
+    }
+    this.addEdge = addEdge;
+    this.showGraph = showGraph;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;这个类会记录一个图表示了多少条边，并使用一个长度与图的顶点数相同的数组来记录顶点的数量。通过 for 循环为数组中的每个元素添加一个子数组来存储所有的相邻顶点，并 将所有元素初始化为空字符串。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;addEdge() 函数&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function addEdge(v, w) {
+    this.adj[v].push(w);
+    this.adj[w].push(v);
+    this.edges++;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;当调用这个函数并传入顶点 A 和 B 时，函数会先查找顶点 A 的邻接表，将顶点 B 添加到列 表中，然后再查找顶点 B 的邻接表，将顶点 A 加入列表。最后，这个函数会将边数加 1。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;showGraph() 函数&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;showGraph() 函数会通过打印所有顶点及其相邻顶点列表的方式来显示图:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function showGraph() {
+    for (var i = 0; i &amp;lt; this.vertices; ++i) {
+       document.write(i + &quot;-&amp;gt;&quot;);
+       for (var j = 0; j &amp;lt; this.vertices; ++j) {
+           if (this.adj[i][j] != undefined) {
+               document.write(this.adj[i][j] + ' ');
+           }
+       }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;初始化一个例子：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;g = new Graph(5);
+g.addEdge(0,1);
+g.addEdge(0,2);
+g.addEdge(1,3);
+g.addEdge(2,4);
+g.showGraph();
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;输出结果：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20171229/20171229-4.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;还是这样看更直观些：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20171229/20171229-5.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;顶点 0 有到顶点 1 和顶点 2 的边;&lt;/li&gt;
+  &lt;li&gt;顶点 1 有到顶点 0 和顶点 3 的边;&lt;/li&gt;
+  &lt;li&gt;顶 点2有到顶点0和4的边;&lt;/li&gt;
+  &lt;li&gt;顶点3有到顶点1的边;&lt;/li&gt;
+  &lt;li&gt;顶点4有到顶点2的边。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;当然，这种显示存在冗余，例如，顶点 0 和 1 之间的边和顶点 1 到 0 之间的边相同。如果只是为了显示，这样是不错的，但是在开始探索图的路径之前，需要调整一下输出。&lt;/p&gt;
+
+&lt;h4 id=&quot;搜索图及对图的操作&quot;&gt;搜索图及对图的操作&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;确定从一个指定的顶点可以到达其他哪些顶点，这是经常对图执行的操作。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;可能想通过地图了解到从一个城镇到另一个城镇有哪些路，或者从一个机场到其他机场有哪些航班。 图上的这些操作是用搜索算法执行的。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;在图上可以执行两种基础搜索: 深度优先搜索和广度优先搜索。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;深度优先搜索&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;深度优先搜索包括从一条路径的起始顶点开始追溯，直到到达最后一个顶点，然后回溯， 继续追溯下一条路径，直到到达最后的顶点，如此往复，直到没有路径为止。这不是在搜 索特定的路径，而是通过搜索来查看在图中有哪些路径可以选择。&lt;/p&gt;
+
+&lt;p&gt;如下图演示了深度优先&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20171229/20171229-6.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;深度优先搜索算法比较简单:访问一个没有访问过的顶点，将它标记为已访问，再递归地去访问在初始顶点的邻接表中其他没有访问过的顶点。&lt;/p&gt;
+
+&lt;p&gt;要让该算法运行，需要为 Graph 类添加一个数组，用来存储已访问过的顶点，将它所有元 素的值全部初始化为 false。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function Graph(v) {
+    this.vertices = v;
+    this.edges = 0;
+    this.adj = [];
+    for (var i = 0; i &amp;lt; this.vertices; ++i) {
+       this.adj[i] = [];
+       this.adj[i].push(&quot;&quot;);
+    }
+    this.addEdge = addEdge;
+    this.showGraph = showGraph;
+    this.dfs = dfs;
+
+    this.marked = [];
+    for (var i = 0; i &amp;lt; this.vertices; ++i) {
+       this.marked[i] = false;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;深度优先搜索函数&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function dfs(v) {
+    this.marked[v] = true;
+    document.write(&quot;Visited vertex:  &quot; + v);
+    for each(var w in this.adj[v]) {
+       if (!this.marked[w]) {
+          this.dfs(w);
+       } 
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;广度优先搜索&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;广度优先搜索从第一个顶点开始，尝试访问尽可能靠近它的顶点。本质上，这种搜索在图 上是逐层移动的，首先检查最靠近第一个顶点的层，再逐渐向下移动到离起始顶点最远的 层。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20171229/20171229-7.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;广度优先搜索算法使用了抽象的队列而不是数组来对已访问过的顶点进行排序。其算法的 工作原理如下:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;查找与当前顶点相邻的未访问顶点，将其添加到已访问顶点列表及队列中;&lt;/li&gt;
+  &lt;li&gt;从图中取出下一个顶点 v，添加到已访问的顶点列表;&lt;/li&gt;
+  &lt;li&gt;将所有与 v 相邻的未访问顶点添加到队列。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function bfs(s) {
+    var queue = []; 
+    this.marked[s] = true; 
+    queue.push(s); //添加到队尾
+    while (queue.length &amp;gt; 0) {
+	var v = queue.shift(); //从队首移除 
+	   if (v == undefined) {
+              document.write(&quot;Visisted vertex:  &quot; + v);
+           }
+           for each(var w in this.adj[v]) {
+              if (!this.marked[w]) {
+                 this.edgeTo[w] = v;
+                 this.marked[w] = true;
+                 queue.push(w);
+	      } 
+	   }
+    } 
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>Someone</name></author><category term="[&quot;JS&quot;]" /><summary type="html">图和图算法(一) 这一章不好理解，所以分为两期来做。 如何用图给网络建模? 如何用 JavaScript 表示图? 如何实现重要的图算法? 带着这几个问题开始今天的学习 相关概念 图: 图由边的集合及顶点的集合组成 有向图: 如果一个图的顶点对是有序的，则可以称之为有向图，有向图表明了顶点的流向 无向图: 如果图是无序的，则称之为无序图，或无向图 路径: 图中的一系列顶点构成路径, 路径的长度: 用路径中第一个顶点到最后一个顶点之间边的数量表示 环: 由指向自身的顶点组成的路径称, 环的长度为0 圈: 是至少有一条边的路径，且路径的第一个顶点和最后一个顶点相同 简单圈: 无论是有向图还是 无向图，只要是没有重复边或重复顶点的圈 平凡圈: 除了第一个和最后一个顶点以外，路径的其他顶点有重复的圈 如果两个顶点之间有路径，那么这两个顶点就是强连通的，反之亦然。如果有向图的所有 的顶点都是强连通的，那么这个有向图也是强连通的 有向图 无向图 表示顶点 创建图类的第一步就是要创建一个 Vertex 类来保存顶点和边。这个类的作用与链表和二叉搜索树的 Node 类一样。 Vertex 类有两个数据成员: 用于标识顶点，被命名为 label 表明这个顶点是否被访问过的布尔值, 被命名为wasVisited function Vertex(label) { this.label = label; } 表示边 图的实际信息都保存在边上面，因为它们描述了图的结构 表示边两种方法实现： 将表示图的边的方法称为邻接表或者邻接表数组，这种方法将边存储为由顶点的相邻顶点列表构成的数组，并以此顶点作为索引。使用这种方案，当在程序中引用一个顶点时，可以高效地访问与这个顶点相连的所有顶点的列表, 本节将选用这种表示方法。 邻接表 看上图，如果顶点 2 与顶点 0、1、3、4 相连，并且它存储在数组中索引为 2 的位置，那么，访问这个元素，我们可以访问到索引为 2 的位置处由顶点 0、1、3、4 组成的数组 另一种表示图边的方法被称为邻接矩阵。它是一个二维数组，其中的元素表示两个顶点之间是否有一条边 构建图 确定了如何在代码中表示图之后，构建一个表示图的类就很容易了。下面是第一个Graph类的定义 function Graph(v) { this.vertices = v; this.edges = 0; this.adj = []; for (var i = 0; i &amp;lt; this.vertices; ++i) { this.adj[i] = []; this.adj[i].push(&quot;&quot;); } this.addEdge = addEdge; this.showGraph = showGraph; } 这个类会记录一个图表示了多少条边，并使用一个长度与图的顶点数相同的数组来记录顶点的数量。通过 for 循环为数组中的每个元素添加一个子数组来存储所有的相邻顶点，并 将所有元素初始化为空字符串。 addEdge() 函数 function addEdge(v, w) { this.adj[v].push(w); this.adj[w].push(v); this.edges++; } 当调用这个函数并传入顶点 A 和 B 时，函数会先查找顶点 A 的邻接表，将顶点 B 添加到列 表中，然后再查找顶点 B 的邻接表，将顶点 A 加入列表。最后，这个函数会将边数加 1。 showGraph() 函数 showGraph() 函数会通过打印所有顶点及其相邻顶点列表的方式来显示图: function showGraph() { for (var i = 0; i &amp;lt; this.vertices; ++i) { document.write(i + &quot;-&amp;gt;&quot;); for (var j = 0; j &amp;lt; this.vertices; ++j) { if (this.adj[i][j] != undefined) { document.write(this.adj[i][j] + ' '); } } } } 初始化一个例子： g = new Graph(5); g.addEdge(0,1); g.addEdge(0,2); g.addEdge(1,3); g.addEdge(2,4); g.showGraph(); 输出结果： 还是这样看更直观些： 顶点 0 有到顶点 1 和顶点 2 的边; 顶点 1 有到顶点 0 和顶点 3 的边; 顶 点2有到顶点0和4的边; 顶点3有到顶点1的边; 顶点4有到顶点2的边。 当然，这种显示存在冗余，例如，顶点 0 和 1 之间的边和顶点 1 到 0 之间的边相同。如果只是为了显示，这样是不错的，但是在开始探索图的路径之前，需要调整一下输出。 搜索图及对图的操作 确定从一个指定的顶点可以到达其他哪些顶点，这是经常对图执行的操作。 可能想通过地图了解到从一个城镇到另一个城镇有哪些路，或者从一个机场到其他机场有哪些航班。 图上的这些操作是用搜索算法执行的。 在图上可以执行两种基础搜索: 深度优先搜索和广度优先搜索。 深度优先搜索 深度优先搜索包括从一条路径的起始顶点开始追溯，直到到达最后一个顶点，然后回溯， 继续追溯下一条路径，直到到达最后的顶点，如此往复，直到没有路径为止。这不是在搜 索特定的路径，而是通过搜索来查看在图中有哪些路径可以选择。 如下图演示了深度优先 深度优先搜索算法比较简单:访问一个没有访问过的顶点，将它标记为已访问，再递归地去访问在初始顶点的邻接表中其他没有访问过的顶点。 要让该算法运行，需要为 Graph 类添加一个数组，用来存储已访问过的顶点，将它所有元 素的值全部初始化为 false。 function Graph(v) { this.vertices = v; this.edges = 0; this.adj = []; for (var i = 0; i &amp;lt; this.vertices; ++i) { this.adj[i] = []; this.adj[i].push(&quot;&quot;); } this.addEdge = addEdge; this.showGraph = showGraph; this.dfs = dfs; this.marked = []; for (var i = 0; i &amp;lt; this.vertices; ++i) { this.marked[i] = false; } } 深度优先搜索函数 function dfs(v) { this.marked[v] = true; document.write(&quot;Visited vertex: &quot; + v); for each(var w in this.adj[v]) { if (!this.marked[w]) { this.dfs(w); } } } 广度优先搜索 广度优先搜索从第一个顶点开始，尝试访问尽可能靠近它的顶点。本质上，这种搜索在图 上是逐层移动的，首先检查最靠近第一个顶点的层，再逐渐向下移动到离起始顶点最远的 层。 广度优先搜索算法使用了抽象的队列而不是数组来对已访问过的顶点进行排序。其算法的 工作原理如下: 查找与当前顶点相邻的未访问顶点，将其添加到已访问顶点列表及队列中; 从图中取出下一个顶点 v，添加到已访问的顶点列表; 将所有与 v 相邻的未访问顶点添加到队列。 function bfs(s) { var queue = []; this.marked[s] = true; queue.push(s); //添加到队尾 while (queue.length &amp;gt; 0) { var v = queue.shift(); //从队首移除 if (v == undefined) { document.write(&quot;Visisted vertex: &quot; + v); } for each(var w in this.adj[v]) { if (!this.marked[w]) { this.edgeTo[w] = v; this.marked[w] = true; queue.push(w); } } } }</summary></entry><entry><title type="html">JS基础–集合</title><link href="http://localhost:4000/js/2017/12/22/set.html" rel="alternate" type="text/html" title="JS基础--集合" /><published>2017-12-22T00:00:00+08:00</published><updated>2017-12-22T00:00:00+08:00</updated><id>http://localhost:4000/js/2017/12/22/set</id><content type="html" xml:base="http://localhost:4000/js/2017/12/22/set.html">&lt;h1 id=&quot;集合&quot;&gt;集合&lt;/h1&gt;
+
+&lt;p&gt;集合(set)是一种包含不同元素的数据结构&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;集合特性&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;集合中的成员是无序的&lt;/li&gt;
+  &lt;li&gt;集合中不允许相同成员存在&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;在很多编程语言中，并不把集合当成一种数据类型。当你想要创建一个数据结构，用来保存一些独一无二的元素时，比如一段文本中用到 的单词，集合就变得非常有用&lt;/p&gt;
+
+&lt;h5 id=&quot;相关概念&quot;&gt;相关概念&lt;/h5&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;空集: 不包含任何成员的集合称为空集&lt;/li&gt;
+  &lt;li&gt;全集: 则是包含一切可能成员的集合&lt;/li&gt;
+  &lt;li&gt;集合相等: 如果两个集合的成员完全相同，则称两个集合相等&lt;/li&gt;
+  &lt;li&gt;子集: 如果一个集合中所有的成员都属于另外一个集合，则前一集合称为后一集合的子集&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&quot;对集合的操作&quot;&gt;对集合的操作&lt;/h5&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;并集: 将两个集合中的成员进行合并，得到一个新集合&lt;/li&gt;
+  &lt;li&gt;交集: 两个集合中共同存在的成员组成一个新的集合&lt;/li&gt;
+  &lt;li&gt;补集: 属于一个集合而不属于另一个集合的成员组成的集合&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&quot;set类&quot;&gt;Set类&lt;/h5&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function Set() {
+    this.dataStore = [];
+    this.add = add;
+    this.remove = remove;
+    this.size = size;
+    this.union = union;
+    this.intersect = intersect;
+    this.subset = subset;
+    this.difference = difference;
+    this.show = show;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;show（）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function show() {
+    return this.dataStore;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;add 方法&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function add(data) {
+    if (this.dataStore.indexOf(data) &amp;lt; 0) {
+           this.dataStore.push(data);
+           return true;
+        } else {
+           return false;
+    } 
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;思路：先要确保数 组中不存在该数据。我们使用 indexOf() 检查新加入的元素在数组中是否存在。如果找到， 该方法返回该元素在数组中的位置;如果没有找到，该方法返回 -1。如果数组中还未包含该 元素，add() 方法会将新加元素保存到数组中并返回 true;否则，返回 false。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;remove 方法&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function remove(data) {
+    var pos = this.dataStore.indexOf(data);
+        if (pos &amp;gt; -1) {
+           this.dataStore.splice(pos,1);
+           return true;
+        } else {
+           return false;
+    } 
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;union() 并集操作&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;思路：首先将第一个集合里的成员悉数加入一个临时集合，然后检 查第二个集合中的成员，看它们是否也同时属于第一个集合。如果属于，则跳过该成员， 否则就将该成员加入临时集合&lt;/p&gt;
+
+&lt;p&gt;在定义 union() 方法前，先需要定义一个辅助方法 contains()，该方法检查一个成员是否 属于该集合&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function contains(data) {
+    if (this.dataStore.indexOf(data) &amp;gt; -1) {
+       return true;
+        } else {
+       return false;
+    } 
+}
+
+
+function union(set) {
+     var tempSet = new Set();
+     for (var i = 0; i &amp;lt; this.dataStore.length; ++i) {
+          tempSet.add(this.dataStore[i]);
+     }
+     for (var i = 0; i &amp;lt; set.dataStore.length; ++i) {
+          if (!tempSet.contains(set.dataStore[i])) {
+             tempSet.dataStore.push(set.dataStore[i]);
+          }
+     }
+     return tempSet;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;intersect() 交集&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;每当发现第一 个集合的成员也属于第二个集合时，便将该成员加入一个新集合，这个新集合即为方法的 返回值&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function intersect(set) {
+       var tempSet = new Set();
+       for (var i = 0; i &amp;lt; this.dataStore.length; ++i) {
+          if (set.contains(this.dataStore[i])) {
+             tempSet.add(this.dataStore[i]);
+          } 
+       }
+       return tempSet;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;subset()&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;在判断每个元素是否属于待比较集合前，该方法先使用 size() 方法对比两个集合的大小&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function size() {
+        return this.dataStore.length;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;思路：&lt;/p&gt;
+
+&lt;p&gt;subset() 方法首先要确定该集合的长度是否小于待比较集合。如果该集合比待比较集合还要大，那么该集合肯定不会是待比较集合的一个子集。 当该集合的长度小于待比较集合时，再判断该集合内的成员是否都属于待比较集合。如果有任意一个成员不属于待比较集合，则返回 false，程序终止。如果一直比较完该集合的 最后一个元素，所有元素都属于待比较集合，那么该集合就是待比较集合的一个子集，该方法返回true。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function subset(set) {
+    if (this.size() &amp;gt; set.size()) {
+	return false;
+    } else {
+       for each (var member in this.dataStore) {
+          if (!set.contains(member)) {
+             return false;
+          } 
+       }
+    }
+    return true;
+}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;difference() 返回一个新集合&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function difference(set) {
+    var tempSet = new Set();
+    for (var i = 0; i &amp;lt; this.dataStore.length; ++i) {
+       if (!set.contains(this.dataStore[i])) {
+          tempSet.add(this.dataStore[i]);
+       } 
+    }
+    return tempSet;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>Someone</name></author><category term="[&quot;JS&quot;]" /><summary type="html">集合 集合(set)是一种包含不同元素的数据结构 集合特性 集合中的成员是无序的 集合中不允许相同成员存在 在很多编程语言中，并不把集合当成一种数据类型。当你想要创建一个数据结构，用来保存一些独一无二的元素时，比如一段文本中用到 的单词，集合就变得非常有用 相关概念 空集: 不包含任何成员的集合称为空集 全集: 则是包含一切可能成员的集合 集合相等: 如果两个集合的成员完全相同，则称两个集合相等 子集: 如果一个集合中所有的成员都属于另外一个集合，则前一集合称为后一集合的子集 对集合的操作 并集: 将两个集合中的成员进行合并，得到一个新集合 交集: 两个集合中共同存在的成员组成一个新的集合 补集: 属于一个集合而不属于另一个集合的成员组成的集合 Set类 function Set() { this.dataStore = []; this.add = add; this.remove = remove; this.size = size; this.union = union; this.intersect = intersect; this.subset = subset; this.difference = difference; this.show = show; } show（） function show() { return this.dataStore; } add 方法 function add(data) { if (this.dataStore.indexOf(data) &amp;lt; 0) { this.dataStore.push(data); return true; } else { return false; } } 思路：先要确保数 组中不存在该数据。我们使用 indexOf() 检查新加入的元素在数组中是否存在。如果找到， 该方法返回该元素在数组中的位置;如果没有找到，该方法返回 -1。如果数组中还未包含该 元素，add() 方法会将新加元素保存到数组中并返回 true;否则，返回 false。 remove 方法 function remove(data) { var pos = this.dataStore.indexOf(data); if (pos &amp;gt; -1) { this.dataStore.splice(pos,1); return true; } else { return false; } } union() 并集操作 思路：首先将第一个集合里的成员悉数加入一个临时集合，然后检 查第二个集合中的成员，看它们是否也同时属于第一个集合。如果属于，则跳过该成员， 否则就将该成员加入临时集合 在定义 union() 方法前，先需要定义一个辅助方法 contains()，该方法检查一个成员是否 属于该集合 function contains(data) { if (this.dataStore.indexOf(data) &amp;gt; -1) { return true; } else { return false; } } function union(set) { var tempSet = new Set(); for (var i = 0; i &amp;lt; this.dataStore.length; ++i) { tempSet.add(this.dataStore[i]); } for (var i = 0; i &amp;lt; set.dataStore.length; ++i) { if (!tempSet.contains(set.dataStore[i])) { tempSet.dataStore.push(set.dataStore[i]); } } return tempSet; } intersect() 交集 每当发现第一 个集合的成员也属于第二个集合时，便将该成员加入一个新集合，这个新集合即为方法的 返回值 function intersect(set) { var tempSet = new Set(); for (var i = 0; i &amp;lt; this.dataStore.length; ++i) { if (set.contains(this.dataStore[i])) { tempSet.add(this.dataStore[i]); } } return tempSet; } subset() 在判断每个元素是否属于待比较集合前，该方法先使用 size() 方法对比两个集合的大小 function size() { return this.dataStore.length; } 思路： subset() 方法首先要确定该集合的长度是否小于待比较集合。如果该集合比待比较集合还要大，那么该集合肯定不会是待比较集合的一个子集。 当该集合的长度小于待比较集合时，再判断该集合内的成员是否都属于待比较集合。如果有任意一个成员不属于待比较集合，则返回 false，程序终止。如果一直比较完该集合的 最后一个元素，所有元素都属于待比较集合，那么该集合就是待比较集合的一个子集，该方法返回true。 function subset(set) { if (this.size() &amp;gt; set.size()) { return false; } else { for each (var member in this.dataStore) { if (!set.contains(member)) { return false; } } } return true; } difference() 返回一个新集合 function difference(set) { var tempSet = new Set(); for (var i = 0; i &amp;lt; this.dataStore.length; ++i) { if (!set.contains(this.dataStore[i])) { tempSet.add(this.dataStore[i]); } } return tempSet; }</summary></entry><entry><title type="html">requestAnimationFrame</title><link href="http://localhost:4000/js/2017/12/15/requestAnimationFrame.html" rel="alternate" type="text/html" title="requestAnimationFrame" /><published>2017-12-15T00:00:00+08:00</published><updated>2017-12-15T00:00:00+08:00</updated><id>http://localhost:4000/js/2017/12/15/requestAnimationFrame</id><content type="html" xml:base="http://localhost:4000/js/2017/12/15/requestAnimationFrame.html">&lt;h1 id=&quot;requestanimationframe&quot;&gt;requestAnimationFrame&lt;/h1&gt;
+
+&lt;p&gt;在一个react项目中要做一个抢红包的游戏，红包雨的效果，用到了动画，但是由于在wap端，尤其对于性能方面要更加注意，这里就用到了requestAnimationFrame，在此记录一下。&lt;/p&gt;
+
+&lt;p&gt;先来了解几个概念：&lt;/p&gt;
+
+&lt;h5 id=&quot;屏幕刷新频率&quot;&gt;屏幕刷新频率&lt;/h5&gt;
+
+&lt;p&gt;即图像在屏幕上更新的速度，也即屏幕上的图像每秒钟出现的次数，它的单位是赫兹(Hz)。 对于一般笔记本电脑，这个频率大概是60Hz， 可以在桌面上右键-&amp;gt;屏幕分辨率-&amp;gt;高级设置-&amp;gt;监视器 中查看和设置。这个值的设定受屏幕分辨率、屏幕尺寸和显卡的影响，原则上设置成让眼睛看着舒适的值都行。&lt;/p&gt;
+
+&lt;p&gt;当你对着电脑屏幕什么也不做的情况下，显示器也会以每秒60次的频率正在不断的更新屏幕上的图像。为什么你感觉不到这个变化？ 那是因为人的眼睛有视觉停留效应，即前一副画面留在大脑的印象还没消失，紧接着后一副画面就跟上来了，这中间只间隔了16.7ms(1000/60≈16.7)， 所以会让你误以为屏幕上的图像是静止不动的。而屏幕给你的这种感觉是对的，试想一下，如果刷新频率变成1次/秒，屏幕上的图像就会出现严重的闪烁，这样就很容易引起眼睛疲劳、酸痛和头晕目眩等症状。&lt;/p&gt;
+
+&lt;h5 id=&quot;动画原理&quot;&gt;动画原理&lt;/h5&gt;
+
+&lt;p&gt;根据上面的原理知道，眼前所看到图像正在以每秒60次的频率刷新，由于刷新频率很高，因此你感觉不到它在刷新。而动画本质就是要让人眼看到图像被刷新而引起变化的视觉效果，这个变化要以连贯的、平滑的方式进行过渡。 那怎么样才能做到这种效果呢？&lt;/p&gt;
+
+&lt;p&gt;刷新频率为60Hz的屏幕每16.7ms刷新一次，我们在屏幕每次刷新前，将图像的位置向左移动一个像素，即1px。这样一来，屏幕每次刷出来的图像位置都比前一个要差1px，因此你会看到图像在移动；由于我们人眼的视觉停留效应，当前位置的图像停留在大脑的印象还没消失，紧接着图像又被移到了下一个位置，因此你才会看到图像在流畅的移动，这就是视觉效果上形成的动画。&lt;/p&gt;
+
+&lt;h5 id=&quot;settimeout&quot;&gt;setTimeout&lt;/h5&gt;
+
+&lt;p&gt;setTimeout 其实就是通过设置一个间隔时间来不断的改变图像的位置，从而达到动画效果的。但我们会发现，利用seTimeout实现的动画在某些低端机上会出现卡顿、抖动的现象。 这种现象的产生有两个原因：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;setTimeout的执行时间并不是确定的。在Javascript中， setTimeout 任务被放进了异步队列中，只有当主线程上的任务执行完以后，才会去检查该队列里的任务是否需要开始执行，因此 setTimeout 的实际执行时间一般要比其设定的时间晚一些。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;刷新频率受屏幕分辨率和屏幕尺寸的影响，因此不同设备的屏幕刷新频率可能会不同，而 setTimeout只能设置一个固定的时间间隔，这个时间不一定和屏幕的刷新时间相同。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;以上两种情况都会导致setTimeout的执行步调和屏幕的刷新步调不一致，从而引起丢帧现象。 那为什么步调不一致就会引起丢帧呢？&lt;/p&gt;
+
+&lt;p&gt;首先要明白，setTimeout的执行只是在内存中对图像属性进行改变，这个变化必须要等到屏幕下次刷新时才会被更新到屏幕上。如果两者的步调不一致，就可能会导致中间某一帧的操作被跨越过去，而直接更新下一帧的图像。假设屏幕每隔16.7ms刷新一次，而setTimeout每隔10ms设置图像向左移动1px， 就会出现如下绘制过程：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;第0ms: 屏幕未刷新，等待中，setTimeout也未执行，等待中；&lt;/li&gt;
+  &lt;li&gt;第10ms: 屏幕未刷新，等待中，setTimeout开始执行并设置图像属性left=1px；&lt;/li&gt;
+  &lt;li&gt;第16.7ms: 屏幕开始刷新，屏幕上的图像向左移动了1px， setTimeout 未执行，继续等待中；&lt;/li&gt;
+  &lt;li&gt;第20ms: 屏幕未刷新，等待中，setTimeout开始执行并设置left=2px;&lt;/li&gt;
+  &lt;li&gt;第30ms: 屏幕未刷新，等待中，setTimeout开始执行并设置left=3px;&lt;/li&gt;
+  &lt;li&gt;第33.4ms:屏幕开始刷新，屏幕上的图像向左移动了3px， setTimeout未执行，继续等待中；&lt;/li&gt;
+  &lt;li&gt;…&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;从上面的绘制过程中可以看出，屏幕没有更新left=2px的那一帧画面，图像直接从1px的位置跳到了3px的的位置，这就是丢帧现象，这种现象就会引起动画卡顿。&lt;/p&gt;
+
+&lt;h5 id=&quot;requestanimationframe-1&quot;&gt;requestAnimationFrame&lt;/h5&gt;
+
+&lt;p&gt;与setTimeout相比，requestAnimationFrame最大的优势是&lt;strong&gt;由系统来决定回调函数的执行时机&lt;/strong&gt;。具体一点讲，如果屏幕刷新率是60Hz,那么回调函数就每16.7ms被执行一次，如果刷新率是75Hz，那么这个时间间隔就变成了1000/75=13.3ms，换句话说就是，requestAnimationFrame的步伐跟着系统的刷新步伐走。&lt;strong&gt;它能保证回调函数在屏幕每一次的刷新间隔中只被执行一次&lt;/strong&gt;，这样就不会引起丢帧现象，也不会导致动画出现卡顿的问题。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var progress = 0;
+//回调函数
+function render() {
+    progress += 1; //修改图像的位置
+ 
+    if (progress &amp;lt; 100) {
+           //在动画没有结束前，递归渲染
+           window.requestAnimationFrame(render);
+    }
+}
+ 
+//第一帧渲染
+window.requestAnimationFrame(render);
+
+这个方法一旦启动，它就会递归的调用自己。
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;requestAnimationFrame还有以下两个优势：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;CPU节能&lt;/strong&gt;：使用setTimeout实现的动画，当页面被隐藏或最小化时，setTimeout 仍然在后台执行动画任务，由于此时页面处于不可见或不可用状态，刷新动画是没有意义的，完全是浪费CPU资源。而requestAnimationFrame则完全不同，当页面处理未激活的状态下，该页面的屏幕刷新任务也会被系统暂停，因此跟着系统步伐走的requestAnimationFrame也会停止渲染，当页面被激活时，动画就从上次停留的地方继续执行，有效节省了CPU开销。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;函数节流&lt;/strong&gt;：在高频率事件(resize,scroll等)中，为了防止在一个刷新间隔内发生多次函数执行，使用requestAnimationFrame可保证每个刷新间隔内，函数只被执行一次，这样既能保证流畅性，也能更好的节省函数执行的开销。一个刷新间隔内函数执行多次时没有意义的，因为显示器每16.7ms刷新一次，多次绘制并不会在屏幕上体现出来。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;兼容性：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20171215/2017-12-15-1.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;启动和停止一个动画&lt;/p&gt;
+
+&lt;p&gt;requestAnimationFrame 函数能返回一个ID，根据这个ID，你可以停止它的允许，这就像 setTimeout 和 setInterval 的用法一样。下面是一个实际可运行的例子：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var globalID;
+
+function repeatOften() {
+  document.getElementsByTagName(&quot;body&quot;).appendChild('#');;
+  globalID = requestAnimationFrame(repeatOften);
+}
+
+$(&quot;#start&quot;).on(&quot;click&quot;, function() {
+  globalID = requestAnimationFrame(repeatOften);
+});
+
+$(&quot;#stop&quot;).on(&quot;click&quot;, function() {
+  cancelAnimationFrame(globalID);
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h5 id=&quot;requestanimationframe回调函数中的时间&quot;&gt;requestAnimationFrame回调函数中的时间&lt;/h5&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;from MDN
+调函数具有一个传入 time 参数，该参数表示调用回调函数的时间。它是一个 DOMHighResTimeStamp，是从页面导航开始时测量的高精确度时间。DOMHighResTimeStamp 以毫秒为单位，精确到千分之一毫秒。此时间值不直接与 Date.now() 进行比较，后者测量自 1970 年 1 月 1 日至今以毫秒为单位的时间。如果你希望将 time 参数与当前时间进行比较，请使用当前时间的 window.performance.now。将时间值从 DOMTimeStamp 更改为 DOMHighResTimeStamp 是 W3C 针对基于脚本动画计时控制规范的最新编辑草案中的最新更改，并且某些供应商仍将其作为 DOMTimeStamp 实现。较早版本的 W3C 规范使用 DOMTimeStamp，允许你将 Date.now 用于当前时间。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;let t0 = window.performance.now();
+doSomething();
+let t1 = window.performance.now();
+console.log(&quot;doSomething函数执行了&quot; + (t1 - t0) + &quot;毫秒.&quot;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;和JavaScript中其他可用的时间类函数(比如Date.now)不同的是,window.performance.now()返回的时间戳没有被限制在一毫秒的精确度内,而它使用了一个浮点数来达到微秒级别的精确度.&lt;/p&gt;
+
+&lt;p&gt;另外一个不同点是,window.performance.now()是以一个恒定的速率慢慢增加的,它不会受到系统时间的影响(可能被其他软件调整)。另外，performance.timing.navigationStart + performance.now() 约等于 Date.now()。&lt;/p&gt;
+
+&lt;p&gt;看下面的例子：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;!DOCTYPE html&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;html&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;title&amp;gt;&lt;/span&gt;Script-based animation using requestAnimationFrame&lt;span class=&quot;nt&quot;&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;style &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;text/css&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;position&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;absolute&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;left&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;10px&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;top&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;100px&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;padding&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;50px&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;background&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;crimson&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;white&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/style&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;script &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;text/javascript&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;requestId&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;startime&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;lpos&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;elm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;elm&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getElementById&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;animated&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    
+    &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;render&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;elm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;left&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;lpos&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;600&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;px&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;requestId&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;requestAFrame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;render&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;performance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;now&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;startime&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;performance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;now&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;startime&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;now&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;requestId&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;requestAFrame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;render&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;stop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;requestId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cancelAFrame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;requestId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;        
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+
+    &lt;span class=&quot;c1&quot;&gt;// handle multiple browsers for requestAnimationFrame()&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;requestAFrame&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;requestAnimationFrame&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt;
+                &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;webkitRequestAnimationFrame&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt;
+                &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;mozRequestAnimationFrame&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt;
+                &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;oRequestAnimationFrame&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt;
+                &lt;span class=&quot;c1&quot;&gt;// if all else fails, use setTimeout&lt;/span&gt;
+                &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;callback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;setTimeout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;callback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;60&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// shoot for 60 fps&lt;/span&gt;
+                &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;})();&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// handle multiple browsers for cancelAnimationFrame()&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cancelAFrame&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cancelAnimationFrame&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt;
+                &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;webkitCancelAnimationFrame&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt;
+                &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;mozCancelAnimationFrame&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt;
+                &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;oCancelAnimationFrame&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt;
+                &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                    &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clearTimeout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+                &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;})();&lt;/span&gt;
+
+   
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;body&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;onload=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;init();&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;animated&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Hello there.&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;button&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;onclick=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;start()&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Start&lt;span class=&quot;nt&quot;&gt;&amp;lt;/button&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;button&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;onclick=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;stop()&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Stop&lt;span class=&quot;nt&quot;&gt;&amp;lt;/button&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h5 id=&quot;参考文章&quot;&gt;参考文章&lt;/h5&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://technet.microsoft.com/zh-cn/library/hh920765.aspx&quot;&gt;microsoft requestAnimationFrame&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.zhangxinxu.com/wordpress/2013/09/css3-animation-requestanimationframe-tween-%E5%8A%A8%E7%94%BB%E7%AE%97%E6%B3%95/&quot;&gt;张鑫旭,CSS3动画那么强，requestAnimationFrame还有毛线用？&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.w3.org/TR/animation-timing/&quot;&gt;W3C CR, Timing control for script-based animations&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://blog.csdn.net/milado_nju/article/details/8101188&quot;&gt;朱永盛, 理解WebKit和Chromium: 渲染主循环（main loop)和requestAnimationFrame&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Someone</name></author><category term="[&quot;JS&quot;]" /><summary type="html">requestAnimationFrame 在一个react项目中要做一个抢红包的游戏，红包雨的效果，用到了动画，但是由于在wap端，尤其对于性能方面要更加注意，这里就用到了requestAnimationFrame，在此记录一下。 先来了解几个概念： 屏幕刷新频率 即图像在屏幕上更新的速度，也即屏幕上的图像每秒钟出现的次数，它的单位是赫兹(Hz)。 对于一般笔记本电脑，这个频率大概是60Hz， 可以在桌面上右键-&amp;gt;屏幕分辨率-&amp;gt;高级设置-&amp;gt;监视器 中查看和设置。这个值的设定受屏幕分辨率、屏幕尺寸和显卡的影响，原则上设置成让眼睛看着舒适的值都行。 当你对着电脑屏幕什么也不做的情况下，显示器也会以每秒60次的频率正在不断的更新屏幕上的图像。为什么你感觉不到这个变化？ 那是因为人的眼睛有视觉停留效应，即前一副画面留在大脑的印象还没消失，紧接着后一副画面就跟上来了，这中间只间隔了16.7ms(1000/60≈16.7)， 所以会让你误以为屏幕上的图像是静止不动的。而屏幕给你的这种感觉是对的，试想一下，如果刷新频率变成1次/秒，屏幕上的图像就会出现严重的闪烁，这样就很容易引起眼睛疲劳、酸痛和头晕目眩等症状。 动画原理 根据上面的原理知道，眼前所看到图像正在以每秒60次的频率刷新，由于刷新频率很高，因此你感觉不到它在刷新。而动画本质就是要让人眼看到图像被刷新而引起变化的视觉效果，这个变化要以连贯的、平滑的方式进行过渡。 那怎么样才能做到这种效果呢？ 刷新频率为60Hz的屏幕每16.7ms刷新一次，我们在屏幕每次刷新前，将图像的位置向左移动一个像素，即1px。这样一来，屏幕每次刷出来的图像位置都比前一个要差1px，因此你会看到图像在移动；由于我们人眼的视觉停留效应，当前位置的图像停留在大脑的印象还没消失，紧接着图像又被移到了下一个位置，因此你才会看到图像在流畅的移动，这就是视觉效果上形成的动画。 setTimeout setTimeout 其实就是通过设置一个间隔时间来不断的改变图像的位置，从而达到动画效果的。但我们会发现，利用seTimeout实现的动画在某些低端机上会出现卡顿、抖动的现象。 这种现象的产生有两个原因： setTimeout的执行时间并不是确定的。在Javascript中， setTimeout 任务被放进了异步队列中，只有当主线程上的任务执行完以后，才会去检查该队列里的任务是否需要开始执行，因此 setTimeout 的实际执行时间一般要比其设定的时间晚一些。 刷新频率受屏幕分辨率和屏幕尺寸的影响，因此不同设备的屏幕刷新频率可能会不同，而 setTimeout只能设置一个固定的时间间隔，这个时间不一定和屏幕的刷新时间相同。 以上两种情况都会导致setTimeout的执行步调和屏幕的刷新步调不一致，从而引起丢帧现象。 那为什么步调不一致就会引起丢帧呢？ 首先要明白，setTimeout的执行只是在内存中对图像属性进行改变，这个变化必须要等到屏幕下次刷新时才会被更新到屏幕上。如果两者的步调不一致，就可能会导致中间某一帧的操作被跨越过去，而直接更新下一帧的图像。假设屏幕每隔16.7ms刷新一次，而setTimeout每隔10ms设置图像向左移动1px， 就会出现如下绘制过程： 第0ms: 屏幕未刷新，等待中，setTimeout也未执行，等待中； 第10ms: 屏幕未刷新，等待中，setTimeout开始执行并设置图像属性left=1px； 第16.7ms: 屏幕开始刷新，屏幕上的图像向左移动了1px， setTimeout 未执行，继续等待中； 第20ms: 屏幕未刷新，等待中，setTimeout开始执行并设置left=2px; 第30ms: 屏幕未刷新，等待中，setTimeout开始执行并设置left=3px; 第33.4ms:屏幕开始刷新，屏幕上的图像向左移动了3px， setTimeout未执行，继续等待中； … 从上面的绘制过程中可以看出，屏幕没有更新left=2px的那一帧画面，图像直接从1px的位置跳到了3px的的位置，这就是丢帧现象，这种现象就会引起动画卡顿。 requestAnimationFrame 与setTimeout相比，requestAnimationFrame最大的优势是由系统来决定回调函数的执行时机。具体一点讲，如果屏幕刷新率是60Hz,那么回调函数就每16.7ms被执行一次，如果刷新率是75Hz，那么这个时间间隔就变成了1000/75=13.3ms，换句话说就是，requestAnimationFrame的步伐跟着系统的刷新步伐走。它能保证回调函数在屏幕每一次的刷新间隔中只被执行一次，这样就不会引起丢帧现象，也不会导致动画出现卡顿的问题。 var progress = 0; //回调函数 function render() { progress += 1; //修改图像的位置 if (progress &amp;lt; 100) { //在动画没有结束前，递归渲染 window.requestAnimationFrame(render); } } //第一帧渲染 window.requestAnimationFrame(render); 这个方法一旦启动，它就会递归的调用自己。 requestAnimationFrame还有以下两个优势： CPU节能：使用setTimeout实现的动画，当页面被隐藏或最小化时，setTimeout 仍然在后台执行动画任务，由于此时页面处于不可见或不可用状态，刷新动画是没有意义的，完全是浪费CPU资源。而requestAnimationFrame则完全不同，当页面处理未激活的状态下，该页面的屏幕刷新任务也会被系统暂停，因此跟着系统步伐走的requestAnimationFrame也会停止渲染，当页面被激活时，动画就从上次停留的地方继续执行，有效节省了CPU开销。 函数节流：在高频率事件(resize,scroll等)中，为了防止在一个刷新间隔内发生多次函数执行，使用requestAnimationFrame可保证每个刷新间隔内，函数只被执行一次，这样既能保证流畅性，也能更好的节省函数执行的开销。一个刷新间隔内函数执行多次时没有意义的，因为显示器每16.7ms刷新一次，多次绘制并不会在屏幕上体现出来。 兼容性： 启动和停止一个动画 requestAnimationFrame 函数能返回一个ID，根据这个ID，你可以停止它的允许，这就像 setTimeout 和 setInterval 的用法一样。下面是一个实际可运行的例子： var globalID; function repeatOften() { document.getElementsByTagName(&quot;body&quot;).appendChild('#');; globalID = requestAnimationFrame(repeatOften); } $(&quot;#start&quot;).on(&quot;click&quot;, function() { globalID = requestAnimationFrame(repeatOften); }); $(&quot;#stop&quot;).on(&quot;click&quot;, function() { cancelAnimationFrame(globalID); }); requestAnimationFrame回调函数中的时间 from MDN 调函数具有一个传入 time 参数，该参数表示调用回调函数的时间。它是一个 DOMHighResTimeStamp，是从页面导航开始时测量的高精确度时间。DOMHighResTimeStamp 以毫秒为单位，精确到千分之一毫秒。此时间值不直接与 Date.now() 进行比较，后者测量自 1970 年 1 月 1 日至今以毫秒为单位的时间。如果你希望将 time 参数与当前时间进行比较，请使用当前时间的 window.performance.now。将时间值从 DOMTimeStamp 更改为 DOMHighResTimeStamp 是 W3C 针对基于脚本动画计时控制规范的最新编辑草案中的最新更改，并且某些供应商仍将其作为 DOMTimeStamp 实现。较早版本的 W3C 规范使用 DOMTimeStamp，允许你将 Date.now 用于当前时间。 let t0 = window.performance.now(); doSomething(); let t1 = window.performance.now(); console.log(&quot;doSomething函数执行了&quot; + (t1 - t0) + &quot;毫秒.&quot;) 和JavaScript中其他可用的时间类函数(比如Date.now)不同的是,window.performance.now()返回的时间戳没有被限制在一毫秒的精确度内,而它使用了一个浮点数来达到微秒级别的精确度. 另外一个不同点是,window.performance.now()是以一个恒定的速率慢慢增加的,它不会受到系统时间的影响(可能被其他软件调整)。另外，performance.timing.navigationStart + performance.now() 约等于 Date.now()。 看下面的例子： &amp;lt;!DOCTYPE html&amp;gt; &amp;lt;html&amp;gt; &amp;lt;head&amp;gt; &amp;lt;title&amp;gt;Script-based animation using requestAnimationFrame&amp;lt;/title&amp;gt; &amp;lt;style type=&quot;text/css&quot;&amp;gt; div { position: absolute; left: 10px; top:100px; padding: 50px; background: crimson; color: white; } &amp;lt;/style&amp;gt; &amp;lt;script type=&quot;text/javascript&quot;&amp;gt; var requestId = 0; var startime = 0; var lpos = 0; var elm; function init() { elm = document.getElementById(&quot;animated&quot;); } function render() { elm.style.left = ((lpos += 3) % 600) + &quot;px&quot;; requestId = window.requestAFrame(render); } function start() { if (window.performance.now) { startime = window.performance.now(); } else { startime = Date.now(); } requestId = window.requestAFrame(render); } function stop() { if (requestId) window.cancelAFrame(requestId); } // handle multiple browsers for requestAnimationFrame() window.requestAFrame = (function () { return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || // if all else fails, use setTimeout function (callback) { return window.setTimeout(callback, 1000 / 60); // shoot for 60 fps }; })(); // handle multiple browsers for cancelAnimationFrame() window.cancelAFrame = (function () { return window.cancelAnimationFrame || window.webkitCancelAnimationFrame || window.mozCancelAnimationFrame || window.oCancelAnimationFrame || function (id) { window.clearTimeout(id); }; })(); &amp;lt;/script&amp;gt; &amp;lt;/head&amp;gt; &amp;lt;body onload=&quot;init();&quot;&amp;gt; &amp;lt;div id=&quot;animated&quot;&amp;gt;Hello there.&amp;lt;/div&amp;gt; &amp;lt;button onclick=&quot;start()&quot;&amp;gt;Start&amp;lt;/button&amp;gt; &amp;lt;button onclick=&quot;stop()&quot;&amp;gt;Stop&amp;lt;/button&amp;gt; &amp;lt;/body&amp;gt; &amp;lt;/html&amp;gt; 参考文章 microsoft requestAnimationFrame 张鑫旭,CSS3动画那么强，requestAnimationFrame还有毛线用？ W3C CR, Timing control for script-based animations 朱永盛, 理解WebKit和Chromium: 渲染主循环（main loop)和requestAnimationFrame</summary></entry><entry><title type="html">react基础–知识点小记</title><link href="http://localhost:4000/js/2017/11/20/react_recode.html" rel="alternate" type="text/html" title="react基础--知识点小记" /><published>2017-11-20T00:00:00+08:00</published><updated>2017-11-20T00:00:00+08:00</updated><id>http://localhost:4000/js/2017/11/20/react_recode</id><content type="html" xml:base="http://localhost:4000/js/2017/11/20/react_recode.html">&lt;h1 id=&quot;react-随手笔记&quot;&gt;react 随手笔记&lt;/h1&gt;
+
+&lt;p&gt;项目中遇到的小问题，好记性不如烂笔头，用于记录一下&lt;/p&gt;
+
+&lt;p&gt;1、触发事件&lt;/p&gt;
+
+&lt;p&gt;当触发某个事件时，请求一个ajax，改变一个state值，根据这个state值更改后续的状态。&lt;/p&gt;
+
+&lt;p&gt;场景：一个入口，根据请求接口返回的数据，非成功的状态会出现弹框，成功的状态是一个路由，然后直接跳转&lt;/p&gt;
+
+&lt;p&gt;实现思路：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;js:
+
+handleClick = () =&amp;gt; {
+    fetch ...
+     当请求成功后setState
+	setState({
+	    ...
+	    newState: ,
+        })
+
+	
+        !success{
+	    出弹框
+        }
+}
+
+&amp;lt;p onClick={this.handleClick}&amp;gt;
+    newState === 'success' ?
+        &amp;lt;Link to='' /&amp;gt;
+    :
+        &amp;lt;span&amp;gt;&amp;lt;/span&amp;gt; 
+&amp;lt;/p&amp;gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;问题：显然是有问题的，因为是异步的，所以当请求了接口为成功时，入口不会即时的变为路由，而是需点击两下才能路由走&lt;/p&gt;
+
+&lt;p&gt;解决一：请求前置&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;componentDidMount = () =&amp;gt; {
+    fetch ....
+}
+
+handleClick = () =&amp;gt; {
+    if (this.state.newState !== 'success') {
+	出弹框
+    }
+}
+
+&amp;lt;p onClick={this.handleClick}&amp;gt;
+    newState === 'success' ?
+        &amp;lt;Link to='' /&amp;gt;
+    :
+        &amp;lt;span&amp;gt;&amp;lt;/span&amp;gt; 
+&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;在用户点击之前就请求接口，早些改变newState的值，虽然功能上是实现了，但这种情况会有限制性，逻辑不允许的时候，这种方法行不通&lt;/p&gt;
+
+&lt;p&gt;解决二：在触发事件时就做跳转&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;handleClick = () =&amp;gt; {
+	fetch ... 
+	.then((data) =&amp;gt; {
+	    this.setState({
+		newState: data.status
+	    });
+
+	    if (data.status !== 'success') {  //注意这里，不是用newState，而是用返回值直接处理
+		出弹框
+	    } else {
+		window.location.hash = `/pull/${this.props.hasmoney}`;  //注意这里的写法，用于实现跳转
+	    }
+	});
+}
+
+
+&amp;lt;p onClick={this.handleClick}&amp;gt;&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;其实不用react，原生的js请求返回的结果去处理页面中的元素就是这样控制的，但是当时脑袋秀逗了，没这样做，以后会不断的更新记录工作中遇到的小问题。&lt;/p&gt;</content><author><name>Someone</name></author><category term="[&quot;JS&quot;]" /><summary type="html">react 随手笔记 项目中遇到的小问题，好记性不如烂笔头，用于记录一下 1、触发事件 当触发某个事件时，请求一个ajax，改变一个state值，根据这个state值更改后续的状态。 场景：一个入口，根据请求接口返回的数据，非成功的状态会出现弹框，成功的状态是一个路由，然后直接跳转 实现思路： js: handleClick = () =&amp;gt; { fetch ... 当请求成功后setState setState({ ... newState: , }) !success{ 出弹框 } } &amp;lt;p onClick={this.handleClick}&amp;gt; newState === 'success' ? &amp;lt;Link to='' /&amp;gt; : &amp;lt;span&amp;gt;&amp;lt;/span&amp;gt; &amp;lt;/p&amp;gt; 问题：显然是有问题的，因为是异步的，所以当请求了接口为成功时，入口不会即时的变为路由，而是需点击两下才能路由走 解决一：请求前置 componentDidMount = () =&amp;gt; { fetch .... } handleClick = () =&amp;gt; { if (this.state.newState !== 'success') { 出弹框 } } &amp;lt;p onClick={this.handleClick}&amp;gt; newState === 'success' ? &amp;lt;Link to='' /&amp;gt; : &amp;lt;span&amp;gt;&amp;lt;/span&amp;gt; &amp;lt;/p&amp;gt; 在用户点击之前就请求接口，早些改变newState的值，虽然功能上是实现了，但这种情况会有限制性，逻辑不允许的时候，这种方法行不通 解决二：在触发事件时就做跳转 handleClick = () =&amp;gt; { fetch ... .then((data) =&amp;gt; { this.setState({ newState: data.status }); if (data.status !== 'success') { //注意这里，不是用newState，而是用返回值直接处理 出弹框 } else { window.location.hash = `/pull/${this.props.hasmoney}`; //注意这里的写法，用于实现跳转 } }); } &amp;lt;p onClick={this.handleClick}&amp;gt;&amp;lt;/p&amp;gt; 其实不用react，原生的js请求返回的结果去处理页面中的元素就是这样控制的，但是当时脑袋秀逗了，没这样做，以后会不断的更新记录工作中遇到的小问题。</summary></entry><entry><title type="html">JS基础–字典</title><link href="http://localhost:4000/js/2017/11/18/dictionary.html" rel="alternate" type="text/html" title="JS基础--字典" /><published>2017-11-18T00:00:00+08:00</published><updated>2017-11-18T00:00:00+08:00</updated><id>http://localhost:4000/js/2017/11/18/dictionary</id><content type="html" xml:base="http://localhost:4000/js/2017/11/18/dictionary.html">&lt;h1 id=&quot;字典&quot;&gt;字典&lt;/h1&gt;
+
+&lt;h5 id=&quot;什么是字典&quot;&gt;什么是字典？&lt;/h5&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;字典是一种以键 - 值对形式存储数据的数据结构，就像电话号码簿里的名字和电话号码一样,要找一个电话时，先找名字，名字找到了，紧挨着它的电话号码也就找到了。这里的 键是指你用来查找的东西，值是查找得到的结果。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Dictionay 类的基础是 Array 类，而不是 Object 类，所以某些方法是不能执行的，这里只注重思想&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function Dictionary() {
+    this.datastore = new Array();
+    this.add = add; 
+    this.find = find;
+    this.remove = remove;
+    this.showAll = showAll;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;向列表添加元素&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function append(ele) {
+    this.store[this.listSize++] = ele;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;add方法–两个参数:键和值&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function add(key, value) {
+    this.datastore[key] = value;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;find 方法&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;该方法以键作为参数，返回和其关联的值&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function find(key) {
+    return this.datastore[key];
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;remove 方法&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;从字典中删除键 - 值对需要使用 JavaScript 中的一个内置函数:delete。该函数是 Object 类的一部分，使用对键的引用作为参数。该函数同时删掉键和与其关联的值。&lt;/p&gt;
+
+&lt;p&gt;在这里要新建一个remove方法，delete掉索引所对应的值&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function remove(key) {
+    delete this.datastore[key];
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;showAll 方法&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;显示字典中所有的键 - 值对&lt;/p&gt;
+
+&lt;p&gt;调用 Object 类的 keys() 方法可以返回传入参数中存储的所有键&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function showAll() {
+    for(var key in Object.keys(this.datastore)) {
+       print(key + &quot; -&amp;gt; &quot; + this.datastore[key]);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;count 方法&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;能知道字典中的元素个数&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function count() {
+    var n = 0;
+    for(var key in Object.keys(this.datastore)) {
+       ++n;
+    }
+    return n; 
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;clear 方法&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function clear() {
+    for each (var key in Object.keys(this.datastore)) {
+       delete this.datastore[key];
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;添加排序功能&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;字典的主要用途是通过键取值，无须太关心数据在字典中的实际存储顺序。但如果要做到一个有序的字典，该如何规划？我们都知道数组是可以排序的。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var a = new Array();
+a[0] = &quot;Mike&quot;;
+a[1] = &quot;David&quot;;
+console.log(a); //显示Mike,David a.sort();
+console.log(a); //显示David,Mike
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;但是上面这种做法对以字符串作为键的字典是无效的，程序会没有任何输出。这和前面定义 count() 方法时碰到的情况一样，不过，这也不是大问题。用户关心的是显示字典的内容时，结果是有序的。可以使用Object.keys() 函数解决这个问题&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function showAll() {
+    for(var key in Object.keys(this.datastore).sort()) {
+       console.log(key + &quot; -&amp;gt; &quot; + this.datastore[key]);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;巧妙之处就是从数组 datastore 拿到键后，调用 sort() 方法对键重新排了序，以达到排序的功能。&lt;/p&gt;</content><author><name>Someone</name></author><category term="[&quot;JS&quot;]" /><summary type="html">字典 什么是字典？ 字典是一种以键 - 值对形式存储数据的数据结构，就像电话号码簿里的名字和电话号码一样,要找一个电话时，先找名字，名字找到了，紧挨着它的电话号码也就找到了。这里的 键是指你用来查找的东西，值是查找得到的结果。 Dictionay 类的基础是 Array 类，而不是 Object 类，所以某些方法是不能执行的，这里只注重思想 function Dictionary() { this.datastore = new Array(); this.add = add; this.find = find; this.remove = remove; this.showAll = showAll; } 向列表添加元素 function append(ele) { this.store[this.listSize++] = ele; } add方法–两个参数:键和值 function add(key, value) { this.datastore[key] = value; } find 方法 该方法以键作为参数，返回和其关联的值 function find(key) { return this.datastore[key]; } remove 方法 从字典中删除键 - 值对需要使用 JavaScript 中的一个内置函数:delete。该函数是 Object 类的一部分，使用对键的引用作为参数。该函数同时删掉键和与其关联的值。 在这里要新建一个remove方法，delete掉索引所对应的值 function remove(key) { delete this.datastore[key]; } showAll 方法 显示字典中所有的键 - 值对 调用 Object 类的 keys() 方法可以返回传入参数中存储的所有键 function showAll() { for(var key in Object.keys(this.datastore)) { print(key + &quot; -&amp;gt; &quot; + this.datastore[key]); } } count 方法 能知道字典中的元素个数 function count() { var n = 0; for(var key in Object.keys(this.datastore)) { ++n; } return n; } clear 方法 function clear() { for each (var key in Object.keys(this.datastore)) { delete this.datastore[key]; } } 添加排序功能 字典的主要用途是通过键取值，无须太关心数据在字典中的实际存储顺序。但如果要做到一个有序的字典，该如何规划？我们都知道数组是可以排序的。 var a = new Array(); a[0] = &quot;Mike&quot;; a[1] = &quot;David&quot;; console.log(a); //显示Mike,David a.sort(); console.log(a); //显示David,Mike 但是上面这种做法对以字符串作为键的字典是无效的，程序会没有任何输出。这和前面定义 count() 方法时碰到的情况一样，不过，这也不是大问题。用户关心的是显示字典的内容时，结果是有序的。可以使用Object.keys() 函数解决这个问题 function showAll() { for(var key in Object.keys(this.datastore).sort()) { console.log(key + &quot; -&amp;gt; &quot; + this.datastore[key]); } } 巧妙之处就是从数组 datastore 拿到键后，调用 sort() 方法对键重新排了序，以达到排序的功能。</summary></entry></feed>

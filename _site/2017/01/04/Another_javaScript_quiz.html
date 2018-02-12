@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Another JavaScript quiz试题解析 - Someone's blog</title>
+<meta name="description" content="Another JavaScript quiz试题解析转载于 鑫空间，鑫生活这里要介绍的”Another JavaScript quiz“(by james)中的题目不是属于变态题目，而是确实属于变态题目，不过是表面上的，很多内容确实可能会遇到的。综合评价下就是：面试价值不及格，学习价值是很赞的，因此，探讨分享很...">
+<link rel="canonical" href="http://localhost:4000/2017/01/04/Another_javaScript_quiz.html">
+<link rel="alternate" type="application/rss+xml" title="Someone's blog" href="http://localhost:4000/feed.xml">
+<!-- for Safari on iOS https://developer.apple.com/ios/human-interface-guidelines/icons-and-images/app-icon/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/images/logo/icon-180x180.png">
+<link rel="apple-touch-icon" sizes="167x167" href="/assets/images/logo/icon-167x167.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/assets/images/logo/icon-152x152.png">
+<link rel="apple-touch-icon" sizes="120x120" href="/assets/images/logo/icon-120x120.png">
+<link rel="shortcut icon" href="/assets/images/logo/icon-120x120.png">
+<!-- for Chrome on Android https://developer.chrome.com/multidevice/android/installtohomescreen -->
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" sizes="192x192" href="/assets/images/logo/icon-192x192.png">
+<!-- for Edge on Windows 10 https://msdn.microsoft.com/en-us/library/dn255024(v=vs.85).aspx --><meta name="msapplication-TileImage" content="/assets/images/logo/icon-144x144.png">
+<meta name="msapplication-square310x310logo" content="/assets/images/logo/icon-310x310.png">
+<meta name="msapplication-wide310x150logo" content="/assets/images/logo/icon-310x150.png">
+<meta name="msapplication-square150x150logo" content="/assets/images/logo/icon-150x150.png">
+<meta name="msapplication-square70x70logo" content="/assets/images/logo/icon-70x70.png">
+<meta name="msapplication-TileColor" content="#eeeeee">
+<link rel="stylesheet" href="/assets/css/blog.css">
+    <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="m-page-stage js-page-stage">
+<div class="m-page-content">
+<header class="m-page-header">
+  <div class="main clearfix">
+    <div class="site-logo">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="24px" height="24px" viewbox="0 0 24 24">
+<style type="text/css">
+	.st0{fill:#666666;}
+</style>
+<path class="st0" d="M1.7,22.3c5.7-5.7,11.3-5.7,17,0c3.3-3.3,3.5-5.3,0.8-6c2.7,0.7,3.5-1.1,2.3-5.6s-3.3-5.2-6.3-2.1
+	c3-3,2.3-5.2-2.1-6.3S7,1.8,7.7,4.6C7,1.8,5,2.1,1.7,5.3C7.3,11,7.3,16.7,1.7,22.3"></path>
+</svg><a title="Someone's Blog
+" href="/">Someone's blog</a>
+</div>
+    <nav>
+      <ul>
+<li><a href="/">Home</a></li>
+<li><a href="/all.html">All</a></li>
+<li><a href="/about.html">About</a></li>
+<li><a type="application/rss+xml" href="/feed.xml">RSS</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<div class="m-page-main">
+<div class="m-post">
+	<div class="main js-main clearfix">
+		<div class="col-2 js-col-2">
+			<aside class="js-article-aside"><div class="m-toc js-toc"></div></aside>
+		</div>
+		<div class="col-1">
+			<article itemscope itemtype="http://schema.org/BlogPosting">
+				<meta itemprop="mainEntityOfPage" itemscope itemtype="https://schema.org/WebPage">
+				<header class="main-header"><h1 itemprop="headline">Another JavaScript quiz试题解析</h1>
+<div class="m-article-data clearfix">
+<meta itemprop="author" itemscope itemtype="https://schema.org/Person">
+<meta itemprop="name" content="Someone">
+<div class="other-wrapper">
+<div class="date-wrapper"><time class="article-meta" datetime="2017-01-04T00:00:00+08:00" itemprop="datePublished">Jan 04, 2017
+        </time></div>
+  </div>
+</div>
+</header>
+				<div class="m-article-content js-article-content" itemprop="articleBody">
+<h1 id="another-javascript-quiz试题解析">Another JavaScript quiz试题解析</h1>
+
+<p><strong>转载于 <a href="http://www.zhangxinxu.com/wordpress/2013/05/%E7%90%86%E8%A7%A3another-javascript-quiz-%E9%A2%98%E7%9B%AE/">鑫空间，鑫生活</a></strong></p>
+
+<p>这里要介绍的”<a href="http://james.padolsey.com/javascript/another-javascript-quiz/">Another JavaScript quiz“</a>(by james)中的题目不是属于变态题目，而是确实属于变态题目，不过是表面上的，很多内容确实可能会遇到的。综合评价下就是：面试价值不及格，学习价值是很赞的，因此，探讨分享很有意义。</p>
+
+<h2 id="11--3">1、1 &amp;&amp; 3</h2>
+
+<p>结果是3</p>
+
+<p>从左往右，如果”1”通过，继续“3”；否则直接返回“1”。因为“3”后面没有其他值了，因此直接返回“3”。</p>
+
+<p>因此，实际上，平时的if (1 &amp;&amp; 3) {} 等同于 if (3) {}.</p>
+
+<p>再看看</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0 &amp;&amp; 3  //==&gt; 0
+</code></pre></div></div>
+
+<p>因为0 == false, 因此走不到“3”这一关，直接返回了0。</p>
+
+<p>也就是if (0 &amp;&amp; 3) {} 等同于 if (0) { /* 不会执行 */ }.</p>
+
+<p><strong>应用场景：</strong></p>
+
+<p>可以避免if嵌套。例如，要问页面上某个dom绑定点击事件，我们需要先判断这个dom元素存不存在，会这样做：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var dom = document.querySelector("#dom");
+if (dom) { dom.addEventListener("click", function() {});  }
+</code></pre></div></div>
+
+<p>实际上，可以使用&amp;&amp;做一些简化：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var dom = document.querySelector("#dom");
+dom &amp;&amp; dom.addEventListener("click", function() {});
+</code></pre></div></div>
+
+<h2 id="21--foo--0">2、1 &amp;&amp; “foo” || 0</h2>
+
+<p>结果是 foo</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1 &amp;&amp; 'foo' ==&gt; 'foo', 'foo' || 0, 因为'foo' 弱等于true，最后返回foo
+</code></pre></div></div>
+
+<blockquote>
+  <p>&amp;&amp; 和 ||，在 JS 运算过程中，都会将它们两边的值转为布尔值，然后再算值，&amp;&amp; 运算如果返回true，则取后面的值，如果|| 返回true,则取前面的值</p>
+</blockquote>
+
+<p><strong>应用场景：</strong></p>
+
+<p>|| 可以让我们使用一种更快捷简易的方式为参数添加默认值。例如，写jQuery插件的时候，可选参数是可以缺省的，此时实际上值为undefined，会让后面的参数extend产生困扰。因此，我们会经常见到类似这样的代码：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$.fn.plugin = function(options) {
+    options = options || {};
+    // ...
+};
+</code></pre></div></div>
+
+<h2 id="31--foo--0">3、1 || “foo” &amp;&amp; 0</h2>
+
+<p>结果是1</p>
+
+<blockquote>
+  <p>逻辑与运算符(&amp;&amp;)优先级要大于逻辑或(||)。</p>
+</blockquote>
+
+<h2 id="41-2-3">4、(1, 2, 3)</h2>
+
+<p>结果是3</p>
+
+<blockquote>
+  <p>逗号表达式的一般形式是：表达式1，表达式2，表达式3……表达式n <br> 
+逗号表达式的求解过程是：先计算表达式1的值，再计算表达式2的值，……一直计算到表达式n的值。最后<strong>整个逗号表达式的值</strong>是<strong>表达式n的值</strong>。</p>
+</blockquote>
+
+<p>延伸一下：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>alert(1,2,3) 结果会是多少？
+</code></pre></div></div>
+
+<p>结果会返回1</p>
+
+<p>因为alert()后面的这个括号是一个函数执行，所以会返回传入的第一个参数1。</p>
+
+<p>如果这样写</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>alert((1,2,3))
+</code></pre></div></div>
+
+<p>它的返回值就是3。</p>
+
+<h2 id="5-shift">5、 shift</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>x = { shift: [].shift };
+x.shift();
+x.length;	//返回的是？
+</code></pre></div></div>
+
+<p>返回0</p>
+
+<p>额外补充一下数组中的几个方法</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pop 和 push：一个是尾部移除，一个是尾部添加
+shift 和 unshift：一个是头部移除，一个是头部添加
+
+pop 和 shift 都是做删除工作的  //字母少的都是做删除工作的，不要记混了
+</code></pre></div></div>
+
+<blockquote>
+  <p>from MDN <br></p>
+  <ol>
+    <li>shift 方法移除索引为 0 的元素(即第一个元素)，并返回被移除的元素，其他元素的索引值随之减 1。如果 length 属性的值为 0 (长度为 0)，则返回 undefined。 <br>
+</li>
+    <li>shift 方法并不局限于数组：该方法亦可通过<strong>call或apply</strong>作用于对象上。<strong>对于不包含length属性的对象，将添加一个值为0的length属性。</strong>
+</li>
+  </ol>
+</blockquote>
+
+<p>因为shift 删除第一个元素后，也会改变使其它元素的索引值，所以比pop方法要慢。</p>
+
+<p>现在来看一下这道题</p>
+
+<p>根据上面查到的资料，x 本来没有 length，在被数组方法call后，添加了一个值为0的length属性。此为数组shift方法的泛化性，专业术语为泛型(generic)。其基友方法，例如pop, push等都是如此。</p>
+
+<p>x.shift() 就等同于[].shift.call(x)，一步步来解析一下：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var x = {
+    shift: function() {
+        console.log(this === x); // true
+    }
+};
+x.shift();
+</code></pre></div></div>
+
+<p>因此，x.shift()就等同于[].shift 的执行，只不过，[].shift()函数中的this上下文就是x(因为this===x)，就等同于直接的[].shift.call(x)调用。</p>
+
+<p>这条题目中x对象的shift属性名实际上是用来干扰，提高解答难度的刻意命名。我们使用其他命名，结果也是一样的。</p>
+
+<h2 id="6foo10">6、{foo:1}[0]</h2>
+
+<p>结果是[0], 或者这种表现形式0 { 0 : 0 } – 来自IE控制台.</p>
+
+<p>不要试图使用alert或者控制台console.log输出，这只会返回不一样的结果undefined，哦？为何会有这等差异？</p>
+
+<p>出题者james在”Labelled blocks, useful?“中有这样的解释：</p>
+
+<blockquote>
+  <p>Since JavaScript doesn’t have block scope, using a block anywhere other than in the conventional places (if/while etc.) is almost totally pointless. However, as I mentioned, we could use them to annotate and contain logically related pieces of code…</p>
+</blockquote>
+
+<p>意思是说：</p>
+
+<blockquote>
+  <p>因为JavaScript没有块作用域，所以，如果语句块不是常规使用，如if/while等，其几乎就是打酱油的。甚至，我们可以利用这个特性注释或者包含相关的逻辑片段代码…</p>
+</blockquote>
+
+<p>我们有必要好好理解这里“打酱油的”意思，这里的“打酱油”并不是指{}块中语句是打酱油，而是其本身就是个酱油。嘛意思，实例说明一切：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2 // 返回值为2
+{2} // 返回值为2
+str = "string" // 返回值为string
+{ str = "string" } // 返回值为string
+foo: 1 // 返回值为1
+{ foo: 1 } // 返回值为1
+</code></pre></div></div>
+
+<p>因此，这里的答案就不难理解了，{foo:1}[0]实际上就是foo:1; [0]. 返回的就是[0]本身。</p>
+
+<h2 id="7true-falsetrue-false">7、[true, false][+true, +false]</h2>
+
+<p>结果是true</p>
+
+<p>true == 1, false == 0，[+true, +false] == [+1, +0]</p>
+
+<p>[true, false]为数组，后面的[+true, +false]实际为索引，然而索引只需要一个值，因此，[+true, +false]返回的实际是我们上面提到的逗号运算——返回最后一个值，也就是+0, 也就是0，所以答案为 true。</p>
+
+<h2 id="852split0">8、++’52’.split(‘’)[0]</h2>
+
+<p>结果是6</p>
+
+<p>此题难点在于运算符的优先级</p>
+
+<p><img src="https://lilywei739.github.io/img/20170105/20170105-1.jpg" alt="image01"></p>
+
+<h2 id="9a-b-c-d-e-f-g-1-2-3-4-5">9、a: b: c: d: e: f: g: 1, 2, 3, 4, 5;</h2>
+
+<p>结果是：5</p>
+
+<p>根据规范，a: b: c: … g:在语句执行之前会归到一个标签集中，为一个集合。因此，走个极端的话，我们可以这么理解：
+abcdefg: 1, 2, 3, 4, 5. 1, 2, 3, 4, 5一开始有说明的逗号多重运算啦——返回最后一个值，因此，本题就类似于提问：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>abcdefg: 5
+</code></pre></div></div>
+
+<h2 id="9a-1-b-2b">9、{a: 1, b: 2}[[“b”]]</h2>
+
+<p>第6题中，我们已经讲过，JavaScript没有块作用域，块本身几乎是个酱油，因此这里的测试题实际等同于：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>a: 1, b: 2;[["b"]]
+</code></pre></div></div>
+
+<p>但是竟然报错,</p>
+
+<p>现在的疑问是，为何a: 1, b: 2会报错？微博提问……</p>
+
+<p>30分钟后，@紫云妃给出了这样的解释：</p>
+
+<blockquote>
+  <p>逗号运算符右侧必须是个表达式,不能是非表达式的语句,这个例子中a: 1, b: 2的右侧的b: 2是一个LabelledStatement, 不是表达式。</p>
+</blockquote>
+
+<h2 id="10b--45">10、”b” + 45</h2>
+
+<p>结果是：”b45”</p>
+
+<blockquote>
+  <p>字符串+数值=字符串</p>
+</blockquote>
+
+<h2 id="12ab2">12、{a:{b:2}}</h2>
+
+<p>结果是：2</p>
+
+<p>{a:{b:2}}近乎于a<img class="emoji" title=":b:" alt=":b:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f171.png" height="20" width="20">2, 想起a,b,c,…g的例子没有，显然，这里返回值是2.</p>
+
+<h2 id="13function">13、(function(){}())</h2>
+
+<p>结果是：undefined.</p>
+
+<h2 id="14123450tostringlength">14、[1,2$,3,4,5][0..toString.length]??????????</h2>
+
+<p>结果还是：2</p>
+
+<h2 id="15--b----a">15、({} + ‘b’ &gt; {} + ‘a’)</h2>
+
+<p>结果是：true.</p>
+
+<p>需要注意最外面的括号。如果没有最外面的括号，则{}则几乎无意义，但是这里，作为常规用法，{}表示原生对象。因此，这里的比较实际上就是比较(“[object Object]b” &gt; “[object Object]a”), 因此返回的是true.</p>
+
+<p>说点题外的，如果最外部没有括号，{} + ‘b’返回的是NaN. 于是{} + ‘b’ &gt; {} + ‘a’变成了比较NaN &gt; NaN, 结果为false.</p>
+
+<h2 id="16numberprototypex--function-return-this--123---123x">16、Number.prototype.x = function(){ return this === 123; };  (123).x();</h2>
+
+<p>结果是：false.</p>
+
+<p>我们这里使用了严格相等。实际上this和123属于不同的类型。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>typeof this === “object”
+typeof 123 === “number”
+</code></pre></div></div>
+
+<p>因此，结果为false. 如果我们把题目修改成弱等于，则返回结果就是true了，</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Number.prototype.x = function(){ return this == 123; };
+(123).x(); //==&gt;true
+</code></pre></div></div>
+
+<h2 id="17array2join">17、Array(2).join()</h2>
+
+<p>结果是”,”</p>
+
+<p>Array(2)的返回值是[undefined, undefined]，因此，其使用join连接之后，就是个逗号”,”（数组join为指定连接符时候使用默认的逗号”,”）。</p>
+
+<h2 id="18vars-var-vars--vars">18、vars: var vars = vars;</h2>
+
+<p>结果是：undefined.</p>
+
+<p>现在看此题就简单多了，标记语句，返回值就是var vars = vars的返回值undefined.</p>
+
+<p>var vars = vars并不会报vars为定义的错误是在于JS的置顶解析，其实var vars = vars的运作是这样子的：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var vars;
+vars = vars;
+</code></pre></div></div>
+
+<h2 id="19-foo--123-">19、{ foo = 123 }</h2>
+
+<p>结果是：123.</p>
+
+<h2 id="20x--1-functionreturn-x-var-x--2">20、x = 1; (function(){return x; var x = 2;}())</h2>
+
+<p>结果是：undefined</p>
+
+<p>涉及到作用域的问题。</p>
+
+<h2 id="21delete-length">21、delete [].length;</h2>
+
+<p>结果为false.</p>
+
+<p>先看一下 delete 的特点</p>
+
+<blockquote>
+  <p>from MDN <br>
+一些对象的属性不能被delete</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>x = 42;        // 隐式声明的全局变量
+var y = 43;    // 显式声明的全局变量
+myobj = {
+  h: 4,    
+  k: 5
+}    
+
+// 隐式声明的全局变量可以被删除
+delete x;       // 返回 true 
+
+// 显式声明的全局变量不能被删除,该属性不可配置（not configurable）
+delete y;       // 返回 false 
+
+//内置对象的内置属性不能被删除
+delete Math.PI; // 返回 false
+
+//用户定义的属性可以被删除
+delete myobj.h; // 返回 true 
+
+// myobj 是全局对象的属性，而不是变量
+//因此可以被删除
+delete myobj;   // 返回 true
+
+function f() {
+  var z = 44;
+
+  // delete doesn't affect local variable names
+  delete z;     // returns false
+}
+</code></pre></div></div>
+
+<blockquote>
+  <p>不能删除一个对象从原型继承而来的属性(不过你可以从原型上直接删掉它)</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function Foo(){}
+ Foo.prototype.bar = 42;
+ var foo = new Foo();
+
+ // 无效的操作
+ delete foo.bar;       
+   
+ // logs 42，继承的属性
+ console.log(foo.bar);       
+    
+ // 直接删除原型上的属性
+ delete Foo.prototype.bar;
+ 
+ // logs "undefined"，已经没有继承的属性
+ console.log(foo.bar);
+</code></pre></div></div>
+
+<p>delete用来删除对象属性，成功删除返回true, 如果对方防御很强删不动则返回false.</p>
+
+<p>如上面所述，数组中的length属性是不可删除的，因此这里返回的是false.</p>
+
+<h2 id="22regexpprototypetostring--function-return-thissource-3-2-返回的是">22、RegExp.prototype.toString = function() {return this.source}; /3/-/2/;	//返回的是？</h2>
+
+<p>结果是：1.</p>
+
+<p>正则表达式有如下一些属性：source, global, ignoreCase, multiline, lastIndex. 其中：source属性为构成正则表达式Pattern的字符串；global属性是一Boolean值，表示正则表达式flags是否有”g”；ignoreCase属性是一Boolean值，表示正则表达式flags是否有”i”；multiline属性是一Boolean值，表示正则表达式flags是否有”m”；lastIndex属性指定从何处开始下次匹配的一个字符串类型的位置索引，当需要时该值会转换为一个整型数。</p>
+
+<p>RegExp.prototype.toString扩展改变了默认的toString方法，当正则表达式需要应用toString方法进行字符串转换的时候，返回的就是正则表达式的source属性值。</p>
+
+<h2 id="23break4">23、{break;4;}</h2>
+
+<p>结果是报如下错误：SyntaxError: unlabeled break must be inside loop or switch.</p>
+
+<p>意思是——解析错误：未标记的break必须在循环或switch中。</p>
+
+<p>对照错误，我们加个标记，使之成为标记语句，就不会出错了。类似下面：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>foo: { break foo; 4;} 
+</code></pre></div></div>
+
+<h2 id="24foo--new-function-return-stringfoo-">24、’foo’ == new function(){ return String(‘foo’); };</h2>
+
+<p>结果为：false.</p>
+
+<p>由于这里是==, ‘foo’又是正宗的字符串，因此，后面的new…需要转换成字符串。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>new function(){ return String('foo'); } + ""; // "[object Object]"
+</code></pre></div></div>
+
+<p>显然，’foo’ == “[object Object]”为false.</p>
+
+<p>本题如果稍作一点修改，则结果完全不一样：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>'foo' == new function(){ return new String('foo'); };	//返回的是？
+</code></pre></div></div>
+
+<p>结果为：true.</p>
+
+<p>为什么呢？JavaScript中有5种基本类型（Undefined类型、Null类型、Boolean类型、Number类型、String类型），如果new后面的function return的是这5中基本类型之一，new会认为你是纯屌丝，不理你，还是返回自己创建的匿名对象；当然，如果返回数组啊、函数、对象这类高富帅，new立马变龟孙子了，返回的就是这些高富帅。</p>
+
+<p>由于String(“foo”)是字符串，而new String(“foo”)是对象。因此，前者返回的是匿名函数对象——显然不等于”foo”；后者就是new String(“foo”)对象，加上”foo” == new String(“foo”)，于是，结果为true.</p>
+
+<h2 id="25foosplit---返回的是">25、’foo’.split(‘’) + []	//返回的是？</h2>
+
+<p>结果是：”f,o,o”.</p>
+
+<p>记住，数组加数组，字符成老母。’foo’.split(‘‘)结果为数组[“f”, “o”, “o”]，其变身字符串就是”f,o,o”跟后面的[]也就是”“相加，就是最终的”f,o,o”了。</p>
+
+<p>下面考考你，</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1, 2] + [3, 4]	//返回的是？
+</code></pre></div></div>
+
+<p>是不是”1,2,3,4”？恭喜你，，回答…………错误！</p>
+
+<p>这又是整哪样啊！哥，你只是稍微粗心了点。[1, 2]变成字符串是”1,2”, [3, 4]变成字符串是”3,4”，因此两者相加是”1,23,4”而不是”1,2,3,4”.</p>
+
+<p>空数组实际上是个很有意思的东西。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[] == 0 //true
+!0 // true
+![] // false
+</code></pre></div></div>
+
+<p>这些题目纯属是比较偏门的小知识点，查漏补缺记录一下。</p>
+</div>
+				<footer><meta itemprop="dateModified" content="2017-01-04T00:00:00+08:00">
+<div class="article-license"><div class="m-license">
+<div class="clearfix">
+<p>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> license.</p>
+<a class="license" rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+      <img alt="Creative Commons License" src="/assets/images/license-cc4.png">
+    </a><p></p>
+  </div>
+</div></div>
+				</footer></article>
+		</div>
+	</div>
+</div>
+<script src="//cdn.bootcss.com/toc/0.3.2/toc.min.js"></script>
+<script type="text/javascript">
+	window.throttle = function(func, wait) {
+	  var args, result, thisArg, timeoutId, lastCalled = 0;
+
+	  function trailingCall() {
+	    lastCalled = new Date;
+	    timeoutId = null;
+	    result = func.apply(thisArg, args);
+	  }
+	  return function() {
+	    var now = new Date,
+	      remaining = wait - (now - lastCalled);
+
+	    args = arguments;
+	    thisArg = this;
+
+	    if (remaining <= 0) {
+	      clearTimeout(timeoutId);
+	      timeoutId = null;
+	      lastCalled = now;
+	      result = func.apply(thisArg, args);
+	    } else if (!timeoutId) {
+	      timeoutId = setTimeout(trailingCall, remaining);
+	    }
+	    return result;
+	  };
+	}
+	$(function() {
+	  var $window = $(window);
+	  var $pageStage = $('.js-page-stage');
+	  var $pageMain = $('.js-main');
+	  var $pageFooter = $('.js-page-footer');
+	  var $articleContent = $('.js-article-content');
+	  var $articleAside = $('.js-article-aside');
+	  var $toc = $('.js-toc');
+		var $col2 = $('.js-col-2');
+	  var hasTitle = $articleContent.find('h1,h2,h3').length > 0;
+	  function asideSticky() {
+	    return $col2.css('display') !== 'none' && $pageStage.hasClass('has-toc');
+	  }
+
+	  function setTocClass() {
+	    if (hasTitle) {
+	      !$pageStage.hasClass('has-toc') && $pageStage.addClass('has-toc');
+	    }
+	  }
+
+	  setTocClass();
+
+	  function setAsideTOC() {
+	    var asideTop, asideLeft, scrollBottom, asideBottomTop, lastScrollTop;
+
+	    function init() {
+	      var asideOffset = $articleAside.offset();
+	      var footerOffset = $pageFooter.offset();
+	      var mainOffset = $pageMain.offset();
+	      asideTop = mainOffset.top;
+	      asideHeight = $toc.outerHeight() + parseInt($articleAside.css('padding-top'), 10) + parseInt($articleAside.css('padding-bottom'), 10);
+	      asideLeft = mainOffset.left + $pageMain.outerWidth() - $articleAside.outerWidth() - parseInt($pageMain.css('padding-right'), 10);
+	      scrollBottom = footerOffset.top - asideHeight;
+	      asideBottomTop = scrollBottom - mainOffset.top;
+	    }
+
+	    function setAside(force) {
+	      force !== true && (force = false);
+	      var scrollTop = $window.scrollTop();
+	      if (scrollTop >= asideTop && scrollTop <= scrollBottom) {
+	        (!force && lastScrollTop >= asideTop && lastScrollTop <= scrollBottom) ||
+	        $articleAside.addClass('fixed').css({
+	          left: asideLeft + 'px',
+	          top: 0
+	        });
+	      } else if (scrollTop < asideTop) {
+	        (!force && lastScrollTop < asideTop) ||
+	        $articleAside.removeClass('fixed').css({
+	          left: 0,
+	          top: 0
+	        });
+	      } else {
+	        (!force && lastScrollTop > scrollBottom) ||
+	        $articleAside.removeClass('fixed').css({
+	          left: 0,
+	          top: asideBottomTop + 'px'
+	        });
+	      }
+	      lastScrollTop = scrollTop;
+	    }
+	    asideSticky() && (init(), setAside());
+	    $window.on('scroll', function() {
+	      asideSticky() && setAside();
+	    });
+	    $window.on('resize', throttle(function() {
+	      setTocClass();
+	      asideSticky() && (init(), setAside(true));
+	    }, 100));
+	    setTimeout(init, 4000);
+	  }
+	  setTimeout(setAsideTOC, 1000);
+
+	  $toc.toc({
+	    'selectors': 'h1,h2,h3',
+	    'container': '.js-article-content',
+	  });
+	});
+</script>
+</div>
+</div>
+</div>
+<div class="m-page-footer js-page-footer">
+  <div class="main">
+    <aside><div class="follow-me"><ul itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Someone">
+    <link itemprop="url" href="http://localhost:4000/">
+</ul></div>
+</aside>
+    <footer class="site-info">
+      <p>© Someone's blog 2018</p>
+      <p>Powered by <a title="Jekyll is a simple, blog-aware, static site generator." href="http://jekyllrb.com/">Jekyll</a> &amp; <a title="TeXt is a succinct theme for blogging." href="https://github.com/kitian616/jekyll-TeXt-theme">TeXt Theme</a>.</p>
+    </footer>
+  </div>
+</div>
+<script>
+      $(function() {
+        // display coding language
+        var $articleContent = $('.m-post, .m-page').find('.m-article-content'), $this;
+        $articleContent.children('.highlight').each(function() {
+          $this = $(this);
+          $this.attr('data-lang', $this.find('code').attr('data-lang'));
+        });
+        $articleContent.children('h1, h2, h3, h4, h5, h6').each(function() {
+          $this = $(this);
+          $this.append($('<a class="anchor" aria-hidden="true"></a>').text('#'));
+        });
+        $articleContent.on('click', '.anchor', function(e) {
+          var targetId = $(this).parent().attr('id');
+          scrollAnimateTo($('#' + targetId).offset().top, 400, function() {
+            console.log(666)
+            window.history.replaceState(null, '', window.location.href.split('#')[0] + '#' + targetId);
+          });
+        });
+        function scrollAnimateTo(destination, duration, callback) {
+          var $body = $('html, body'), bodyScrollTop = $body.scrollTop();
+          if(bodyScrollTop === destination) { return; }
+          $body.animate({ scrollTop: destination }, duration, callback);
+        }
+      });
+    </script>
+</body>
+</html>

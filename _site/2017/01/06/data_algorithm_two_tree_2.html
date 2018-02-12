@@ -1,0 +1,313 @@
+<!DOCTYPE html><html lang="en">
+  <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>数据算法之二叉树二 - Someone's blog</title>
+<meta name="description" content="数据算法之二叉树二从二叉查找树上删除节点删除节点分几种情况：  删除的节点没有子节点  删除的节点只有左子树或只有右子树  删除的节点既有左子树又有右子树思路：从BST中删除节点,先是判断当前节点是否包含待删除的数据,    1) 如果包含，则删除该节点;     2) 如果不包含，则比较当前节点上的数据和待删除...">
+<link rel="canonical" href="http://localhost:4000/2017/01/06/data_algorithm_two_tree_2.html"><link rel="alternate" type="application/rss+xml" title="Someone's blog" href="http://localhost:4000/feed.xml">
+<!-- for Safari on iOS https://developer.apple.com/ios/human-interface-guidelines/icons-and-images/app-icon/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/images/logo/icon-180x180.png"><link rel="apple-touch-icon" sizes="167x167" href="/assets/images/logo/icon-167x167.png"><link rel="apple-touch-icon" sizes="152x152" href="/assets/images/logo/icon-152x152.png"><link rel="apple-touch-icon" sizes="120x120" href="/assets/images/logo/icon-120x120.png"><link rel="shortcut icon" href="/assets/images/logo/icon-120x120.png">
+<!-- for Chrome on Android https://developer.chrome.com/multidevice/android/installtohomescreen -->
+<meta name="mobile-web-app-capable" content="yes"><link rel="icon" sizes="192x192" href="/assets/images/logo/icon-192x192.png">
+<!-- for Edge on Windows 10 https://msdn.microsoft.com/en-us/library/dn255024(v=vs.85).aspx --><meta name="msapplication-TileImage" content="/assets/images/logo/icon-144x144.png"><meta name="msapplication-square310x310logo" content="/assets/images/logo/icon-310x310.png"><meta name="msapplication-wide310x150logo" content="/assets/images/logo/icon-310x150.png"><meta name="msapplication-square150x150logo" content="/assets/images/logo/icon-150x150.png"><meta name="msapplication-square70x70logo" content="/assets/images/logo/icon-70x70.png">
+<meta name="msapplication-TileColor" content="#eeeeee"><link rel="stylesheet" href="/assets/css/blog.css">
+    <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="m-page-stage js-page-stage"><div class="m-page-content"><header class="m-page-header">
+  <div class="main clearfix">
+    <div class='site-logo'><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="24px" height="24px" viewBox="0 0 24 24">
+<style type="text/css">
+	.st0{fill:#666666;}
+</style>
+<path class="st0" d="M1.7,22.3c5.7-5.7,11.3-5.7,17,0c3.3-3.3,3.5-5.3,0.8-6c2.7,0.7,3.5-1.1,2.3-5.6s-3.3-5.2-6.3-2.1
+	c3-3,2.3-5.2-2.1-6.3S7,1.8,7.7,4.6C7,1.8,5,2.1,1.7,5.3C7.3,11,7.3,16.7,1.7,22.3"/>
+</svg><a title="Someone's Blog
+" href="/">Someone's blog</a></div>
+    <nav>
+      <ul><li><a href="/">Home</a></li><li><a href="/all.html">All</a></li><li><a href="/about.html">About</a></li><li><a type="application/rss+xml" href="/feed.xml">RSS</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<div class="m-page-main"><div class="m-post">
+	<div class="main js-main clearfix">
+		<div class="col-2 js-col-2">
+			<aside class="js-article-aside"><div class="m-toc js-toc"></div></aside>
+		</div>
+		<div class="col-1">
+			<article itemscope itemtype="http://schema.org/BlogPosting">
+				<meta itemprop="mainEntityOfPage" itemscope itemType="https://schema.org/WebPage"/>
+				<header class="main-header"><h1 itemprop="headline" itemprop="name headline">数据算法之二叉树二</h1><div class="m-article-data clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Someone"/></meta><ul class="tag-wrapper"><li>
+          <a class="pill-button" href="/all.html?tag=JS">JS</a>
+        </li><li>
+          <a class="pill-button" href="/all.html?tag=%E6%95%B0%E6%8D%AE%E7%AE%97%E6%B3%95">数据算法</a>
+        </li><li>
+          <a class="pill-button" href="/all.html?tag=%E5%89%8D%E7%AB%AF">前端</a>
+        </li></ul><div class="other-wrapper"><div class="date-wrapper"><time class="article-meta" datetime="2017-01-06T00:00:00+08:00"
+          itemprop="datePublished">Jan 06, 2017
+        </time></div>
+  </div>
+</div>
+</header>
+				<div class="m-article-content js-article-content" itemprop="articleBody"><h1 id="数据算法之二叉树二">数据算法之二叉树二</h1>
+
+<h3 id="从二叉查找树上删除节点">从二叉查找树上删除节点</h3>
+
+<h5 id="删除节点分几种情况">删除节点分几种情况：</h5>
+
+<ul>
+  <li>删除的节点没有子节点</li>
+  <li>删除的节点只有左子树或只有右子树</li>
+  <li>删除的节点既有左子树又有右子树</li>
+</ul>
+
+<h5 id="思路">思路：</h5>
+
+<p>从BST中删除节点,先是判断当前节点是否包含待删除的数据,<br />
+    1) 如果包含，则删除该节点; <br />
+    2) 如果不包含，则比较当前节点上的数据和待删除的数据。<br />
+	        ① 如果待删除数据小于当前节点上的数据，则移至当前节点的左子节点继续比较;<br />
+	        ② 如果删除数据大于当前节点上的数据，则移至当前节点的右子节点继续比较。</p>
+
+<h5 id="删除">删除</h5>
+
+<ul>
+  <li>如果待删除节点没有节点，那么只需要将从父节点指向它的链接指向null。</li>
+  <li>如果待删除节点只包含一个子节点，那么原本指向它的节点就得做些调整，使其指向它的子节点。</li>
+  <li>如果待删除节点包含两个子节点,正确的做法有两种:<br />
+  1) 查找待删除节点左子树上的最大值<br />
+  2) 查找待删除节点右子树上的最小值</li>
+</ul>
+
+<p><br /></p>
+
+<p><strong>移除一个叶节点</strong></p>
+
+<p>第一种情况是该节点没有子节点，要做的就是给这个节点赋予null值来移除它，但是每个节点除了自已包含的节点，还存在一个和父级的关系，所以这里仅赋一个null值是不够的，还需要处理指针。</p>
+
+<p>如下图所示是一个删除叶节点的路径</p>
+
+<p>如果想删除节点6，和当前的根节点进行比较，小于根节点就在左子树上找，反之在右子树上找，6比11小，所以接着左子树第一个节点7和6比较，又小于7接着与7节点的左子树5比较，6大于5接向5节点的右子树查找，最终找到6，这是一个查找的过程，然后再进行删除工作。</p>
+
+<p><img src="https://lilywei739.github.io/img/20170120/20170120-1.jpg" alt="image01" /></p>
+
+<p><strong>移除有一个左侧或右侧子节点的节点</strong></p>
+
+<p>移除有一个左侧子节点或右侧子节点的节点。这种情况下，需要跳过这个节点，直接将父节点指向它的指针指向子节点。</p>
+
+<p>如果这个节点没有左侧子节点，也就是说它有一个右侧子节点。
+因此我们把对它 的引用改为对它右侧子节点的引用并返回更新后的节点。</p>
+
+<p>如果这个节点没有右侧子节点，也是一样——把对它的引用改为对它左侧子节点的引用并返回更新后的值。</p>
+
+<p><img src="https://lilywei739.github.io/img/20170120/20170120-2.jpg" alt="image01" /></p>
+
+<p><strong>移除有两个子节点的节点</strong></p>
+
+<p>大概的分为下面三步：</p>
+
+<ul>
+  <li>查找的过程就不说了，找到这个要删除的点后，需要找到它右子树中的最小节点</li>
+  <li>这个小最节点替换要删除的节点，同时把右子树中的最小节点删除</li>
+  <li>后向它的父节点返回更新后的引用</li>
+</ul>
+
+<p><img src="https://lilywei739.github.io/img/20170120/20170120-3.jpg" alt="image01" /></p>
+
+<p>理通了上面的思路后，就开始上代码了</p>
+
+<p>定义两个方法：remove() 和 removerNode();</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//用于简单地接受待删除数据
+function remove(data) {
+   root = removeNode(this.root, data);
+}
+
+//删除
+function removeNode(node, data) {
+  if (node == null) {
+     return null;
+  }
+
+  if (data == node.data) {
+    // 没有子节点的节点
+    if (node.left == null &amp;&amp; node.right == null) {
+      return null;
+    }
+    // 没有左子节点的节点
+    if (node.left == null) {
+      return node.right;
+    }
+    // 没有右子节点的节点
+    if (node.right == null) {
+      return node.left;
+    }
+    // 有两个子节点的节点
+    var tempNode = getSmallest(node.right);
+    node.data = tempNode.data;
+    node.right = removeNode(node.right, tempNode.data); return node;
+  } else if (data &lt; node.data) {
+       node.left = removeNode(node.left, data);
+       return node;
+  } else {
+       node.right = removeNode(node.right, data);
+       return node;
+  }
+}
+</code></pre></div></div>
+
+</div>
+				<footer><meta itemprop="dateModified" content="2017-01-06T00:00:00+08:00"><div class="article-license"><div class="m-license"><div class="clearfix"><p>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> license.</p><a class="license" rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+      <img alt="Creative Commons License" src="/assets/images/license-cc4.png" />
+    </a><p></p>
+  </div>
+</div></div>
+				</footer></article>
+		</div>
+	</div>
+</div><script src="//cdn.bootcss.com/toc/0.3.2/toc.min.js"></script>
+<script type="text/javascript">
+	window.throttle = function(func, wait) {
+	  var args, result, thisArg, timeoutId, lastCalled = 0;
+
+	  function trailingCall() {
+	    lastCalled = new Date;
+	    timeoutId = null;
+	    result = func.apply(thisArg, args);
+	  }
+	  return function() {
+	    var now = new Date,
+	      remaining = wait - (now - lastCalled);
+
+	    args = arguments;
+	    thisArg = this;
+
+	    if (remaining <= 0) {
+	      clearTimeout(timeoutId);
+	      timeoutId = null;
+	      lastCalled = now;
+	      result = func.apply(thisArg, args);
+	    } else if (!timeoutId) {
+	      timeoutId = setTimeout(trailingCall, remaining);
+	    }
+	    return result;
+	  };
+	}
+	$(function() {
+	  var $window = $(window);
+	  var $pageStage = $('.js-page-stage');
+	  var $pageMain = $('.js-main');
+	  var $pageFooter = $('.js-page-footer');
+	  var $articleContent = $('.js-article-content');
+	  var $articleAside = $('.js-article-aside');
+	  var $toc = $('.js-toc');
+		var $col2 = $('.js-col-2');
+	  var hasTitle = $articleContent.find('h1,h2,h3').length > 0;
+	  function asideSticky() {
+	    return $col2.css('display') !== 'none' && $pageStage.hasClass('has-toc');
+	  }
+
+	  function setTocClass() {
+	    if (hasTitle) {
+	      !$pageStage.hasClass('has-toc') && $pageStage.addClass('has-toc');
+	    }
+	  }
+
+	  setTocClass();
+
+	  function setAsideTOC() {
+	    var asideTop, asideLeft, scrollBottom, asideBottomTop, lastScrollTop;
+
+	    function init() {
+	      var asideOffset = $articleAside.offset();
+	      var footerOffset = $pageFooter.offset();
+	      var mainOffset = $pageMain.offset();
+	      asideTop = mainOffset.top;
+	      asideHeight = $toc.outerHeight() + parseInt($articleAside.css('padding-top'), 10) + parseInt($articleAside.css('padding-bottom'), 10);
+	      asideLeft = mainOffset.left + $pageMain.outerWidth() - $articleAside.outerWidth() - parseInt($pageMain.css('padding-right'), 10);
+	      scrollBottom = footerOffset.top - asideHeight;
+	      asideBottomTop = scrollBottom - mainOffset.top;
+	    }
+
+	    function setAside(force) {
+	      force !== true && (force = false);
+	      var scrollTop = $window.scrollTop();
+	      if (scrollTop >= asideTop && scrollTop <= scrollBottom) {
+	        (!force && lastScrollTop >= asideTop && lastScrollTop <= scrollBottom) ||
+	        $articleAside.addClass('fixed').css({
+	          left: asideLeft + 'px',
+	          top: 0
+	        });
+	      } else if (scrollTop < asideTop) {
+	        (!force && lastScrollTop < asideTop) ||
+	        $articleAside.removeClass('fixed').css({
+	          left: 0,
+	          top: 0
+	        });
+	      } else {
+	        (!force && lastScrollTop > scrollBottom) ||
+	        $articleAside.removeClass('fixed').css({
+	          left: 0,
+	          top: asideBottomTop + 'px'
+	        });
+	      }
+	      lastScrollTop = scrollTop;
+	    }
+	    asideSticky() && (init(), setAside());
+	    $window.on('scroll', function() {
+	      asideSticky() && setAside();
+	    });
+	    $window.on('resize', throttle(function() {
+	      setTocClass();
+	      asideSticky() && (init(), setAside(true));
+	    }, 100));
+	    setTimeout(init, 4000);
+	  }
+	  setTimeout(setAsideTOC, 1000);
+
+	  $toc.toc({
+	    'selectors': 'h1,h2,h3',
+	    'container': '.js-article-content',
+	  });
+	});
+</script></div>
+</div>
+</div><div class="m-page-footer js-page-footer">
+  <div class="main">
+    <aside><div class="follow-me"><ul itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Someone">
+    <link itemprop="url" href="http://localhost:4000/"></ul></div>
+</aside>
+    <footer class="site-info">
+      <p>© Someone's blog 2018</p>
+      <p>Powered by <a title="Jekyll is a simple, blog-aware, static site generator." href="http://jekyllrb.com/">Jekyll</a> & <a
+        title="TeXt is a succinct theme for blogging." href="https://github.com/kitian616/jekyll-TeXt-theme">TeXt Theme</a>.</p>
+    </footer>
+  </div>
+</div><script>
+      $(function() {
+        // display coding language
+        var $articleContent = $('.m-post, .m-page').find('.m-article-content'), $this;
+        $articleContent.children('.highlight').each(function() {
+          $this = $(this);
+          $this.attr('data-lang', $this.find('code').attr('data-lang'));
+        });
+        $articleContent.children('h1, h2, h3, h4, h5, h6').each(function() {
+          $this = $(this);
+          $this.append($('<a class="anchor" aria-hidden="true"></a>').text('#'));
+        });
+        $articleContent.on('click', '.anchor', function(e) {
+          var targetId = $(this).parent().attr('id');
+          scrollAnimateTo($('#' + targetId).offset().top, 400, function() {
+            console.log(666)
+            window.history.replaceState(null, '', window.location.href.split('#')[0] + '#' + targetId);
+          });
+        });
+        function scrollAnimateTo(destination, duration, callback) {
+          var $body = $('html, body'), bodyScrollTop = $body.scrollTop();
+          if(bodyScrollTop === destination) { return; }
+          $body.animate({ scrollTop: destination }, duration, callback);
+        }
+      });
+    </script></body>
+</html>
