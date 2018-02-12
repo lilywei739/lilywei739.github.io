@@ -15,23 +15,6 @@ layout: blog-default
 					{%- include components/article-data.html -%}
 				</header>
 				<div class="m-article-content js-article-content" itemprop="articleBody">{{ content }}</div>
-				<footer>
-					{%- if page.modify_date -%}
-						{%- assign __locale = site.data.locale.ARTICLE_DATE_FORMAT -%}
-						{%- include snippets/locale-to-string.html -%}
-						{%- assign date_format = __return -%}
-						{%- assign __locale = site.data.locale.LAST_UPDATED -%}
-						{%- include snippets/locale-to-string.html -%}
-						<span>{{ __return }}
-							<time datetime="{{ page.modify_date | date_to_xmlschema }}" itemprop="dateModified">{{ page.modify_date | date: date_format }}</time>
-						</span>
-					{%- else -%}
-						<meta itemprop="dateModified" content="{{ page.date | date_to_xmlschema }}">
-					{%- endif -%}
-					<div class="article-license">
-						{%- include components/license.html -%}
-					</div>
-				</footer>
 				{%- if jekyll.environment != "development" and page.comment != false -%}
 					<section>{%- include utils/comment-disqus.html -%}</section>
 					<section>{%- include utils/comment-gitalk.html -%}</section>

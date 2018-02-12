@@ -1,10 +1,10 @@
 <!DOCTYPE html><html lang="en">
   <head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>Blog - Someone's blog</title>
-<meta name="description" content="Someone's Blog
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>Blog - Weili's Blog</title>
+<meta name="description" content="Weili's blog
 ">
-<link rel="canonical" href="http://localhost:4000/blog/page5/"><link rel="alternate" type="application/rss+xml" title="Someone's blog" href="http://localhost:4000/feed.xml">
+<link rel="canonical" href="http://localhost:4000/blog/page5/"><link rel="alternate" type="application/rss+xml" title="Weili's Blog" href="http://localhost:4000/feed.xml">
 <!-- for Safari on iOS https://developer.apple.com/ios/human-interface-guidelines/icons-and-images/app-icon/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/images/logo/icon-180x180.png"><link rel="apple-touch-icon" sizes="167x167" href="/assets/images/logo/icon-167x167.png"><link rel="apple-touch-icon" sizes="152x152" href="/assets/images/logo/icon-152x152.png"><link rel="apple-touch-icon" sizes="120x120" href="/assets/images/logo/icon-120x120.png"><link rel="shortcut icon" href="/assets/images/logo/icon-120x120.png">
 <!-- for Chrome on Android https://developer.chrome.com/multidevice/android/installtohomescreen -->
 <meta name="mobile-web-app-capable" content="yes"><link rel="icon" sizes="192x192" href="/assets/images/logo/icon-192x192.png">
@@ -22,11 +22,10 @@
 </style>
 <path class="st0" d="M1.7,22.3c5.7-5.7,11.3-5.7,17,0c3.3-3.3,3.5-5.3,0.8-6c2.7,0.7,3.5-1.1,2.3-5.6s-3.3-5.2-6.3-2.1
 	c3-3,2.3-5.2-2.1-6.3S7,1.8,7.7,4.6C7,1.8,5,2.1,1.7,5.3C7.3,11,7.3,16.7,1.7,22.3"/>
-</svg><a title="Someone's Blog
-" href="/">Someone's blog</a></div>
+</svg><a title="Weili's blog
+" href="/">Weili's Blog</a></div>
     <nav>
-      <ul><li><a href="/">Home</a></li><li><a href="/all.html">All</a></li><li><a href="/about.html">About</a></li><li><a type="application/rss+xml" href="/feed.xml">RSS</a></li>
-      </ul>
+      <ul><li><a href="/">Home</a></li><li><a href="/all.html">All</a></li><li><a href="/about.html">About</a></li></ul>
     </nav>
   </div>
 </header>
@@ -47,17 +46,7 @@
 
 思路：
 
-从BST中删除节点,先是判断当前节点是否包含待删除的数据,
-    1) 如果包含，则删除该节点; 
-    2) 如果不包含，则比较当前节点上的数据和待删除的数据。
-	        ① 如果待删除数据小于当前节点上的数据，则移至当前节点的左子节点继续比较;
-	        ② 如果删除数据大于当前节点上的数据，则移至当前节点的右子节点继续比较。
-
-删除
-
-
-  如果待删除节点没有节点，那么只需要将从父节点指向它的链接指向null。
-  如果待删除节点只包含一个子节点，那么原本指向它的节点就得做些...</div><a href="/2017/01/06/data_algorithm_two_tree_2.html">Click to read more ...</a><div class="m-article-data clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Someone"/></meta><ul class="tag-wrapper"><li>
+从BS...</div><a href="/2017/01/06/data_algorithm_two_tree_2.html">查看更多 ...</a><div class="m-article-data clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="weili"/></meta><ul class="tag-wrapper"><li>
           <a class="pill-button" href="/all.html?tag=JS">JS</a>
         </li><li>
           <a class="pill-button" href="/all.html?tag=%E6%95%B0%E6%8D%AE%E7%AE%97%E6%B3%95">数据算法</a>
@@ -71,27 +60,7 @@
 
 算法和数据结构是程序的基本功，而且语言都是想通的，只要是掌握了一门语言学习其他语言就如同顺水推舟。
 
-从今天开始要把这个系列写下去，虽然网上一搜一大堆，但是我写的这个系列，一方面是分享，一方面是让自己更深入的理解。
-
-今天开始第一篇，二叉树。
-
-什么是树？
-
-
-  树是计算机科学中经常用到的一种数据结构;
-  树是一种非线性的数据结构,以分层的方式存储数据;
-  树被用来存储具有层级关系的数据,比如文件系统中的文件;树还被用来存储有序列表;
-  查找、添加、删除元素性能要优于链表及数组;
-  树由一组以边连接的节点组成;
-
-
-树的相关名词
-
-
-  父节点，子节点，兄弟节点：这个不用解释都知道吧
-  结点的度：就是分支数
-  树的度: 最大的结点度,最大也是2
-  ...</div><a href="/2017/01/06/data_algorithm_two_tree_1.html">Click to read more ...</a><div class="m-article-data clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Someone"/></meta><ul class="tag-wrapper"><li>
+从今天开始要把这个系列写下去，虽然网上一搜一大堆，但是我写的这个系列，...</div><a href="/2017/01/06/data_algorithm_two_tree_1.html">查看更多 ...</a><div class="m-article-data clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="weili"/></meta><ul class="tag-wrapper"><li>
           <a class="pill-button" href="/all.html?tag=JS">JS</a>
         </li><li>
           <a class="pill-button" href="/all.html?tag=%E6%95%B0%E6%8D%AE%E7%AE%97%E6%B3%95">数据算法</a>
@@ -105,22 +74,7 @@
 
 转载于 鑫空间，鑫生活
 
-这里要介绍的”Another JavaScript quiz“(by james)中的题目不是属于变态题目，而是确实属于变态题目，不过是表面上的，很多内容确实可能会遇到的。综合评价下就是：面试价值不及格，学习价值是很赞的，因此，探讨分享很有意义。
-
-1、1 &amp;&amp; 3
-
-结果是3
-
-从左往右，如果”1”通过，继续“3”；否则直接返回“1”。因为“3”后面没有其他值了，因此直接返回“3”。
-
-因此，实际上，平时的if (1 &amp;&amp; 3) {} 等同于 if (3) {}.
-
-再看看
-
-0 &amp;&amp; 3  //==&gt; 0
-
-
-因为0 == false, 因此走不...</div><a href="/2017/01/04/Another_javaScript_quiz.html">Click to read more ...</a><div class="m-article-data clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Someone"/></meta><div class="other-wrapper"><div class="date-wrapper"><span class="article-meta">Jan 04, 2017</span></div>
+这里要介绍的”Another JavaScript quiz“(by james)中的题目不是属于变态题目，而...</div><a href="/2017/01/04/Another_javaScript_quiz.html">查看更多 ...</a><div class="m-article-data clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="weili"/></meta><div class="other-wrapper"><div class="date-wrapper"><span class="article-meta">Jan 04, 2017</span></div>
   </div>
 </div>
 </article><article><h1><a href="/2016/12/22/Array_loop_2.html">JavaScript中数组的迭代方法详解（二）</a></h1>
@@ -130,25 +84,7 @@
 
 5、filter
 
-filter为“过滤”、“筛选”之意。指数组filter后，返回过滤后的新数组。用法跟map极为相似：
-
-
-  from MDN 
-filter() 方法使用指定的函数测试所有元素，并创建一个包含所有通过测试的元素的新数组。
-
-
-//语法
-[].filter(function(value, index, array){
-   // do some
-})
-
-callback参数
-1. value(当前值)---数组中正在处理的当前元素
-2. index(索引)  ---数组中正在处理的当前元素的索引
-3. array        ---正在应用forEach()数组
-
-
-[1, 5, 8, 3,...</div><a href="/2016/12/22/Array_loop_2.html">Click to read more ...</a><div class="m-article-data clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Someone"/></meta><ul class="tag-wrapper"><li>
+filter为“过滤”、“筛选”之意。指数组filter后，返回过滤后的新数组。用法跟map极为相似：...</div><a href="/2016/12/22/Array_loop_2.html">查看更多 ...</a><div class="m-article-data clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="weili"/></meta><ul class="tag-wrapper"><li>
           <a class="pill-button" href="/all.html?tag=JS">JS</a>
         </li><li>
           <a class="pill-button" href="/all.html?tag=%E6%95%B0%E7%BB%84">数组</a>
@@ -164,21 +100,7 @@ callback参数
 
 1、for
 
-最常用的循环， 虽然性能堪忧但可优化，基本程序代码如下。
-
-var arr = ['a','b','c','d'];
-for (var i = 0; i &lt; arr.length; i = i + 1){
-     //do something to each member
-}
-
-
-这段代码在每次循环都会获取一下数组的长度，理论上会降低代码的性能，尤其是当这个arr不是一个数组，而是一个HTMLCollection对象的时候。
-
-优化如下:
-
-//只定义一个变量即可
-var arr = []; 
-for(var i = arr....</div><a href="/2016/12/22/Array_loop_1.html">Click to read more ...</a><div class="m-article-data clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Someone"/></meta><ul class="tag-wrapper"><li>
+最常用的循环， 虽然性能堪忧但可优化，基...</div><a href="/2016/12/22/Array_loop_1.html">查看更多 ...</a><div class="m-article-data clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="weili"/></meta><ul class="tag-wrapper"><li>
           <a class="pill-button" href="/all.html?tag=JS">JS</a>
         </li><li>
           <a class="pill-button" href="/all.html?tag=%E6%95%B0%E7%BB%84">数组</a>
@@ -192,20 +114,7 @@ for(var i = arr....</div><a href="/2016/12/22/Array_loop_1.html">Click to read m
 
 Javascript里的继承是指子类能够继承父类的方法，可以重复使用，减少代码量。
 
-继承的结果有两个：一、获得父类的属性和方法；二、正确通过 instanceof 的测试。
-
-1.原型链
-
-基本思想：利用原型让一个引用类型继承另外一个引用类型的属性和方法。
-构造函数，原型，实例之间的关系：每个构造函数都有一个原型对象，原型对象包含一个指向构造函数的指针，而实例都包含一个指向原型对象的内部指针。
-
-原型链实现继承例子：
-
-function SuperType() {
-    this.property = true;
-}
-SuperType.prototype.getSuperValue = function() {
-    return this.prope...</div><a href="/2016/12/16/Object_inheritance.html">Click to read more ...</a><div class="m-article-data clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Someone"/></meta><ul class="tag-wrapper"><li>
+继承的结果有两个：一、获得父类的属性和方法；二、正确通过 instanceof 的...</div><a href="/2016/12/16/Object_inheritance.html">查看更多 ...</a><div class="m-article-data clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="weili"/></meta><ul class="tag-wrapper"><li>
           <a class="pill-button" href="/all.html?tag=JS">JS</a>
         </li><li>
           <a class="pill-button" href="/all.html?tag=%E7%BB%A7%E6%89%BF">继承</a>
@@ -222,36 +131,7 @@ SuperType.prototype.getSuperValue = function() {
 什么是对象？
 
   from W3School  
-JavaScript 中的所有事物都是对象：字符串、数值、数组、函数…
-
-
-先看下面几种对象的克隆是什么情况：
-
-//字符型
-var a="abc";
-var b=a;
-b="def";
- 
-alert(a);   // "abc"
-alert(b);   // "def"
-
-
-//数值型
-var a=1;
-var b=a;
-b=2;
- 
-alert(a);   // 1 
-alert(b);   // 2 
-
-
-//布尔型
-var a=true;
-var b=a;
-b=false;
- 
-alert(a);   // true 
-alert(b);...</div><a href="/2016/12/08/deepCopy_obj.html">Click to read more ...</a><div class="m-article-data clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Someone"/></meta><ul class="tag-wrapper"><li>
+JavaScript 中的所有事物都是对象：字符串、数...</div><a href="/2016/12/08/deepCopy_obj.html">查看更多 ...</a><div class="m-article-data clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="weili"/></meta><ul class="tag-wrapper"><li>
           <a class="pill-button" href="/all.html?tag=JS">JS</a>
         </li><li>
           <a class="pill-button" href="/all.html?tag=%E5%AF%B9%E8%B1%A1%E5%85%8B%E9%9A%86">对象克隆</a>
@@ -290,16 +170,18 @@ alert(b);...</div><a href="/2016/12/08/deepCopy_obj.html">Click to read more ...
 </div><div class="m-page-footer js-page-footer">
   <div class="main">
     <aside><div class="follow-me"><ul itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Someone">
+    <meta itemprop="name" content="weili">
     <link itemprop="url" href="http://localhost:4000/"></ul></div>
 </aside>
     <footer class="site-info">
-      <p>© Someone's blog 2018</p>
+      <p>© Weili's Blog 2018</p>
+      <p><a title="" href="https://github.com/lilywei739/lilywei739.github.io">VIEW IN GITHUB</a></p>
       <p>Powered by <a title="Jekyll is a simple, blog-aware, static site generator." href="http://jekyllrb.com/">Jekyll</a> & <a
         title="TeXt is a succinct theme for blogging." href="https://github.com/kitian616/jekyll-TeXt-theme">TeXt Theme</a>.</p>
     </footer>
   </div>
-</div><script>
+</div>
+<script>
       $(function() {
         // display coding language
         var $articleContent = $('.m-post, .m-page').find('.m-article-content'), $this;

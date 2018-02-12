@@ -183,4 +183,3 @@ bundle exec jekyll serve -H 0.0.0.0
 ## 示例
 
 - [Demo](https://tianqi.name/jekyll-TeXt-theme/)
-- [Qi's blog](https://tianqi.name/blog/)
