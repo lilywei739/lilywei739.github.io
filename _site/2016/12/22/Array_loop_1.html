@@ -1,45 +1,47 @@
-<!DOCTYPE html>
-<html lang="zh">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-        <meta http-equiv="Cache-Control" content="no-siteapp" />
-        <meta name="robots" content="index,follow"/>
-        <meta name="renderer" content="webkit" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui" />
-        <meta name="keywords" content="JavaScript中数组的迭代方法详解（一）">
-        <meta name="screen-orientation" content="portrait" />
-        <meta name="full-screen" content="yes" />
-        <meta name="browsermode" content="application" />
-        <meta name="x5-orientation" content="portrait" />
-        <meta name="x5-fullscreen" content="true" />
-        <meta name="x5-page-mode" content="app" />
-        <title>Weili - GitHub.io</title>
-        <link rel="shortcut icon" type="image/ico" href="/favicon.ico"/>
-        <link rel="stylesheet" href="/css/common/github-gist.min.css">
-        <link rel="stylesheet" href="/css/style.css">
-        <!--[if lt IE 9]>
-        <script src="/js/common/html5.js"></script>
-        <![endif]-->
-    </head>
-    <body>
-        <!-- HEADER -->
-        <div id="header_wrap" class="outer">
-            <header class="inner">
-                <h1 id="project_title"><a href="/index.html">Weili - GitHub.io</a></h1>
-                <h2 id="project_tagline"><a href="https://github.com/lilywei739/lilywei739.github.io" target="_blank">View on GitHub</a></h2>
-            </header>
-        </div>
-            
-        <div id="content-wrapper">
-            <div class="main clearfix">
-                <aside id="sidebar">
-                    <ul class="side-nav">
-                    </ul>
-                </aside>
-
-                <section id="main-cont">
-                    <h1 id="javascript中数组的迭代方法详解一">JavaScript中数组的迭代方法详解（一）</h1>
+<!DOCTYPE html><html lang="en">
+  <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>JavaScript中数组的迭代方法详解（一） - Weili's blog</title>
+<meta name="description" content="JavaScript中数组的迭代方法详解（一）目前为止，学习了很多的数组方法，其中迭代方法就有很多，这些方法都很像，到底有什么区别?1、for最常用的循环， 虽然性能堪忧但可优化，基本程序代码如下。var arr = ['a','b','c','d'];for (var i = 0; i &lt; arr.len...">
+<link rel="canonical" href="http://localhost:4000/2016/12/22/Array_loop_1.html"><link rel="alternate" type="application/rss+xml" title="Weili's blog" href="http://localhost:4000/feed.xml">
+<!-- for Safari on iOS https://developer.apple.com/ios/human-interface-guidelines/icons-and-images/app-icon/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/images/logo/icon-180x180.png"><link rel="apple-touch-icon" sizes="167x167" href="/assets/images/logo/icon-167x167.png"><link rel="apple-touch-icon" sizes="152x152" href="/assets/images/logo/icon-152x152.png"><link rel="apple-touch-icon" sizes="120x120" href="/assets/images/logo/icon-120x120.png"><link rel="shortcut icon" href="/assets/images/logo/icon-120x120.png">
+<!-- for Chrome on Android https://developer.chrome.com/multidevice/android/installtohomescreen -->
+<meta name="mobile-web-app-capable" content="yes"><link rel="icon" sizes="192x192" href="/assets/images/logo/icon-192x192.png">
+<!-- for Edge on Windows 10 https://msdn.microsoft.com/en-us/library/dn255024(v=vs.85).aspx --><meta name="msapplication-TileImage" content="/assets/images/logo/icon-144x144.png"><meta name="msapplication-square310x310logo" content="/assets/images/logo/icon-310x310.png"><meta name="msapplication-wide310x150logo" content="/assets/images/logo/icon-310x150.png"><meta name="msapplication-square150x150logo" content="/assets/images/logo/icon-150x150.png"><meta name="msapplication-square70x70logo" content="/assets/images/logo/icon-70x70.png">
+<meta name="msapplication-TileColor" content="#eeeeee"><link rel="stylesheet" href="/assets/css/blog.css">
+    <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="m-page-stage js-page-stage"><div class="m-page-content"><header class="m-page-header">
+  <div class="main clearfix">
+    <div class='site-logo'><a title="WeiLi's Blog
+" href="">Weili's blog</a></div>
+    <nav>
+      <ul><li><a href="/">Home</a></li><li><a href="/all.html">All</a></li><li><a href="/about.html">About</a></li></ul>
+    </nav>
+  </div>
+</header>
+<div class="m-page-main"><div class="m-post">
+	<div class="main js-main clearfix">
+		<div class="col-2 js-col-2">
+			<aside class="js-article-aside"><div class="m-toc js-toc"></div></aside>
+		</div>
+		<div class="col-1">
+			<article itemscope itemtype="http://schema.org/BlogPosting">
+				<meta itemprop="mainEntityOfPage" itemscope itemType="https://schema.org/WebPage"/>
+				<header class="main-header"><h1 itemprop="headline" itemprop="name headline">JavaScript中数组的迭代方法详解（一）</h1><div class="m-article-data clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Weili"/></meta><ul class="tag-wrapper"><li>
+          <a class="pill-button" href="/all.html?tag=JS">JS</a>
+        </li><li>
+          <a class="pill-button" href="/all.html?tag=%E6%95%B0%E7%BB%84">数组</a>
+        </li><li>
+          <a class="pill-button" href="/all.html?tag=%E5%89%8D%E7%AB%AF">前端</a>
+        </li></ul><div class="other-wrapper"><div class="date-wrapper"><time class="article-meta" datetime="2016-12-22T00:00:00+08:00"
+          itemprop="datePublished">Dec 22, 2016
+        </time></div>
+  </div>
+</div>
+</header>
+				<div class="m-article-content js-article-content" itemprop="articleBody"><h1 id="javascript中数组的迭代方法详解一">JavaScript中数组的迭代方法详解（一）</h1>
 
 <p>目前为止，学习了很多的数组方法，其中迭代方法就有很多，这些方法都很像，到底有什么区别?</p>
 
@@ -47,28 +49,26 @@
 
 <p>最常用的循环， 虽然性能堪忧但可优化，基本程序代码如下。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>var arr = ['a','b','c','d'];
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var arr = ['a','b','c','d'];
 for (var i = 0; i &lt; arr.length; i = i + 1){
      //do something to each member
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>这段代码在每次循环都会获取一下数组的长度，理论上会降低代码的性能，尤其是当这个arr不是一个数组，而是一个HTMLCollection对象的时候。</p>
 
 <p>优化如下:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>//只定义一个变量即可
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//只定义一个变量即可
 var arr = []; 
 for(var i = arr.length - 1; i &gt; -1; i--){ 
      //do something to each member
 } 
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>为了区别for…in和for遍历数组的不同，用for举个栗子:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>var arr = new Array();
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var arr = new Array();
 
 arr[0] = "A0";
 arr[2] = "C3";
@@ -77,8 +77,7 @@ arr[4] = "D5";
 for (var i = 0, len = arr.length; i &lt; len; i++){
     console.log(arr[i]);
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>循环结果：</p>
 
@@ -97,16 +96,15 @@ for…in 循环只遍历可枚举属性。像 Array 和 Object 使用内置构�
 
 <p>说实在的看完上面的内容，不太明白什么意思，接着往下看。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>//语法
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//语法
 for(var item in arr|obj){ //do something to each member }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <hr />
 
 <p>用for…in 的循环方法完成 用for完成的栗子：</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>var arr = new Array();
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var arr = new Array();
 
 arr[0] = "A0";
 arr[2] = "C3";
@@ -115,8 +113,7 @@ arr[4] = "D5";
 for (var i in arr){
     console.log(arr[i]);
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>循环结果：</p>
 
@@ -126,14 +123,13 @@ for (var i in arr){
 
 <p>再看个栗子：</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>var arr = [1, 2, 3];
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var arr = [1, 2, 3];
 arr.name = "Hello world";
 var index;
 for(index in arr) {
     console.log("arr[" + index + "] = " + arr[index]);
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>循环结果：</p>
 
@@ -145,15 +141,14 @@ for(index in arr) {
 
 <p>看栗子：</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Array.prototype.fatherName = "Father";
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Array.prototype.fatherName = "Father";
 var arr = [1, 2, 3];
 arr.name = "Hello world";
 var index;
 for(index in arr) {
     console.log("arr[" + index + "] = " + arr[index]);
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>循环结果：</p>
 
@@ -163,7 +158,7 @@ for(index in arr) {
 
 <p>那是不是完全就不能用for…in循环数组呢？也不完全是，再看个例子：</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>var key;
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var key;
 var arr = [];
 arr[0] = "a";
 arr[100] = "b";
@@ -176,8 +171,7 @@ for(key in arr) {
         console.log(arr[key]);
     }
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>循环结果：</p>
 
@@ -187,7 +181,7 @@ for(key in arr) {
 
 <p>它的正确使用方式应该如下所示：</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>var obj = {a:1, b:2, c:3};
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var obj = {a:1, b:2, c:3};
     
 for (var prop in obj) {
   console.log("obj." + prop + " = " + obj[prop]);
@@ -197,8 +191,7 @@ for (var prop in obj) {
 // "obj.a = 1"
 // "obj.b = 2"
 // "obj.c = 3"
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><strong>特点</strong></p>
 
@@ -220,7 +213,7 @@ for (var prop in obj) {
 forEach() 方法对数组的每个元素执行一次提供的函数(回调函数)，那些已删除（使用 delete 方法等情况）或者从未赋值的项将被跳过（不包括那些值为 undefined 或 null 的项）。</p>
 </blockquote>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>//语法
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//语法
 [].forEach(function(value, index, array){
    // do some
 })
@@ -229,24 +222,22 @@ callback参数
 1. value(当前值)---数组中正在处理的当前元素
 2. index(索引)  ---数组中正在处理的当前元素的索引
 3. array        ---正在应用forEach()数组
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>来个例子</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>var array = [1, 2, 3];
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var array = [1, 2, 3];
 delete array[1]; 
 console.log(array);     //===&gt;[1, undefined × 1, 3]
 
 array.forEach(function(value){
     console.log(value);
 })                     //===&gt;1, 3
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>通过这个例子就能明白前MDN中说的那些已删除（使用 delete 方法等情况）或者从未赋值的项将被跳过（不包括那些值为 undefined 或 null 的项）。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>var arr = [];
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var arr = [];
 arr[0] = "a";
 arr[3] = "b";
 arr[10] = "c";
@@ -254,8 +245,7 @@ arr.name = "Hello world";
 arr.forEach(function(data, index, array) {
     console.log(data, index, array);
 });
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><img src="https://lilywei739.github.io/img/20161222/20161222-3-2.jpg" alt="" /></p>
 
@@ -293,7 +283,7 @@ map() 方法返回一个由原数组中的每个元素调用一个指定方法�
 
 <p>map方法会给原数组中的每个元素都按顺序调用一次callback函数。callback每次执行后的返回值包括 undefined）组合起来形成一个新数组。callback函数只会在有值的索引上被调用；那些从来没被赋过值或者使用delete删除的索引则不会被调用。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>//语法
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//语法
 [].map();
 
 callback的参数：
@@ -304,14 +294,12 @@ callback的参数：
 [].map(function(value, index, array) {
     // ...
 });
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>为了理解先上个例子：</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Array(10).map(function(){return "A"})
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Array(10).map(function(){return "A"})
+</code></pre></div></div>
 
 <p>上面的代码你觉的结果是什么？是不是10个A？</p>
 
@@ -321,14 +309,13 @@ callback的参数：
 
 <p>这个例子就理解了，map按照索引的升序，对数组里<strong>存在的每个元素</strong>调用一次callbackfn，并用结果构造一个新数组。callbackfn<strong>只被实际存在的数组元素</strong>调用；它不会被缺少的数组元素调用。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>var arr = [1, 2, 3];
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var arr = [1, 2, 3];
 var newArr = arr.map(function(ele) {
     return "element" + ele;
 });
 console.log(newArr); ===&gt;["element1", "element2", "element3"]
 console.log(arr);    ===&gt;[1, 2, 3]
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><strong>特点：</strong></p>
 
@@ -356,65 +343,152 @@ console.log(arr);    ===&gt;[1, 2, 3]
 
 <p>剩下的几个新增的数组方法在二期继续介绍。</p>
 
-
-		<div class="PageNavigation">
-		  
-		    <a class="prev" href="/2016/12/16/Object_inheritance.html">&laquo; Js实现继承的几种方式</a>
-		  
-		  
-		    <a class="next" href="/2016/12/22/Array_loop_2.html">JavaScript中数组的迭代方法详解（二） &raquo;</a>
-		  
+</div></article>
 		</div>
-		<!-- 多说评论框 start -->
-        <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-        <!--
-<div id="ds_ele" class="ds-thread" data-thread-key="" data-title="JavaScript中数组的迭代方法详解（一）" data-url="http://lilywei739.github.io/2016/12/22/Array_loop_1.html"></div>
-		    <script type="text/javascript">
-                        var url = window.location.pathname;
-                        url = url.substr(1, url.length -6).replace(/\//gi, '_');
-                        document.getElementById('ds_ele').dataset.threadKey = url;
-                        var duoshuoQuery = {short_name:"github"};
-                        (function() {
-                            var ds = document.createElement('script');
-                            ds.type = 'text/javascript';ds.async = true;
-                            ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-                            ds.charset = 'UTF-8';
-                            (document.getElementsByTagName('head')[0] 
-                            || document.getElementsByTagName('body')[0]).appendChild(ds);
-                        })();
+	</div>
+</div><script src="//cdn.bootcss.com/toc/0.3.2/toc.min.js"></script>
+<script type="text/javascript">
+	window.throttle = function(func, wait) {
+	  var args, result, thisArg, timeoutId, lastCalled = 0;
 
-                    </script>
-                    -->
-		<!-- 多说公共JS代码 end -->
-                </section>
-            </div>
-        </div>
-            
-        <!-- FOOTER  -->
-        <div id="footer_wrap" class="outer">
-            <footer class="inner">
-                <p>© 2016  by Weili &nbsp;&nbsp;  |  &nbsp;&nbsp;托管在 - <a href="https://pages.github.com">GitHub</a></p>
-            </footer>
-        </div>
-        <script src="/js/common/jquery-2.2.4.min.js"></script>
-        <script src="/js/common/highlight.min.js"></script>
-        <script src="/js/aside-nav.js"></script>
-        <script>
-            // baidu 统计
-            var _hmt = _hmt || [];
-            (function() {
-                var hm = document.createElement("script");
-                hm.src = "//hm.baidu.com/hm.js?146fe495fee020bf0e4dd701aa73965f";
-                var s = document.getElementsByTagName("script")[0]; 
-                s.parentNode.insertBefore(hm, s);
-            })();
-            // highlight
-            hljs.initHighlightingOnLoad({useBR: true});
-            $(document).ready(function() {
-                $('pre code').each(function(i, block) {
-                    hljs.highlightBlock(block);
-                });
-            });
-        </script>
-    </body>
+	  function trailingCall() {
+	    lastCalled = new Date;
+	    timeoutId = null;
+	    result = func.apply(thisArg, args);
+	  }
+	  return function() {
+	    var now = new Date,
+	      remaining = wait - (now - lastCalled);
+
+	    args = arguments;
+	    thisArg = this;
+
+	    if (remaining <= 0) {
+	      clearTimeout(timeoutId);
+	      timeoutId = null;
+	      lastCalled = now;
+	      result = func.apply(thisArg, args);
+	    } else if (!timeoutId) {
+	      timeoutId = setTimeout(trailingCall, remaining);
+	    }
+	    return result;
+	  };
+	}
+	$(function() {
+	  var $window = $(window);
+	  var $pageStage = $('.js-page-stage');
+	  var $pageMain = $('.js-main');
+	  var $pageFooter = $('.js-page-footer');
+	  var $articleContent = $('.js-article-content');
+	  var $articleAside = $('.js-article-aside');
+	  var $toc = $('.js-toc');
+		var $col2 = $('.js-col-2');
+	  var hasTitle = $articleContent.find('h1,h2,h3').length > 0;
+	  function asideSticky() {
+	    return $col2.css('display') !== 'none' && $pageStage.hasClass('has-toc');
+	  }
+
+	  function setTocClass() {
+	    if (hasTitle) {
+	      !$pageStage.hasClass('has-toc') && $pageStage.addClass('has-toc');
+	    }
+	  }
+
+	  setTocClass();
+
+	  function setAsideTOC() {
+	    var asideTop, asideLeft, scrollBottom, asideBottomTop, lastScrollTop;
+
+	    function init() {
+	      var asideOffset = $articleAside.offset();
+	      var footerOffset = $pageFooter.offset();
+	      var mainOffset = $pageMain.offset();
+	      asideTop = mainOffset.top;
+	      asideHeight = $toc.outerHeight() + parseInt($articleAside.css('padding-top'), 10) + parseInt($articleAside.css('padding-bottom'), 10);
+	      asideLeft = mainOffset.left + $pageMain.outerWidth() - $articleAside.outerWidth() - parseInt($pageMain.css('padding-right'), 10);
+	      scrollBottom = footerOffset.top - asideHeight;
+	      asideBottomTop = scrollBottom - mainOffset.top;
+	    }
+
+	    function setAside(force) {
+	      force !== true && (force = false);
+	      var scrollTop = $window.scrollTop();
+	      if (scrollTop >= asideTop && scrollTop <= scrollBottom) {
+	        (!force && lastScrollTop >= asideTop && lastScrollTop <= scrollBottom) ||
+	        $articleAside.addClass('fixed').css({
+	          left: asideLeft + 'px',
+	          top: 0
+	        });
+	      } else if (scrollTop < asideTop) {
+	        (!force && lastScrollTop < asideTop) ||
+	        $articleAside.removeClass('fixed').css({
+	          left: 0,
+	          top: 0
+	        });
+	      } else {
+	        (!force && lastScrollTop > scrollBottom) ||
+	        $articleAside.removeClass('fixed').css({
+	          left: 0,
+	          top: asideBottomTop + 'px'
+	        });
+	      }
+	      lastScrollTop = scrollTop;
+	    }
+	    asideSticky() && (init(), setAside());
+	    $window.on('scroll', function() {
+	      asideSticky() && setAside();
+	    });
+	    $window.on('resize', throttle(function() {
+	      setTocClass();
+	      asideSticky() && (init(), setAside(true));
+	    }, 100));
+	    setTimeout(init, 4000);
+	  }
+	  setTimeout(setAsideTOC, 1000);
+
+	  $toc.toc({
+	    'selectors': 'h1,h2,h3',
+	    'container': '.js-article-content',
+	  });
+	});
+</script></div>
+</div>
+</div><div class="m-page-footer js-page-footer">
+  <div class="main">
+    <aside><div class="follow-me"><ul itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Weili">
+    <link itemprop="url" href="http://localhost:4000/"></ul></div>
+</aside>
+    <footer class="site-info">
+      <p>© Weili's blog 2018</p>
+      <p><a title="" href="//github.com/lilywei739/lilywei739.github.io">View on GitHub</a></p>
+    </footer>
+  </div>
+</div>
+<script>
+      $(function() {
+        // display coding language
+        var $articleContent = $('.m-post, .m-page').find('.m-article-content'), $this;
+        $articleContent.children('.highlight').each(function() {
+          $this = $(this);
+          $this.attr('data-lang', $this.find('code').attr('data-lang'));
+        });
+        $articleContent.children('h1, h2, h3, h4, h5, h6').each(function() {
+          $this = $(this);
+          $this.append($('<a class="anchor" aria-hidden="true"></a>').text('#'));
+        });
+        $articleContent.on('click', '.anchor', function(e) {
+          var targetId = $(this).parent().attr('id');
+          scrollAnimateTo($('#' + targetId).offset().top, 400, function() {
+            console.log(666)
+            window.history.replaceState(null, '', window.location.href.split('#')[0] + '#' + targetId);
+          });
+        });
+        function scrollAnimateTo(destination, duration, callback) {
+          var $body = $('html, body'), bodyScrollTop = $body.scrollTop();
+          if(bodyScrollTop === destination) { return; }
+          $body.animate({ scrollTop: destination }, duration, callback);
+        }
+      });
+    </script></body>
 </html>

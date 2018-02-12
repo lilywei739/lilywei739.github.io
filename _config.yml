@@ -1,62 +1,130 @@
+# Welcome to Jekyll!
+#
+# This config file is meant for settings that affect your whole blog, values
+# which you are expected to set up once and rarely need to edit after that.
+# For technical reasons, this file is *NOT* reloaded automatically when you use
+# 'jekyll serve'. If you change this file, please restart the server process.
+#
+# ,--------.      ,--.   ,--. ,--.
+# '--.  .--',---.  \  `.'  /,-'  '-.
+#    |  |  | .-. :  .'    \ '-.  .-'
+#    |  |  \   --. /  .'.  \  |  |
+#    `--'   `----''--'   '--' `--'
+
+text_color_theme: default #eg: default | dark | forest | ocean | chocolate | orange
+## Base settings ##
+# url:  #the base hostname & protocol for your site e.g. https://www.someone.com
+
 github: {
     "author": "Weili",
     "hostname": "https://github.com/lilywei739",
     "pages_hostname": "https://lilywei739.github.io/"
 }
-#source: ./
-#destination: ./_site
-#plugins: ./_plugins
-safe: false 
 
-# Conversion
-#highlighter: pygments
-highlighter: rouge
+baseurl: /
+title: Weili's blog
+description: > #this means to ignore newlines until "nav_lists:"
+  WeiLi's Blog
 
-gist:
-   noscript: false
+nav_lists:
+  - titles:
+      en: About
+      zh: 关于
+      zh-Hans: 关于
+    url: /about.html
 
-#markdown: rdiscount
-#rdiscount:
-#   extensions:
-#     - footnotes
+# paths:
+#   base: /
+#   home: /
+#   all:  /all.html
+
+## GitHub repository (if the site is hosted by GitHub) ##
+# repository:  #e.g. https://lilywei739.github.io/
+# repository_tree:  #e.g. master
+
+## Language & timezone ##
+lang: en #the language of your site, eg: en(English), zh(简体中文), zh-Hans(简体中文), zh-Hant(繁體中文)
+timezone: Asia/Shanghai #see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for the available values
+
+## Author & social ##
+author:
+  name: Weili 
+  # email:  #your Email address e.g. someone@site.com
+  # facebook:  #your Facebook username
+  # twitter:  #your Twitter username
+  # github:  #your GitHub username
+  # googleplus:  #your Google+ username
+  # weibo:  #your Weibo username
+  # douban:  #your Douban username
+  # linkedin:  #your Linkedin username
+
+## TOC
+toc:
+  # selectors: 'h1,h2,h3'
+
+## Comment system (Disqus) ##
+disqus:
+  # shortname:  #the Disqus shortname for the site
+
+## Comment system (gitalk) ##
+# please refer to https://github.com/gitalk/gitalk for more info.
+gitalk:
+  # clientID:  #Github Application Client ID
+  # clientSecret:  #Github Application Client Secret
+  # repository:  #Github repo
+  # owner:  #Github repo owner
+  # admin: #Github repo owner and collaborators, only these guys can initialize github issues, IT IS A LIST.
+    # - owner
+
+## Google Analytics ##
+# ga_tracking_id:  #Google analytics id for the site
+
+## Reading quantity (LeanCloud) ##
+leancloud:
+  # app_id:  #LeanCloud App id
+  # app_key:  #LeanCloud App key
+  # app_class:  #LeanCloud App class
+
+# mathjax: true
+# mathjax_autoNumber: true
+# mermaid: true
+# chart: true
+
+## Paginate ##
+paginate: 7
+paginate_path: /blog/page:num
+
+## Post excerpts ##
+excerpt_separator: <!--more-->
+excerpt_type: text # text | html
+
+## Build ##
 markdown: kramdown
+highlighter: rouge
+permalink: date
 
-kramdown:
-    input: GFM
-    hard_wrap: false
-    math_engine: mathjax
-# kramdown:
-#   auto_ids:       true
-#   footnote_nr:    1
-#   entity_output:  as_char
-#   toc_levels:     1..6
-#   smart_quotes:   lsquo,rsquo,ldquo,rdquo
-#   enable_coderay: true
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - LICENSE
+  - README-*.md
+  - README.md
+  - gulpfile.js
+  - lilywei739.gemspec
+  - package-lock.json
+  - package.json
+  - /docs
+  - /node_modules
+  - /screenshots
+  - /test
+  - /vendor
 
-#   coderay:
-#     coderay_wrap:              div
-#     coderay_line_numbers:      inline
-#     coderay_line_number_start: 1
-#     coderay_tab_width:         4
-#     coderay_bold_every:        10
-#     coderay_css:               style
-    
-lsi: false
-excerpt_separator: "\n\n\n\n"
-incremental: false
+## Plugins ##
+plugins:
+  - jekyll-sitemap
+  - jekyll-feed
+  - jekyll-paginate
+  - jemoji
 
-# Serving
-detach: false
-port: 4000
-host: 0.0.0.0
-baseurl: "" # does not include hostname
-
-encoding: "utf-8"
-markdown_ext: markdown,mkd,mkdn,md
-
-#plugins
-#gems: [jekyll-less]
-
-
-
-
+## Server ##
+server_url: "0.0.0.0"

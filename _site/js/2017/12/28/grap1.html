@@ -1,45 +1,41 @@
-<!DOCTYPE html>
-<html lang="zh">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-        <meta http-equiv="Cache-Control" content="no-siteapp" />
-        <meta name="robots" content="index,follow"/>
-        <meta name="renderer" content="webkit" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui" />
-        <meta name="keywords" content="JS基础--图和图算法(一)">
-        <meta name="screen-orientation" content="portrait" />
-        <meta name="full-screen" content="yes" />
-        <meta name="browsermode" content="application" />
-        <meta name="x5-orientation" content="portrait" />
-        <meta name="x5-fullscreen" content="true" />
-        <meta name="x5-page-mode" content="app" />
-        <title>Weili - GitHub.io</title>
-        <link rel="shortcut icon" type="image/ico" href="/favicon.ico"/>
-        <link rel="stylesheet" href="/css/common/github-gist.min.css">
-        <link rel="stylesheet" href="/css/style.css">
-        <!--[if lt IE 9]>
-        <script src="/js/common/html5.js"></script>
-        <![endif]-->
-    </head>
-    <body>
-        <!-- HEADER -->
-        <div id="header_wrap" class="outer">
-            <header class="inner">
-                <h1 id="project_title"><a href="/index.html">Weili - GitHub.io</a></h1>
-                <h2 id="project_tagline"><a href="https://github.com/lilywei739/lilywei739.github.io" target="_blank">View on GitHub</a></h2>
-            </header>
-        </div>
-            
-        <div id="content-wrapper">
-            <div class="main clearfix">
-                <aside id="sidebar">
-                    <ul class="side-nav">
-                    </ul>
-                </aside>
-
-                <section id="main-cont">
-                    <h1 id="图和图算法一">图和图算法(一)</h1>
+<!DOCTYPE html><html lang="en">
+  <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>JS基础--图和图算法(一) - Weili's blog</title>
+<meta name="description" content="图和图算法(一)这一章不好理解，所以分为两期来做。如何用图给网络建模? 如何用 JavaScript 表示图? 如何实现重要的图算法?带着这几个问题开始今天的学习相关概念  图: 图由边的集合及顶点的集合组成  有向图: 如果一个图的顶点对是有序的，则可以称之为有向图，有向图表明了顶点的流向  无向图: 如果图是...">
+<link rel="canonical" href="http://localhost:4000/js/2017/12/28/grap1.html"><link rel="alternate" type="application/rss+xml" title="Weili's blog" href="http://localhost:4000/feed.xml">
+<!-- for Safari on iOS https://developer.apple.com/ios/human-interface-guidelines/icons-and-images/app-icon/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/images/logo/icon-180x180.png"><link rel="apple-touch-icon" sizes="167x167" href="/assets/images/logo/icon-167x167.png"><link rel="apple-touch-icon" sizes="152x152" href="/assets/images/logo/icon-152x152.png"><link rel="apple-touch-icon" sizes="120x120" href="/assets/images/logo/icon-120x120.png"><link rel="shortcut icon" href="/assets/images/logo/icon-120x120.png">
+<!-- for Chrome on Android https://developer.chrome.com/multidevice/android/installtohomescreen -->
+<meta name="mobile-web-app-capable" content="yes"><link rel="icon" sizes="192x192" href="/assets/images/logo/icon-192x192.png">
+<!-- for Edge on Windows 10 https://msdn.microsoft.com/en-us/library/dn255024(v=vs.85).aspx --><meta name="msapplication-TileImage" content="/assets/images/logo/icon-144x144.png"><meta name="msapplication-square310x310logo" content="/assets/images/logo/icon-310x310.png"><meta name="msapplication-wide310x150logo" content="/assets/images/logo/icon-310x150.png"><meta name="msapplication-square150x150logo" content="/assets/images/logo/icon-150x150.png"><meta name="msapplication-square70x70logo" content="/assets/images/logo/icon-70x70.png">
+<meta name="msapplication-TileColor" content="#eeeeee"><link rel="stylesheet" href="/assets/css/blog.css">
+    <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="m-page-stage js-page-stage"><div class="m-page-content"><header class="m-page-header">
+  <div class="main clearfix">
+    <div class='site-logo'><a title="WeiLi's Blog
+" href="">Weili's blog</a></div>
+    <nav>
+      <ul><li><a href="/">Home</a></li><li><a href="/all.html">All</a></li><li><a href="/about.html">About</a></li></ul>
+    </nav>
+  </div>
+</header>
+<div class="m-page-main"><div class="m-post">
+	<div class="main js-main clearfix">
+		<div class="col-2 js-col-2">
+			<aside class="js-article-aside"><div class="m-toc js-toc"></div></aside>
+		</div>
+		<div class="col-1">
+			<article itemscope itemtype="http://schema.org/BlogPosting">
+				<meta itemprop="mainEntityOfPage" itemscope itemType="https://schema.org/WebPage"/>
+				<header class="main-header"><h1 itemprop="headline" itemprop="name headline">JS基础--图和图算法(一)</h1><div class="m-article-data clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Weili"/></meta><div class="other-wrapper"><div class="date-wrapper"><time class="article-meta" datetime="2017-12-28T00:00:00+08:00"
+          itemprop="datePublished">Dec 28, 2017
+        </time></div>
+  </div>
+</div>
+</header>
+				<div class="m-article-content js-article-content" itemprop="articleBody"><h1 id="图和图算法一">图和图算法(一)</h1>
 
 <p>这一章不好理解，所以分为两期来做。</p>
 
@@ -80,11 +76,10 @@
   <li>表明这个顶点是否被访问过的布尔值, 被命名为wasVisited</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function Vertex(label) {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function Vertex(label) {
     this.label = label;
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h4 id="表示边">表示边</h4>
 
@@ -110,7 +105,7 @@
 
 <p>确定了如何在代码中表示图之后，构建一个表示图的类就很容易了。下面是第一个Graph类的定义</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function Graph(v) {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function Graph(v) {
     this.vertices = v;
     this.edges = 0;
     this.adj = [];
@@ -121,8 +116,7 @@
     this.addEdge = addEdge;
     this.showGraph = showGraph;
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>这个类会记录一个图表示了多少条边，并使用一个长度与图的顶点数相同的数组来记录顶点的数量。通过 for 循环为数组中的每个元素添加一个子数组来存储所有的相邻顶点，并 将所有元素初始化为空字符串。</p>
 
@@ -130,13 +124,12 @@
   <li>addEdge() 函数</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function addEdge(v, w) {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function addEdge(v, w) {
     this.adj[v].push(w);
     this.adj[w].push(v);
     this.edges++;
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>当调用这个函数并传入顶点 A 和 B 时，函数会先查找顶点 A 的邻接表，将顶点 B 添加到列 表中，然后再查找顶点 B 的邻接表，将顶点 A 加入列表。最后，这个函数会将边数加 1。</p>
 
@@ -146,7 +139,7 @@
 
 <p>showGraph() 函数会通过打印所有顶点及其相邻顶点列表的方式来显示图:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function showGraph() {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function showGraph() {
     for (var i = 0; i &lt; this.vertices; ++i) {
        document.write(i + "-&gt;");
        for (var j = 0; j &lt; this.vertices; ++j) {
@@ -156,20 +149,18 @@
        }
     }
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>初始化一个例子：</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>g = new Graph(5);
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>g = new Graph(5);
 g.addEdge(0,1);
 g.addEdge(0,2);
 g.addEdge(1,3);
 g.addEdge(2,4);
 g.showGraph();
 
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>输出结果：</p>
 
@@ -213,7 +204,7 @@ g.showGraph();
 
 <p>要让该算法运行，需要为 Graph 类添加一个数组，用来存储已访问过的顶点，将它所有元 素的值全部初始化为 false。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function Graph(v) {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function Graph(v) {
     this.vertices = v;
     this.edges = 0;
     this.adj = [];
@@ -230,12 +221,11 @@ g.showGraph();
        this.marked[i] = false;
     }
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>深度优先搜索函数</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function dfs(v) {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function dfs(v) {
     this.marked[v] = true;
     document.write("Visited vertex:  " + v);
     for each(var w in this.adj[v]) {
@@ -244,8 +234,7 @@ g.showGraph();
        } 
     }
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><strong>广度优先搜索</strong></p>
 
@@ -261,7 +250,7 @@ g.showGraph();
   <li>将所有与 v 相邻的未访问顶点添加到队列。</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function bfs(s) {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function bfs(s) {
     var queue = []; 
     this.marked[s] = true; 
     queue.push(s); //添加到队尾
@@ -279,68 +268,154 @@ g.showGraph();
 	   }
     } 
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
-
-		<div class="PageNavigation">
-		  
-		    <a class="prev" href="/js/2017/12/22/set.html">&laquo; JS基础--集合</a>
-		  
-		  
-		    <a class="next" href="/js/2018/01/05/grap2.html">JS基础--图和图算法(二) &raquo;</a>
-		  
+</div></article>
 		</div>
-		<!-- 多说评论框 start -->
-        <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-        <!--
-<div id="ds_ele" class="ds-thread" data-thread-key="" data-title="JS基础--图和图算法(一)" data-url="http://lilywei739.github.io/js/2017/12/28/grap1.html"></div>
-		    <script type="text/javascript">
-                        var url = window.location.pathname;
-                        url = url.substr(1, url.length -6).replace(/\//gi, '_');
-                        document.getElementById('ds_ele').dataset.threadKey = url;
-                        var duoshuoQuery = {short_name:"github"};
-                        (function() {
-                            var ds = document.createElement('script');
-                            ds.type = 'text/javascript';ds.async = true;
-                            ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-                            ds.charset = 'UTF-8';
-                            (document.getElementsByTagName('head')[0] 
-                            || document.getElementsByTagName('body')[0]).appendChild(ds);
-                        })();
+	</div>
+</div><script src="//cdn.bootcss.com/toc/0.3.2/toc.min.js"></script>
+<script type="text/javascript">
+	window.throttle = function(func, wait) {
+	  var args, result, thisArg, timeoutId, lastCalled = 0;
 
-                    </script>
-                    -->
-		<!-- 多说公共JS代码 end -->
-                </section>
-            </div>
-        </div>
-            
-        <!-- FOOTER  -->
-        <div id="footer_wrap" class="outer">
-            <footer class="inner">
-                <p>© 2016  by Weili &nbsp;&nbsp;  |  &nbsp;&nbsp;托管在 - <a href="https://pages.github.com">GitHub</a></p>
-            </footer>
-        </div>
-        <script src="/js/common/jquery-2.2.4.min.js"></script>
-        <script src="/js/common/highlight.min.js"></script>
-        <script src="/js/aside-nav.js"></script>
-        <script>
-            // baidu 统计
-            var _hmt = _hmt || [];
-            (function() {
-                var hm = document.createElement("script");
-                hm.src = "//hm.baidu.com/hm.js?146fe495fee020bf0e4dd701aa73965f";
-                var s = document.getElementsByTagName("script")[0]; 
-                s.parentNode.insertBefore(hm, s);
-            })();
-            // highlight
-            hljs.initHighlightingOnLoad({useBR: true});
-            $(document).ready(function() {
-                $('pre code').each(function(i, block) {
-                    hljs.highlightBlock(block);
-                });
-            });
-        </script>
-    </body>
+	  function trailingCall() {
+	    lastCalled = new Date;
+	    timeoutId = null;
+	    result = func.apply(thisArg, args);
+	  }
+	  return function() {
+	    var now = new Date,
+	      remaining = wait - (now - lastCalled);
+
+	    args = arguments;
+	    thisArg = this;
+
+	    if (remaining <= 0) {
+	      clearTimeout(timeoutId);
+	      timeoutId = null;
+	      lastCalled = now;
+	      result = func.apply(thisArg, args);
+	    } else if (!timeoutId) {
+	      timeoutId = setTimeout(trailingCall, remaining);
+	    }
+	    return result;
+	  };
+	}
+	$(function() {
+	  var $window = $(window);
+	  var $pageStage = $('.js-page-stage');
+	  var $pageMain = $('.js-main');
+	  var $pageFooter = $('.js-page-footer');
+	  var $articleContent = $('.js-article-content');
+	  var $articleAside = $('.js-article-aside');
+	  var $toc = $('.js-toc');
+		var $col2 = $('.js-col-2');
+	  var hasTitle = $articleContent.find('h1,h2,h3').length > 0;
+	  function asideSticky() {
+	    return $col2.css('display') !== 'none' && $pageStage.hasClass('has-toc');
+	  }
+
+	  function setTocClass() {
+	    if (hasTitle) {
+	      !$pageStage.hasClass('has-toc') && $pageStage.addClass('has-toc');
+	    }
+	  }
+
+	  setTocClass();
+
+	  function setAsideTOC() {
+	    var asideTop, asideLeft, scrollBottom, asideBottomTop, lastScrollTop;
+
+	    function init() {
+	      var asideOffset = $articleAside.offset();
+	      var footerOffset = $pageFooter.offset();
+	      var mainOffset = $pageMain.offset();
+	      asideTop = mainOffset.top;
+	      asideHeight = $toc.outerHeight() + parseInt($articleAside.css('padding-top'), 10) + parseInt($articleAside.css('padding-bottom'), 10);
+	      asideLeft = mainOffset.left + $pageMain.outerWidth() - $articleAside.outerWidth() - parseInt($pageMain.css('padding-right'), 10);
+	      scrollBottom = footerOffset.top - asideHeight;
+	      asideBottomTop = scrollBottom - mainOffset.top;
+	    }
+
+	    function setAside(force) {
+	      force !== true && (force = false);
+	      var scrollTop = $window.scrollTop();
+	      if (scrollTop >= asideTop && scrollTop <= scrollBottom) {
+	        (!force && lastScrollTop >= asideTop && lastScrollTop <= scrollBottom) ||
+	        $articleAside.addClass('fixed').css({
+	          left: asideLeft + 'px',
+	          top: 0
+	        });
+	      } else if (scrollTop < asideTop) {
+	        (!force && lastScrollTop < asideTop) ||
+	        $articleAside.removeClass('fixed').css({
+	          left: 0,
+	          top: 0
+	        });
+	      } else {
+	        (!force && lastScrollTop > scrollBottom) ||
+	        $articleAside.removeClass('fixed').css({
+	          left: 0,
+	          top: asideBottomTop + 'px'
+	        });
+	      }
+	      lastScrollTop = scrollTop;
+	    }
+	    asideSticky() && (init(), setAside());
+	    $window.on('scroll', function() {
+	      asideSticky() && setAside();
+	    });
+	    $window.on('resize', throttle(function() {
+	      setTocClass();
+	      asideSticky() && (init(), setAside(true));
+	    }, 100));
+	    setTimeout(init, 4000);
+	  }
+	  setTimeout(setAsideTOC, 1000);
+
+	  $toc.toc({
+	    'selectors': 'h1,h2,h3',
+	    'container': '.js-article-content',
+	  });
+	});
+</script></div>
+</div>
+</div><div class="m-page-footer js-page-footer">
+  <div class="main">
+    <aside><div class="follow-me"><ul itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Weili">
+    <link itemprop="url" href="http://localhost:4000/"></ul></div>
+</aside>
+    <footer class="site-info">
+      <p>© Weili's blog 2018</p>
+      <p><a title="" href="//github.com/lilywei739/lilywei739.github.io">View on GitHub</a></p>
+    </footer>
+  </div>
+</div>
+<script>
+      $(function() {
+        // display coding language
+        var $articleContent = $('.m-post, .m-page').find('.m-article-content'), $this;
+        $articleContent.children('.highlight').each(function() {
+          $this = $(this);
+          $this.attr('data-lang', $this.find('code').attr('data-lang'));
+        });
+        $articleContent.children('h1, h2, h3, h4, h5, h6').each(function() {
+          $this = $(this);
+          $this.append($('<a class="anchor" aria-hidden="true"></a>').text('#'));
+        });
+        $articleContent.on('click', '.anchor', function(e) {
+          var targetId = $(this).parent().attr('id');
+          scrollAnimateTo($('#' + targetId).offset().top, 400, function() {
+            console.log(666)
+            window.history.replaceState(null, '', window.location.href.split('#')[0] + '#' + targetId);
+          });
+        });
+        function scrollAnimateTo(destination, duration, callback) {
+          var $body = $('html, body'), bodyScrollTop = $body.scrollTop();
+          if(bodyScrollTop === destination) { return; }
+          $body.animate({ scrollTop: destination }, duration, callback);
+        }
+      });
+    </script></body>
 </html>

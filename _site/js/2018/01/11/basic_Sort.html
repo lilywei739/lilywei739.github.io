@@ -1,51 +1,47 @@
-<!DOCTYPE html>
-<html lang="zh">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-        <meta http-equiv="Cache-Control" content="no-siteapp" />
-        <meta name="robots" content="index,follow"/>
-        <meta name="renderer" content="webkit" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui" />
-        <meta name="keywords" content="JS基础-- 基本排序">
-        <meta name="screen-orientation" content="portrait" />
-        <meta name="full-screen" content="yes" />
-        <meta name="browsermode" content="application" />
-        <meta name="x5-orientation" content="portrait" />
-        <meta name="x5-fullscreen" content="true" />
-        <meta name="x5-page-mode" content="app" />
-        <title>Weili - GitHub.io</title>
-        <link rel="shortcut icon" type="image/ico" href="/favicon.ico"/>
-        <link rel="stylesheet" href="/css/common/github-gist.min.css">
-        <link rel="stylesheet" href="/css/style.css">
-        <!--[if lt IE 9]>
-        <script src="/js/common/html5.js"></script>
-        <![endif]-->
-    </head>
-    <body>
-        <!-- HEADER -->
-        <div id="header_wrap" class="outer">
-            <header class="inner">
-                <h1 id="project_title"><a href="/index.html">Weili - GitHub.io</a></h1>
-                <h2 id="project_tagline"><a href="https://github.com/lilywei739/lilywei739.github.io" target="_blank">View on GitHub</a></h2>
-            </header>
-        </div>
-            
-        <div id="content-wrapper">
-            <div class="main clearfix">
-                <aside id="sidebar">
-                    <ul class="side-nav">
-                    </ul>
-                </aside>
-
-                <section id="main-cont">
-                    <h1 id="基本排序算法">基本排序算法</h1>
+<!DOCTYPE html><html lang="en">
+  <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>JS基础-- 基本排序 - Weili's blog</title>
+<meta name="description" content="基本排序算法这里介绍的基本排序算法其核心思想是指对一组数据按照一定的顺序重新排列。重新排列时用到的技术是一组嵌套的 for 循环。其中外循环会遍历数组的每一项，内循环则用于比较元素。在讲这几个基本排序之前，先初始化一个类，因为下面所有的排序都是基于这个类实现的。function CArray(numElement...">
+<link rel="canonical" href="http://localhost:4000/js/2018/01/11/basic_Sort.html"><link rel="alternate" type="application/rss+xml" title="Weili's blog" href="http://localhost:4000/feed.xml">
+<!-- for Safari on iOS https://developer.apple.com/ios/human-interface-guidelines/icons-and-images/app-icon/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/images/logo/icon-180x180.png"><link rel="apple-touch-icon" sizes="167x167" href="/assets/images/logo/icon-167x167.png"><link rel="apple-touch-icon" sizes="152x152" href="/assets/images/logo/icon-152x152.png"><link rel="apple-touch-icon" sizes="120x120" href="/assets/images/logo/icon-120x120.png"><link rel="shortcut icon" href="/assets/images/logo/icon-120x120.png">
+<!-- for Chrome on Android https://developer.chrome.com/multidevice/android/installtohomescreen -->
+<meta name="mobile-web-app-capable" content="yes"><link rel="icon" sizes="192x192" href="/assets/images/logo/icon-192x192.png">
+<!-- for Edge on Windows 10 https://msdn.microsoft.com/en-us/library/dn255024(v=vs.85).aspx --><meta name="msapplication-TileImage" content="/assets/images/logo/icon-144x144.png"><meta name="msapplication-square310x310logo" content="/assets/images/logo/icon-310x310.png"><meta name="msapplication-wide310x150logo" content="/assets/images/logo/icon-310x150.png"><meta name="msapplication-square150x150logo" content="/assets/images/logo/icon-150x150.png"><meta name="msapplication-square70x70logo" content="/assets/images/logo/icon-70x70.png">
+<meta name="msapplication-TileColor" content="#eeeeee"><link rel="stylesheet" href="/assets/css/blog.css">
+    <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="m-page-stage js-page-stage"><div class="m-page-content"><header class="m-page-header">
+  <div class="main clearfix">
+    <div class='site-logo'><a title="WeiLi's Blog
+" href="">Weili's blog</a></div>
+    <nav>
+      <ul><li><a href="/">Home</a></li><li><a href="/all.html">All</a></li><li><a href="/about.html">About</a></li></ul>
+    </nav>
+  </div>
+</header>
+<div class="m-page-main"><div class="m-post">
+	<div class="main js-main clearfix">
+		<div class="col-2 js-col-2">
+			<aside class="js-article-aside"><div class="m-toc js-toc"></div></aside>
+		</div>
+		<div class="col-1">
+			<article itemscope itemtype="http://schema.org/BlogPosting">
+				<meta itemprop="mainEntityOfPage" itemscope itemType="https://schema.org/WebPage"/>
+				<header class="main-header"><h1 itemprop="headline" itemprop="name headline">JS基础-- 基本排序</h1><div class="m-article-data clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Weili"/></meta><div class="other-wrapper"><div class="date-wrapper"><time class="article-meta" datetime="2018-01-11T00:00:00+08:00"
+          itemprop="datePublished">Jan 11, 2018
+        </time></div>
+  </div>
+</div>
+</header>
+				<div class="m-article-content js-article-content" itemprop="articleBody"><h1 id="基本排序算法">基本排序算法</h1>
 
 <p>这里介绍的基本排序算法其核心思想是指对一组数据按照一定的顺序重新排列。重新排列时用到的技术是一组嵌套的 for 循环。其中外循环会遍历数组的每一项，内循环则用于比较元素。</p>
 
 <p>在讲这几个基本排序之前，先初始化一个类，因为下面所有的排序都是基于这个类实现的。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function CArray(numElements) {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function CArray(numElements) {
     this.dataStore = [];
     this.pos = 0;
     this.numElements = numElements;
@@ -95,8 +91,7 @@ function swap(arr, index1, index2) {
 	arr[index1] = arr[index2];
 	arr[index2] = temp;
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>上面的类包含下面几个功能</p>
 
@@ -117,7 +112,7 @@ function swap(arr, index1, index2) {
 
 <p><img src="http://lilywei739.github.io/img/20180112/20180112-1.jpg" alt="冒泡排序的过程" /></p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function bubbleSort() {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function bubbleSort() {
         var numElements = this.dataStore.length;
         var temp;
         for ( var outer = numElements; outer &gt;= 2; --outer) {
@@ -128,20 +123,18 @@ function swap(arr, index1, index2) {
  	   } 
  	}
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>初始化个例子：</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>var numElements = 10;
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var numElements = 10;
 var mynums = new CArray(numElements);
 mynums.setData();
 document.write(mynums.toString());
 mynums.bubbleSort();
 document.write('&lt;br /&gt;');
 document.write(mynums.toString());
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>排序结果如下：</p>
 
@@ -149,7 +142,7 @@ document.write(mynums.toString());
 
 <p>增加一行代码，就可看到这个数组在排序过程中的当前状态</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function bubbleSort() {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function bubbleSort() {
     var numElements = this.dataStore.length;
     var temp;
     for (var outer = numElements; outer &gt;= 2; --outer) {
@@ -163,8 +156,7 @@ document.write(mynums.toString());
         document.write(this.toString());
     }
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>排序结果如下：</p>
 
@@ -182,7 +174,7 @@ document.write(mynums.toString());
 
 <p><img src="http://lilywei739.github.io/img/20180112/20180112-4.jpg" alt="" /></p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function selectionSort() {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function selectionSort() {
     var min, temp;
     for (var outer = 0; outer &lt;= this.dataStore.length-2; ++outer) {
        min = outer;
@@ -197,15 +189,13 @@ document.write(mynums.toString());
        }
     } 
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>var numElements = 10;
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var numElements = 10;
 var mynums = new CArray(numElements);
 mynums.setData();
 mynums.selectionSort();
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>排序结果如下：</p>
 
@@ -219,7 +209,7 @@ mynums.selectionSort();
 
 <p>插入排序有两个循环。外循环将数组元素挨个移动，而内循环则对外循环中选中的元素及 它后面的那个元素进行比较。如果外循环中选中的元素比内循环中选中的元素小，那么数 组元素会向右移动，为内循环中的这个元素腾出位置，就像之前介绍的姓氏卡片一样。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function insertionSort() {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function insertionSort() {
         var temp, inner;
         for (var outer = 1; outer &lt;= this.dataStore.length - 1; ++outer) {
            temp = this.dataStore[outer];
@@ -233,15 +223,13 @@ mynums.selectionSort();
         }
 }
 
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>var numElements = 10;
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var numElements = 10;
 var mynums = new CArray(numElements);
 mynums.setData();
 mynums.insertionSort();
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>排序结果如下：</p>
 
@@ -255,9 +243,8 @@ mynums.insertionSort();
 
 <p>这个函数的运行方式如下所示:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>var start = new Date().getTime();
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var start = new Date().getTime();
+</code></pre></div></div>
 
 <p>要记录代码执行的时间，首先启动计时器，执行代码，然后在代码执行结束时停止计时 器。计时器停止时记录的时间与计时器启动时记录的时间之差就是排序所花费的时间。</p>
 
@@ -267,7 +254,7 @@ mynums.insertionSort();
 
 <p>测试代码如下：</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>var numElements = 100;    //测试数据100、1000、10000
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var numElements = 100;    //测试数据100、1000、10000
 var nums = new CArray(numElements);
 nums.setData();
 var start = new Date().getTime();
@@ -288,8 +275,7 @@ stop = new Date().getTime();
 elapsed = stop - start;
 document.write("对" + numElements + "个元素执行插入排序消耗的时间为:" +
 elapsed + "毫秒。");
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>测试数据100结果：</p>
 
@@ -304,65 +290,152 @@ elapsed + "毫秒。");
 <p><img src="http://lilywei739.github.io/img/20180112/20180112-9.jpg" alt="" /></p>
 
 <p>通过上面的结果，可得出选择排序和插入排序要比冒泡排序快，插入排序是这三种算法中最快的。不过要记住，这些测试必须经过多次的运行， 最后得到的结果才可被视为是有效的统计。</p>
-
-		<div class="PageNavigation">
-		  
-		    <a class="prev" href="/js/2018/01/05/grap2.html">&laquo; JS基础--图和图算法(二)</a>
-		  
-		  
-		    <a class="next" href="/js/2018/01/25/senior_Sort_1.html">JS基础--高级排序(一) &raquo;</a>
-		  
+</div></article>
 		</div>
-		<!-- 多说评论框 start -->
-        <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-        <!--
-<div id="ds_ele" class="ds-thread" data-thread-key="" data-title="JS基础-- 基本排序" data-url="http://lilywei739.github.io/js/2018/01/11/basic_Sort.html"></div>
-		    <script type="text/javascript">
-                        var url = window.location.pathname;
-                        url = url.substr(1, url.length -6).replace(/\//gi, '_');
-                        document.getElementById('ds_ele').dataset.threadKey = url;
-                        var duoshuoQuery = {short_name:"github"};
-                        (function() {
-                            var ds = document.createElement('script');
-                            ds.type = 'text/javascript';ds.async = true;
-                            ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-                            ds.charset = 'UTF-8';
-                            (document.getElementsByTagName('head')[0] 
-                            || document.getElementsByTagName('body')[0]).appendChild(ds);
-                        })();
+	</div>
+</div><script src="//cdn.bootcss.com/toc/0.3.2/toc.min.js"></script>
+<script type="text/javascript">
+	window.throttle = function(func, wait) {
+	  var args, result, thisArg, timeoutId, lastCalled = 0;
 
-                    </script>
-                    -->
-		<!-- 多说公共JS代码 end -->
-                </section>
-            </div>
-        </div>
-            
-        <!-- FOOTER  -->
-        <div id="footer_wrap" class="outer">
-            <footer class="inner">
-                <p>© 2016  by Weili &nbsp;&nbsp;  |  &nbsp;&nbsp;托管在 - <a href="https://pages.github.com">GitHub</a></p>
-            </footer>
-        </div>
-        <script src="/js/common/jquery-2.2.4.min.js"></script>
-        <script src="/js/common/highlight.min.js"></script>
-        <script src="/js/aside-nav.js"></script>
-        <script>
-            // baidu 统计
-            var _hmt = _hmt || [];
-            (function() {
-                var hm = document.createElement("script");
-                hm.src = "//hm.baidu.com/hm.js?146fe495fee020bf0e4dd701aa73965f";
-                var s = document.getElementsByTagName("script")[0]; 
-                s.parentNode.insertBefore(hm, s);
-            })();
-            // highlight
-            hljs.initHighlightingOnLoad({useBR: true});
-            $(document).ready(function() {
-                $('pre code').each(function(i, block) {
-                    hljs.highlightBlock(block);
-                });
-            });
-        </script>
-    </body>
+	  function trailingCall() {
+	    lastCalled = new Date;
+	    timeoutId = null;
+	    result = func.apply(thisArg, args);
+	  }
+	  return function() {
+	    var now = new Date,
+	      remaining = wait - (now - lastCalled);
+
+	    args = arguments;
+	    thisArg = this;
+
+	    if (remaining <= 0) {
+	      clearTimeout(timeoutId);
+	      timeoutId = null;
+	      lastCalled = now;
+	      result = func.apply(thisArg, args);
+	    } else if (!timeoutId) {
+	      timeoutId = setTimeout(trailingCall, remaining);
+	    }
+	    return result;
+	  };
+	}
+	$(function() {
+	  var $window = $(window);
+	  var $pageStage = $('.js-page-stage');
+	  var $pageMain = $('.js-main');
+	  var $pageFooter = $('.js-page-footer');
+	  var $articleContent = $('.js-article-content');
+	  var $articleAside = $('.js-article-aside');
+	  var $toc = $('.js-toc');
+		var $col2 = $('.js-col-2');
+	  var hasTitle = $articleContent.find('h1,h2,h3').length > 0;
+	  function asideSticky() {
+	    return $col2.css('display') !== 'none' && $pageStage.hasClass('has-toc');
+	  }
+
+	  function setTocClass() {
+	    if (hasTitle) {
+	      !$pageStage.hasClass('has-toc') && $pageStage.addClass('has-toc');
+	    }
+	  }
+
+	  setTocClass();
+
+	  function setAsideTOC() {
+	    var asideTop, asideLeft, scrollBottom, asideBottomTop, lastScrollTop;
+
+	    function init() {
+	      var asideOffset = $articleAside.offset();
+	      var footerOffset = $pageFooter.offset();
+	      var mainOffset = $pageMain.offset();
+	      asideTop = mainOffset.top;
+	      asideHeight = $toc.outerHeight() + parseInt($articleAside.css('padding-top'), 10) + parseInt($articleAside.css('padding-bottom'), 10);
+	      asideLeft = mainOffset.left + $pageMain.outerWidth() - $articleAside.outerWidth() - parseInt($pageMain.css('padding-right'), 10);
+	      scrollBottom = footerOffset.top - asideHeight;
+	      asideBottomTop = scrollBottom - mainOffset.top;
+	    }
+
+	    function setAside(force) {
+	      force !== true && (force = false);
+	      var scrollTop = $window.scrollTop();
+	      if (scrollTop >= asideTop && scrollTop <= scrollBottom) {
+	        (!force && lastScrollTop >= asideTop && lastScrollTop <= scrollBottom) ||
+	        $articleAside.addClass('fixed').css({
+	          left: asideLeft + 'px',
+	          top: 0
+	        });
+	      } else if (scrollTop < asideTop) {
+	        (!force && lastScrollTop < asideTop) ||
+	        $articleAside.removeClass('fixed').css({
+	          left: 0,
+	          top: 0
+	        });
+	      } else {
+	        (!force && lastScrollTop > scrollBottom) ||
+	        $articleAside.removeClass('fixed').css({
+	          left: 0,
+	          top: asideBottomTop + 'px'
+	        });
+	      }
+	      lastScrollTop = scrollTop;
+	    }
+	    asideSticky() && (init(), setAside());
+	    $window.on('scroll', function() {
+	      asideSticky() && setAside();
+	    });
+	    $window.on('resize', throttle(function() {
+	      setTocClass();
+	      asideSticky() && (init(), setAside(true));
+	    }, 100));
+	    setTimeout(init, 4000);
+	  }
+	  setTimeout(setAsideTOC, 1000);
+
+	  $toc.toc({
+	    'selectors': 'h1,h2,h3',
+	    'container': '.js-article-content',
+	  });
+	});
+</script></div>
+</div>
+</div><div class="m-page-footer js-page-footer">
+  <div class="main">
+    <aside><div class="follow-me"><ul itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Weili">
+    <link itemprop="url" href="http://localhost:4000/"></ul></div>
+</aside>
+    <footer class="site-info">
+      <p>© Weili's blog 2018</p>
+      <p><a title="" href="//github.com/lilywei739/lilywei739.github.io">View on GitHub</a></p>
+    </footer>
+  </div>
+</div>
+<script>
+      $(function() {
+        // display coding language
+        var $articleContent = $('.m-post, .m-page').find('.m-article-content'), $this;
+        $articleContent.children('.highlight').each(function() {
+          $this = $(this);
+          $this.attr('data-lang', $this.find('code').attr('data-lang'));
+        });
+        $articleContent.children('h1, h2, h3, h4, h5, h6').each(function() {
+          $this = $(this);
+          $this.append($('<a class="anchor" aria-hidden="true"></a>').text('#'));
+        });
+        $articleContent.on('click', '.anchor', function(e) {
+          var targetId = $(this).parent().attr('id');
+          scrollAnimateTo($('#' + targetId).offset().top, 400, function() {
+            console.log(666)
+            window.history.replaceState(null, '', window.location.href.split('#')[0] + '#' + targetId);
+          });
+        });
+        function scrollAnimateTo(destination, duration, callback) {
+          var $body = $('html, body'), bodyScrollTop = $body.scrollTop();
+          if(bodyScrollTop === destination) { return; }
+          $body.animate({ scrollTop: destination }, duration, callback);
+        }
+      });
+    </script></body>
 </html>

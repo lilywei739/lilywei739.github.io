@@ -1,45 +1,47 @@
-<!DOCTYPE html>
-<html lang="zh">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-        <meta http-equiv="Cache-Control" content="no-siteapp" />
-        <meta name="robots" content="index,follow"/>
-        <meta name="renderer" content="webkit" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui" />
-        <meta name="keywords" content="数据算法之二叉树一">
-        <meta name="screen-orientation" content="portrait" />
-        <meta name="full-screen" content="yes" />
-        <meta name="browsermode" content="application" />
-        <meta name="x5-orientation" content="portrait" />
-        <meta name="x5-fullscreen" content="true" />
-        <meta name="x5-page-mode" content="app" />
-        <title>Weili - GitHub.io</title>
-        <link rel="shortcut icon" type="image/ico" href="/favicon.ico"/>
-        <link rel="stylesheet" href="/css/common/github-gist.min.css">
-        <link rel="stylesheet" href="/css/style.css">
-        <!--[if lt IE 9]>
-        <script src="/js/common/html5.js"></script>
-        <![endif]-->
-    </head>
-    <body>
-        <!-- HEADER -->
-        <div id="header_wrap" class="outer">
-            <header class="inner">
-                <h1 id="project_title"><a href="/index.html">Weili - GitHub.io</a></h1>
-                <h2 id="project_tagline"><a href="https://github.com/lilywei739/lilywei739.github.io" target="_blank">View on GitHub</a></h2>
-            </header>
-        </div>
-            
-        <div id="content-wrapper">
-            <div class="main clearfix">
-                <aside id="sidebar">
-                    <ul class="side-nav">
-                    </ul>
-                </aside>
-
-                <section id="main-cont">
-                    <h1 id="数据算法之二叉树一">数据算法之二叉树一</h1>
+<!DOCTYPE html><html lang="en">
+  <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>数据算法之二叉树一 - Weili's blog</title>
+<meta name="description" content="数据算法之二叉树一算法和数据结构是程序的基本功，而且语言都是想通的，只要是掌握了一门语言学习其他语言就如同顺水推舟。从今天开始要把这个系列写下去，虽然网上一搜一大堆，但是我写的这个系列，一方面是分享，一方面是让自己更深入的理解。今天开始第一篇，二叉树。什么是树？  树是计算机科学中经常用到的一种数据结构;  树是...">
+<link rel="canonical" href="http://localhost:4000/2017/01/06/data_algorithm_two_tree_1.html"><link rel="alternate" type="application/rss+xml" title="Weili's blog" href="http://localhost:4000/feed.xml">
+<!-- for Safari on iOS https://developer.apple.com/ios/human-interface-guidelines/icons-and-images/app-icon/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/images/logo/icon-180x180.png"><link rel="apple-touch-icon" sizes="167x167" href="/assets/images/logo/icon-167x167.png"><link rel="apple-touch-icon" sizes="152x152" href="/assets/images/logo/icon-152x152.png"><link rel="apple-touch-icon" sizes="120x120" href="/assets/images/logo/icon-120x120.png"><link rel="shortcut icon" href="/assets/images/logo/icon-120x120.png">
+<!-- for Chrome on Android https://developer.chrome.com/multidevice/android/installtohomescreen -->
+<meta name="mobile-web-app-capable" content="yes"><link rel="icon" sizes="192x192" href="/assets/images/logo/icon-192x192.png">
+<!-- for Edge on Windows 10 https://msdn.microsoft.com/en-us/library/dn255024(v=vs.85).aspx --><meta name="msapplication-TileImage" content="/assets/images/logo/icon-144x144.png"><meta name="msapplication-square310x310logo" content="/assets/images/logo/icon-310x310.png"><meta name="msapplication-wide310x150logo" content="/assets/images/logo/icon-310x150.png"><meta name="msapplication-square150x150logo" content="/assets/images/logo/icon-150x150.png"><meta name="msapplication-square70x70logo" content="/assets/images/logo/icon-70x70.png">
+<meta name="msapplication-TileColor" content="#eeeeee"><link rel="stylesheet" href="/assets/css/blog.css">
+    <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="m-page-stage js-page-stage"><div class="m-page-content"><header class="m-page-header">
+  <div class="main clearfix">
+    <div class='site-logo'><a title="WeiLi's Blog
+" href="">Weili's blog</a></div>
+    <nav>
+      <ul><li><a href="/">Home</a></li><li><a href="/all.html">All</a></li><li><a href="/about.html">About</a></li></ul>
+    </nav>
+  </div>
+</header>
+<div class="m-page-main"><div class="m-post">
+	<div class="main js-main clearfix">
+		<div class="col-2 js-col-2">
+			<aside class="js-article-aside"><div class="m-toc js-toc"></div></aside>
+		</div>
+		<div class="col-1">
+			<article itemscope itemtype="http://schema.org/BlogPosting">
+				<meta itemprop="mainEntityOfPage" itemscope itemType="https://schema.org/WebPage"/>
+				<header class="main-header"><h1 itemprop="headline" itemprop="name headline">数据算法之二叉树一</h1><div class="m-article-data clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Weili"/></meta><ul class="tag-wrapper"><li>
+          <a class="pill-button" href="/all.html?tag=JS">JS</a>
+        </li><li>
+          <a class="pill-button" href="/all.html?tag=%E6%95%B0%E6%8D%AE%E7%AE%97%E6%B3%95">数据算法</a>
+        </li><li>
+          <a class="pill-button" href="/all.html?tag=%E5%89%8D%E7%AB%AF">前端</a>
+        </li></ul><div class="other-wrapper"><div class="date-wrapper"><time class="article-meta" datetime="2017-01-06T00:00:00+08:00"
+          itemprop="datePublished">Jan 06, 2017
+        </time></div>
+  </div>
+</div>
+</header>
+				<div class="m-article-content js-article-content" itemprop="articleBody"><h1 id="数据算法之二叉树一">数据算法之二叉树一</h1>
 
 <p>算法和数据结构是程序的基本功，而且语言都是想通的，只要是掌握了一门语言学习其他语言就如同顺水推舟。</p>
 
@@ -83,7 +85,7 @@
 
 <p>二叉树中每一个节点都是一个对象，每一个数据节点都有三个指针，分别是指向父母、左孩子和右孩子。定义一个节点对象Node，先定义左右两边的指针:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function Node(data, left, right) {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function Node(data, left, right) {
     this.data = data;      //用于存储数据
     this.left = left;      //左节点
     this.right = right;    //右节点
@@ -93,12 +95,11 @@
 function show() {
     return this.data;
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>新建一个类，用于表示二叉查找树BST</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function BST() {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function BST() {
     this.root = null;       //用于表示根节点，并初始化为null
     this.insert = insert;   //插入节点的方法
 
@@ -113,8 +114,7 @@ function show() {
     this.remove = remove;         //简单地接受待删除数据 
     this.removeNode = removeNode; //删除
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>大的框架已经写好了，现在开始插入节点</p>
 
@@ -132,7 +132,7 @@ function show() {
   <li>如果当前节点的右节点为null，就将新的节点插入这个位置，退出循环; 反之，继续执行下一次循环;</li>
 </ol>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 function insert(data) {
     var n = new Node(data, null, null),
         current,
@@ -161,34 +161,31 @@ function insert(data) {
     }
 }
 
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>现在 BST 类已经初步成型,但是操作上还只能插入节点，还需要有能力遍历BST，这样就可以按照不同的顺序,比如按照数字大小或字母先后,显示节点上的数据。</p>
 
 <h3 id="遍历的顺序">遍历的顺序</h3>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>先序：根节点==&gt;左子树==&gt;右子树
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>先序：根节点==&gt;左子树==&gt;右子树
 中序：左子树==&gt;根节点==&gt;右子树
 后序：左子树==&gt;右子树==&gt;根节点
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><strong>中序遍历的代码：</strong></p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function inOrder(node) {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function inOrder(node) {
     if (!(node == null)) {
        inOrder(node.left);
        console.log(node.show() + " ");
        inOrder(node.right);
     }
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>一个粟子：</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>var nums = new BST();
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var nums = new BST();
     nums.insert(23);
     nums.insert(45);
     nums.insert(16);
@@ -197,8 +194,7 @@ function insert(data) {
     nums.insert(99);
     nums.insert(22);
 console.log(inOrder(nums.root));
-</code></pre>
-</div>
+</code></pre></div></div>
 <p>结果是：</p>
 
 <p><img src="https://lilywei739.github.io/img/20170106/20170106-5.jpg" alt="image01" /></p>
@@ -209,15 +205,14 @@ console.log(inOrder(nums.root));
 
 <p><strong>先序遍历的代码：</strong></p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function preOrder(node) {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function preOrder(node) {
     if (!(node == null)) {
         console.log(node.show() + " ");
         preOrder(node.left);
         preOrder(node.right);
     } 
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>inOrder() 和 preOrder() 方法的唯一区别,就是 if 语句中代码的顺序。在 inOrder() 方法中,show() 函数像三明治一样夹在两个递归调用之间;在 preOrder() 方法中,show() 函数放在两个递归调用之前。</p>
 
@@ -227,15 +222,14 @@ console.log(inOrder(nums.root));
 
 <p><strong>后序遍历postOrder() 方法的实现:</strong></p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function postOrder(node) {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function postOrder(node) {
     if (!(node == null)) {
        postOrder(node.left);
        console.log(node.right);
        putstr(node.show() + " ");
     }
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>下图展示了后序的访问路径</p>
 
@@ -255,33 +249,31 @@ console.log(inOrder(nums.root));
 
 <p><strong>最大值：</strong></p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function getMax() {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function getMax() {
    var current = this.root;
    while (!(current.right == null)) {
       current = current.right;
    }
    return current.data;
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><strong>最小值：</strong></p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function getMin() {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function getMin() {
     var current = this.root;
     while (!(current.left == null)) {
         current = current.left;
     }
     return current.data;
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>上面两个程序直到遍历到最边上的节点，该节点为 current.left 或 current.right == null 时结束</p>
 
 <p>来个例子：</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>var nums = new BST();
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var nums = new BST();
      nums.insert(23);
      nums.insert(45);
      nums.insert(16);
@@ -295,8 +287,7 @@ console.log(inOrder(nums.root));
      print("\n");
      var max = nums.getMax();
      print("maximum value: " + max);
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>结果：</p>
 
@@ -306,7 +297,7 @@ console.log(inOrder(nums.root));
 
 <p>从根节点开始找，等于根结点就返回，不等的话，再从左子树开始找，找不到再从右子树开始找，直到子树中的值为 null 时结束。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function find(data) {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function find(data) {
    var current = this.root;
    while (current != null) {
        if (current.data == data) {
@@ -319,68 +310,154 @@ console.log(inOrder(nums.root));
   }
    return null;
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
-
-		<div class="PageNavigation">
-		  
-		    <a class="prev" href="/2017/01/04/Another_javaScript_quiz.html">&laquo; Another JavaScript quiz试题解析</a>
-		  
-		  
-		    <a class="next" href="/2017/01/06/data_algorithm_two_tree_2.html">数据算法之二叉树二 &raquo;</a>
-		  
+</div></article>
 		</div>
-		<!-- 多说评论框 start -->
-        <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-        <!--
-<div id="ds_ele" class="ds-thread" data-thread-key="" data-title="数据算法之二叉树一" data-url="http://lilywei739.github.io/2017/01/06/data_algorithm_two_tree_1.html"></div>
-		    <script type="text/javascript">
-                        var url = window.location.pathname;
-                        url = url.substr(1, url.length -6).replace(/\//gi, '_');
-                        document.getElementById('ds_ele').dataset.threadKey = url;
-                        var duoshuoQuery = {short_name:"github"};
-                        (function() {
-                            var ds = document.createElement('script');
-                            ds.type = 'text/javascript';ds.async = true;
-                            ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-                            ds.charset = 'UTF-8';
-                            (document.getElementsByTagName('head')[0] 
-                            || document.getElementsByTagName('body')[0]).appendChild(ds);
-                        })();
+	</div>
+</div><script src="//cdn.bootcss.com/toc/0.3.2/toc.min.js"></script>
+<script type="text/javascript">
+	window.throttle = function(func, wait) {
+	  var args, result, thisArg, timeoutId, lastCalled = 0;
 
-                    </script>
-                    -->
-		<!-- 多说公共JS代码 end -->
-                </section>
-            </div>
-        </div>
-            
-        <!-- FOOTER  -->
-        <div id="footer_wrap" class="outer">
-            <footer class="inner">
-                <p>© 2016  by Weili &nbsp;&nbsp;  |  &nbsp;&nbsp;托管在 - <a href="https://pages.github.com">GitHub</a></p>
-            </footer>
-        </div>
-        <script src="/js/common/jquery-2.2.4.min.js"></script>
-        <script src="/js/common/highlight.min.js"></script>
-        <script src="/js/aside-nav.js"></script>
-        <script>
-            // baidu 统计
-            var _hmt = _hmt || [];
-            (function() {
-                var hm = document.createElement("script");
-                hm.src = "//hm.baidu.com/hm.js?146fe495fee020bf0e4dd701aa73965f";
-                var s = document.getElementsByTagName("script")[0]; 
-                s.parentNode.insertBefore(hm, s);
-            })();
-            // highlight
-            hljs.initHighlightingOnLoad({useBR: true});
-            $(document).ready(function() {
-                $('pre code').each(function(i, block) {
-                    hljs.highlightBlock(block);
-                });
-            });
-        </script>
-    </body>
+	  function trailingCall() {
+	    lastCalled = new Date;
+	    timeoutId = null;
+	    result = func.apply(thisArg, args);
+	  }
+	  return function() {
+	    var now = new Date,
+	      remaining = wait - (now - lastCalled);
+
+	    args = arguments;
+	    thisArg = this;
+
+	    if (remaining <= 0) {
+	      clearTimeout(timeoutId);
+	      timeoutId = null;
+	      lastCalled = now;
+	      result = func.apply(thisArg, args);
+	    } else if (!timeoutId) {
+	      timeoutId = setTimeout(trailingCall, remaining);
+	    }
+	    return result;
+	  };
+	}
+	$(function() {
+	  var $window = $(window);
+	  var $pageStage = $('.js-page-stage');
+	  var $pageMain = $('.js-main');
+	  var $pageFooter = $('.js-page-footer');
+	  var $articleContent = $('.js-article-content');
+	  var $articleAside = $('.js-article-aside');
+	  var $toc = $('.js-toc');
+		var $col2 = $('.js-col-2');
+	  var hasTitle = $articleContent.find('h1,h2,h3').length > 0;
+	  function asideSticky() {
+	    return $col2.css('display') !== 'none' && $pageStage.hasClass('has-toc');
+	  }
+
+	  function setTocClass() {
+	    if (hasTitle) {
+	      !$pageStage.hasClass('has-toc') && $pageStage.addClass('has-toc');
+	    }
+	  }
+
+	  setTocClass();
+
+	  function setAsideTOC() {
+	    var asideTop, asideLeft, scrollBottom, asideBottomTop, lastScrollTop;
+
+	    function init() {
+	      var asideOffset = $articleAside.offset();
+	      var footerOffset = $pageFooter.offset();
+	      var mainOffset = $pageMain.offset();
+	      asideTop = mainOffset.top;
+	      asideHeight = $toc.outerHeight() + parseInt($articleAside.css('padding-top'), 10) + parseInt($articleAside.css('padding-bottom'), 10);
+	      asideLeft = mainOffset.left + $pageMain.outerWidth() - $articleAside.outerWidth() - parseInt($pageMain.css('padding-right'), 10);
+	      scrollBottom = footerOffset.top - asideHeight;
+	      asideBottomTop = scrollBottom - mainOffset.top;
+	    }
+
+	    function setAside(force) {
+	      force !== true && (force = false);
+	      var scrollTop = $window.scrollTop();
+	      if (scrollTop >= asideTop && scrollTop <= scrollBottom) {
+	        (!force && lastScrollTop >= asideTop && lastScrollTop <= scrollBottom) ||
+	        $articleAside.addClass('fixed').css({
+	          left: asideLeft + 'px',
+	          top: 0
+	        });
+	      } else if (scrollTop < asideTop) {
+	        (!force && lastScrollTop < asideTop) ||
+	        $articleAside.removeClass('fixed').css({
+	          left: 0,
+	          top: 0
+	        });
+	      } else {
+	        (!force && lastScrollTop > scrollBottom) ||
+	        $articleAside.removeClass('fixed').css({
+	          left: 0,
+	          top: asideBottomTop + 'px'
+	        });
+	      }
+	      lastScrollTop = scrollTop;
+	    }
+	    asideSticky() && (init(), setAside());
+	    $window.on('scroll', function() {
+	      asideSticky() && setAside();
+	    });
+	    $window.on('resize', throttle(function() {
+	      setTocClass();
+	      asideSticky() && (init(), setAside(true));
+	    }, 100));
+	    setTimeout(init, 4000);
+	  }
+	  setTimeout(setAsideTOC, 1000);
+
+	  $toc.toc({
+	    'selectors': 'h1,h2,h3',
+	    'container': '.js-article-content',
+	  });
+	});
+</script></div>
+</div>
+</div><div class="m-page-footer js-page-footer">
+  <div class="main">
+    <aside><div class="follow-me"><ul itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Weili">
+    <link itemprop="url" href="http://localhost:4000/"></ul></div>
+</aside>
+    <footer class="site-info">
+      <p>© Weili's blog 2018</p>
+      <p><a title="" href="//github.com/lilywei739/lilywei739.github.io">View on GitHub</a></p>
+    </footer>
+  </div>
+</div>
+<script>
+      $(function() {
+        // display coding language
+        var $articleContent = $('.m-post, .m-page').find('.m-article-content'), $this;
+        $articleContent.children('.highlight').each(function() {
+          $this = $(this);
+          $this.attr('data-lang', $this.find('code').attr('data-lang'));
+        });
+        $articleContent.children('h1, h2, h3, h4, h5, h6').each(function() {
+          $this = $(this);
+          $this.append($('<a class="anchor" aria-hidden="true"></a>').text('#'));
+        });
+        $articleContent.on('click', '.anchor', function(e) {
+          var targetId = $(this).parent().attr('id');
+          scrollAnimateTo($('#' + targetId).offset().top, 400, function() {
+            console.log(666)
+            window.history.replaceState(null, '', window.location.href.split('#')[0] + '#' + targetId);
+          });
+        });
+        function scrollAnimateTo(destination, duration, callback) {
+          var $body = $('html, body'), bodyScrollTop = $body.scrollTop();
+          if(bodyScrollTop === destination) { return; }
+          $body.animate({ scrollTop: destination }, duration, callback);
+        }
+      });
+    </script></body>
 </html>

@@ -1,45 +1,41 @@
-<!DOCTYPE html>
-<html lang="zh">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-        <meta http-equiv="Cache-Control" content="no-siteapp" />
-        <meta name="robots" content="index,follow"/>
-        <meta name="renderer" content="webkit" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui" />
-        <meta name="keywords" content="JS基础--栈">
-        <meta name="screen-orientation" content="portrait" />
-        <meta name="full-screen" content="yes" />
-        <meta name="browsermode" content="application" />
-        <meta name="x5-orientation" content="portrait" />
-        <meta name="x5-fullscreen" content="true" />
-        <meta name="x5-page-mode" content="app" />
-        <title>Weili - GitHub.io</title>
-        <link rel="shortcut icon" type="image/ico" href="/favicon.ico"/>
-        <link rel="stylesheet" href="/css/common/github-gist.min.css">
-        <link rel="stylesheet" href="/css/style.css">
-        <!--[if lt IE 9]>
-        <script src="/js/common/html5.js"></script>
-        <![endif]-->
-    </head>
-    <body>
-        <!-- HEADER -->
-        <div id="header_wrap" class="outer">
-            <header class="inner">
-                <h1 id="project_title"><a href="/index.html">Weili - GitHub.io</a></h1>
-                <h2 id="project_tagline"><a href="https://github.com/lilywei739/lilywei739.github.io" target="_blank">View on GitHub</a></h2>
-            </header>
-        </div>
-            
-        <div id="content-wrapper">
-            <div class="main clearfix">
-                <aside id="sidebar">
-                    <ul class="side-nav">
-                    </ul>
-                </aside>
-
-                <section id="main-cont">
-                    <h1 id="栈">栈</h1>
+<!DOCTYPE html><html lang="en">
+  <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>JS基础--栈 - Weili's blog</title>
+<meta name="description" content="栈什么是栈？后入先出(LIFO)，栈就是和列表类似的一种数据结构，也是一种高效的数据结构，因为数据只能在栈顶添加或删除，所以这样的操作很快，而且容易实现。栈顶: 栈内的元素只能通过列表的一端访问，这一端称为栈顶，任何不在栈顶的元素都无法访问。为了得到栈底的元素，必须先拿掉上面的元素。栈的操作  入栈  出栈  返...">
+<link rel="canonical" href="http://localhost:4000/js/2017/10/27/Stack.html"><link rel="alternate" type="application/rss+xml" title="Weili's blog" href="http://localhost:4000/feed.xml">
+<!-- for Safari on iOS https://developer.apple.com/ios/human-interface-guidelines/icons-and-images/app-icon/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/images/logo/icon-180x180.png"><link rel="apple-touch-icon" sizes="167x167" href="/assets/images/logo/icon-167x167.png"><link rel="apple-touch-icon" sizes="152x152" href="/assets/images/logo/icon-152x152.png"><link rel="apple-touch-icon" sizes="120x120" href="/assets/images/logo/icon-120x120.png"><link rel="shortcut icon" href="/assets/images/logo/icon-120x120.png">
+<!-- for Chrome on Android https://developer.chrome.com/multidevice/android/installtohomescreen -->
+<meta name="mobile-web-app-capable" content="yes"><link rel="icon" sizes="192x192" href="/assets/images/logo/icon-192x192.png">
+<!-- for Edge on Windows 10 https://msdn.microsoft.com/en-us/library/dn255024(v=vs.85).aspx --><meta name="msapplication-TileImage" content="/assets/images/logo/icon-144x144.png"><meta name="msapplication-square310x310logo" content="/assets/images/logo/icon-310x310.png"><meta name="msapplication-wide310x150logo" content="/assets/images/logo/icon-310x150.png"><meta name="msapplication-square150x150logo" content="/assets/images/logo/icon-150x150.png"><meta name="msapplication-square70x70logo" content="/assets/images/logo/icon-70x70.png">
+<meta name="msapplication-TileColor" content="#eeeeee"><link rel="stylesheet" href="/assets/css/blog.css">
+    <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="m-page-stage js-page-stage"><div class="m-page-content"><header class="m-page-header">
+  <div class="main clearfix">
+    <div class='site-logo'><a title="WeiLi's Blog
+" href="">Weili's blog</a></div>
+    <nav>
+      <ul><li><a href="/">Home</a></li><li><a href="/all.html">All</a></li><li><a href="/about.html">About</a></li></ul>
+    </nav>
+  </div>
+</header>
+<div class="m-page-main"><div class="m-post">
+	<div class="main js-main clearfix">
+		<div class="col-2 js-col-2">
+			<aside class="js-article-aside"><div class="m-toc js-toc"></div></aside>
+		</div>
+		<div class="col-1">
+			<article itemscope itemtype="http://schema.org/BlogPosting">
+				<meta itemprop="mainEntityOfPage" itemscope itemType="https://schema.org/WebPage"/>
+				<header class="main-header"><h1 itemprop="headline" itemprop="name headline">JS基础--栈</h1><div class="m-article-data clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Weili"/></meta><div class="other-wrapper"><div class="date-wrapper"><time class="article-meta" datetime="2017-10-27T00:00:00+08:00"
+          itemprop="datePublished">Oct 27, 2017
+        </time></div>
+  </div>
+</div>
+</header>
+				<div class="m-article-content js-article-content" itemprop="articleBody"><h1 id="栈">栈</h1>
 
 <h5 id="什么是栈">什么是栈？</h5>
 
@@ -57,7 +53,7 @@
 
 <p>还是从一个构造函数开始：</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function Stack() {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function Stack() {
     this.dataStore = [];//用数组 dataStore 保存栈内元素 
     this.top = 0;       //用于记录哪个位置加入新元素
     this.push = push;   //入栈
@@ -66,8 +62,7 @@
     this.clear = clear; //清空
     this.length = length; //返回栈内元素个数
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>下面的几个方法同构造列表时一个原理，不多做解释。</p>
 
@@ -75,51 +70,46 @@
   <li>入栈</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function push(element) {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function push(element) {
     this.dataStore[this.top++] = element;
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>返回移出的栈顶元素</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function pop() {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function pop() {
      return this.dataStore[--this.top];
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>peek() 方法返回数组的第 top-1 个位置的元素，即真正的栈顶元素</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function peek() {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function peek() {
     return this.dataStore[this.top-1];
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>栈内存储了多少个元素</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function length() {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function length() {
     return this.top;
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>清空栈</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function clear() {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function clear() {
      this.top = 0;
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 <h5 id="栈的应用">栈的应用</h5>
 
 <ul>
@@ -138,7 +128,7 @@
 
 <p>此算法只针对基数为 2~9 的情况</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function mulBase(num, base) {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function mulBase(num, base) {
     var s = new Stack();
 
     do{
@@ -168,8 +158,7 @@ var newNum = mulBase(num, base);
 
 console.log(num + " converted to base " + base + " is " + newNum);
 //125 converted to base 8 is 175
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>回文</li>
@@ -179,7 +168,7 @@ console.log(num + " converted to base " + base + " is " + newNum);
 
 <p>使用栈实现回文。原理：将拿到的字符串的每个字符按从左至右的顺序压入栈。当字符串中的字符都入栈后，栈内就保存了一个反转后的字符串，最后的字符在栈顶，第一个字符在栈底，字符串完整压入栈内后，通过持续弹出栈中的每个字母就可以得到一个新字符串，该字符串刚好与原来的字符串顺序相反。这时只需要比较这两个字符串即可，如果它们相等，就是一个回文。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function isPalindrome(word) {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function isPalindrome(word) {
     var s = new Stack();
     for (var i = 0; i &lt; word.length; ++i) {
        s.push(word[i]);
@@ -209,8 +198,7 @@ console.log(num + " converted to base " + base + " is " + newNum);
        console.log(word + " is not a palindrome.");
     }
     //racecar is a palindrome.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>递归</li>
@@ -218,13 +206,12 @@ console.log(num + " converted to base " + base + " is " + newNum);
 
 <p>为了演示如何用栈实现递归，先看一下求阶乘函数的递归，首先看看5的阶乘是怎么实现的:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>5! = 5×4×3×2×1 = 120
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>5! = 5×4×3×2×1 = 120
+</code></pre></div></div>
 
 <p>下面是一个递归函数，可以计算任何数字的阶乘:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function factorial(n) { 
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function factorial(n) { 
     if(n===0){
 	return 1; 
     } else {
@@ -233,12 +220,11 @@ console.log(num + " converted to base " + base + " is " + newNum);
 }
 
 console.log(factorial(5)); // 显示 120 
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>使用栈来模拟计算 5! 的过程，原理：首先将数字从5到1压入栈，然后使用一个循环，将数字挨个弹出连乘，就得到了正确的答案:120。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function fact(n) {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function fact(n) {
     var s = new Stack(); while(n&gt;1){
        s.push(n--);
     }
@@ -250,67 +236,153 @@ console.log(factorial(5)); // 显示 120
 }
 
 console.log(fact(5)); // 显示 120
-</code></pre>
-</div>
-
-		<div class="PageNavigation">
-		  
-		    <a class="prev" href="/js/2017/10/19/list.html">&laquo; JS基础--列表</a>
-		  
-		  
-		    <a class="next" href="/js/2017/10/30/tree.html">JS基础--二叉树 &raquo;</a>
-		  
+</code></pre></div></div>
+</div></article>
 		</div>
-		<!-- 多说评论框 start -->
-        <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-        <!--
-<div id="ds_ele" class="ds-thread" data-thread-key="" data-title="JS基础--栈" data-url="http://lilywei739.github.io/js/2017/10/27/Stack.html"></div>
-		    <script type="text/javascript">
-                        var url = window.location.pathname;
-                        url = url.substr(1, url.length -6).replace(/\//gi, '_');
-                        document.getElementById('ds_ele').dataset.threadKey = url;
-                        var duoshuoQuery = {short_name:"github"};
-                        (function() {
-                            var ds = document.createElement('script');
-                            ds.type = 'text/javascript';ds.async = true;
-                            ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-                            ds.charset = 'UTF-8';
-                            (document.getElementsByTagName('head')[0] 
-                            || document.getElementsByTagName('body')[0]).appendChild(ds);
-                        })();
+	</div>
+</div><script src="//cdn.bootcss.com/toc/0.3.2/toc.min.js"></script>
+<script type="text/javascript">
+	window.throttle = function(func, wait) {
+	  var args, result, thisArg, timeoutId, lastCalled = 0;
 
-                    </script>
-                    -->
-		<!-- 多说公共JS代码 end -->
-                </section>
-            </div>
-        </div>
-            
-        <!-- FOOTER  -->
-        <div id="footer_wrap" class="outer">
-            <footer class="inner">
-                <p>© 2016  by Weili &nbsp;&nbsp;  |  &nbsp;&nbsp;托管在 - <a href="https://pages.github.com">GitHub</a></p>
-            </footer>
-        </div>
-        <script src="/js/common/jquery-2.2.4.min.js"></script>
-        <script src="/js/common/highlight.min.js"></script>
-        <script src="/js/aside-nav.js"></script>
-        <script>
-            // baidu 统计
-            var _hmt = _hmt || [];
-            (function() {
-                var hm = document.createElement("script");
-                hm.src = "//hm.baidu.com/hm.js?146fe495fee020bf0e4dd701aa73965f";
-                var s = document.getElementsByTagName("script")[0]; 
-                s.parentNode.insertBefore(hm, s);
-            })();
-            // highlight
-            hljs.initHighlightingOnLoad({useBR: true});
-            $(document).ready(function() {
-                $('pre code').each(function(i, block) {
-                    hljs.highlightBlock(block);
-                });
-            });
-        </script>
-    </body>
+	  function trailingCall() {
+	    lastCalled = new Date;
+	    timeoutId = null;
+	    result = func.apply(thisArg, args);
+	  }
+	  return function() {
+	    var now = new Date,
+	      remaining = wait - (now - lastCalled);
+
+	    args = arguments;
+	    thisArg = this;
+
+	    if (remaining <= 0) {
+	      clearTimeout(timeoutId);
+	      timeoutId = null;
+	      lastCalled = now;
+	      result = func.apply(thisArg, args);
+	    } else if (!timeoutId) {
+	      timeoutId = setTimeout(trailingCall, remaining);
+	    }
+	    return result;
+	  };
+	}
+	$(function() {
+	  var $window = $(window);
+	  var $pageStage = $('.js-page-stage');
+	  var $pageMain = $('.js-main');
+	  var $pageFooter = $('.js-page-footer');
+	  var $articleContent = $('.js-article-content');
+	  var $articleAside = $('.js-article-aside');
+	  var $toc = $('.js-toc');
+		var $col2 = $('.js-col-2');
+	  var hasTitle = $articleContent.find('h1,h2,h3').length > 0;
+	  function asideSticky() {
+	    return $col2.css('display') !== 'none' && $pageStage.hasClass('has-toc');
+	  }
+
+	  function setTocClass() {
+	    if (hasTitle) {
+	      !$pageStage.hasClass('has-toc') && $pageStage.addClass('has-toc');
+	    }
+	  }
+
+	  setTocClass();
+
+	  function setAsideTOC() {
+	    var asideTop, asideLeft, scrollBottom, asideBottomTop, lastScrollTop;
+
+	    function init() {
+	      var asideOffset = $articleAside.offset();
+	      var footerOffset = $pageFooter.offset();
+	      var mainOffset = $pageMain.offset();
+	      asideTop = mainOffset.top;
+	      asideHeight = $toc.outerHeight() + parseInt($articleAside.css('padding-top'), 10) + parseInt($articleAside.css('padding-bottom'), 10);
+	      asideLeft = mainOffset.left + $pageMain.outerWidth() - $articleAside.outerWidth() - parseInt($pageMain.css('padding-right'), 10);
+	      scrollBottom = footerOffset.top - asideHeight;
+	      asideBottomTop = scrollBottom - mainOffset.top;
+	    }
+
+	    function setAside(force) {
+	      force !== true && (force = false);
+	      var scrollTop = $window.scrollTop();
+	      if (scrollTop >= asideTop && scrollTop <= scrollBottom) {
+	        (!force && lastScrollTop >= asideTop && lastScrollTop <= scrollBottom) ||
+	        $articleAside.addClass('fixed').css({
+	          left: asideLeft + 'px',
+	          top: 0
+	        });
+	      } else if (scrollTop < asideTop) {
+	        (!force && lastScrollTop < asideTop) ||
+	        $articleAside.removeClass('fixed').css({
+	          left: 0,
+	          top: 0
+	        });
+	      } else {
+	        (!force && lastScrollTop > scrollBottom) ||
+	        $articleAside.removeClass('fixed').css({
+	          left: 0,
+	          top: asideBottomTop + 'px'
+	        });
+	      }
+	      lastScrollTop = scrollTop;
+	    }
+	    asideSticky() && (init(), setAside());
+	    $window.on('scroll', function() {
+	      asideSticky() && setAside();
+	    });
+	    $window.on('resize', throttle(function() {
+	      setTocClass();
+	      asideSticky() && (init(), setAside(true));
+	    }, 100));
+	    setTimeout(init, 4000);
+	  }
+	  setTimeout(setAsideTOC, 1000);
+
+	  $toc.toc({
+	    'selectors': 'h1,h2,h3',
+	    'container': '.js-article-content',
+	  });
+	});
+</script></div>
+</div>
+</div><div class="m-page-footer js-page-footer">
+  <div class="main">
+    <aside><div class="follow-me"><ul itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Weili">
+    <link itemprop="url" href="http://localhost:4000/"></ul></div>
+</aside>
+    <footer class="site-info">
+      <p>© Weili's blog 2018</p>
+      <p><a title="" href="//github.com/lilywei739/lilywei739.github.io">View on GitHub</a></p>
+    </footer>
+  </div>
+</div>
+<script>
+      $(function() {
+        // display coding language
+        var $articleContent = $('.m-post, .m-page').find('.m-article-content'), $this;
+        $articleContent.children('.highlight').each(function() {
+          $this = $(this);
+          $this.attr('data-lang', $this.find('code').attr('data-lang'));
+        });
+        $articleContent.children('h1, h2, h3, h4, h5, h6').each(function() {
+          $this = $(this);
+          $this.append($('<a class="anchor" aria-hidden="true"></a>').text('#'));
+        });
+        $articleContent.on('click', '.anchor', function(e) {
+          var targetId = $(this).parent().attr('id');
+          scrollAnimateTo($('#' + targetId).offset().top, 400, function() {
+            console.log(666)
+            window.history.replaceState(null, '', window.location.href.split('#')[0] + '#' + targetId);
+          });
+        });
+        function scrollAnimateTo(destination, duration, callback) {
+          var $body = $('html, body'), bodyScrollTop = $body.scrollTop();
+          if(bodyScrollTop === destination) { return; }
+          $body.animate({ scrollTop: destination }, duration, callback);
+        }
+      });
+    </script></body>
 </html>

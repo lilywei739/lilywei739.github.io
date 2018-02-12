@@ -1,18 +1,8 @@
 ---
-layout: homepage
-title: Weili's HOME
+layout: home
+titles:
+  en: Blog
+  zh: 博客
+  zh-Hans: 博客
+  zh-Hant: 博客
 ---
-        <h2>文章标签</h2>
-
-            <!-- 标签云 -->
-			<div id='tag_cloud' class="tags">
-				{% for tag in site.tags %}
-				<a href="/tags#{{ tag[0] }}" title="{{ tag[0] }}" rel="{{ tag[1].size }}">{{ tag[0] }}</a>
-				{% endfor %}
-			</div>
-
-
-        <h2>文章列表</h2>
-        {% for post in site.posts %}
-        <h3><a href="{{site.baseurl}}{{post.url}}">{{post.title}}</a><span class="date" style="float: right;">{{post.date | date_to_string}} </span></h3>
-        {% endfor %}

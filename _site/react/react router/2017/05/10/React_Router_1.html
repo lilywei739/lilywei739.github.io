@@ -1,45 +1,41 @@
-<!DOCTYPE html>
-<html lang="zh">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-        <meta http-equiv="Cache-Control" content="no-siteapp" />
-        <meta name="robots" content="index,follow"/>
-        <meta name="renderer" content="webkit" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui" />
-        <meta name="keywords" content="React Router">
-        <meta name="screen-orientation" content="portrait" />
-        <meta name="full-screen" content="yes" />
-        <meta name="browsermode" content="application" />
-        <meta name="x5-orientation" content="portrait" />
-        <meta name="x5-fullscreen" content="true" />
-        <meta name="x5-page-mode" content="app" />
-        <title>Weili - GitHub.io</title>
-        <link rel="shortcut icon" type="image/ico" href="/favicon.ico"/>
-        <link rel="stylesheet" href="/css/common/github-gist.min.css">
-        <link rel="stylesheet" href="/css/style.css">
-        <!--[if lt IE 9]>
-        <script src="/js/common/html5.js"></script>
-        <![endif]-->
-    </head>
-    <body>
-        <!-- HEADER -->
-        <div id="header_wrap" class="outer">
-            <header class="inner">
-                <h1 id="project_title"><a href="/index.html">Weili - GitHub.io</a></h1>
-                <h2 id="project_tagline"><a href="https://github.com/lilywei739/lilywei739.github.io" target="_blank">View on GitHub</a></h2>
-            </header>
-        </div>
-            
-        <div id="content-wrapper">
-            <div class="main clearfix">
-                <aside id="sidebar">
-                    <ul class="side-nav">
-                    </ul>
-                </aside>
-
-                <section id="main-cont">
-                    <h1 id="react-router">React Router</h1>
+<!DOCTYPE html><html lang="en">
+  <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>React Router - Weili's blog</title>
+<meta name="description" content="React Router翻译于文档现在你想在你的 Redux 应用中使用路由功能，可以搭配使用 React Router 来实现。 Redux 和 React Router 将分别成为你数据和 URL 的真实来源（the source of truth）。 在大多数情况下， 最好将他们分开。Installing ...">
+<link rel="canonical" href="http://localhost:4000/react/react%20router/2017/05/10/React_Router_1.html"><link rel="alternate" type="application/rss+xml" title="Weili's blog" href="http://localhost:4000/feed.xml">
+<!-- for Safari on iOS https://developer.apple.com/ios/human-interface-guidelines/icons-and-images/app-icon/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/images/logo/icon-180x180.png"><link rel="apple-touch-icon" sizes="167x167" href="/assets/images/logo/icon-167x167.png"><link rel="apple-touch-icon" sizes="152x152" href="/assets/images/logo/icon-152x152.png"><link rel="apple-touch-icon" sizes="120x120" href="/assets/images/logo/icon-120x120.png"><link rel="shortcut icon" href="/assets/images/logo/icon-120x120.png">
+<!-- for Chrome on Android https://developer.chrome.com/multidevice/android/installtohomescreen -->
+<meta name="mobile-web-app-capable" content="yes"><link rel="icon" sizes="192x192" href="/assets/images/logo/icon-192x192.png">
+<!-- for Edge on Windows 10 https://msdn.microsoft.com/en-us/library/dn255024(v=vs.85).aspx --><meta name="msapplication-TileImage" content="/assets/images/logo/icon-144x144.png"><meta name="msapplication-square310x310logo" content="/assets/images/logo/icon-310x310.png"><meta name="msapplication-wide310x150logo" content="/assets/images/logo/icon-310x150.png"><meta name="msapplication-square150x150logo" content="/assets/images/logo/icon-150x150.png"><meta name="msapplication-square70x70logo" content="/assets/images/logo/icon-70x70.png">
+<meta name="msapplication-TileColor" content="#eeeeee"><link rel="stylesheet" href="/assets/css/blog.css">
+    <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="m-page-stage js-page-stage"><div class="m-page-content"><header class="m-page-header">
+  <div class="main clearfix">
+    <div class='site-logo'><a title="WeiLi's Blog
+" href="">Weili's blog</a></div>
+    <nav>
+      <ul><li><a href="/">Home</a></li><li><a href="/all.html">All</a></li><li><a href="/about.html">About</a></li></ul>
+    </nav>
+  </div>
+</header>
+<div class="m-page-main"><div class="m-post">
+	<div class="main js-main clearfix">
+		<div class="col-2 js-col-2">
+			<aside class="js-article-aside"><div class="m-toc js-toc"></div></aside>
+		</div>
+		<div class="col-1">
+			<article itemscope itemtype="http://schema.org/BlogPosting">
+				<meta itemprop="mainEntityOfPage" itemscope itemType="https://schema.org/WebPage"/>
+				<header class="main-header"><h1 itemprop="headline" itemprop="name headline">React Router</h1><div class="m-article-data clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Weili"/></meta><div class="other-wrapper"><div class="date-wrapper"><time class="article-meta" datetime="2017-05-10T00:00:00+08:00"
+          itemprop="datePublished">May 10, 2017
+        </time></div>
+  </div>
+</div>
+</header>
+				<div class="m-article-content js-article-content" itemprop="articleBody"><h1 id="react-router">React Router</h1>
 
 <p>翻译于<a href="http://redux.js.org/docs/advanced/UsageWithReactRouter.html">文档</a></p>
 
@@ -63,13 +59,12 @@
 
 <p>在 React 应用中，通常你会用 &lt;Router /&gt; 包裹 &lt;Route /&gt;。 如此，当 URL 变化的时候，&lt;Router /&gt; 将会匹配到指定的路由，然后渲染路由绑定的组件。 &lt;Route /&gt; 用来显式地把路由映射到应用的组件结构上。 用 path 指定 URL，用 component 指定路由跳转到 URL 后需要渲染的那个组件。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>const Root = () =&gt; (
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>const Root = () =&gt; (
   &lt;Router&gt;
     &lt;Route path="/" component={App} /&gt;
   &lt;/Router&gt;  
 );
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>上面的代码，用户访问根路由 “/” 比如(www.babytree.com/)，组件 App 就会加载。</p>
 
@@ -85,15 +80,14 @@
 
 <p>用 &lt;Provider /&gt; 包裹 &lt;Router /&gt;，以便于路由处理器可以访问 <a href="https://hulufei.gitbooks.io/react-tutorial/content/usage-with-react.html">store</a></p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>const Root = ({ store }) =&gt; (
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>const Root = ({ store }) =&gt; (
   &lt;Provider store={store}&gt;
     &lt;Router&gt;
       &lt;Route path="/" component={App} /&gt;
     &lt;/Router&gt;
   &lt;/Provider&gt;
 );
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="filter-参数">:filter 参数</h2>
 
@@ -105,19 +99,17 @@
 
 <p>举个例子</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;Route path="inbox" component={Inbox}&gt;
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;Route path="inbox" component={Inbox}&gt;
    &lt;Route path="messages/:id" component={Message} /&gt;
 &lt;/Route&gt;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>当用户访问/inbox/messages/:id时，会加载下面的组件。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;Inbox&gt;
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;Inbox&gt;
   &lt;Message/&gt;
 &lt;/Inbox&gt;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="browserhistory">browserHistory</h2>
 
@@ -129,15 +121,14 @@
 
 <p>然后将它传给 <Router></Router> 来移除 URL 中的 ‘#’：</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;Router history={browserHistory}&gt;
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;Router history={browserHistory}&gt;
   &lt;Route path="/(:filter)" component={App} /&gt;
 &lt;/Router&gt;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>只要你不需要兼容古老的浏览器，比如IE9，你都可以使用 browserHistory</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>components/Root.js
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>components/Root.js
 
 
 import React, { PropTypes } from 'react';
@@ -158,12 +149,11 @@ Root.propTypes = {
 };
 
 export default Root;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>我们同样需要去重构 index.js 去渲染&lt;Root /&gt; 组件。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>index.js
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>index.js
 
 
 
@@ -180,8 +170,7 @@ render(
     document.getElementById('root')
 )
 
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="link-">&lt;Link /&gt;</h2>
 
@@ -189,7 +178,7 @@ render(
 
 <p>下面将举例演示。现在，修改我们的容器组件 <FilterLink></FilterLink> ，这样我们就可以使用 <FilterLink></FilterLink> 来改变 URL。你可以通过 activeStyle 属性来指定激活状态的样式。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>containers/FilterLink.js
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>containers/FilterLink.js
 
 
 import React from 'react';
@@ -232,8 +221,7 @@ const Footer = () =&gt; (
 );
 
 export default Footer
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>这时，如果你点击 &lt;FilterLink /&gt;，你将看到你的 URL 在 ‘/complete’，’/active’，’/’ 间切换。 甚至还支持浏览的回退功能，可以从历史记录中找到之前的 URL 并回退。</p>
 
@@ -243,15 +231,14 @@ export default Footer
 
 <p>params 是一个包含 url 中所有指定参数的对象。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;Route path="/(:filter)" component={App} /&gt;
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;Route path="/(:filter)" component={App} /&gt;
+</code></pre></div></div>
 
 <p>如上面的代码，由路由渲染的组件都会自动的往组件中传递一个参数，这个参数包含了路由信息，这使得可以在 App 中获取 params 的属性。</p>
 
 <p>例如：如果访问 localhost:3000/completed，那么 params 将等价于 { filter: ‘completed’ }。 现在，我们可以在 <App></App> 中读取 URL 参数了。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>components/App.js
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>components/App.js
 
 const App = ({ params }) =&gt; {
   return (
@@ -264,68 +251,154 @@ const App = ({ params }) =&gt; {
     &lt;/div&gt;
   );
 };
-</code></pre>
-</div>
+</code></pre></div></div>
 
-
-		<div class="PageNavigation">
-		  
-		    <a class="prev" href="/js/es6/2017/05/04/ES6.html">&laquo; ECMAScript6</a>
-		  
-		  
-		    <a class="next" href="/%20%E6%A8%A1%E5%9D%97%E5%8C%96/cmd/amd/2017/05/19/CMD_AMD.html">AMD  与 CMD &raquo;</a>
-		  
+</div></article>
 		</div>
-		<!-- 多说评论框 start -->
-        <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-        <!--
-<div id="ds_ele" class="ds-thread" data-thread-key="" data-title="React Router" data-url="http://lilywei739.github.io/react/react%20router/2017/05/10/React_Router_1.html"></div>
-		    <script type="text/javascript">
-                        var url = window.location.pathname;
-                        url = url.substr(1, url.length -6).replace(/\//gi, '_');
-                        document.getElementById('ds_ele').dataset.threadKey = url;
-                        var duoshuoQuery = {short_name:"github"};
-                        (function() {
-                            var ds = document.createElement('script');
-                            ds.type = 'text/javascript';ds.async = true;
-                            ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-                            ds.charset = 'UTF-8';
-                            (document.getElementsByTagName('head')[0] 
-                            || document.getElementsByTagName('body')[0]).appendChild(ds);
-                        })();
+	</div>
+</div><script src="//cdn.bootcss.com/toc/0.3.2/toc.min.js"></script>
+<script type="text/javascript">
+	window.throttle = function(func, wait) {
+	  var args, result, thisArg, timeoutId, lastCalled = 0;
 
-                    </script>
-                    -->
-		<!-- 多说公共JS代码 end -->
-                </section>
-            </div>
-        </div>
-            
-        <!-- FOOTER  -->
-        <div id="footer_wrap" class="outer">
-            <footer class="inner">
-                <p>© 2016  by Weili &nbsp;&nbsp;  |  &nbsp;&nbsp;托管在 - <a href="https://pages.github.com">GitHub</a></p>
-            </footer>
-        </div>
-        <script src="/js/common/jquery-2.2.4.min.js"></script>
-        <script src="/js/common/highlight.min.js"></script>
-        <script src="/js/aside-nav.js"></script>
-        <script>
-            // baidu 统计
-            var _hmt = _hmt || [];
-            (function() {
-                var hm = document.createElement("script");
-                hm.src = "//hm.baidu.com/hm.js?146fe495fee020bf0e4dd701aa73965f";
-                var s = document.getElementsByTagName("script")[0]; 
-                s.parentNode.insertBefore(hm, s);
-            })();
-            // highlight
-            hljs.initHighlightingOnLoad({useBR: true});
-            $(document).ready(function() {
-                $('pre code').each(function(i, block) {
-                    hljs.highlightBlock(block);
-                });
-            });
-        </script>
-    </body>
+	  function trailingCall() {
+	    lastCalled = new Date;
+	    timeoutId = null;
+	    result = func.apply(thisArg, args);
+	  }
+	  return function() {
+	    var now = new Date,
+	      remaining = wait - (now - lastCalled);
+
+	    args = arguments;
+	    thisArg = this;
+
+	    if (remaining <= 0) {
+	      clearTimeout(timeoutId);
+	      timeoutId = null;
+	      lastCalled = now;
+	      result = func.apply(thisArg, args);
+	    } else if (!timeoutId) {
+	      timeoutId = setTimeout(trailingCall, remaining);
+	    }
+	    return result;
+	  };
+	}
+	$(function() {
+	  var $window = $(window);
+	  var $pageStage = $('.js-page-stage');
+	  var $pageMain = $('.js-main');
+	  var $pageFooter = $('.js-page-footer');
+	  var $articleContent = $('.js-article-content');
+	  var $articleAside = $('.js-article-aside');
+	  var $toc = $('.js-toc');
+		var $col2 = $('.js-col-2');
+	  var hasTitle = $articleContent.find('h1,h2,h3').length > 0;
+	  function asideSticky() {
+	    return $col2.css('display') !== 'none' && $pageStage.hasClass('has-toc');
+	  }
+
+	  function setTocClass() {
+	    if (hasTitle) {
+	      !$pageStage.hasClass('has-toc') && $pageStage.addClass('has-toc');
+	    }
+	  }
+
+	  setTocClass();
+
+	  function setAsideTOC() {
+	    var asideTop, asideLeft, scrollBottom, asideBottomTop, lastScrollTop;
+
+	    function init() {
+	      var asideOffset = $articleAside.offset();
+	      var footerOffset = $pageFooter.offset();
+	      var mainOffset = $pageMain.offset();
+	      asideTop = mainOffset.top;
+	      asideHeight = $toc.outerHeight() + parseInt($articleAside.css('padding-top'), 10) + parseInt($articleAside.css('padding-bottom'), 10);
+	      asideLeft = mainOffset.left + $pageMain.outerWidth() - $articleAside.outerWidth() - parseInt($pageMain.css('padding-right'), 10);
+	      scrollBottom = footerOffset.top - asideHeight;
+	      asideBottomTop = scrollBottom - mainOffset.top;
+	    }
+
+	    function setAside(force) {
+	      force !== true && (force = false);
+	      var scrollTop = $window.scrollTop();
+	      if (scrollTop >= asideTop && scrollTop <= scrollBottom) {
+	        (!force && lastScrollTop >= asideTop && lastScrollTop <= scrollBottom) ||
+	        $articleAside.addClass('fixed').css({
+	          left: asideLeft + 'px',
+	          top: 0
+	        });
+	      } else if (scrollTop < asideTop) {
+	        (!force && lastScrollTop < asideTop) ||
+	        $articleAside.removeClass('fixed').css({
+	          left: 0,
+	          top: 0
+	        });
+	      } else {
+	        (!force && lastScrollTop > scrollBottom) ||
+	        $articleAside.removeClass('fixed').css({
+	          left: 0,
+	          top: asideBottomTop + 'px'
+	        });
+	      }
+	      lastScrollTop = scrollTop;
+	    }
+	    asideSticky() && (init(), setAside());
+	    $window.on('scroll', function() {
+	      asideSticky() && setAside();
+	    });
+	    $window.on('resize', throttle(function() {
+	      setTocClass();
+	      asideSticky() && (init(), setAside(true));
+	    }, 100));
+	    setTimeout(init, 4000);
+	  }
+	  setTimeout(setAsideTOC, 1000);
+
+	  $toc.toc({
+	    'selectors': 'h1,h2,h3',
+	    'container': '.js-article-content',
+	  });
+	});
+</script></div>
+</div>
+</div><div class="m-page-footer js-page-footer">
+  <div class="main">
+    <aside><div class="follow-me"><ul itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Weili">
+    <link itemprop="url" href="http://localhost:4000/"></ul></div>
+</aside>
+    <footer class="site-info">
+      <p>© Weili's blog 2018</p>
+      <p><a title="" href="//github.com/lilywei739/lilywei739.github.io">View on GitHub</a></p>
+    </footer>
+  </div>
+</div>
+<script>
+      $(function() {
+        // display coding language
+        var $articleContent = $('.m-post, .m-page').find('.m-article-content'), $this;
+        $articleContent.children('.highlight').each(function() {
+          $this = $(this);
+          $this.attr('data-lang', $this.find('code').attr('data-lang'));
+        });
+        $articleContent.children('h1, h2, h3, h4, h5, h6').each(function() {
+          $this = $(this);
+          $this.append($('<a class="anchor" aria-hidden="true"></a>').text('#'));
+        });
+        $articleContent.on('click', '.anchor', function(e) {
+          var targetId = $(this).parent().attr('id');
+          scrollAnimateTo($('#' + targetId).offset().top, 400, function() {
+            console.log(666)
+            window.history.replaceState(null, '', window.location.href.split('#')[0] + '#' + targetId);
+          });
+        });
+        function scrollAnimateTo(destination, duration, callback) {
+          var $body = $('html, body'), bodyScrollTop = $body.scrollTop();
+          if(bodyScrollTop === destination) { return; }
+          $body.animate({ scrollTop: destination }, duration, callback);
+        }
+      });
+    </script></body>
 </html>
