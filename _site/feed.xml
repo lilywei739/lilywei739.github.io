@@ -1,5 +1,203 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.7.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2018-02-12T17:44:21+08:00</updated><id>http://localhost:4000/</id><title type="html">Weili’s Blog</title><subtitle>Weili's blog
-</subtitle><author><name>weili</name></author><entry><title type="html">JS基础–高级排序(三)</title><link href="http://localhost:4000/js/2018/02/11/senior_Sort_3.html" rel="alternate" type="text/html" title="JS基础--高级排序(三)" /><published>2018-02-11T00:00:00+08:00</published><updated>2018-02-11T00:00:00+08:00</updated><id>http://localhost:4000/js/2018/02/11/senior_Sort_3</id><content type="html" xml:base="http://localhost:4000/js/2018/02/11/senior_Sort_3.html">&lt;h1 id=&quot;高级排序快速排序&quot;&gt;高级排序—快速排序&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.7.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2018-02-22T18:04:18+08:00</updated><id>http://localhost:4000/</id><title type="html">Weili’s Blog</title><subtitle>Weili's blog
+</subtitle><author><name>weili</name></author><entry><title type="html">JS基础–检索算法</title><link href="http://localhost:4000/js/2018/02/22/jiansuo-1.html" rel="alternate" type="text/html" title="JS基础--检索算法" /><published>2018-02-22T00:00:00+08:00</published><updated>2018-02-22T00:00:00+08:00</updated><id>http://localhost:4000/js/2018/02/22/jiansuo-1</id><content type="html" xml:base="http://localhost:4000/js/2018/02/22/jiansuo-1.html">&lt;h1 id=&quot;检索算法&quot;&gt;检索算法&lt;/h1&gt;
+
+&lt;p&gt;本章介绍了数据检索的一个方面: 如何在列表中查找特定的值。&lt;/p&gt;
+
+&lt;p&gt;在列表中查找数据有两种方式: &lt;strong&gt;顺序查找&lt;/strong&gt;和&lt;strong&gt;二分查找&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;顺序查找适用于元素随机排列的列表;&lt;/li&gt;
+  &lt;li&gt;二分查找适用于元素已排序的列表。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;二分查找效率更高，但是你必须在进行查找之前 花费额外的时间将列表中的元素排序。&lt;/p&gt;
+
+&lt;h2 id=&quot;顺序查找&quot;&gt;顺序查找&lt;/h2&gt;
+
+&lt;p&gt;对于查找数据来说，最简单的方法就是从列表的第一个元素开始对列表元素逐个进行判 断，直到找到了想要的结果，或者直到列表结尾也没有找到。这种方法称为顺序查找，有 时也被称为线性查找。它属于暴力查找技巧的一种，在执行查找时可能会访问到数据结构 里的所有元素。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;顺序查找的实现：&lt;/strong&gt;
+只要从列表的第一个元素开始循环，然后逐个与要查找的数据进 行比较。如果匹配到了，则结束查找。如果到了列表的结尾也没有匹配到，那么这个数据 就不存在于这个列表中。&lt;/p&gt;
+
+&lt;p&gt;代码实现：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function seqSearch(arr, data) {
+    for (var i = 0; i &amp;lt; arr.length; ++i) {
+        if (arr[i] == data) {
+            return i;
+        }
+    }
+    return -1;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;如果在数组中找到了参数 data，返回所在的位置，如果没有找到要查找的数据，函数返回-1。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;seqSearch() 函数的执行速度比内置的 Array.indexof() 方法慢，这里仅用来演示 顺序查找是如何运行的。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;查找最小值和最大值&quot;&gt;查找最小值和最大值&lt;/h3&gt;
+
+&lt;h4 id=&quot;查找最小值&quot;&gt;查找最小值&lt;/h4&gt;
+
+&lt;p&gt;首先看看如何在数组中查找最小值，算法如下。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;将数组第一个元素赋值给一个变量，把这个变量作为最小值。&lt;/li&gt;
+  &lt;li&gt;开始遍历数组，从第二个元素开始依次同当前最小值进行比较。&lt;/li&gt;
+  &lt;li&gt;如果当前元素数值小于当前最小值，则将当前元素设为新的最小值。&lt;/li&gt;
+  &lt;li&gt;移动到下一个元素，并且重复步骤 3。&lt;/li&gt;
+  &lt;li&gt;当程序结束时，这个变量中存储的就是最小值。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;代码实现如下：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function findMin(arr) {
+  var min = arr[0];
+  for (var i = 1; i &amp;lt; arr.length; ++i) {
+     if (arr[i] &amp;lt; min) {
+        min = arr[i];
+     } 
+  }
+  return min; 
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;需要注意的关键部分，由于我们假设数组的第一个元素就是当前的最小值，所以这个函数 会从数组的第二个元素开始进行处理。&lt;/p&gt;
+
+&lt;h4 id=&quot;查找最大值&quot;&gt;查找最大值&lt;/h4&gt;
+
+&lt;p&gt;查找最大值和查找最小值的原理是一样的，只不过是先把数组的第一个元素设置为最大值。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function findMax(arr) {
+    var max = arr[0];
+    for (var i = 1; i &amp;lt; arr.length; ++i) {
+       if (arr[i] &amp;gt; max) {
+          max = arr[i];
+       } 
+    }
+    return max; 
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;实例化个例子：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var nums = [];
+for (var i = 0; i &amp;lt; 100; ++i) {
+  nums[i] = Math.floor(Math.random() * 101);
+}
+
+document.getElementById('box').innerHTML = nums;
+
+var minValue = this.findMin(nums); 
+var maxValue = this.findMax(nums); 
+
+document.write(&quot;最小值是:&quot; + minValue + '&amp;lt;br /&amp;gt;');
+document.write(&quot;最小值是:&quot; + maxValue);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://127.0.0.1:4000/img/20180222/20180222-1.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;使用自组织数据&quot;&gt;使用自组织数据&lt;/h3&gt;
+
+&lt;p&gt;对于未排序的数据集来说，当被查找的数据位于数据集的起始位置时，查找是最快、最成功的。通过将成功找到的元素置于数据集的起始位置，可以保证在以后的操作中该元素能被更快地查找到。&lt;/p&gt;
+
+&lt;p&gt;通过将频繁查找到的元素置于数据集的起始位置来最小化查找次数，这就叫做自组织数据。&lt;/p&gt;
+
+&lt;p&gt;由于对数据的查找遵循“80-20 原则”，因此将你的数据转化为自组织的形式是很有意义 的。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;“80-20 原则”是指对某一数据集执行的 80% 的查找操作都是对其中 20% 的数据元素 进行查找。自组织的方式最终会把这 20% 的数据置于数据集的起始位置，这样便可以通过 一个简单的顺序查找快速找到它们。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;举个例子，理解对 seqSearch() 函数进行改动以加入自组织方式&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var numbers = [5,1,7,4,2,10,9,3,6,8];
+
+//改动后的seqSearch() 函数
+function seqSearch(arr,data) {
+    for(var i = 0; i &amp;lt; arr.length; ++i) {
+        if(arr[i] === data) {
+            if( i &amp;gt; 0) {
+                swap(arr,i,i-1);
+            }
+            return true;
+        }
+    }
+    return false;
+}
+ 
+//swap() 函数来对这次找到的数据与当前存储在上一个位置的数据进行互换。
+function swap(arr,index,index1) {
+    temp = arr[index];
+    arr[index] = arr[index1];
+    arr[index1] = temp;
+}
+
+for (var i = 0; i &amp;lt;= 5; i++) {
+  seqSearch(numbers, 4);
+  console.log(numbers);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://127.0.0.1:4000/img/20180222/20180222-2.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;这种写法同时可以保证已经在数据集前面的元素不会被越移越远。&lt;/p&gt;
+
+&lt;h2 id=&quot;二分查找&quot;&gt;二分查找&lt;/h2&gt;
+
+&lt;p&gt;如果你要查找的数据是有序的，二分查找算法比顺序查找算法更高效。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var nums = [0,5,46,85,102,212,503];  //必须先排序好
+ 
+function binSearch(arr,data) {
+    var upperBound = arr.length - 1;
+        lowerBound = 0;
+    while(lowerBound &amp;lt;= upperBound) {
+        var mid = Math.floor((upperBound + lowerBound) / 2);
+        console.log('此时的中点：' + mid);
+        if(arr[mid] &amp;lt; data) {
+            lowerBound = mid + 1;
+        } else if(arr[mid] &amp;gt; data) {
+            upperBound = mid - 1;
+        } else {
+            return mid;
+        }
+    }
+    return -1;
+}
+
+console.log(binSearch(nums,46));
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://127.0.0.1:4000/img/20180222/20180222-3.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;计算重复次数&quot;&gt;计算重复次数&lt;/h3&gt;
+
+&lt;p&gt;count函数一开始调用 binSearch() 函数来查找指定的值。如果在数据集中能找到这个值， 那么这个函数将开始通过两个循环来统计这个值出现的次数。第一个循环向下遍历数组， 统计找到的值出现的次数，当下一个值与要查找的值不匹配时则停止计数。第二个循环向 上遍历数组，统计找到的值出现的次数，当下一个值与要查找的值不匹配时则停止计数。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function count(arr,data) {
+    var count = 0,
+        position = binSearch(arr,data);
+        if(position &amp;gt; -1) {
+            ++count;
+            for(var i = position-1; i &amp;gt; 0; --i) {
+                if(arr[i] === data) {
+                    ++count;
+                } else {
+                    break;
+                }
+            }
+            for(var i = position + 1; i &amp;lt; arr.length; ++i) {
+                if(arr[i] === data) {
+                    ++count;
+                } else {
+                    break;
+                }
+            }
+        }
+        return count;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>weili</name></author><category term="[&quot;JS&quot;]" /><summary type="html">检索算法 本章介绍了数据检索的一个方面: 如何在列表中查找特定的值。 在列表中查找数据有两种方式: 顺序查找和二分查找。 顺序查找适用于元素随机排列的列表; 二分查找适用于元素已排序的列表。 二分查找效率更高，但是你必须在进行查找之前 花费额外的时间将列表中的元素排序。 顺序查找 对于查找数据来说，最简单的方法就是从列表的第一个元素开始对列表元素逐个进行判 断，直到找到了想要的结果，或者直到列表结尾也没有找到。这种方法称为顺序查找，有 时也被称为线性查找。它属于暴力查找技巧的一种，在执行查找时可能会访问到数据结构 里的所有元素。 顺序查找的实现： 只要从列表的第一个元素开始循环，然后逐个与要查找的数据进 行比较。如果匹配到了，则结束查找。如果到了列表的结尾也没有匹配到，那么这个数据 就不存在于这个列表中。 代码实现： function seqSearch(arr, data) { for (var i = 0; i &amp;lt; arr.length; ++i) { if (arr[i] == data) { return i; } } return -1; } 如果在数组中找到了参数 data，返回所在的位置，如果没有找到要查找的数据，函数返回-1。 seqSearch() 函数的执行速度比内置的 Array.indexof() 方法慢，这里仅用来演示 顺序查找是如何运行的。 查找最小值和最大值 查找最小值 首先看看如何在数组中查找最小值，算法如下。 将数组第一个元素赋值给一个变量，把这个变量作为最小值。 开始遍历数组，从第二个元素开始依次同当前最小值进行比较。 如果当前元素数值小于当前最小值，则将当前元素设为新的最小值。 移动到下一个元素，并且重复步骤 3。 当程序结束时，这个变量中存储的就是最小值。 代码实现如下： function findMin(arr) { var min = arr[0]; for (var i = 1; i &amp;lt; arr.length; ++i) { if (arr[i] &amp;lt; min) { min = arr[i]; } } return min; } 需要注意的关键部分，由于我们假设数组的第一个元素就是当前的最小值，所以这个函数 会从数组的第二个元素开始进行处理。 查找最大值 查找最大值和查找最小值的原理是一样的，只不过是先把数组的第一个元素设置为最大值。 function findMax(arr) { var max = arr[0]; for (var i = 1; i &amp;lt; arr.length; ++i) { if (arr[i] &amp;gt; max) { max = arr[i]; } } return max; } 实例化个例子： var nums = []; for (var i = 0; i &amp;lt; 100; ++i) { nums[i] = Math.floor(Math.random() * 101); } document.getElementById('box').innerHTML = nums; var minValue = this.findMin(nums); var maxValue = this.findMax(nums); document.write(&quot;最小值是:&quot; + minValue + '&amp;lt;br /&amp;gt;'); document.write(&quot;最小值是:&quot; + maxValue); 使用自组织数据 对于未排序的数据集来说，当被查找的数据位于数据集的起始位置时，查找是最快、最成功的。通过将成功找到的元素置于数据集的起始位置，可以保证在以后的操作中该元素能被更快地查找到。 通过将频繁查找到的元素置于数据集的起始位置来最小化查找次数，这就叫做自组织数据。 由于对数据的查找遵循“80-20 原则”，因此将你的数据转化为自组织的形式是很有意义 的。 “80-20 原则”是指对某一数据集执行的 80% 的查找操作都是对其中 20% 的数据元素 进行查找。自组织的方式最终会把这 20% 的数据置于数据集的起始位置，这样便可以通过 一个简单的顺序查找快速找到它们。 举个例子，理解对 seqSearch() 函数进行改动以加入自组织方式 var numbers = [5,1,7,4,2,10,9,3,6,8]; //改动后的seqSearch() 函数 function seqSearch(arr,data) { for(var i = 0; i &amp;lt; arr.length; ++i) { if(arr[i] === data) { if( i &amp;gt; 0) { swap(arr,i,i-1); } return true; } } return false; } //swap() 函数来对这次找到的数据与当前存储在上一个位置的数据进行互换。 function swap(arr,index,index1) { temp = arr[index]; arr[index] = arr[index1]; arr[index1] = temp; } for (var i = 0; i &amp;lt;= 5; i++) { seqSearch(numbers, 4); console.log(numbers); } 这种写法同时可以保证已经在数据集前面的元素不会被越移越远。 二分查找 如果你要查找的数据是有序的，二分查找算法比顺序查找算法更高效。 var nums = [0,5,46,85,102,212,503]; //必须先排序好 function binSearch(arr,data) { var upperBound = arr.length - 1; lowerBound = 0; while(lowerBound &amp;lt;= upperBound) { var mid = Math.floor((upperBound + lowerBound) / 2); console.log('此时的中点：' + mid); if(arr[mid] &amp;lt; data) { lowerBound = mid + 1; } else if(arr[mid] &amp;gt; data) { upperBound = mid - 1; } else { return mid; } } return -1; } console.log(binSearch(nums,46)); 计算重复次数 count函数一开始调用 binSearch() 函数来查找指定的值。如果在数据集中能找到这个值， 那么这个函数将开始通过两个循环来统计这个值出现的次数。第一个循环向下遍历数组， 统计找到的值出现的次数，当下一个值与要查找的值不匹配时则停止计数。第二个循环向 上遍历数组，统计找到的值出现的次数，当下一个值与要查找的值不匹配时则停止计数。 function count(arr,data) { var count = 0, position = binSearch(arr,data); if(position &amp;gt; -1) { ++count; for(var i = position-1; i &amp;gt; 0; --i) { if(arr[i] === data) { ++count; } else { break; } } for(var i = position + 1; i &amp;lt; arr.length; ++i) { if(arr[i] === data) { ++count; } else { break; } } } return count; }</summary></entry><entry><title type="html">JS基础–高级排序(三)</title><link href="http://localhost:4000/js/2018/02/11/senior_Sort_3.html" rel="alternate" type="text/html" title="JS基础--高级排序(三)" /><published>2018-02-11T00:00:00+08:00</published><updated>2018-02-11T00:00:00+08:00</updated><id>http://localhost:4000/js/2018/02/11/senior_Sort_3</id><content type="html" xml:base="http://localhost:4000/js/2018/02/11/senior_Sort_3.html">&lt;h1 id=&quot;高级排序快速排序&quot;&gt;高级排序—快速排序&lt;/h1&gt;
 
 &lt;p&gt;快速排序是处理大数据集最快的排序算法之一。&lt;/p&gt;
 
@@ -1370,128 +1568,4 @@ handleClick = () =&amp;gt; {
 &amp;lt;p onClick={this.handleClick}&amp;gt;&amp;lt;/p&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;其实不用react，原生的js请求返回的结果去处理页面中的元素就是这样控制的，但是当时脑袋秀逗了，没这样做，以后会不断的更新记录工作中遇到的小问题。&lt;/p&gt;</content><author><name>weili</name></author><category term="[&quot;JS&quot;]" /><summary type="html">react 随手笔记 项目中遇到的小问题，好记性不如烂笔头，用于记录一下 1、触发事件 当触发某个事件时，请求一个ajax，改变一个state值，根据这个state值更改后续的状态。 场景：一个入口，根据请求接口返回的数据，非成功的状态会出现弹框，成功的状态是一个路由，然后直接跳转 实现思路： js: handleClick = () =&amp;gt; { fetch ... 当请求成功后setState setState({ ... newState: , }) !success{ 出弹框 } } &amp;lt;p onClick={this.handleClick}&amp;gt; newState === 'success' ? &amp;lt;Link to='' /&amp;gt; : &amp;lt;span&amp;gt;&amp;lt;/span&amp;gt; &amp;lt;/p&amp;gt; 问题：显然是有问题的，因为是异步的，所以当请求了接口为成功时，入口不会即时的变为路由，而是需点击两下才能路由走 解决一：请求前置 componentDidMount = () =&amp;gt; { fetch .... } handleClick = () =&amp;gt; { if (this.state.newState !== 'success') { 出弹框 } } &amp;lt;p onClick={this.handleClick}&amp;gt; newState === 'success' ? &amp;lt;Link to='' /&amp;gt; : &amp;lt;span&amp;gt;&amp;lt;/span&amp;gt; &amp;lt;/p&amp;gt; 在用户点击之前就请求接口，早些改变newState的值，虽然功能上是实现了，但这种情况会有限制性，逻辑不允许的时候，这种方法行不通 解决二：在触发事件时就做跳转 handleClick = () =&amp;gt; { fetch ... .then((data) =&amp;gt; { this.setState({ newState: data.status }); if (data.status !== 'success') { //注意这里，不是用newState，而是用返回值直接处理 出弹框 } else { window.location.hash = `/pull/${this.props.hasmoney}`; //注意这里的写法，用于实现跳转 } }); } &amp;lt;p onClick={this.handleClick}&amp;gt;&amp;lt;/p&amp;gt; 其实不用react，原生的js请求返回的结果去处理页面中的元素就是这样控制的，但是当时脑袋秀逗了，没这样做，以后会不断的更新记录工作中遇到的小问题。</summary></entry><entry><title type="html">JS基础–字典</title><link href="http://localhost:4000/js/2017/11/18/dictionary.html" rel="alternate" type="text/html" title="JS基础--字典" /><published>2017-11-18T00:00:00+08:00</published><updated>2017-11-18T00:00:00+08:00</updated><id>http://localhost:4000/js/2017/11/18/dictionary</id><content type="html" xml:base="http://localhost:4000/js/2017/11/18/dictionary.html">&lt;h1 id=&quot;字典&quot;&gt;字典&lt;/h1&gt;
-
-&lt;h5 id=&quot;什么是字典&quot;&gt;什么是字典？&lt;/h5&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;字典是一种以键 - 值对形式存储数据的数据结构，就像电话号码簿里的名字和电话号码一样,要找一个电话时，先找名字，名字找到了，紧挨着它的电话号码也就找到了。这里的 键是指你用来查找的东西，值是查找得到的结果。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Dictionay 类的基础是 Array 类，而不是 Object 类，所以某些方法是不能执行的，这里只注重思想&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function Dictionary() {
-    this.datastore = new Array();
-    this.add = add; 
-    this.find = find;
-    this.remove = remove;
-    this.showAll = showAll;
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;向列表添加元素&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function append(ele) {
-    this.store[this.listSize++] = ele;
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;add方法–两个参数:键和值&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function add(key, value) {
-    this.datastore[key] = value;
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;find 方法&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;该方法以键作为参数，返回和其关联的值&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function find(key) {
-    return this.datastore[key];
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;remove 方法&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;从字典中删除键 - 值对需要使用 JavaScript 中的一个内置函数:delete。该函数是 Object 类的一部分，使用对键的引用作为参数。该函数同时删掉键和与其关联的值。&lt;/p&gt;
-
-&lt;p&gt;在这里要新建一个remove方法，delete掉索引所对应的值&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function remove(key) {
-    delete this.datastore[key];
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;showAll 方法&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;显示字典中所有的键 - 值对&lt;/p&gt;
-
-&lt;p&gt;调用 Object 类的 keys() 方法可以返回传入参数中存储的所有键&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function showAll() {
-    for(var key in Object.keys(this.datastore)) {
-       print(key + &quot; -&amp;gt; &quot; + this.datastore[key]);
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;count 方法&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;能知道字典中的元素个数&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function count() {
-    var n = 0;
-    for(var key in Object.keys(this.datastore)) {
-       ++n;
-    }
-    return n; 
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;clear 方法&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function clear() {
-    for each (var key in Object.keys(this.datastore)) {
-       delete this.datastore[key];
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;添加排序功能&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;字典的主要用途是通过键取值，无须太关心数据在字典中的实际存储顺序。但如果要做到一个有序的字典，该如何规划？我们都知道数组是可以排序的。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var a = new Array();
-a[0] = &quot;Mike&quot;;
-a[1] = &quot;David&quot;;
-console.log(a); //显示Mike,David a.sort();
-console.log(a); //显示David,Mike
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;但是上面这种做法对以字符串作为键的字典是无效的，程序会没有任何输出。这和前面定义 count() 方法时碰到的情况一样，不过，这也不是大问题。用户关心的是显示字典的内容时，结果是有序的。可以使用Object.keys() 函数解决这个问题&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function showAll() {
-    for(var key in Object.keys(this.datastore).sort()) {
-       console.log(key + &quot; -&amp;gt; &quot; + this.datastore[key]);
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;巧妙之处就是从数组 datastore 拿到键后，调用 sort() 方法对键重新排了序，以达到排序的功能。&lt;/p&gt;</content><author><name>weili</name></author><category term="[&quot;JS&quot;]" /><summary type="html">字典 什么是字典？ 字典是一种以键 - 值对形式存储数据的数据结构，就像电话号码簿里的名字和电话号码一样,要找一个电话时，先找名字，名字找到了，紧挨着它的电话号码也就找到了。这里的 键是指你用来查找的东西，值是查找得到的结果。 Dictionay 类的基础是 Array 类，而不是 Object 类，所以某些方法是不能执行的，这里只注重思想 function Dictionary() { this.datastore = new Array(); this.add = add; this.find = find; this.remove = remove; this.showAll = showAll; } 向列表添加元素 function append(ele) { this.store[this.listSize++] = ele; } add方法–两个参数:键和值 function add(key, value) { this.datastore[key] = value; } find 方法 该方法以键作为参数，返回和其关联的值 function find(key) { return this.datastore[key]; } remove 方法 从字典中删除键 - 值对需要使用 JavaScript 中的一个内置函数:delete。该函数是 Object 类的一部分，使用对键的引用作为参数。该函数同时删掉键和与其关联的值。 在这里要新建一个remove方法，delete掉索引所对应的值 function remove(key) { delete this.datastore[key]; } showAll 方法 显示字典中所有的键 - 值对 调用 Object 类的 keys() 方法可以返回传入参数中存储的所有键 function showAll() { for(var key in Object.keys(this.datastore)) { print(key + &quot; -&amp;gt; &quot; + this.datastore[key]); } } count 方法 能知道字典中的元素个数 function count() { var n = 0; for(var key in Object.keys(this.datastore)) { ++n; } return n; } clear 方法 function clear() { for each (var key in Object.keys(this.datastore)) { delete this.datastore[key]; } } 添加排序功能 字典的主要用途是通过键取值，无须太关心数据在字典中的实际存储顺序。但如果要做到一个有序的字典，该如何规划？我们都知道数组是可以排序的。 var a = new Array(); a[0] = &quot;Mike&quot;; a[1] = &quot;David&quot;; console.log(a); //显示Mike,David a.sort(); console.log(a); //显示David,Mike 但是上面这种做法对以字符串作为键的字典是无效的，程序会没有任何输出。这和前面定义 count() 方法时碰到的情况一样，不过，这也不是大问题。用户关心的是显示字典的内容时，结果是有序的。可以使用Object.keys() 函数解决这个问题 function showAll() { for(var key in Object.keys(this.datastore).sort()) { console.log(key + &quot; -&amp;gt; &quot; + this.datastore[key]); } } 巧妙之处就是从数组 datastore 拿到键后，调用 sort() 方法对键重新排了序，以达到排序的功能。</summary></entry></feed>
+&lt;p&gt;其实不用react，原生的js请求返回的结果去处理页面中的元素就是这样控制的，但是当时脑袋秀逗了，没这样做，以后会不断的更新记录工作中遇到的小问题。&lt;/p&gt;</content><author><name>weili</name></author><category term="[&quot;JS&quot;]" /><summary type="html">react 随手笔记 项目中遇到的小问题，好记性不如烂笔头，用于记录一下 1、触发事件 当触发某个事件时，请求一个ajax，改变一个state值，根据这个state值更改后续的状态。 场景：一个入口，根据请求接口返回的数据，非成功的状态会出现弹框，成功的状态是一个路由，然后直接跳转 实现思路： js: handleClick = () =&amp;gt; { fetch ... 当请求成功后setState setState({ ... newState: , }) !success{ 出弹框 } } &amp;lt;p onClick={this.handleClick}&amp;gt; newState === 'success' ? &amp;lt;Link to='' /&amp;gt; : &amp;lt;span&amp;gt;&amp;lt;/span&amp;gt; &amp;lt;/p&amp;gt; 问题：显然是有问题的，因为是异步的，所以当请求了接口为成功时，入口不会即时的变为路由，而是需点击两下才能路由走 解决一：请求前置 componentDidMount = () =&amp;gt; { fetch .... } handleClick = () =&amp;gt; { if (this.state.newState !== 'success') { 出弹框 } } &amp;lt;p onClick={this.handleClick}&amp;gt; newState === 'success' ? &amp;lt;Link to='' /&amp;gt; : &amp;lt;span&amp;gt;&amp;lt;/span&amp;gt; &amp;lt;/p&amp;gt; 在用户点击之前就请求接口，早些改变newState的值，虽然功能上是实现了，但这种情况会有限制性，逻辑不允许的时候，这种方法行不通 解决二：在触发事件时就做跳转 handleClick = () =&amp;gt; { fetch ... .then((data) =&amp;gt; { this.setState({ newState: data.status }); if (data.status !== 'success') { //注意这里，不是用newState，而是用返回值直接处理 出弹框 } else { window.location.hash = `/pull/${this.props.hasmoney}`; //注意这里的写法，用于实现跳转 } }); } &amp;lt;p onClick={this.handleClick}&amp;gt;&amp;lt;/p&amp;gt; 其实不用react，原生的js请求返回的结果去处理页面中的元素就是这样控制的，但是当时脑袋秀逗了，没这样做，以后会不断的更新记录工作中遇到的小问题。</summary></entry></feed>
