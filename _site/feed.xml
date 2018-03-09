@@ -1,5 +1,203 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.7.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2018-03-02T18:35:02+08:00</updated><id>http://localhost:4000/</id><title type="html">Weili’s Blog</title><subtitle>Weili's blog
-</subtitle><author><name>weili</name></author><entry><title type="html">JS基础–检索算法</title><link href="http://localhost:4000/js/2018/03/02/jiansuo-1.html" rel="alternate" type="text/html" title="JS基础--检索算法" /><published>2018-03-02T00:00:00+08:00</published><updated>2018-03-02T00:00:00+08:00</updated><id>http://localhost:4000/js/2018/03/02/jiansuo-1</id><content type="html" xml:base="http://localhost:4000/js/2018/03/02/jiansuo-1.html">&lt;h1 id=&quot;检索算法&quot;&gt;检索算法&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.7.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2018-03-09T19:14:00+08:00</updated><id>http://localhost:4000/</id><title type="html">Weili’s Blog</title><subtitle>Weili's blog
+</subtitle><author><name>weili</name></author><entry><title type="html">JS基础–高级算法–动态规划</title><link href="http://localhost:4000/js/2018/03/09/AdvancedAlgorithms-1.html" rel="alternate" type="text/html" title="JS基础--高级算法--动态规划" /><published>2018-03-09T00:00:00+08:00</published><updated>2018-03-09T00:00:00+08:00</updated><id>http://localhost:4000/js/2018/03/09/AdvancedAlgorithms-1</id><content type="html" xml:base="http://localhost:4000/js/2018/03/09/AdvancedAlgorithms-1.html">&lt;h1 id=&quot;高级算法动态规划&quot;&gt;高级算法–动态规划&lt;/h1&gt;
+
+&lt;h2 id=&quot;动态规则与递归的关系与区别&quot;&gt;动态规则与递归的关系与区别&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;动态规划有时被认为是一种与递归相反的技术。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;递归是从顶部开始将问题分解，通过解决掉所有分解出小问题的方式，来解决整 个问题。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;动态规划解决方案从底部开始解决问题，将所有小问题解决掉，然后合并成一个 整体解决方案，从而解决掉整个大问题。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;递归去解决问题虽然简洁，但效率不高,许多使用递归去解决的编程问题，可以重写为使用动态规划的技巧去解决&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;动态规划方案&quot;&gt;动态规划方案&lt;/h2&gt;
+
+&lt;p&gt;动态规划方案通常会使用一个数组来建立一张表，用于存放被分解成众多子问题的解。当算法执行完 毕，最终的解将会在这个表中很明显的地方被找到&lt;/p&gt;
+
+&lt;h2 id=&quot;使用动态规划方案能做点什么&quot;&gt;使用动态规划方案能做点什么？&lt;/h2&gt;
+
+&lt;h3 id=&quot;计算斐波那契数列&quot;&gt;计算斐波那契数列&lt;/h3&gt;
+
+&lt;p&gt;斐波那契数列可以定义为以下序列:&lt;/p&gt;
+
+&lt;p&gt;0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, …&lt;/p&gt;
+
+&lt;p&gt;该序列是由前两项数值相加而成的&lt;/p&gt;
+
+&lt;p&gt;递归的实现方式：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function recurFib(n) {
+    if (n &amp;lt; 2) {
+        return n; 
+    } else {
+        
+        return recurFib(n-1) + recurFib(n-2);
+    } 
+}
+document.write(recurFib(10)); // 显示 55
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;在这个计算过程当中，有太多值在递归调用中被重新计算,这也是递归方法效率低下的原因。&lt;/p&gt;
+
+&lt;p&gt;再看下动态规则的实现方法：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function dynFib(n) {
+    var val = [];
+    for (var i = 0; i &amp;lt;= n; ++i) {
+        val[i] = 0; 
+    }
+    if (n == 1 || n == 2) {
+        return 1;
+    } else {
+        val[1] = 1;
+        val[2] = 2;
+        for (var i = 3; i &amp;lt;= n; ++i) {
+            val[i] = val[i-1] + val[i-2];
+        }
+        return val[n-1];
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;在这个数组 val 中保存了中间结果。如果要计算的斐波那契数是 1 或者 2，那么 if 语 句会返回 1。否则，数值 1 和 2 将被保存在 val 数组中 1 和 2 的位置。循环将会从 3 到输 入的参数之间进行遍历，将数组的每个元素赋值为前两个元素之和，循环结束，数组的最 后一个元素值即为最终计算得到的斐波那契数值，这个数值也将作为函数的返回值。&lt;/p&gt;
+
+&lt;p&gt;斐波那契数列在数组 val 中的排列顺序如下:&lt;/p&gt;
+
+&lt;p&gt;val[0] = 0 val[1] = 1 val[2] = 2 val[3] = 3 val[4] = 5 val[5] = 8 val[6] = 13&lt;/p&gt;
+
+&lt;h3 id=&quot;寻找最长公共子串&quot;&gt;寻找最长公共子串&lt;/h3&gt;
+
+&lt;p&gt;用动态规划去寻找两个字符串的最长公共子串。例如，在单词 “raven”和“havoc”中，最长的公共子串是“av”。&lt;/p&gt;
+
+&lt;p&gt;原理：&lt;/p&gt;
+
+&lt;p&gt;使用一个二维数组存储两个字符串相同 位置的字符比较结果。初始化时，该数组的每一个元素被设置为 0。每次在这两个数组的 相同位置发现了匹配，就将数组对应行和列的元素加 1，否则保持为 0。按照这种方式，一个变量会持续记录下找到了多少个匹配项。当算法执行完毕时，这个变 量会结合一个索引变量来获得最长公共子串。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function lcs(word1, word2) {
+     var max = 0;
+     var index = 0;
+     var lcsarr = new Array(word1.length + 1);
+     for (var i = 0; i &amp;lt;= word1.length + 1; ++i) {
+         lcsarr[i] = new Array(word2.length + 1);
+         for (var j = 0; j &amp;lt;= word2.length + 1; ++j) {
+            lcsarr[i][j] = 0;
+        }
+    }
+
+    //上面这一部分初始化了两个变量以及一个二维数组。多数语言对二维数组的声明都很 简单，但在 JavaScript 中需要很费劲地在一个数组中定义另一个数组，这样才能声明一个 二维数组。以下代码片段中的最后一个 for 循环会对这个数组进行初始化，
+
+
+    for (var i = 0; i &amp;lt;= word1.length; ++i) {
+       for (var j = 0; j &amp;lt;= word2.length; ++j) {
+          if (i == 0 || j == 0) {
+             lcsarr[i][j] = 0;
+          } else {
+              if (word1[i - 1] == word2[j - 1]) {
+                lcsarr[i][j] = lcsarr[i - 1][j - 1] + 1;
+              } else {
+                lcsarr[i][j] = 0;
+              } 
+          }
+          if (max &amp;lt; lcsarr[i][j]) {
+             max = lcsarr[i][j];
+             index = i;
+          } 
+        }
+    }
+
+    //这一部分构建了用于保存字符匹配记录的表。数组的第一个元素总是被设置为 0。如果两 个字符串相应位置的字符进行了匹配，当前数组元素的值将被设置为前一次循环中数组元 素保存的值加 1。比如，如果两个字符串 &quot;back&quot; 和 &quot;cace&quot;，当算法运行到第二个字符处 时，那么数值 1 将被保存到当前元素中，因为前一个元素并不匹配，0 被保存在那个元素 中(0+1)。接下来算法移动到下一个位置，由于此时两个字符仍被匹配，当前数组元素将 被设置为 2(1+1)。由于两个字符串的最后一个字符不匹配，所以最长公共子串的长度是 2。最后，如果变量 max 的值比现在存储在数组中的当前元素要小，max 的值将被赋值给这 个元素，变量 index 的值将被设置为 i 的当前值。这两个变量将在函数的最后一部分用于 确定从哪里开始获取最长公共子串。
+
+    var str = &quot;&quot;;
+    if (max == 0) {
+       return &quot;&quot;;
+    } else {
+        for (var i = index - max; i &amp;lt;= max; ++i) {
+          str += word2[i];
+        }
+        return str; 
+    }
+
+    //这一部分代码用于确认从哪里开始构建这个最长公共子串。以变量 index 减去变量 max 的差值作为起始点，以变量 max 的值作为终点:
+}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;背包问题递归解决方案&quot;&gt;背包问题:递归解决方案&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function max(a, b) {
+    return (a &amp;gt; b) ? a : b;
+}
+
+function knapsack(capacity, size, value, n) {
+    if (n == 0 || capacity == 0) {
+        return 0; 
+    }
+    if (size[n - 1] &amp;gt; capacity) {
+       return knapsack(capacity, size, value, n - 1);
+    } else {
+       return max(value[n - 1] +
+          knapsack(capacity - size[n - 1], size, value, n - 1),
+          knapsack(capacity, size, value, n - 1));
+    } 
+}
+
+var value = [4, 5, 10, 11, 13];
+var size = [3, 4, 7, 8, 9];
+var capacity = 16;
+var n = 5;
+document.write(knapsack(capacity, size, value, n));
+
+//结果：23
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;背包问题动态规划方案&quot;&gt;背包问题:动态规划方案&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function max(a, b) {
+    return (a &amp;gt; b) ? a : b;
+}
+function dKnapsack(capacity, size, value, n) {
+  var K = [];
+  for (var i = 0; i &amp;lt;= capacity + 1; i++) {
+      K[i] = [];
+  }
+  for (var i = 0; i &amp;lt;= n; i++) {
+     for (var w = 0; w &amp;lt;= capacity; w++) {
+        if (i == 0 || w == 0) {
+            K[i][w] = 0; 
+        } else if (size[i - 1] &amp;lt;= w) {
+           K[i][w] = max(value[i - 1] + K[i-1][w-size[i-1]], K[i-1][w]);
+        } else {
+           K[i][w] = K[i - 1][w];
+        }
+        document.write(K[i][w] + &quot; &quot;);
+     }
+  }
+  return K[n][capacity];
+}
+var value = [4, 5, 10, 11, 13];
+var size = [3, 4, 7, 8, 9];
+var capacity = 16;
+var n = 5;
+document.write(dKnapsack(capacity, size, value, n));
+
+结果：
+
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 4 4 4 4 4 4 4 4 4 4 4 4 4 4 
+0 0 0 4 5 5 5 9 9 9 9 9 9 9 9 9 9
+0 0 0 4 5 5 5 10 10 10 14 15 15 15 19 19 19 
+0 0 0 4 5 5 5 10 11 11 14 15 16 16 19 21 21 
+0 0 0 4 5 5 5 10 11 13 14 15 17 18 19 21 23 
+23
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>weili</name></author><category term="[&quot;JS&quot;]" /><summary type="html">高级算法–动态规划 动态规则与递归的关系与区别 动态规划有时被认为是一种与递归相反的技术。 递归是从顶部开始将问题分解，通过解决掉所有分解出小问题的方式，来解决整 个问题。 动态规划解决方案从底部开始解决问题，将所有小问题解决掉，然后合并成一个 整体解决方案，从而解决掉整个大问题。 递归去解决问题虽然简洁，但效率不高,许多使用递归去解决的编程问题，可以重写为使用动态规划的技巧去解决 动态规划方案 动态规划方案通常会使用一个数组来建立一张表，用于存放被分解成众多子问题的解。当算法执行完 毕，最终的解将会在这个表中很明显的地方被找到 使用动态规划方案能做点什么？ 计算斐波那契数列 斐波那契数列可以定义为以下序列: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, … 该序列是由前两项数值相加而成的 递归的实现方式： function recurFib(n) { if (n &amp;lt; 2) { return n; } else { return recurFib(n-1) + recurFib(n-2); } } document.write(recurFib(10)); // 显示 55 在这个计算过程当中，有太多值在递归调用中被重新计算,这也是递归方法效率低下的原因。 再看下动态规则的实现方法： function dynFib(n) { var val = []; for (var i = 0; i &amp;lt;= n; ++i) { val[i] = 0; } if (n == 1 || n == 2) { return 1; } else { val[1] = 1; val[2] = 2; for (var i = 3; i &amp;lt;= n; ++i) { val[i] = val[i-1] + val[i-2]; } return val[n-1]; } } 在这个数组 val 中保存了中间结果。如果要计算的斐波那契数是 1 或者 2，那么 if 语 句会返回 1。否则，数值 1 和 2 将被保存在 val 数组中 1 和 2 的位置。循环将会从 3 到输 入的参数之间进行遍历，将数组的每个元素赋值为前两个元素之和，循环结束，数组的最 后一个元素值即为最终计算得到的斐波那契数值，这个数值也将作为函数的返回值。 斐波那契数列在数组 val 中的排列顺序如下: val[0] = 0 val[1] = 1 val[2] = 2 val[3] = 3 val[4] = 5 val[5] = 8 val[6] = 13 寻找最长公共子串 用动态规划去寻找两个字符串的最长公共子串。例如，在单词 “raven”和“havoc”中，最长的公共子串是“av”。 原理： 使用一个二维数组存储两个字符串相同 位置的字符比较结果。初始化时，该数组的每一个元素被设置为 0。每次在这两个数组的 相同位置发现了匹配，就将数组对应行和列的元素加 1，否则保持为 0。按照这种方式，一个变量会持续记录下找到了多少个匹配项。当算法执行完毕时，这个变 量会结合一个索引变量来获得最长公共子串。 function lcs(word1, word2) { var max = 0; var index = 0; var lcsarr = new Array(word1.length + 1); for (var i = 0; i &amp;lt;= word1.length + 1; ++i) { lcsarr[i] = new Array(word2.length + 1); for (var j = 0; j &amp;lt;= word2.length + 1; ++j) { lcsarr[i][j] = 0; } } //上面这一部分初始化了两个变量以及一个二维数组。多数语言对二维数组的声明都很 简单，但在 JavaScript 中需要很费劲地在一个数组中定义另一个数组，这样才能声明一个 二维数组。以下代码片段中的最后一个 for 循环会对这个数组进行初始化， for (var i = 0; i &amp;lt;= word1.length; ++i) { for (var j = 0; j &amp;lt;= word2.length; ++j) { if (i == 0 || j == 0) { lcsarr[i][j] = 0; } else { if (word1[i - 1] == word2[j - 1]) { lcsarr[i][j] = lcsarr[i - 1][j - 1] + 1; } else { lcsarr[i][j] = 0; } } if (max &amp;lt; lcsarr[i][j]) { max = lcsarr[i][j]; index = i; } } } //这一部分构建了用于保存字符匹配记录的表。数组的第一个元素总是被设置为 0。如果两 个字符串相应位置的字符进行了匹配，当前数组元素的值将被设置为前一次循环中数组元 素保存的值加 1。比如，如果两个字符串 &quot;back&quot; 和 &quot;cace&quot;，当算法运行到第二个字符处 时，那么数值 1 将被保存到当前元素中，因为前一个元素并不匹配，0 被保存在那个元素 中(0+1)。接下来算法移动到下一个位置，由于此时两个字符仍被匹配，当前数组元素将 被设置为 2(1+1)。由于两个字符串的最后一个字符不匹配，所以最长公共子串的长度是 2。最后，如果变量 max 的值比现在存储在数组中的当前元素要小，max 的值将被赋值给这 个元素，变量 index 的值将被设置为 i 的当前值。这两个变量将在函数的最后一部分用于 确定从哪里开始获取最长公共子串。 var str = &quot;&quot;; if (max == 0) { return &quot;&quot;; } else { for (var i = index - max; i &amp;lt;= max; ++i) { str += word2[i]; } return str; } //这一部分代码用于确认从哪里开始构建这个最长公共子串。以变量 index 减去变量 max 的差值作为起始点，以变量 max 的值作为终点: } 背包问题:递归解决方案 function max(a, b) { return (a &amp;gt; b) ? a : b; } function knapsack(capacity, size, value, n) { if (n == 0 || capacity == 0) { return 0; } if (size[n - 1] &amp;gt; capacity) { return knapsack(capacity, size, value, n - 1); } else { return max(value[n - 1] + knapsack(capacity - size[n - 1], size, value, n - 1), knapsack(capacity, size, value, n - 1)); } } var value = [4, 5, 10, 11, 13]; var size = [3, 4, 7, 8, 9]; var capacity = 16; var n = 5; document.write(knapsack(capacity, size, value, n)); //结果：23 背包问题:动态规划方案 function max(a, b) { return (a &amp;gt; b) ? a : b; } function dKnapsack(capacity, size, value, n) { var K = []; for (var i = 0; i &amp;lt;= capacity + 1; i++) { K[i] = []; } for (var i = 0; i &amp;lt;= n; i++) { for (var w = 0; w &amp;lt;= capacity; w++) { if (i == 0 || w == 0) { K[i][w] = 0; } else if (size[i - 1] &amp;lt;= w) { K[i][w] = max(value[i - 1] + K[i-1][w-size[i-1]], K[i-1][w]); } else { K[i][w] = K[i - 1][w]; } document.write(K[i][w] + &quot; &quot;); } } return K[n][capacity]; } var value = [4, 5, 10, 11, 13]; var size = [3, 4, 7, 8, 9]; var capacity = 16; var n = 5; document.write(dKnapsack(capacity, size, value, n)); 结果： 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 4 4 4 4 4 4 4 4 4 4 4 4 4 4 0 0 0 4 5 5 5 9 9 9 9 9 9 9 9 9 9 0 0 0 4 5 5 5 10 10 10 14 15 15 15 19 19 19 0 0 0 4 5 5 5 10 11 11 14 15 16 16 19 21 21 0 0 0 4 5 5 5 10 11 13 14 15 17 18 19 21 23 23</summary></entry><entry><title type="html">JS基础–检索算法</title><link href="http://localhost:4000/js/2018/03/02/jiansuo-1.html" rel="alternate" type="text/html" title="JS基础--检索算法" /><published>2018-03-02T00:00:00+08:00</published><updated>2018-03-02T00:00:00+08:00</updated><id>http://localhost:4000/js/2018/03/02/jiansuo-1</id><content type="html" xml:base="http://localhost:4000/js/2018/03/02/jiansuo-1.html">&lt;h1 id=&quot;检索算法&quot;&gt;检索算法&lt;/h1&gt;
 
 &lt;p&gt;本章介绍了数据检索的一个方面: 如何在列表中查找特定的值。&lt;/p&gt;
 
@@ -1486,86 +1684,4 @@ console.log(&quot;doSomething函数执行了&quot; + (t1 - t0) + &quot;毫秒.&q
   &lt;li&gt;&lt;a href=&quot;http://www.zhangxinxu.com/wordpress/2013/09/css3-animation-requestanimationframe-tween-%E5%8A%A8%E7%94%BB%E7%AE%97%E6%B3%95/&quot;&gt;张鑫旭,CSS3动画那么强，requestAnimationFrame还有毛线用？&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://www.w3.org/TR/animation-timing/&quot;&gt;W3C CR, Timing control for script-based animations&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;http://blog.csdn.net/milado_nju/article/details/8101188&quot;&gt;朱永盛, 理解WebKit和Chromium: 渲染主循环（main loop)和requestAnimationFrame&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><author><name>weili</name></author><category term="[&quot;JS&quot;]" /><summary type="html">requestAnimationFrame 在一个react项目中要做一个抢红包的游戏，红包雨的效果，用到了动画，但是由于在wap端，尤其对于性能方面要更加注意，这里就用到了requestAnimationFrame，在此记录一下。 先来了解几个概念： 屏幕刷新频率 即图像在屏幕上更新的速度，也即屏幕上的图像每秒钟出现的次数，它的单位是赫兹(Hz)。 对于一般笔记本电脑，这个频率大概是60Hz， 可以在桌面上右键-&amp;gt;屏幕分辨率-&amp;gt;高级设置-&amp;gt;监视器 中查看和设置。这个值的设定受屏幕分辨率、屏幕尺寸和显卡的影响，原则上设置成让眼睛看着舒适的值都行。 当你对着电脑屏幕什么也不做的情况下，显示器也会以每秒60次的频率正在不断的更新屏幕上的图像。为什么你感觉不到这个变化？ 那是因为人的眼睛有视觉停留效应，即前一副画面留在大脑的印象还没消失，紧接着后一副画面就跟上来了，这中间只间隔了16.7ms(1000/60≈16.7)， 所以会让你误以为屏幕上的图像是静止不动的。而屏幕给你的这种感觉是对的，试想一下，如果刷新频率变成1次/秒，屏幕上的图像就会出现严重的闪烁，这样就很容易引起眼睛疲劳、酸痛和头晕目眩等症状。 动画原理 根据上面的原理知道，眼前所看到图像正在以每秒60次的频率刷新，由于刷新频率很高，因此你感觉不到它在刷新。而动画本质就是要让人眼看到图像被刷新而引起变化的视觉效果，这个变化要以连贯的、平滑的方式进行过渡。 那怎么样才能做到这种效果呢？ 刷新频率为60Hz的屏幕每16.7ms刷新一次，我们在屏幕每次刷新前，将图像的位置向左移动一个像素，即1px。这样一来，屏幕每次刷出来的图像位置都比前一个要差1px，因此你会看到图像在移动；由于我们人眼的视觉停留效应，当前位置的图像停留在大脑的印象还没消失，紧接着图像又被移到了下一个位置，因此你才会看到图像在流畅的移动，这就是视觉效果上形成的动画。 setTimeout setTimeout 其实就是通过设置一个间隔时间来不断的改变图像的位置，从而达到动画效果的。但我们会发现，利用seTimeout实现的动画在某些低端机上会出现卡顿、抖动的现象。 这种现象的产生有两个原因： setTimeout的执行时间并不是确定的。在Javascript中， setTimeout 任务被放进了异步队列中，只有当主线程上的任务执行完以后，才会去检查该队列里的任务是否需要开始执行，因此 setTimeout 的实际执行时间一般要比其设定的时间晚一些。 刷新频率受屏幕分辨率和屏幕尺寸的影响，因此不同设备的屏幕刷新频率可能会不同，而 setTimeout只能设置一个固定的时间间隔，这个时间不一定和屏幕的刷新时间相同。 以上两种情况都会导致setTimeout的执行步调和屏幕的刷新步调不一致，从而引起丢帧现象。 那为什么步调不一致就会引起丢帧呢？ 首先要明白，setTimeout的执行只是在内存中对图像属性进行改变，这个变化必须要等到屏幕下次刷新时才会被更新到屏幕上。如果两者的步调不一致，就可能会导致中间某一帧的操作被跨越过去，而直接更新下一帧的图像。假设屏幕每隔16.7ms刷新一次，而setTimeout每隔10ms设置图像向左移动1px， 就会出现如下绘制过程： 第0ms: 屏幕未刷新，等待中，setTimeout也未执行，等待中； 第10ms: 屏幕未刷新，等待中，setTimeout开始执行并设置图像属性left=1px； 第16.7ms: 屏幕开始刷新，屏幕上的图像向左移动了1px， setTimeout 未执行，继续等待中； 第20ms: 屏幕未刷新，等待中，setTimeout开始执行并设置left=2px; 第30ms: 屏幕未刷新，等待中，setTimeout开始执行并设置left=3px; 第33.4ms:屏幕开始刷新，屏幕上的图像向左移动了3px， setTimeout未执行，继续等待中； … 从上面的绘制过程中可以看出，屏幕没有更新left=2px的那一帧画面，图像直接从1px的位置跳到了3px的的位置，这就是丢帧现象，这种现象就会引起动画卡顿。 requestAnimationFrame 与setTimeout相比，requestAnimationFrame最大的优势是由系统来决定回调函数的执行时机。具体一点讲，如果屏幕刷新率是60Hz,那么回调函数就每16.7ms被执行一次，如果刷新率是75Hz，那么这个时间间隔就变成了1000/75=13.3ms，换句话说就是，requestAnimationFrame的步伐跟着系统的刷新步伐走。它能保证回调函数在屏幕每一次的刷新间隔中只被执行一次，这样就不会引起丢帧现象，也不会导致动画出现卡顿的问题。 var progress = 0; //回调函数 function render() { progress += 1; //修改图像的位置 if (progress &amp;lt; 100) { //在动画没有结束前，递归渲染 window.requestAnimationFrame(render); } } //第一帧渲染 window.requestAnimationFrame(render); 这个方法一旦启动，它就会递归的调用自己。 requestAnimationFrame还有以下两个优势： CPU节能：使用setTimeout实现的动画，当页面被隐藏或最小化时，setTimeout 仍然在后台执行动画任务，由于此时页面处于不可见或不可用状态，刷新动画是没有意义的，完全是浪费CPU资源。而requestAnimationFrame则完全不同，当页面处理未激活的状态下，该页面的屏幕刷新任务也会被系统暂停，因此跟着系统步伐走的requestAnimationFrame也会停止渲染，当页面被激活时，动画就从上次停留的地方继续执行，有效节省了CPU开销。 函数节流：在高频率事件(resize,scroll等)中，为了防止在一个刷新间隔内发生多次函数执行，使用requestAnimationFrame可保证每个刷新间隔内，函数只被执行一次，这样既能保证流畅性，也能更好的节省函数执行的开销。一个刷新间隔内函数执行多次时没有意义的，因为显示器每16.7ms刷新一次，多次绘制并不会在屏幕上体现出来。 兼容性： 启动和停止一个动画 requestAnimationFrame 函数能返回一个ID，根据这个ID，你可以停止它的允许，这就像 setTimeout 和 setInterval 的用法一样。下面是一个实际可运行的例子： var globalID; function repeatOften() { document.getElementsByTagName(&quot;body&quot;).appendChild('#');; globalID = requestAnimationFrame(repeatOften); } $(&quot;#start&quot;).on(&quot;click&quot;, function() { globalID = requestAnimationFrame(repeatOften); }); $(&quot;#stop&quot;).on(&quot;click&quot;, function() { cancelAnimationFrame(globalID); }); requestAnimationFrame回调函数中的时间 from MDN 调函数具有一个传入 time 参数，该参数表示调用回调函数的时间。它是一个 DOMHighResTimeStamp，是从页面导航开始时测量的高精确度时间。DOMHighResTimeStamp 以毫秒为单位，精确到千分之一毫秒。此时间值不直接与 Date.now() 进行比较，后者测量自 1970 年 1 月 1 日至今以毫秒为单位的时间。如果你希望将 time 参数与当前时间进行比较，请使用当前时间的 window.performance.now。将时间值从 DOMTimeStamp 更改为 DOMHighResTimeStamp 是 W3C 针对基于脚本动画计时控制规范的最新编辑草案中的最新更改，并且某些供应商仍将其作为 DOMTimeStamp 实现。较早版本的 W3C 规范使用 DOMTimeStamp，允许你将 Date.now 用于当前时间。 let t0 = window.performance.now(); doSomething(); let t1 = window.performance.now(); console.log(&quot;doSomething函数执行了&quot; + (t1 - t0) + &quot;毫秒.&quot;) 和JavaScript中其他可用的时间类函数(比如Date.now)不同的是,window.performance.now()返回的时间戳没有被限制在一毫秒的精确度内,而它使用了一个浮点数来达到微秒级别的精确度. 另外一个不同点是,window.performance.now()是以一个恒定的速率慢慢增加的,它不会受到系统时间的影响(可能被其他软件调整)。另外，performance.timing.navigationStart + performance.now() 约等于 Date.now()。 看下面的例子： &amp;lt;!DOCTYPE html&amp;gt; &amp;lt;html&amp;gt; &amp;lt;head&amp;gt; &amp;lt;title&amp;gt;Script-based animation using requestAnimationFrame&amp;lt;/title&amp;gt; &amp;lt;style type=&quot;text/css&quot;&amp;gt; div { position: absolute; left: 10px; top:100px; padding: 50px; background: crimson; color: white; } &amp;lt;/style&amp;gt; &amp;lt;script type=&quot;text/javascript&quot;&amp;gt; var requestId = 0; var startime = 0; var lpos = 0; var elm; function init() { elm = document.getElementById(&quot;animated&quot;); } function render() { elm.style.left = ((lpos += 3) % 600) + &quot;px&quot;; requestId = window.requestAFrame(render); } function start() { if (window.performance.now) { startime = window.performance.now(); } else { startime = Date.now(); } requestId = window.requestAFrame(render); } function stop() { if (requestId) window.cancelAFrame(requestId); } // handle multiple browsers for requestAnimationFrame() window.requestAFrame = (function () { return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || // if all else fails, use setTimeout function (callback) { return window.setTimeout(callback, 1000 / 60); // shoot for 60 fps }; })(); // handle multiple browsers for cancelAnimationFrame() window.cancelAFrame = (function () { return window.cancelAnimationFrame || window.webkitCancelAnimationFrame || window.mozCancelAnimationFrame || window.oCancelAnimationFrame || function (id) { window.clearTimeout(id); }; })(); &amp;lt;/script&amp;gt; &amp;lt;/head&amp;gt; &amp;lt;body onload=&quot;init();&quot;&amp;gt; &amp;lt;div id=&quot;animated&quot;&amp;gt;Hello there.&amp;lt;/div&amp;gt; &amp;lt;button onclick=&quot;start()&quot;&amp;gt;Start&amp;lt;/button&amp;gt; &amp;lt;button onclick=&quot;stop()&quot;&amp;gt;Stop&amp;lt;/button&amp;gt; &amp;lt;/body&amp;gt; &amp;lt;/html&amp;gt; 参考文章 microsoft requestAnimationFrame 张鑫旭,CSS3动画那么强，requestAnimationFrame还有毛线用？ W3C CR, Timing control for script-based animations 朱永盛, 理解WebKit和Chromium: 渲染主循环（main loop)和requestAnimationFrame</summary></entry><entry><title type="html">react基础–知识点小记</title><link href="http://localhost:4000/js/2017/11/20/react_recode.html" rel="alternate" type="text/html" title="react基础--知识点小记" /><published>2017-11-20T00:00:00+08:00</published><updated>2017-11-20T00:00:00+08:00</updated><id>http://localhost:4000/js/2017/11/20/react_recode</id><content type="html" xml:base="http://localhost:4000/js/2017/11/20/react_recode.html">&lt;h1 id=&quot;react-随手笔记&quot;&gt;react 随手笔记&lt;/h1&gt;
-
-&lt;p&gt;项目中遇到的小问题，好记性不如烂笔头，用于记录一下&lt;/p&gt;
-
-&lt;p&gt;1、触发事件&lt;/p&gt;
-
-&lt;p&gt;当触发某个事件时，请求一个ajax，改变一个state值，根据这个state值更改后续的状态。&lt;/p&gt;
-
-&lt;p&gt;场景：一个入口，根据请求接口返回的数据，非成功的状态会出现弹框，成功的状态是一个路由，然后直接跳转&lt;/p&gt;
-
-&lt;p&gt;实现思路：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;js:
-
-handleClick = () =&amp;gt; {
-    fetch ...
-     当请求成功后setState
-	setState({
-	    ...
-	    newState: ,
-        })
-
-	
-        !success{
-	    出弹框
-        }
-}
-
-&amp;lt;p onClick={this.handleClick}&amp;gt;
-    newState === 'success' ?
-        &amp;lt;Link to='' /&amp;gt;
-    :
-        &amp;lt;span&amp;gt;&amp;lt;/span&amp;gt; 
-&amp;lt;/p&amp;gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;问题：显然是有问题的，因为是异步的，所以当请求了接口为成功时，入口不会即时的变为路由，而是需点击两下才能路由走&lt;/p&gt;
-
-&lt;p&gt;解决一：请求前置&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;componentDidMount = () =&amp;gt; {
-    fetch ....
-}
-
-handleClick = () =&amp;gt; {
-    if (this.state.newState !== 'success') {
-	出弹框
-    }
-}
-
-&amp;lt;p onClick={this.handleClick}&amp;gt;
-    newState === 'success' ?
-        &amp;lt;Link to='' /&amp;gt;
-    :
-        &amp;lt;span&amp;gt;&amp;lt;/span&amp;gt; 
-&amp;lt;/p&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;在用户点击之前就请求接口，早些改变newState的值，虽然功能上是实现了，但这种情况会有限制性，逻辑不允许的时候，这种方法行不通&lt;/p&gt;
-
-&lt;p&gt;解决二：在触发事件时就做跳转&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;handleClick = () =&amp;gt; {
-	fetch ... 
-	.then((data) =&amp;gt; {
-	    this.setState({
-		newState: data.status
-	    });
-
-	    if (data.status !== 'success') {  //注意这里，不是用newState，而是用返回值直接处理
-		出弹框
-	    } else {
-		window.location.hash = `/pull/${this.props.hasmoney}`;  //注意这里的写法，用于实现跳转
-	    }
-	});
-}
-
-
-&amp;lt;p onClick={this.handleClick}&amp;gt;&amp;lt;/p&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;其实不用react，原生的js请求返回的结果去处理页面中的元素就是这样控制的，但是当时脑袋秀逗了，没这样做，以后会不断的更新记录工作中遇到的小问题。&lt;/p&gt;</content><author><name>weili</name></author><category term="[&quot;JS&quot;]" /><summary type="html">react 随手笔记 项目中遇到的小问题，好记性不如烂笔头，用于记录一下 1、触发事件 当触发某个事件时，请求一个ajax，改变一个state值，根据这个state值更改后续的状态。 场景：一个入口，根据请求接口返回的数据，非成功的状态会出现弹框，成功的状态是一个路由，然后直接跳转 实现思路： js: handleClick = () =&amp;gt; { fetch ... 当请求成功后setState setState({ ... newState: , }) !success{ 出弹框 } } &amp;lt;p onClick={this.handleClick}&amp;gt; newState === 'success' ? &amp;lt;Link to='' /&amp;gt; : &amp;lt;span&amp;gt;&amp;lt;/span&amp;gt; &amp;lt;/p&amp;gt; 问题：显然是有问题的，因为是异步的，所以当请求了接口为成功时，入口不会即时的变为路由，而是需点击两下才能路由走 解决一：请求前置 componentDidMount = () =&amp;gt; { fetch .... } handleClick = () =&amp;gt; { if (this.state.newState !== 'success') { 出弹框 } } &amp;lt;p onClick={this.handleClick}&amp;gt; newState === 'success' ? &amp;lt;Link to='' /&amp;gt; : &amp;lt;span&amp;gt;&amp;lt;/span&amp;gt; &amp;lt;/p&amp;gt; 在用户点击之前就请求接口，早些改变newState的值，虽然功能上是实现了，但这种情况会有限制性，逻辑不允许的时候，这种方法行不通 解决二：在触发事件时就做跳转 handleClick = () =&amp;gt; { fetch ... .then((data) =&amp;gt; { this.setState({ newState: data.status }); if (data.status !== 'success') { //注意这里，不是用newState，而是用返回值直接处理 出弹框 } else { window.location.hash = `/pull/${this.props.hasmoney}`; //注意这里的写法，用于实现跳转 } }); } &amp;lt;p onClick={this.handleClick}&amp;gt;&amp;lt;/p&amp;gt; 其实不用react，原生的js请求返回的结果去处理页面中的元素就是这样控制的，但是当时脑袋秀逗了，没这样做，以后会不断的更新记录工作中遇到的小问题。</summary></entry></feed>
+&lt;/ul&gt;</content><author><name>weili</name></author><category term="[&quot;JS&quot;]" /><summary type="html">requestAnimationFrame 在一个react项目中要做一个抢红包的游戏，红包雨的效果，用到了动画，但是由于在wap端，尤其对于性能方面要更加注意，这里就用到了requestAnimationFrame，在此记录一下。 先来了解几个概念： 屏幕刷新频率 即图像在屏幕上更新的速度，也即屏幕上的图像每秒钟出现的次数，它的单位是赫兹(Hz)。 对于一般笔记本电脑，这个频率大概是60Hz， 可以在桌面上右键-&amp;gt;屏幕分辨率-&amp;gt;高级设置-&amp;gt;监视器 中查看和设置。这个值的设定受屏幕分辨率、屏幕尺寸和显卡的影响，原则上设置成让眼睛看着舒适的值都行。 当你对着电脑屏幕什么也不做的情况下，显示器也会以每秒60次的频率正在不断的更新屏幕上的图像。为什么你感觉不到这个变化？ 那是因为人的眼睛有视觉停留效应，即前一副画面留在大脑的印象还没消失，紧接着后一副画面就跟上来了，这中间只间隔了16.7ms(1000/60≈16.7)， 所以会让你误以为屏幕上的图像是静止不动的。而屏幕给你的这种感觉是对的，试想一下，如果刷新频率变成1次/秒，屏幕上的图像就会出现严重的闪烁，这样就很容易引起眼睛疲劳、酸痛和头晕目眩等症状。 动画原理 根据上面的原理知道，眼前所看到图像正在以每秒60次的频率刷新，由于刷新频率很高，因此你感觉不到它在刷新。而动画本质就是要让人眼看到图像被刷新而引起变化的视觉效果，这个变化要以连贯的、平滑的方式进行过渡。 那怎么样才能做到这种效果呢？ 刷新频率为60Hz的屏幕每16.7ms刷新一次，我们在屏幕每次刷新前，将图像的位置向左移动一个像素，即1px。这样一来，屏幕每次刷出来的图像位置都比前一个要差1px，因此你会看到图像在移动；由于我们人眼的视觉停留效应，当前位置的图像停留在大脑的印象还没消失，紧接着图像又被移到了下一个位置，因此你才会看到图像在流畅的移动，这就是视觉效果上形成的动画。 setTimeout setTimeout 其实就是通过设置一个间隔时间来不断的改变图像的位置，从而达到动画效果的。但我们会发现，利用seTimeout实现的动画在某些低端机上会出现卡顿、抖动的现象。 这种现象的产生有两个原因： setTimeout的执行时间并不是确定的。在Javascript中， setTimeout 任务被放进了异步队列中，只有当主线程上的任务执行完以后，才会去检查该队列里的任务是否需要开始执行，因此 setTimeout 的实际执行时间一般要比其设定的时间晚一些。 刷新频率受屏幕分辨率和屏幕尺寸的影响，因此不同设备的屏幕刷新频率可能会不同，而 setTimeout只能设置一个固定的时间间隔，这个时间不一定和屏幕的刷新时间相同。 以上两种情况都会导致setTimeout的执行步调和屏幕的刷新步调不一致，从而引起丢帧现象。 那为什么步调不一致就会引起丢帧呢？ 首先要明白，setTimeout的执行只是在内存中对图像属性进行改变，这个变化必须要等到屏幕下次刷新时才会被更新到屏幕上。如果两者的步调不一致，就可能会导致中间某一帧的操作被跨越过去，而直接更新下一帧的图像。假设屏幕每隔16.7ms刷新一次，而setTimeout每隔10ms设置图像向左移动1px， 就会出现如下绘制过程： 第0ms: 屏幕未刷新，等待中，setTimeout也未执行，等待中； 第10ms: 屏幕未刷新，等待中，setTimeout开始执行并设置图像属性left=1px； 第16.7ms: 屏幕开始刷新，屏幕上的图像向左移动了1px， setTimeout 未执行，继续等待中； 第20ms: 屏幕未刷新，等待中，setTimeout开始执行并设置left=2px; 第30ms: 屏幕未刷新，等待中，setTimeout开始执行并设置left=3px; 第33.4ms:屏幕开始刷新，屏幕上的图像向左移动了3px， setTimeout未执行，继续等待中； … 从上面的绘制过程中可以看出，屏幕没有更新left=2px的那一帧画面，图像直接从1px的位置跳到了3px的的位置，这就是丢帧现象，这种现象就会引起动画卡顿。 requestAnimationFrame 与setTimeout相比，requestAnimationFrame最大的优势是由系统来决定回调函数的执行时机。具体一点讲，如果屏幕刷新率是60Hz,那么回调函数就每16.7ms被执行一次，如果刷新率是75Hz，那么这个时间间隔就变成了1000/75=13.3ms，换句话说就是，requestAnimationFrame的步伐跟着系统的刷新步伐走。它能保证回调函数在屏幕每一次的刷新间隔中只被执行一次，这样就不会引起丢帧现象，也不会导致动画出现卡顿的问题。 var progress = 0; //回调函数 function render() { progress += 1; //修改图像的位置 if (progress &amp;lt; 100) { //在动画没有结束前，递归渲染 window.requestAnimationFrame(render); } } //第一帧渲染 window.requestAnimationFrame(render); 这个方法一旦启动，它就会递归的调用自己。 requestAnimationFrame还有以下两个优势： CPU节能：使用setTimeout实现的动画，当页面被隐藏或最小化时，setTimeout 仍然在后台执行动画任务，由于此时页面处于不可见或不可用状态，刷新动画是没有意义的，完全是浪费CPU资源。而requestAnimationFrame则完全不同，当页面处理未激活的状态下，该页面的屏幕刷新任务也会被系统暂停，因此跟着系统步伐走的requestAnimationFrame也会停止渲染，当页面被激活时，动画就从上次停留的地方继续执行，有效节省了CPU开销。 函数节流：在高频率事件(resize,scroll等)中，为了防止在一个刷新间隔内发生多次函数执行，使用requestAnimationFrame可保证每个刷新间隔内，函数只被执行一次，这样既能保证流畅性，也能更好的节省函数执行的开销。一个刷新间隔内函数执行多次时没有意义的，因为显示器每16.7ms刷新一次，多次绘制并不会在屏幕上体现出来。 兼容性： 启动和停止一个动画 requestAnimationFrame 函数能返回一个ID，根据这个ID，你可以停止它的允许，这就像 setTimeout 和 setInterval 的用法一样。下面是一个实际可运行的例子： var globalID; function repeatOften() { document.getElementsByTagName(&quot;body&quot;).appendChild('#');; globalID = requestAnimationFrame(repeatOften); } $(&quot;#start&quot;).on(&quot;click&quot;, function() { globalID = requestAnimationFrame(repeatOften); }); $(&quot;#stop&quot;).on(&quot;click&quot;, function() { cancelAnimationFrame(globalID); }); requestAnimationFrame回调函数中的时间 from MDN 调函数具有一个传入 time 参数，该参数表示调用回调函数的时间。它是一个 DOMHighResTimeStamp，是从页面导航开始时测量的高精确度时间。DOMHighResTimeStamp 以毫秒为单位，精确到千分之一毫秒。此时间值不直接与 Date.now() 进行比较，后者测量自 1970 年 1 月 1 日至今以毫秒为单位的时间。如果你希望将 time 参数与当前时间进行比较，请使用当前时间的 window.performance.now。将时间值从 DOMTimeStamp 更改为 DOMHighResTimeStamp 是 W3C 针对基于脚本动画计时控制规范的最新编辑草案中的最新更改，并且某些供应商仍将其作为 DOMTimeStamp 实现。较早版本的 W3C 规范使用 DOMTimeStamp，允许你将 Date.now 用于当前时间。 let t0 = window.performance.now(); doSomething(); let t1 = window.performance.now(); console.log(&quot;doSomething函数执行了&quot; + (t1 - t0) + &quot;毫秒.&quot;) 和JavaScript中其他可用的时间类函数(比如Date.now)不同的是,window.performance.now()返回的时间戳没有被限制在一毫秒的精确度内,而它使用了一个浮点数来达到微秒级别的精确度. 另外一个不同点是,window.performance.now()是以一个恒定的速率慢慢增加的,它不会受到系统时间的影响(可能被其他软件调整)。另外，performance.timing.navigationStart + performance.now() 约等于 Date.now()。 看下面的例子： &amp;lt;!DOCTYPE html&amp;gt; &amp;lt;html&amp;gt; &amp;lt;head&amp;gt; &amp;lt;title&amp;gt;Script-based animation using requestAnimationFrame&amp;lt;/title&amp;gt; &amp;lt;style type=&quot;text/css&quot;&amp;gt; div { position: absolute; left: 10px; top:100px; padding: 50px; background: crimson; color: white; } &amp;lt;/style&amp;gt; &amp;lt;script type=&quot;text/javascript&quot;&amp;gt; var requestId = 0; var startime = 0; var lpos = 0; var elm; function init() { elm = document.getElementById(&quot;animated&quot;); } function render() { elm.style.left = ((lpos += 3) % 600) + &quot;px&quot;; requestId = window.requestAFrame(render); } function start() { if (window.performance.now) { startime = window.performance.now(); } else { startime = Date.now(); } requestId = window.requestAFrame(render); } function stop() { if (requestId) window.cancelAFrame(requestId); } // handle multiple browsers for requestAnimationFrame() window.requestAFrame = (function () { return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || // if all else fails, use setTimeout function (callback) { return window.setTimeout(callback, 1000 / 60); // shoot for 60 fps }; })(); // handle multiple browsers for cancelAnimationFrame() window.cancelAFrame = (function () { return window.cancelAnimationFrame || window.webkitCancelAnimationFrame || window.mozCancelAnimationFrame || window.oCancelAnimationFrame || function (id) { window.clearTimeout(id); }; })(); &amp;lt;/script&amp;gt; &amp;lt;/head&amp;gt; &amp;lt;body onload=&quot;init();&quot;&amp;gt; &amp;lt;div id=&quot;animated&quot;&amp;gt;Hello there.&amp;lt;/div&amp;gt; &amp;lt;button onclick=&quot;start()&quot;&amp;gt;Start&amp;lt;/button&amp;gt; &amp;lt;button onclick=&quot;stop()&quot;&amp;gt;Stop&amp;lt;/button&amp;gt; &amp;lt;/body&amp;gt; &amp;lt;/html&amp;gt; 参考文章 microsoft requestAnimationFrame 张鑫旭,CSS3动画那么强，requestAnimationFrame还有毛线用？ W3C CR, Timing control for script-based animations 朱永盛, 理解WebKit和Chromium: 渲染主循环（main loop)和requestAnimationFrame</summary></entry></feed>
