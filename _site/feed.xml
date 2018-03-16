@@ -1,5 +1,150 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.7.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2018-03-09T19:14:00+08:00</updated><id>http://localhost:4000/</id><title type="html">Weili’s Blog</title><subtitle>Weili's blog
-</subtitle><author><name>weili</name></author><entry><title type="html">JS基础–高级算法–动态规划</title><link href="http://localhost:4000/js/2018/03/09/AdvancedAlgorithms-1.html" rel="alternate" type="text/html" title="JS基础--高级算法--动态规划" /><published>2018-03-09T00:00:00+08:00</published><updated>2018-03-09T00:00:00+08:00</updated><id>http://localhost:4000/js/2018/03/09/AdvancedAlgorithms-1</id><content type="html" xml:base="http://localhost:4000/js/2018/03/09/AdvancedAlgorithms-1.html">&lt;h1 id=&quot;高级算法动态规划&quot;&gt;高级算法–动态规划&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.7.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2018-03-16T16:23:17+08:00</updated><id>http://localhost:4000/</id><title type="html">Weili’s Blog</title><subtitle>Weili's blog
+</subtitle><author><name>weili</name></author><entry><title type="html">JS基础–高级算法–贪心算法</title><link href="http://localhost:4000/js/2018/03/16/AdvancedAlgorithms-2.html" rel="alternate" type="text/html" title="JS基础--高级算法--贪心算法" /><published>2018-03-16T00:00:00+08:00</published><updated>2018-03-16T00:00:00+08:00</updated><id>http://localhost:4000/js/2018/03/16/AdvancedAlgorithms-2</id><content type="html" xml:base="http://localhost:4000/js/2018/03/16/AdvancedAlgorithms-2.html">&lt;h1 id=&quot;高级算法贪心算法&quot;&gt;高级算法–贪心算法&lt;/h1&gt;
+
+&lt;p&gt;贪心算法总是会选择当下的最优解，而不去考虑这一次的选择会不会对未来的选择造成影响，目的是得到当前最优解。&lt;/p&gt;
+
+&lt;h2 id=&quot;使用贪心算法的经典案例&quot;&gt;使用贪心算法的经典案例&lt;/h2&gt;
+
+&lt;h3 id=&quot;找零问题&quot;&gt;找零问题&lt;/h3&gt;
+
+&lt;p&gt;从商店购买了一些商品，找零 63 美分，店员要 怎样给你这些零钱呢?如果店员根据贪心算法来找零的话，他会给你两个 25 美分、一个 10 美分和三个 1 美分。在没有使用 50 美分的情况下这是最少的硬币数量。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function makeChange(origAmt, coins) {
+    var remainAmt = 0;
+
+    if (origAmt % .25 &amp;lt; origAmt) {
+       coins[3] = parseInt(origAmt / .25);
+       remainAmt = origAmt % .25;
+       origAmt = remainAmt;
+    }
+
+    if (origAmt % .1 &amp;lt; origAmt) {
+       coins[2] = parseInt(origAmt / .1);
+       remainAmt = origAmt % .1;
+       origAmt = remainAmt;
+    }
+
+    if (origAmt % .05 &amp;lt; origAmt) {
+       coins[1] = parseInt(origAmt / .05);
+       remainAmt = origAmt % .05;
+       origAmt = remainAmt;
+    }
+
+    coins[0] = parseInt(origAmt / .01);
+}
+
+
+function showChange(coins) {
+    if (coins[3] &amp;gt; 0) {
+        document.write(&quot;25 美分的数量 - &quot; + coins[3] + &quot; - &quot; + coins[3] * .25); 
+    }
+
+    if (coins[2] &amp;gt; 0) {
+        document.write(&quot;10 美分的数量 - &quot; + coins[2] + &quot; - &quot; + coins[2] * .10);
+    }
+
+    if (coins[1] &amp;gt; 0) {
+        document.write(&quot;5 美分的数量 - &quot; + coins[1] + &quot; - &quot; + coins[1] * .05);
+    }
+
+    if (coins[0] &amp;gt; 0) {
+        document.write(&quot;1 美分的数量 - &quot; + coins[0] + &quot; - &quot; + coins[0] * .01);
+    } 
+}
+
+var origAmt = .63;
+var coins = [];
+makeChange(origAmt, coins);
+showChange(coins);
+
+========================
+结果如下：
+
+25美分的数量 - 2 - 0.5 
+10美分的数量 - 1 - 0.1 
+1美分的数量 - 3 - 0.03
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;makeChange() 函数从面值最高的 25 美分硬币开始，一直尝试使用这个面值去找零。总共 用到的 25 美分硬币数量会存储在 coins 数组中。如果剩余金额不到 25 美分，算法将会尝 试使用 10 美分硬币去找零，用到的 10 美分硬币总总数也会存储在 coins 数组里。接下来 算法会以相同的方式使用 5 美分和 1 美分来找零。&lt;/p&gt;
+
+&lt;p&gt;在所有面额都可用且数量不限的情况下，这种方案总能找到最优解。如果某种面额不可用，比如 5 美分，则会得到一个次优解。&lt;/p&gt;
+
+&lt;h3 id=&quot;背包问题之贪心算法解决方案&quot;&gt;背包问题之贪心算法解决方案&lt;/h3&gt;
+
+&lt;p&gt;如果用贪心算法处理背包问题，它有一个前提放入背包的物品从本质上说是连续的，那 么可以简单地通过物品的单价除以单位体积来确定物品的价值，先装价值最高的物品直到该物品装完或者将背包装满，接着装价值次高的物品，直到 这种物品也装完或将背包装满，以此类推。&lt;/p&gt;
+
+&lt;p&gt;思路是&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;(1) 背包的容量为 W，物品的价格为 v，重量为 w。&lt;/li&gt;
+  &lt;li&gt;(2) 根据 v/w 的比率对物品排序。&lt;/li&gt;
+  &lt;li&gt;(3) 按比率的降序方式来考虑物品。&lt;/li&gt;
+  &lt;li&gt;(4) 尽可能多地放入每个物品。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;如给出了四个物品的重量、价格和比率&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;物品&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;A&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;B&lt;/th&gt;
+      &lt;th&gt;C&lt;/th&gt;
+      &lt;th&gt;D&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;价格&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;50&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;140&lt;/td&gt;
+      &lt;td&gt;60&lt;/td&gt;
+      &lt;td&gt;60&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;尺寸&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;5&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;20&lt;/td&gt;
+      &lt;td&gt;10&lt;/td&gt;
+      &lt;td&gt;12&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;比率&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;10&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;7&lt;/td&gt;
+      &lt;td&gt;6&lt;/td&gt;
+      &lt;td&gt;5&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function ksack(values, weights, capacity) {
+    var load = 0;
+    var i = 0;
+    var w = 0;
+    while (load &amp;lt; capacity &amp;amp;&amp;amp; i &amp;lt; 4) {
+       if (weights[i] &amp;lt;= (capacity-load)) {
+          w += values[i];
+          load += weights[i];
+       } else {
+       
+          var r = (capacity-load)/weights[i];
+          w += r * values[i];
+          load += weights[i];
+       } 
+       ++i;
+    }
+    return w;
+}
+
+var items = [&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;];
+var values = [50, 140, 60, 60];
+var weights = [5, 20, 10, 12];
+var capacity = 30;
+
+document.write(ksack(values, weights, capacity)); // 显示 220
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>weili</name></author><category term="[&quot;JS&quot;]" /><summary type="html">高级算法–贪心算法 贪心算法总是会选择当下的最优解，而不去考虑这一次的选择会不会对未来的选择造成影响，目的是得到当前最优解。 使用贪心算法的经典案例 找零问题 从商店购买了一些商品，找零 63 美分，店员要 怎样给你这些零钱呢?如果店员根据贪心算法来找零的话，他会给你两个 25 美分、一个 10 美分和三个 1 美分。在没有使用 50 美分的情况下这是最少的硬币数量。 function makeChange(origAmt, coins) { var remainAmt = 0; if (origAmt % .25 &amp;lt; origAmt) { coins[3] = parseInt(origAmt / .25); remainAmt = origAmt % .25; origAmt = remainAmt; } if (origAmt % .1 &amp;lt; origAmt) { coins[2] = parseInt(origAmt / .1); remainAmt = origAmt % .1; origAmt = remainAmt; } if (origAmt % .05 &amp;lt; origAmt) { coins[1] = parseInt(origAmt / .05); remainAmt = origAmt % .05; origAmt = remainAmt; } coins[0] = parseInt(origAmt / .01); } function showChange(coins) { if (coins[3] &amp;gt; 0) { document.write(&quot;25 美分的数量 - &quot; + coins[3] + &quot; - &quot; + coins[3] * .25); } if (coins[2] &amp;gt; 0) { document.write(&quot;10 美分的数量 - &quot; + coins[2] + &quot; - &quot; + coins[2] * .10); } if (coins[1] &amp;gt; 0) { document.write(&quot;5 美分的数量 - &quot; + coins[1] + &quot; - &quot; + coins[1] * .05); } if (coins[0] &amp;gt; 0) { document.write(&quot;1 美分的数量 - &quot; + coins[0] + &quot; - &quot; + coins[0] * .01); } } var origAmt = .63; var coins = []; makeChange(origAmt, coins); showChange(coins); ======================== 结果如下： 25美分的数量 - 2 - 0.5 10美分的数量 - 1 - 0.1 1美分的数量 - 3 - 0.03 makeChange() 函数从面值最高的 25 美分硬币开始，一直尝试使用这个面值去找零。总共 用到的 25 美分硬币数量会存储在 coins 数组中。如果剩余金额不到 25 美分，算法将会尝 试使用 10 美分硬币去找零，用到的 10 美分硬币总总数也会存储在 coins 数组里。接下来 算法会以相同的方式使用 5 美分和 1 美分来找零。 在所有面额都可用且数量不限的情况下，这种方案总能找到最优解。如果某种面额不可用，比如 5 美分，则会得到一个次优解。 背包问题之贪心算法解决方案 如果用贪心算法处理背包问题，它有一个前提放入背包的物品从本质上说是连续的，那 么可以简单地通过物品的单价除以单位体积来确定物品的价值，先装价值最高的物品直到该物品装完或者将背包装满，接着装价值次高的物品，直到 这种物品也装完或将背包装满，以此类推。 思路是 (1) 背包的容量为 W，物品的价格为 v，重量为 w。 (2) 根据 v/w 的比率对物品排序。 (3) 按比率的降序方式来考虑物品。 (4) 尽可能多地放入每个物品。 如给出了四个物品的重量、价格和比率 物品 A B C D 价格 50 140 60 60 尺寸 5 20 10 12 比率 10 7 6 5 function ksack(values, weights, capacity) { var load = 0; var i = 0; var w = 0; while (load &amp;lt; capacity &amp;amp;&amp;amp; i &amp;lt; 4) { if (weights[i] &amp;lt;= (capacity-load)) { w += values[i]; load += weights[i]; } else { var r = (capacity-load)/weights[i]; w += r * values[i]; load += weights[i]; } ++i; } return w; } var items = [&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;]; var values = [50, 140, 60, 60]; var weights = [5, 20, 10, 12]; var capacity = 30; document.write(ksack(values, weights, capacity)); // 显示 220</summary></entry><entry><title type="html">JS基础–高级算法–动态规划</title><link href="http://localhost:4000/js/2018/03/09/AdvancedAlgorithms-1.html" rel="alternate" type="text/html" title="JS基础--高级算法--动态规划" /><published>2018-03-09T00:00:00+08:00</published><updated>2018-03-09T00:00:00+08:00</updated><id>http://localhost:4000/js/2018/03/09/AdvancedAlgorithms-1</id><content type="html" xml:base="http://localhost:4000/js/2018/03/09/AdvancedAlgorithms-1.html">&lt;h1 id=&quot;高级算法动态规划&quot;&gt;高级算法–动态规划&lt;/h1&gt;
 
 &lt;h2 id=&quot;动态规则与递归的关系与区别&quot;&gt;动态规则与递归的关系与区别&lt;/h2&gt;
 
@@ -1483,205 +1628,4 @@ function union(set) {
     }
     return tempSet;
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>weili</name></author><category term="[&quot;JS&quot;]" /><summary type="html">集合 集合(set)是一种包含不同元素的数据结构 集合特性 集合中的成员是无序的 集合中不允许相同成员存在 在很多编程语言中，并不把集合当成一种数据类型。当你想要创建一个数据结构，用来保存一些独一无二的元素时，比如一段文本中用到 的单词，集合就变得非常有用 相关概念 空集: 不包含任何成员的集合称为空集 全集: 则是包含一切可能成员的集合 集合相等: 如果两个集合的成员完全相同，则称两个集合相等 子集: 如果一个集合中所有的成员都属于另外一个集合，则前一集合称为后一集合的子集 对集合的操作 并集: 将两个集合中的成员进行合并，得到一个新集合 交集: 两个集合中共同存在的成员组成一个新的集合 补集: 属于一个集合而不属于另一个集合的成员组成的集合 Set类 function Set() { this.dataStore = []; this.add = add; this.remove = remove; this.size = size; this.union = union; this.intersect = intersect; this.subset = subset; this.difference = difference; this.show = show; } show（） function show() { return this.dataStore; } add 方法 function add(data) { if (this.dataStore.indexOf(data) &amp;lt; 0) { this.dataStore.push(data); return true; } else { return false; } } 思路：先要确保数 组中不存在该数据。我们使用 indexOf() 检查新加入的元素在数组中是否存在。如果找到， 该方法返回该元素在数组中的位置;如果没有找到，该方法返回 -1。如果数组中还未包含该 元素，add() 方法会将新加元素保存到数组中并返回 true;否则，返回 false。 remove 方法 function remove(data) { var pos = this.dataStore.indexOf(data); if (pos &amp;gt; -1) { this.dataStore.splice(pos,1); return true; } else { return false; } } union() 并集操作 思路：首先将第一个集合里的成员悉数加入一个临时集合，然后检 查第二个集合中的成员，看它们是否也同时属于第一个集合。如果属于，则跳过该成员， 否则就将该成员加入临时集合 在定义 union() 方法前，先需要定义一个辅助方法 contains()，该方法检查一个成员是否 属于该集合 function contains(data) { if (this.dataStore.indexOf(data) &amp;gt; -1) { return true; } else { return false; } } function union(set) { var tempSet = new Set(); for (var i = 0; i &amp;lt; this.dataStore.length; ++i) { tempSet.add(this.dataStore[i]); } for (var i = 0; i &amp;lt; set.dataStore.length; ++i) { if (!tempSet.contains(set.dataStore[i])) { tempSet.dataStore.push(set.dataStore[i]); } } return tempSet; } intersect() 交集 每当发现第一 个集合的成员也属于第二个集合时，便将该成员加入一个新集合，这个新集合即为方法的 返回值 function intersect(set) { var tempSet = new Set(); for (var i = 0; i &amp;lt; this.dataStore.length; ++i) { if (set.contains(this.dataStore[i])) { tempSet.add(this.dataStore[i]); } } return tempSet; } subset() 在判断每个元素是否属于待比较集合前，该方法先使用 size() 方法对比两个集合的大小 function size() { return this.dataStore.length; } 思路： subset() 方法首先要确定该集合的长度是否小于待比较集合。如果该集合比待比较集合还要大，那么该集合肯定不会是待比较集合的一个子集。 当该集合的长度小于待比较集合时，再判断该集合内的成员是否都属于待比较集合。如果有任意一个成员不属于待比较集合，则返回 false，程序终止。如果一直比较完该集合的 最后一个元素，所有元素都属于待比较集合，那么该集合就是待比较集合的一个子集，该方法返回true。 function subset(set) { if (this.size() &amp;gt; set.size()) { return false; } else { for each (var member in this.dataStore) { if (!set.contains(member)) { return false; } } } return true; } difference() 返回一个新集合 function difference(set) { var tempSet = new Set(); for (var i = 0; i &amp;lt; this.dataStore.length; ++i) { if (!set.contains(this.dataStore[i])) { tempSet.add(this.dataStore[i]); } } return tempSet; }</summary></entry><entry><title type="html">requestAnimationFrame</title><link href="http://localhost:4000/js/2017/12/15/requestAnimationFrame.html" rel="alternate" type="text/html" title="requestAnimationFrame" /><published>2017-12-15T00:00:00+08:00</published><updated>2017-12-15T00:00:00+08:00</updated><id>http://localhost:4000/js/2017/12/15/requestAnimationFrame</id><content type="html" xml:base="http://localhost:4000/js/2017/12/15/requestAnimationFrame.html">&lt;h1 id=&quot;requestanimationframe&quot;&gt;requestAnimationFrame&lt;/h1&gt;
-
-&lt;p&gt;在一个react项目中要做一个抢红包的游戏，红包雨的效果，用到了动画，但是由于在wap端，尤其对于性能方面要更加注意，这里就用到了requestAnimationFrame，在此记录一下。&lt;/p&gt;
-
-&lt;p&gt;先来了解几个概念：&lt;/p&gt;
-
-&lt;h5 id=&quot;屏幕刷新频率&quot;&gt;屏幕刷新频率&lt;/h5&gt;
-
-&lt;p&gt;即图像在屏幕上更新的速度，也即屏幕上的图像每秒钟出现的次数，它的单位是赫兹(Hz)。 对于一般笔记本电脑，这个频率大概是60Hz， 可以在桌面上右键-&amp;gt;屏幕分辨率-&amp;gt;高级设置-&amp;gt;监视器 中查看和设置。这个值的设定受屏幕分辨率、屏幕尺寸和显卡的影响，原则上设置成让眼睛看着舒适的值都行。&lt;/p&gt;
-
-&lt;p&gt;当你对着电脑屏幕什么也不做的情况下，显示器也会以每秒60次的频率正在不断的更新屏幕上的图像。为什么你感觉不到这个变化？ 那是因为人的眼睛有视觉停留效应，即前一副画面留在大脑的印象还没消失，紧接着后一副画面就跟上来了，这中间只间隔了16.7ms(1000/60≈16.7)， 所以会让你误以为屏幕上的图像是静止不动的。而屏幕给你的这种感觉是对的，试想一下，如果刷新频率变成1次/秒，屏幕上的图像就会出现严重的闪烁，这样就很容易引起眼睛疲劳、酸痛和头晕目眩等症状。&lt;/p&gt;
-
-&lt;h5 id=&quot;动画原理&quot;&gt;动画原理&lt;/h5&gt;
-
-&lt;p&gt;根据上面的原理知道，眼前所看到图像正在以每秒60次的频率刷新，由于刷新频率很高，因此你感觉不到它在刷新。而动画本质就是要让人眼看到图像被刷新而引起变化的视觉效果，这个变化要以连贯的、平滑的方式进行过渡。 那怎么样才能做到这种效果呢？&lt;/p&gt;
-
-&lt;p&gt;刷新频率为60Hz的屏幕每16.7ms刷新一次，我们在屏幕每次刷新前，将图像的位置向左移动一个像素，即1px。这样一来，屏幕每次刷出来的图像位置都比前一个要差1px，因此你会看到图像在移动；由于我们人眼的视觉停留效应，当前位置的图像停留在大脑的印象还没消失，紧接着图像又被移到了下一个位置，因此你才会看到图像在流畅的移动，这就是视觉效果上形成的动画。&lt;/p&gt;
-
-&lt;h5 id=&quot;settimeout&quot;&gt;setTimeout&lt;/h5&gt;
-
-&lt;p&gt;setTimeout 其实就是通过设置一个间隔时间来不断的改变图像的位置，从而达到动画效果的。但我们会发现，利用seTimeout实现的动画在某些低端机上会出现卡顿、抖动的现象。 这种现象的产生有两个原因：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;setTimeout的执行时间并不是确定的。在Javascript中， setTimeout 任务被放进了异步队列中，只有当主线程上的任务执行完以后，才会去检查该队列里的任务是否需要开始执行，因此 setTimeout 的实际执行时间一般要比其设定的时间晚一些。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;刷新频率受屏幕分辨率和屏幕尺寸的影响，因此不同设备的屏幕刷新频率可能会不同，而 setTimeout只能设置一个固定的时间间隔，这个时间不一定和屏幕的刷新时间相同。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;以上两种情况都会导致setTimeout的执行步调和屏幕的刷新步调不一致，从而引起丢帧现象。 那为什么步调不一致就会引起丢帧呢？&lt;/p&gt;
-
-&lt;p&gt;首先要明白，setTimeout的执行只是在内存中对图像属性进行改变，这个变化必须要等到屏幕下次刷新时才会被更新到屏幕上。如果两者的步调不一致，就可能会导致中间某一帧的操作被跨越过去，而直接更新下一帧的图像。假设屏幕每隔16.7ms刷新一次，而setTimeout每隔10ms设置图像向左移动1px， 就会出现如下绘制过程：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;第0ms: 屏幕未刷新，等待中，setTimeout也未执行，等待中；&lt;/li&gt;
-  &lt;li&gt;第10ms: 屏幕未刷新，等待中，setTimeout开始执行并设置图像属性left=1px；&lt;/li&gt;
-  &lt;li&gt;第16.7ms: 屏幕开始刷新，屏幕上的图像向左移动了1px， setTimeout 未执行，继续等待中；&lt;/li&gt;
-  &lt;li&gt;第20ms: 屏幕未刷新，等待中，setTimeout开始执行并设置left=2px;&lt;/li&gt;
-  &lt;li&gt;第30ms: 屏幕未刷新，等待中，setTimeout开始执行并设置left=3px;&lt;/li&gt;
-  &lt;li&gt;第33.4ms:屏幕开始刷新，屏幕上的图像向左移动了3px， setTimeout未执行，继续等待中；&lt;/li&gt;
-  &lt;li&gt;…&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;从上面的绘制过程中可以看出，屏幕没有更新left=2px的那一帧画面，图像直接从1px的位置跳到了3px的的位置，这就是丢帧现象，这种现象就会引起动画卡顿。&lt;/p&gt;
-
-&lt;h5 id=&quot;requestanimationframe-1&quot;&gt;requestAnimationFrame&lt;/h5&gt;
-
-&lt;p&gt;与setTimeout相比，requestAnimationFrame最大的优势是&lt;strong&gt;由系统来决定回调函数的执行时机&lt;/strong&gt;。具体一点讲，如果屏幕刷新率是60Hz,那么回调函数就每16.7ms被执行一次，如果刷新率是75Hz，那么这个时间间隔就变成了1000/75=13.3ms，换句话说就是，requestAnimationFrame的步伐跟着系统的刷新步伐走。&lt;strong&gt;它能保证回调函数在屏幕每一次的刷新间隔中只被执行一次&lt;/strong&gt;，这样就不会引起丢帧现象，也不会导致动画出现卡顿的问题。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var progress = 0;
-//回调函数
-function render() {
-    progress += 1; //修改图像的位置
- 
-    if (progress &amp;lt; 100) {
-           //在动画没有结束前，递归渲染
-           window.requestAnimationFrame(render);
-    }
-}
- 
-//第一帧渲染
-window.requestAnimationFrame(render);
-
-这个方法一旦启动，它就会递归的调用自己。
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;requestAnimationFrame还有以下两个优势：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;CPU节能&lt;/strong&gt;：使用setTimeout实现的动画，当页面被隐藏或最小化时，setTimeout 仍然在后台执行动画任务，由于此时页面处于不可见或不可用状态，刷新动画是没有意义的，完全是浪费CPU资源。而requestAnimationFrame则完全不同，当页面处理未激活的状态下，该页面的屏幕刷新任务也会被系统暂停，因此跟着系统步伐走的requestAnimationFrame也会停止渲染，当页面被激活时，动画就从上次停留的地方继续执行，有效节省了CPU开销。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;函数节流&lt;/strong&gt;：在高频率事件(resize,scroll等)中，为了防止在一个刷新间隔内发生多次函数执行，使用requestAnimationFrame可保证每个刷新间隔内，函数只被执行一次，这样既能保证流畅性，也能更好的节省函数执行的开销。一个刷新间隔内函数执行多次时没有意义的，因为显示器每16.7ms刷新一次，多次绘制并不会在屏幕上体现出来。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;兼容性：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20171215/2017-12-15-1.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;启动和停止一个动画&lt;/p&gt;
-
-&lt;p&gt;requestAnimationFrame 函数能返回一个ID，根据这个ID，你可以停止它的允许，这就像 setTimeout 和 setInterval 的用法一样。下面是一个实际可运行的例子：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var globalID;
-
-function repeatOften() {
-  document.getElementsByTagName(&quot;body&quot;).appendChild('#');;
-  globalID = requestAnimationFrame(repeatOften);
-}
-
-$(&quot;#start&quot;).on(&quot;click&quot;, function() {
-  globalID = requestAnimationFrame(repeatOften);
-});
-
-$(&quot;#stop&quot;).on(&quot;click&quot;, function() {
-  cancelAnimationFrame(globalID);
-});
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h5 id=&quot;requestanimationframe回调函数中的时间&quot;&gt;requestAnimationFrame回调函数中的时间&lt;/h5&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;from MDN
-调函数具有一个传入 time 参数，该参数表示调用回调函数的时间。它是一个 DOMHighResTimeStamp，是从页面导航开始时测量的高精确度时间。DOMHighResTimeStamp 以毫秒为单位，精确到千分之一毫秒。此时间值不直接与 Date.now() 进行比较，后者测量自 1970 年 1 月 1 日至今以毫秒为单位的时间。如果你希望将 time 参数与当前时间进行比较，请使用当前时间的 window.performance.now。将时间值从 DOMTimeStamp 更改为 DOMHighResTimeStamp 是 W3C 针对基于脚本动画计时控制规范的最新编辑草案中的最新更改，并且某些供应商仍将其作为 DOMTimeStamp 实现。较早版本的 W3C 规范使用 DOMTimeStamp，允许你将 Date.now 用于当前时间。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;let t0 = window.performance.now();
-doSomething();
-let t1 = window.performance.now();
-console.log(&quot;doSomething函数执行了&quot; + (t1 - t0) + &quot;毫秒.&quot;)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;和JavaScript中其他可用的时间类函数(比如Date.now)不同的是,window.performance.now()返回的时间戳没有被限制在一毫秒的精确度内,而它使用了一个浮点数来达到微秒级别的精确度.&lt;/p&gt;
-
-&lt;p&gt;另外一个不同点是,window.performance.now()是以一个恒定的速率慢慢增加的,它不会受到系统时间的影响(可能被其他软件调整)。另外，performance.timing.navigationStart + performance.now() 约等于 Date.now()。&lt;/p&gt;
-
-&lt;p&gt;看下面的例子：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;!DOCTYPE html&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;html&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;title&amp;gt;&lt;/span&gt;Script-based animation using requestAnimationFrame&lt;span class=&quot;nt&quot;&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;style &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;text/css&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;position&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;absolute&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;left&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;10px&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;top&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;100px&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;padding&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;50px&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;nl&quot;&gt;background&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;crimson&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;white&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/style&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;script &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;text/javascript&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;requestId&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;startime&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;lpos&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;elm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;elm&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getElementById&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;animated&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    
-    &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;render&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;elm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;left&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;lpos&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;600&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;px&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;requestId&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;requestAFrame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;render&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;performance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;now&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;nx&quot;&gt;startime&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;performance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;now&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;nx&quot;&gt;startime&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;now&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;requestId&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;requestAFrame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;render&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;stop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;requestId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-            &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cancelAFrame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;requestId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;        
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-
-    &lt;span class=&quot;c1&quot;&gt;// handle multiple browsers for requestAnimationFrame()&lt;/span&gt;
-    &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;requestAFrame&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;requestAnimationFrame&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt;
-                &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;webkitRequestAnimationFrame&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt;
-                &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;mozRequestAnimationFrame&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt;
-                &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;oRequestAnimationFrame&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt;
-                &lt;span class=&quot;c1&quot;&gt;// if all else fails, use setTimeout&lt;/span&gt;
-                &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;callback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;setTimeout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;callback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;60&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// shoot for 60 fps&lt;/span&gt;
-                &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;})();&lt;/span&gt;
-
-    &lt;span class=&quot;c1&quot;&gt;// handle multiple browsers for cancelAnimationFrame()&lt;/span&gt;
-    &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cancelAFrame&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cancelAnimationFrame&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt;
-                &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;webkitCancelAnimationFrame&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt;
-                &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;mozCancelAnimationFrame&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt;
-                &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;oCancelAnimationFrame&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt;
-                &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                    &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clearTimeout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-                &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;})();&lt;/span&gt;
-
-   
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;body&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;onload=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;init();&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;animated&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Hello there.&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;button&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;onclick=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;start()&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Start&lt;span class=&quot;nt&quot;&gt;&amp;lt;/button&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;button&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;onclick=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;stop()&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Stop&lt;span class=&quot;nt&quot;&gt;&amp;lt;/button&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h5 id=&quot;参考文章&quot;&gt;参考文章&lt;/h5&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://technet.microsoft.com/zh-cn/library/hh920765.aspx&quot;&gt;microsoft requestAnimationFrame&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://www.zhangxinxu.com/wordpress/2013/09/css3-animation-requestanimationframe-tween-%E5%8A%A8%E7%94%BB%E7%AE%97%E6%B3%95/&quot;&gt;张鑫旭,CSS3动画那么强，requestAnimationFrame还有毛线用？&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.w3.org/TR/animation-timing/&quot;&gt;W3C CR, Timing control for script-based animations&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://blog.csdn.net/milado_nju/article/details/8101188&quot;&gt;朱永盛, 理解WebKit和Chromium: 渲染主循环（main loop)和requestAnimationFrame&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><author><name>weili</name></author><category term="[&quot;JS&quot;]" /><summary type="html">requestAnimationFrame 在一个react项目中要做一个抢红包的游戏，红包雨的效果，用到了动画，但是由于在wap端，尤其对于性能方面要更加注意，这里就用到了requestAnimationFrame，在此记录一下。 先来了解几个概念： 屏幕刷新频率 即图像在屏幕上更新的速度，也即屏幕上的图像每秒钟出现的次数，它的单位是赫兹(Hz)。 对于一般笔记本电脑，这个频率大概是60Hz， 可以在桌面上右键-&amp;gt;屏幕分辨率-&amp;gt;高级设置-&amp;gt;监视器 中查看和设置。这个值的设定受屏幕分辨率、屏幕尺寸和显卡的影响，原则上设置成让眼睛看着舒适的值都行。 当你对着电脑屏幕什么也不做的情况下，显示器也会以每秒60次的频率正在不断的更新屏幕上的图像。为什么你感觉不到这个变化？ 那是因为人的眼睛有视觉停留效应，即前一副画面留在大脑的印象还没消失，紧接着后一副画面就跟上来了，这中间只间隔了16.7ms(1000/60≈16.7)， 所以会让你误以为屏幕上的图像是静止不动的。而屏幕给你的这种感觉是对的，试想一下，如果刷新频率变成1次/秒，屏幕上的图像就会出现严重的闪烁，这样就很容易引起眼睛疲劳、酸痛和头晕目眩等症状。 动画原理 根据上面的原理知道，眼前所看到图像正在以每秒60次的频率刷新，由于刷新频率很高，因此你感觉不到它在刷新。而动画本质就是要让人眼看到图像被刷新而引起变化的视觉效果，这个变化要以连贯的、平滑的方式进行过渡。 那怎么样才能做到这种效果呢？ 刷新频率为60Hz的屏幕每16.7ms刷新一次，我们在屏幕每次刷新前，将图像的位置向左移动一个像素，即1px。这样一来，屏幕每次刷出来的图像位置都比前一个要差1px，因此你会看到图像在移动；由于我们人眼的视觉停留效应，当前位置的图像停留在大脑的印象还没消失，紧接着图像又被移到了下一个位置，因此你才会看到图像在流畅的移动，这就是视觉效果上形成的动画。 setTimeout setTimeout 其实就是通过设置一个间隔时间来不断的改变图像的位置，从而达到动画效果的。但我们会发现，利用seTimeout实现的动画在某些低端机上会出现卡顿、抖动的现象。 这种现象的产生有两个原因： setTimeout的执行时间并不是确定的。在Javascript中， setTimeout 任务被放进了异步队列中，只有当主线程上的任务执行完以后，才会去检查该队列里的任务是否需要开始执行，因此 setTimeout 的实际执行时间一般要比其设定的时间晚一些。 刷新频率受屏幕分辨率和屏幕尺寸的影响，因此不同设备的屏幕刷新频率可能会不同，而 setTimeout只能设置一个固定的时间间隔，这个时间不一定和屏幕的刷新时间相同。 以上两种情况都会导致setTimeout的执行步调和屏幕的刷新步调不一致，从而引起丢帧现象。 那为什么步调不一致就会引起丢帧呢？ 首先要明白，setTimeout的执行只是在内存中对图像属性进行改变，这个变化必须要等到屏幕下次刷新时才会被更新到屏幕上。如果两者的步调不一致，就可能会导致中间某一帧的操作被跨越过去，而直接更新下一帧的图像。假设屏幕每隔16.7ms刷新一次，而setTimeout每隔10ms设置图像向左移动1px， 就会出现如下绘制过程： 第0ms: 屏幕未刷新，等待中，setTimeout也未执行，等待中； 第10ms: 屏幕未刷新，等待中，setTimeout开始执行并设置图像属性left=1px； 第16.7ms: 屏幕开始刷新，屏幕上的图像向左移动了1px， setTimeout 未执行，继续等待中； 第20ms: 屏幕未刷新，等待中，setTimeout开始执行并设置left=2px; 第30ms: 屏幕未刷新，等待中，setTimeout开始执行并设置left=3px; 第33.4ms:屏幕开始刷新，屏幕上的图像向左移动了3px， setTimeout未执行，继续等待中； … 从上面的绘制过程中可以看出，屏幕没有更新left=2px的那一帧画面，图像直接从1px的位置跳到了3px的的位置，这就是丢帧现象，这种现象就会引起动画卡顿。 requestAnimationFrame 与setTimeout相比，requestAnimationFrame最大的优势是由系统来决定回调函数的执行时机。具体一点讲，如果屏幕刷新率是60Hz,那么回调函数就每16.7ms被执行一次，如果刷新率是75Hz，那么这个时间间隔就变成了1000/75=13.3ms，换句话说就是，requestAnimationFrame的步伐跟着系统的刷新步伐走。它能保证回调函数在屏幕每一次的刷新间隔中只被执行一次，这样就不会引起丢帧现象，也不会导致动画出现卡顿的问题。 var progress = 0; //回调函数 function render() { progress += 1; //修改图像的位置 if (progress &amp;lt; 100) { //在动画没有结束前，递归渲染 window.requestAnimationFrame(render); } } //第一帧渲染 window.requestAnimationFrame(render); 这个方法一旦启动，它就会递归的调用自己。 requestAnimationFrame还有以下两个优势： CPU节能：使用setTimeout实现的动画，当页面被隐藏或最小化时，setTimeout 仍然在后台执行动画任务，由于此时页面处于不可见或不可用状态，刷新动画是没有意义的，完全是浪费CPU资源。而requestAnimationFrame则完全不同，当页面处理未激活的状态下，该页面的屏幕刷新任务也会被系统暂停，因此跟着系统步伐走的requestAnimationFrame也会停止渲染，当页面被激活时，动画就从上次停留的地方继续执行，有效节省了CPU开销。 函数节流：在高频率事件(resize,scroll等)中，为了防止在一个刷新间隔内发生多次函数执行，使用requestAnimationFrame可保证每个刷新间隔内，函数只被执行一次，这样既能保证流畅性，也能更好的节省函数执行的开销。一个刷新间隔内函数执行多次时没有意义的，因为显示器每16.7ms刷新一次，多次绘制并不会在屏幕上体现出来。 兼容性： 启动和停止一个动画 requestAnimationFrame 函数能返回一个ID，根据这个ID，你可以停止它的允许，这就像 setTimeout 和 setInterval 的用法一样。下面是一个实际可运行的例子： var globalID; function repeatOften() { document.getElementsByTagName(&quot;body&quot;).appendChild('#');; globalID = requestAnimationFrame(repeatOften); } $(&quot;#start&quot;).on(&quot;click&quot;, function() { globalID = requestAnimationFrame(repeatOften); }); $(&quot;#stop&quot;).on(&quot;click&quot;, function() { cancelAnimationFrame(globalID); }); requestAnimationFrame回调函数中的时间 from MDN 调函数具有一个传入 time 参数，该参数表示调用回调函数的时间。它是一个 DOMHighResTimeStamp，是从页面导航开始时测量的高精确度时间。DOMHighResTimeStamp 以毫秒为单位，精确到千分之一毫秒。此时间值不直接与 Date.now() 进行比较，后者测量自 1970 年 1 月 1 日至今以毫秒为单位的时间。如果你希望将 time 参数与当前时间进行比较，请使用当前时间的 window.performance.now。将时间值从 DOMTimeStamp 更改为 DOMHighResTimeStamp 是 W3C 针对基于脚本动画计时控制规范的最新编辑草案中的最新更改，并且某些供应商仍将其作为 DOMTimeStamp 实现。较早版本的 W3C 规范使用 DOMTimeStamp，允许你将 Date.now 用于当前时间。 let t0 = window.performance.now(); doSomething(); let t1 = window.performance.now(); console.log(&quot;doSomething函数执行了&quot; + (t1 - t0) + &quot;毫秒.&quot;) 和JavaScript中其他可用的时间类函数(比如Date.now)不同的是,window.performance.now()返回的时间戳没有被限制在一毫秒的精确度内,而它使用了一个浮点数来达到微秒级别的精确度. 另外一个不同点是,window.performance.now()是以一个恒定的速率慢慢增加的,它不会受到系统时间的影响(可能被其他软件调整)。另外，performance.timing.navigationStart + performance.now() 约等于 Date.now()。 看下面的例子： &amp;lt;!DOCTYPE html&amp;gt; &amp;lt;html&amp;gt; &amp;lt;head&amp;gt; &amp;lt;title&amp;gt;Script-based animation using requestAnimationFrame&amp;lt;/title&amp;gt; &amp;lt;style type=&quot;text/css&quot;&amp;gt; div { position: absolute; left: 10px; top:100px; padding: 50px; background: crimson; color: white; } &amp;lt;/style&amp;gt; &amp;lt;script type=&quot;text/javascript&quot;&amp;gt; var requestId = 0; var startime = 0; var lpos = 0; var elm; function init() { elm = document.getElementById(&quot;animated&quot;); } function render() { elm.style.left = ((lpos += 3) % 600) + &quot;px&quot;; requestId = window.requestAFrame(render); } function start() { if (window.performance.now) { startime = window.performance.now(); } else { startime = Date.now(); } requestId = window.requestAFrame(render); } function stop() { if (requestId) window.cancelAFrame(requestId); } // handle multiple browsers for requestAnimationFrame() window.requestAFrame = (function () { return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || // if all else fails, use setTimeout function (callback) { return window.setTimeout(callback, 1000 / 60); // shoot for 60 fps }; })(); // handle multiple browsers for cancelAnimationFrame() window.cancelAFrame = (function () { return window.cancelAnimationFrame || window.webkitCancelAnimationFrame || window.mozCancelAnimationFrame || window.oCancelAnimationFrame || function (id) { window.clearTimeout(id); }; })(); &amp;lt;/script&amp;gt; &amp;lt;/head&amp;gt; &amp;lt;body onload=&quot;init();&quot;&amp;gt; &amp;lt;div id=&quot;animated&quot;&amp;gt;Hello there.&amp;lt;/div&amp;gt; &amp;lt;button onclick=&quot;start()&quot;&amp;gt;Start&amp;lt;/button&amp;gt; &amp;lt;button onclick=&quot;stop()&quot;&amp;gt;Stop&amp;lt;/button&amp;gt; &amp;lt;/body&amp;gt; &amp;lt;/html&amp;gt; 参考文章 microsoft requestAnimationFrame 张鑫旭,CSS3动画那么强，requestAnimationFrame还有毛线用？ W3C CR, Timing control for script-based animations 朱永盛, 理解WebKit和Chromium: 渲染主循环（main loop)和requestAnimationFrame</summary></entry></feed>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>weili</name></author><category term="[&quot;JS&quot;]" /><summary type="html">集合 集合(set)是一种包含不同元素的数据结构 集合特性 集合中的成员是无序的 集合中不允许相同成员存在 在很多编程语言中，并不把集合当成一种数据类型。当你想要创建一个数据结构，用来保存一些独一无二的元素时，比如一段文本中用到 的单词，集合就变得非常有用 相关概念 空集: 不包含任何成员的集合称为空集 全集: 则是包含一切可能成员的集合 集合相等: 如果两个集合的成员完全相同，则称两个集合相等 子集: 如果一个集合中所有的成员都属于另外一个集合，则前一集合称为后一集合的子集 对集合的操作 并集: 将两个集合中的成员进行合并，得到一个新集合 交集: 两个集合中共同存在的成员组成一个新的集合 补集: 属于一个集合而不属于另一个集合的成员组成的集合 Set类 function Set() { this.dataStore = []; this.add = add; this.remove = remove; this.size = size; this.union = union; this.intersect = intersect; this.subset = subset; this.difference = difference; this.show = show; } show（） function show() { return this.dataStore; } add 方法 function add(data) { if (this.dataStore.indexOf(data) &amp;lt; 0) { this.dataStore.push(data); return true; } else { return false; } } 思路：先要确保数 组中不存在该数据。我们使用 indexOf() 检查新加入的元素在数组中是否存在。如果找到， 该方法返回该元素在数组中的位置;如果没有找到，该方法返回 -1。如果数组中还未包含该 元素，add() 方法会将新加元素保存到数组中并返回 true;否则，返回 false。 remove 方法 function remove(data) { var pos = this.dataStore.indexOf(data); if (pos &amp;gt; -1) { this.dataStore.splice(pos,1); return true; } else { return false; } } union() 并集操作 思路：首先将第一个集合里的成员悉数加入一个临时集合，然后检 查第二个集合中的成员，看它们是否也同时属于第一个集合。如果属于，则跳过该成员， 否则就将该成员加入临时集合 在定义 union() 方法前，先需要定义一个辅助方法 contains()，该方法检查一个成员是否 属于该集合 function contains(data) { if (this.dataStore.indexOf(data) &amp;gt; -1) { return true; } else { return false; } } function union(set) { var tempSet = new Set(); for (var i = 0; i &amp;lt; this.dataStore.length; ++i) { tempSet.add(this.dataStore[i]); } for (var i = 0; i &amp;lt; set.dataStore.length; ++i) { if (!tempSet.contains(set.dataStore[i])) { tempSet.dataStore.push(set.dataStore[i]); } } return tempSet; } intersect() 交集 每当发现第一 个集合的成员也属于第二个集合时，便将该成员加入一个新集合，这个新集合即为方法的 返回值 function intersect(set) { var tempSet = new Set(); for (var i = 0; i &amp;lt; this.dataStore.length; ++i) { if (set.contains(this.dataStore[i])) { tempSet.add(this.dataStore[i]); } } return tempSet; } subset() 在判断每个元素是否属于待比较集合前，该方法先使用 size() 方法对比两个集合的大小 function size() { return this.dataStore.length; } 思路： subset() 方法首先要确定该集合的长度是否小于待比较集合。如果该集合比待比较集合还要大，那么该集合肯定不会是待比较集合的一个子集。 当该集合的长度小于待比较集合时，再判断该集合内的成员是否都属于待比较集合。如果有任意一个成员不属于待比较集合，则返回 false，程序终止。如果一直比较完该集合的 最后一个元素，所有元素都属于待比较集合，那么该集合就是待比较集合的一个子集，该方法返回true。 function subset(set) { if (this.size() &amp;gt; set.size()) { return false; } else { for each (var member in this.dataStore) { if (!set.contains(member)) { return false; } } } return true; } difference() 返回一个新集合 function difference(set) { var tempSet = new Set(); for (var i = 0; i &amp;lt; this.dataStore.length; ++i) { if (!set.contains(this.dataStore[i])) { tempSet.add(this.dataStore[i]); } } return tempSet; }</summary></entry></feed>

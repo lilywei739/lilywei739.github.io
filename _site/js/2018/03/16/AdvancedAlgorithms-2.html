@@ -1,0 +1,341 @@
+<!DOCTYPE html><html lang="en">
+  <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>JS基础--高级算法--贪心算法 - Weili's Blog</title>
+<meta name="description" content="高级算法–贪心算法贪心算法总是会选择当下的最优解，而不去考虑这一次的选择会不会对未来的选择造成影响，目的是得到当前最优解。使用贪心算法的经典案例找零问题从商店购买了一些商品，找零 63 美分，店员要 怎样给你这些零钱呢?如果店员根据贪心算法来找零的话，他会给你两个 25 美分、一个 10 美分和三个 1 美分。在...">
+<link rel="canonical" href="http://localhost:4000/js/2018/03/16/AdvancedAlgorithms-2.html"><link rel="alternate" type="application/rss+xml" title="Weili's Blog" href="http://localhost:4000/feed.xml">
+<!-- for Safari on iOS https://developer.apple.com/ios/human-interface-guidelines/icons-and-images/app-icon/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/images/logo/icon-180x180.png"><link rel="apple-touch-icon" sizes="167x167" href="/assets/images/logo/icon-167x167.png"><link rel="apple-touch-icon" sizes="152x152" href="/assets/images/logo/icon-152x152.png"><link rel="apple-touch-icon" sizes="120x120" href="/assets/images/logo/icon-120x120.png"><link rel="shortcut icon" href="/assets/images/logo/icon-120x120.png">
+<!-- for Chrome on Android https://developer.chrome.com/multidevice/android/installtohomescreen -->
+<meta name="mobile-web-app-capable" content="yes"><link rel="icon" sizes="192x192" href="/assets/images/logo/icon-192x192.png">
+<!-- for Edge on Windows 10 https://msdn.microsoft.com/en-us/library/dn255024(v=vs.85).aspx --><meta name="msapplication-TileImage" content="/assets/images/logo/icon-144x144.png"><meta name="msapplication-square310x310logo" content="/assets/images/logo/icon-310x310.png"><meta name="msapplication-wide310x150logo" content="/assets/images/logo/icon-310x150.png"><meta name="msapplication-square150x150logo" content="/assets/images/logo/icon-150x150.png"><meta name="msapplication-square70x70logo" content="/assets/images/logo/icon-70x70.png">
+<meta name="msapplication-TileColor" content="#eeeeee"><link rel="stylesheet" href="/assets/css/blog.css">
+    <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="m-page-stage js-page-stage"><div class="m-page-content"><header class="m-page-header">
+  <div class="main clearfix">
+    <div class='site-logo'><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="24px" height="24px" viewBox="0 0 24 24">
+<style type="text/css">
+	.st0{fill:#666666;}
+</style>
+<path class="st0" d="M1.7,22.3c5.7-5.7,11.3-5.7,17,0c3.3-3.3,3.5-5.3,0.8-6c2.7,0.7,3.5-1.1,2.3-5.6s-3.3-5.2-6.3-2.1
+	c3-3,2.3-5.2-2.1-6.3S7,1.8,7.7,4.6C7,1.8,5,2.1,1.7,5.3C7.3,11,7.3,16.7,1.7,22.3"/>
+</svg><a title="Weili's blog
+" href="/">Weili's Blog</a></div>
+    <nav>
+      <ul><li><a href="/">Home</a></li><li><a href="/all.html">All</a></li><li><a href="/about.html">About</a></li></ul>
+    </nav>
+  </div>
+</header>
+<div class="m-page-main"><div class="m-post">
+	<div class="main js-main clearfix">
+		<div class="col-2 js-col-2">
+			<aside class="js-article-aside"><div class="m-toc js-toc"></div></aside>
+		</div>
+		<div class="col-1">
+			<article itemscope itemtype="http://schema.org/BlogPosting">
+				<meta itemprop="mainEntityOfPage" itemscope itemType="https://schema.org/WebPage"/>
+				<header class="main-header"><h1 itemprop="headline" itemprop="name headline">JS基础--高级算法--贪心算法</h1><div class="m-article-data clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="weili"/></meta><div class="other-wrapper"><div class="date-wrapper"><time class="article-meta" datetime="2018-03-16T00:00:00+08:00"
+          itemprop="datePublished">Mar 16, 2018
+        </time></div>
+  </div>
+</div>
+</header>
+				<div class="m-article-content js-article-content" itemprop="articleBody"><h1 id="高级算法贪心算法">高级算法–贪心算法</h1>
+
+<p>贪心算法总是会选择当下的最优解，而不去考虑这一次的选择会不会对未来的选择造成影响，目的是得到当前最优解。</p>
+
+<h2 id="使用贪心算法的经典案例">使用贪心算法的经典案例</h2>
+
+<h3 id="找零问题">找零问题</h3>
+
+<p>从商店购买了一些商品，找零 63 美分，店员要 怎样给你这些零钱呢?如果店员根据贪心算法来找零的话，他会给你两个 25 美分、一个 10 美分和三个 1 美分。在没有使用 50 美分的情况下这是最少的硬币数量。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function makeChange(origAmt, coins) {
+    var remainAmt = 0;
+
+    if (origAmt % .25 &lt; origAmt) {
+       coins[3] = parseInt(origAmt / .25);
+       remainAmt = origAmt % .25;
+       origAmt = remainAmt;
+    }
+
+    if (origAmt % .1 &lt; origAmt) {
+       coins[2] = parseInt(origAmt / .1);
+       remainAmt = origAmt % .1;
+       origAmt = remainAmt;
+    }
+
+    if (origAmt % .05 &lt; origAmt) {
+       coins[1] = parseInt(origAmt / .05);
+       remainAmt = origAmt % .05;
+       origAmt = remainAmt;
+    }
+
+    coins[0] = parseInt(origAmt / .01);
+}
+
+
+function showChange(coins) {
+    if (coins[3] &gt; 0) {
+        document.write("25 美分的数量 - " + coins[3] + " - " + coins[3] * .25); 
+    }
+
+    if (coins[2] &gt; 0) {
+        document.write("10 美分的数量 - " + coins[2] + " - " + coins[2] * .10);
+    }
+
+    if (coins[1] &gt; 0) {
+        document.write("5 美分的数量 - " + coins[1] + " - " + coins[1] * .05);
+    }
+
+    if (coins[0] &gt; 0) {
+        document.write("1 美分的数量 - " + coins[0] + " - " + coins[0] * .01);
+    } 
+}
+
+var origAmt = .63;
+var coins = [];
+makeChange(origAmt, coins);
+showChange(coins);
+
+========================
+结果如下：
+
+25美分的数量 - 2 - 0.5 
+10美分的数量 - 1 - 0.1 
+1美分的数量 - 3 - 0.03
+</code></pre></div></div>
+
+<p>makeChange() 函数从面值最高的 25 美分硬币开始，一直尝试使用这个面值去找零。总共 用到的 25 美分硬币数量会存储在 coins 数组中。如果剩余金额不到 25 美分，算法将会尝 试使用 10 美分硬币去找零，用到的 10 美分硬币总总数也会存储在 coins 数组里。接下来 算法会以相同的方式使用 5 美分和 1 美分来找零。</p>
+
+<p>在所有面额都可用且数量不限的情况下，这种方案总能找到最优解。如果某种面额不可用，比如 5 美分，则会得到一个次优解。</p>
+
+<h3 id="背包问题之贪心算法解决方案">背包问题之贪心算法解决方案</h3>
+
+<p>如果用贪心算法处理背包问题，它有一个前提放入背包的物品从本质上说是连续的，那 么可以简单地通过物品的单价除以单位体积来确定物品的价值，先装价值最高的物品直到该物品装完或者将背包装满，接着装价值次高的物品，直到 这种物品也装完或将背包装满，以此类推。</p>
+
+<p>思路是</p>
+
+<ul>
+  <li>(1) 背包的容量为 W，物品的价格为 v，重量为 w。</li>
+  <li>(2) 根据 v/w 的比率对物品排序。</li>
+  <li>(3) 按比率的降序方式来考虑物品。</li>
+  <li>(4) 尽可能多地放入每个物品。</li>
+</ul>
+
+<p>如给出了四个物品的重量、价格和比率</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>物品</th>
+      <th style="text-align: center">A</th>
+      <th style="text-align: right">B</th>
+      <th>C</th>
+      <th>D</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>价格</td>
+      <td style="text-align: center">50</td>
+      <td style="text-align: right">140</td>
+      <td>60</td>
+      <td>60</td>
+    </tr>
+    <tr>
+      <td>尺寸</td>
+      <td style="text-align: center">5</td>
+      <td style="text-align: right">20</td>
+      <td>10</td>
+      <td>12</td>
+    </tr>
+    <tr>
+      <td>比率</td>
+      <td style="text-align: center">10</td>
+      <td style="text-align: right">7</td>
+      <td>6</td>
+      <td>5</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function ksack(values, weights, capacity) {
+    var load = 0;
+    var i = 0;
+    var w = 0;
+    while (load &lt; capacity &amp;&amp; i &lt; 4) {
+       if (weights[i] &lt;= (capacity-load)) {
+          w += values[i];
+          load += weights[i];
+       } else {
+       
+          var r = (capacity-load)/weights[i];
+          w += r * values[i];
+          load += weights[i];
+       } 
+       ++i;
+    }
+    return w;
+}
+
+var items = ["A", "B", "C", "D"];
+var values = [50, 140, 60, 60];
+var weights = [5, 20, 10, 12];
+var capacity = 30;
+
+document.write(ksack(values, weights, capacity)); // 显示 220
+</code></pre></div></div>
+</div></article>
+		</div>
+	</div>
+</div><script src="//cdn.bootcss.com/toc/0.3.2/toc.min.js"></script>
+<script type="text/javascript">
+	window.throttle = function(func, wait) {
+	  var args, result, thisArg, timeoutId, lastCalled = 0;
+
+	  function trailingCall() {
+	    lastCalled = new Date;
+	    timeoutId = null;
+	    result = func.apply(thisArg, args);
+	  }
+	  return function() {
+	    var now = new Date,
+	      remaining = wait - (now - lastCalled);
+
+	    args = arguments;
+	    thisArg = this;
+
+	    if (remaining <= 0) {
+	      clearTimeout(timeoutId);
+	      timeoutId = null;
+	      lastCalled = now;
+	      result = func.apply(thisArg, args);
+	    } else if (!timeoutId) {
+	      timeoutId = setTimeout(trailingCall, remaining);
+	    }
+	    return result;
+	  };
+	}
+	$(function() {
+	  var $window = $(window);
+	  var $pageStage = $('.js-page-stage');
+	  var $pageMain = $('.js-main');
+	  var $pageFooter = $('.js-page-footer');
+	  var $articleContent = $('.js-article-content');
+	  var $articleAside = $('.js-article-aside');
+	  var $toc = $('.js-toc');
+		var $col2 = $('.js-col-2');
+	  var hasTitle = $articleContent.find('h1,h2,h3').length > 0;
+	  function asideSticky() {
+	    return $col2.css('display') !== 'none' && $pageStage.hasClass('has-toc');
+	  }
+
+	  function setTocClass() {
+	    if (hasTitle) {
+	      !$pageStage.hasClass('has-toc') && $pageStage.addClass('has-toc');
+	    }
+	  }
+
+	  setTocClass();
+
+	  function setAsideTOC() {
+	    var asideTop, asideLeft, scrollBottom, asideBottomTop, lastScrollTop;
+
+	    function init() {
+	      var asideOffset = $articleAside.offset();
+	      var footerOffset = $pageFooter.offset();
+	      var mainOffset = $pageMain.offset();
+	      asideTop = mainOffset.top;
+	      asideHeight = $toc.outerHeight() + parseInt($articleAside.css('padding-top'), 10) + parseInt($articleAside.css('padding-bottom'), 10);
+	      asideLeft = mainOffset.left + $pageMain.outerWidth() - $articleAside.outerWidth() - parseInt($pageMain.css('padding-right'), 10);
+	      scrollBottom = footerOffset.top - asideHeight;
+	      asideBottomTop = scrollBottom - mainOffset.top;
+	    }
+
+	    function setAside(force) {
+	      force !== true && (force = false);
+	      var scrollTop = $window.scrollTop();
+	      if (scrollTop >= asideTop && scrollTop <= scrollBottom) {
+	        (!force && lastScrollTop >= asideTop && lastScrollTop <= scrollBottom) ||
+	        $articleAside.addClass('fixed').css({
+	          left: asideLeft + 'px',
+	          top: 0
+	        });
+	      } else if (scrollTop < asideTop) {
+	        (!force && lastScrollTop < asideTop) ||
+	        $articleAside.removeClass('fixed').css({
+	          left: 0,
+	          top: 0
+	        });
+	      } else {
+	        (!force && lastScrollTop > scrollBottom) ||
+	        $articleAside.removeClass('fixed').css({
+	          left: 0,
+	          top: asideBottomTop + 'px'
+	        });
+	      }
+	      lastScrollTop = scrollTop;
+	    }
+	    asideSticky() && (init(), setAside());
+	    $window.on('scroll', function() {
+	      asideSticky() && setAside();
+	    });
+	    $window.on('resize', throttle(function() {
+	      setTocClass();
+	      asideSticky() && (init(), setAside(true));
+	    }, 100));
+	    setTimeout(init, 4000);
+	  }
+	  setTimeout(setAsideTOC, 1000);
+
+	  $toc.toc({
+	    'selectors': 'h1,h2,h3',
+	    'container': '.js-article-content',
+	  });
+	});
+</script></div>
+</div>
+</div><div class="m-page-footer js-page-footer">
+  <div class="main">
+    <aside><div class="follow-me"><ul itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="weili">
+    <link itemprop="url" href="http://localhost:4000/"></ul></div>
+</aside>
+    <footer class="site-info">
+      <p>© Weili's Blog 2018</p>
+      <p><a title="" href="https://github.com/lilywei739/lilywei739.github.io">VIEW IN GITHUB</a></p>
+      <p>Powered by <a title="Jekyll is a simple, blog-aware, static site generator." href="http://jekyllrb.com/">Jekyll</a> & <a
+        title="TeXt is a succinct theme for blogging." href="https://github.com/kitian616/jekyll-TeXt-theme">TeXt Theme</a>.</p>
+    </footer>
+  </div>
+</div>
+<script>
+      $(function() {
+        // display coding language
+        var $articleContent = $('.m-post, .m-page').find('.m-article-content'), $this;
+        $articleContent.children('.highlight').each(function() {
+          $this = $(this);
+          $this.attr('data-lang', $this.find('code').attr('data-lang'));
+        });
+        $articleContent.children('h1, h2, h3, h4, h5, h6').each(function() {
+          $this = $(this);
+          $this.append($('<a class="anchor" aria-hidden="true"></a>').text('#'));
+        });
+        $articleContent.on('click', '.anchor', function(e) {
+          var targetId = $(this).parent().attr('id');
+          scrollAnimateTo($('#' + targetId).offset().top, 400, function() {
+            console.log(666)
+            window.history.replaceState(null, '', window.location.href.split('#')[0] + '#' + targetId);
+          });
+        });
+        function scrollAnimateTo(destination, duration, callback) {
+          var $body = $('html, body'), bodyScrollTop = $body.scrollTop();
+          if(bodyScrollTop === destination) { return; }
+          $body.animate({ scrollTop: destination }, duration, callback);
+        }
+      });
+    </script></body>
+</html>
