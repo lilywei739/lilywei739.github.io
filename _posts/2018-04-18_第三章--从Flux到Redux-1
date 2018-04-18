@@ -1,0 +1,178 @@
+---
+layout: post
+title: 第三章--从Flux到Redux-1  
+subtitle: ""
+tags:
+    - JS 
+    - 深入浅出React和Redux  
+---
+
+
+## Flux
+
+了解Redux之前，先了解一下Flux，Redux可以认为是Flux思想的另一种实现方式，Flux的观点--单向数据流
+
+
+### Flux的历史
+
+2013年facebook推出react的同时也推出了flux，两者相辅相成，facebook认为两者结合一起才能构建大型的javascript应用
+
+做一个容易理解的对比，React是用来替换jQuery的，那么Flux就是以替换Backbone.js、Ember.js等MVC一族框架为目的。
+
+在MVC( Model-View-Controller）的世界里，React相当于v（也就是View）的部分，只涉及页面的渲染，一旦涉及应用的数据管理部分，还是交给Model和Controller，不过，Flux认为MVC框架存在问题，它推翻了MVC框架，并用一个新的思维来管理数据流转。
+
+### MVC框架的缺陷
+
+MVC框架一种前端应用框架类型。把应用分为三个部分：M--V--C三个部分的逻辑不再累述。
+
+在当时来看，相比把业务逻辑和界面渲染逻辑混在一起，MVC框架要先进得多。这种方式得到了认可，连Facebook最初也是用这种框架。
+
+但是后来Facebook的工程部门逐渐发现，MVC很快就变得非常复杂”。
+
+每当想要增加一个新的功能时，对代码的修改很容易引入新的bug，因为不同模块之间的依赖关系让系统变得“脆弱而且不可预测”。
+
+根据Facebook描述的MVC框架里可以看到，Model和View之间缠绕着蜘蛛网一样复杂的依赖关系，有的是Model调用了View，有的是View调用了Model，很乱
+
+MVC框架提出的数据流很理想，用户请求先到达Controller，由Controller调用Model获得数据，然后把数据交给View，但是，在实际框架实现中，总是允许View和Model可以直接通信，总的来说在**MVC中让View和Model直接对话就是灾难**
+
+但是在服务器端使用过MVC框架的就很容易理解和接受Flux。而对于已经有很多浏览器端MVC框架经验的人，往往还要费一点劲才能明白MVC和Flux的差异。
+
+造成这种认知差别的主要原因，就是服务器端MVC框架往往就是每个请求就只在Controller-Model-View三者之间走一圈，结果就返回给浏览器去渲染或者其他处理了，然后这个请求生命周期的Controller-Model-View就可以回收销毁了，这是一个严格意义的单向数据流；
+
+对于浏览器端MVC框架，存在用户的交互处理，界面渲染出来之后，Model和View依然存在于浏览器中，这时候就会诱惑开发者为了简便，让现存的Model和View直接对话。
+
+**对于MVC框架，为了让数据流可控，Controller应该是中心，当View要传递消息给Model时，应该调用Controller的方法，同样，当Model要更新View时，也应该通过Controller引发新的渲染**
+
+
+### Flux的逻辑
+
+后来Facebook推出了Flux，一个flux应用包含四个部分：
+
+* Dispatcher，处理动作分发，维持Store之间的依赖关系；
+* Store，负责存储数据和处理数据相关逻辑；
+* Action，驱动Dispatcher的JavaScript对象；
+* View，视图部分，负责显示用户界面。
+
+
+#### MVC 和 Flux 的区别和对比
+
+如果非要把Flux和MVC做一个结构对比：
+
+* Flux的Dispatcher相当于MVC的Controller
+* Flux的Store相当于MVC的Model
+* Flux的View当然就对应MVC的View了
+* 至于多出来的这个Action，可以理解为对应给MVC框架的用户请求。
+
+* 在MVC框架中，系统能够提供什么样的服务，通过Controller暴露函数来实现。每增加一个功能，Controller往往就要增加一个函数；
+
+* 在Flux的世界里，新增加功能并不需要Dispatcher增加新的函数，Dispatcher自始至终只需要暴露一个函数Dispatch，当需要增加新的功能时，要做的是增加一种新的Action类型，Dispatcher的对外接口并不用改变。
+
+* 当需要扩充应用所能处理的“请求”时，MVC方法就需要增加新的Controller，而对于Flux则只是增加新的Action
+
+
+### Flux应用
+
+从一个例子入手，更好的了解Flux
+
+1 安装
+
+> npm i - -save flux
+
+1. Dispatcher
+
+创造一个Dispatcher，几乎所有应用都只需要拥有一个Dispatcher,对于我们这个简单的应用更不例外。在src/AppDispatcher中，创造这个唯一的Dispatcher对象，代码如下：
+
+> import {Dispatcher} from ’flux ’; 
+> export default new D工spatcher();
+
+引人flux库中的Dispatcher类，然后创造一个新的对象作为这个文件的默认输出。在其他代码中，将会引用这个全局唯一的Dispatcher对象。Dispatcher存在的作用，就是用来派发action，接下来就来定义应用中涉及的action。
+
+2. action 
+
+action顾名思义代表一个“动作”，不过这个动作只是一个普通的JavaScript对象，代表一个动作的纯数据，类似于DOMAPI中的事件（event）。甚至和事件相比，action其实还是更加纯粹的数据对象，因为事件往往还包含一些方法，比如点击事件就有preventDefault方法，但是action对象不自带方法，就是纯粹的数据。
+
+作为管理，action对象必须有一个名为type的字段，代表这个action对象的类型，为了记录日志和debug方便，这个type应该是字符串类型。
+
+定义action通常需要两个文件，一个定义action的类型，一个定义action的构造函数（也称为actioncreator）。分成两个文件的主要原因是在Store中会根据action类型做不同操作，也就有单独导人action类型的需要。
+
+
+在src/ActionTypes.js中，定义action的类型，代码如下：
+
+> export const INCREMENT =’increment’
+> export const DECREMENT =’decrement ’; 
+
+在这个例子中，用户只能做两个动作，一个是点击“＋”按钮，一个是点击钮，所以只有两个action类型则CREMENT和DECREMENT。
+
+现在在src/Actions. 文件中定义action构造函数：
+
+> import * as ActionTypes from ’. /Action Types. js; 
+> import AppDispatcher from ’./AppDispatcher.js’; 
+
+```
+export const increment = (counterCaption) => { 
+	AppDispatcher.dispatch({ 
+		type: ActionTypes.INCREMENT, 
+		counterCaption: counterCaption,
+	)}
+
+	export const decrement = (counterCaption) => {
+		AppDispatcher.dispatch({
+			type: ActionTypes.DECREMENT, 
+			cunterCaption:counterCaption,
+		)}
+	)}
+}
+```
+
+出于业界习惯，这个文件被命名为Actions，但是要注意里面定义的并不是action对象本身，而是能够产生并派发action对象的函数。
+
+在Actions文件中，引入了ActionTypes和AppDispatcher，是要直接使用Dispatcher。
+
+这个Actions导出了两个action构造函数increment和decrement，当这两个函数被调用的时候，创造了对应的action对象，并立即通过AppDispatcher，dispatch函数派发出去。派发出去的action对象最后怎么样了呢？在下面关于Store的部分可以看到。
+
+3. Store
+
+一个Store也是一个对象，这个对象存储应用状态，同时还要接受Dispatcher派发的动作，根据动作来决定是否要更新应用状态。接下来我们创造Store相关的代码，因为使用Flux之后代码文件数量会增多，再把所有源代码文件都放在src目录下就不容易管理了。所以在src下创建一个子目录stores，在这个子目录里面放置所有的Store代码。
+
+在前面章节的ControPanel应用例子里，有三个Counter组件，还有一个统计三个Counter计数值之和的功能，遇到的麻烦就是这两者之间的状态如何同步的问题，现在创造两个Store，一个是为Counter组件服务的CounterStore，另一个就是为总数服务的SummaryStore。首先添加CounterStore，放在src/stores/Count巳rStore文件中
+
+先看定义CounterStore的代码
+
+```
+const counterValues = {
+	’First’:0, 
+	’Second ’:10, 
+	’Third ’:30 };
+
+const CounterStore = Object.assign({}, EventEmitter.prototype, {
+	getCounterValues: funct工on() {
+		return counterValues;
+	},
+
+	emitChange: function() {
+		this.emit(CHANGE EVENT);
+	}，
+
+	addChangeListener: function (callback) {
+		this.on(CHANGE EVENT, callback);
+	}，
+
+	removeChangeListener: function(callback) {
+		this.removeListener(CHANGE EVENT, callback);
+	}
+)};
+```
+
+
+当Store的状态发生变化的时候，需要通知应用的其他部分做必要的响应。在应用中，做出响应的部分当然就是View部分，但是不应该硬编码这种联系，应该用消息的方式建立Store和View的联系。这就是为什么让CounterStore扩展了EventEmitter.prototype，等于让CounterStore成了EventEmitter对象，一个EventEmitter实例对象支持下列相关函数。
+
+* emit函数，可以广播一个特定事件，第一个参数是字符串类型的事件名称；
+* on函数，可以增加一个挂在这个EventEmitter对象特定事件上的处理函数，第一个参数是字符串类型的事件名称，第二个参数是处理函数；
+* removeListener函数，和on函数做的事情相反，删除挂在这个EventEmitter对象
+
+特定事件上的处理函数，和on函数一样，第一个参数是事件名称，第二个参数是处理函数。要注意，如果要调用removeListener函数，就一定要保留对处理函数的引用。
+
+对于CounterStore对象，emitChange、addChangeListener和removeChangeListener函数就是利用EventEmitter上述的三个函数完成对CounterStore状态更新的广播、添加监昕函数和删除监昕函数等操作。
+
+CounterStore函数还提供一个getCounterValues函数，用于让应用中其他模块可以读取当前的计数值，当前的计数值存储在文件模块级的变量counterValues中。
+
