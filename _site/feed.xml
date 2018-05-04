@@ -1,5 +1,397 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.7.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2018-05-04T18:45:38+08:00</updated><id>http://localhost:4000/</id><title type="html">Weili’s Blog</title><subtitle>Weili's blog
-</subtitle><author><name>weili</name></author><entry><title type="html">HTML 5.2?</title><link href="http://localhost:4000/2018/05/03/HTML5_2.html" rel="alternate" type="text/html" title="HTML 5.2?" /><published>2018-05-03T00:00:00+08:00</published><updated>2018-05-03T00:00:00+08:00</updated><id>http://localhost:4000/2018/05/03/HTML5_2</id><content type="html" xml:base="http://localhost:4000/2018/05/03/HTML5_2.html">&lt;p&gt;一个月前，HTML 5.2 正式成为了 W3C 的推荐标准（REC）。当一个规范到达 REC 阶段，就意味着它已经正式得到了 W3C 成员和理事长的认可。并且 W3C 将正式推荐浏览器厂商部署、web 开发者实现此规范。&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.7.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2018-05-04T18:47:47+08:00</updated><id>http://localhost:4000/</id><title type="html">Weili’s Blog</title><subtitle>Weili's blog
+</subtitle><author><name>weili</name></author><entry><title type="html"></title><link href="http://localhost:4000/2018/05/04/2018-3-23-anvt_G2.html" rel="alternate" type="text/html" title="" /><published>2018-05-04T18:47:47+08:00</published><updated>2018-05-04T18:47:47+08:00</updated><id>http://localhost:4000/2018/05/04/2018-3-23-anvt_G2</id><content type="html" xml:base="http://localhost:4000/2018/05/04/2018-3-23-anvt_G2.html">&lt;h2 id=&quot;什么是g2&quot;&gt;什么是G2?&lt;/h2&gt;
+&lt;p&gt;=======
+title: AntV-G2使用总结
+category: [‘g2’] [‘图形化数据’] 
+—&lt;/p&gt;
+
+&lt;h1 id=&quot;什么是g2-1&quot;&gt;什么是G2?&lt;/h1&gt;
+&lt;blockquote&gt;
+  &lt;blockquote&gt;
+    &lt;blockquote&gt;
+      &lt;blockquote&gt;
+        &lt;blockquote&gt;
+          &lt;blockquote&gt;
+            &lt;blockquote&gt;
+              &lt;p&gt;51d42c2a5d9ff67329220238e0f78dc25c36f318:_posts/2018-3-23-anvt_G2.md&lt;/p&gt;
+            &lt;/blockquote&gt;
+          &lt;/blockquote&gt;
+        &lt;/blockquote&gt;
+      &lt;/blockquote&gt;
+    &lt;/blockquote&gt;
+  &lt;/blockquote&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;G2 是一套基于可视化编码的图形语法，以数据驱动，具有高度的易用性和扩展性，用户无需关注各种繁琐的实现细节，一条语句即可构建出各种各样的可交互的统计图表。&lt;/p&gt;
+
+&lt;p&gt;就是这个样子：&lt;/p&gt;
+
+&lt;h3 id=&quot;引入方法&quot;&gt;引入方法&lt;/h3&gt;
+
+&lt;p&gt;1、直接引入&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;script src=&quot;https://gw.alipayobjects.com/os/antv/assets/g2/3.0.5-beta.5/g2.min.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;2、npm功安装完成之后，import 或 require 引用&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm install @antv/g2 --save
+
+import G2 from '@antv/g2';
+
+const chart = new G2.Chart({
+  container: 'c1',
+  width: 600,
+  height: 300
+});
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;如何使用&quot;&gt;如何使用？&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;创建 div 图表容器&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;div id=&quot;c1&quot;&amp;gt;&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;定制图表进行绘制
+    &lt;ul&gt;
+      &lt;li&gt;创建 Chart 图表对象，指定图表所在的容器 ID；&lt;/li&gt;
+      &lt;li&gt;载入图表数据源；&lt;/li&gt;
+      &lt;li&gt;使用图形语法进行图表的绘制；&lt;/li&gt;
+      &lt;li&gt;渲染图表。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;数据源
+const data = [
+  { genre: 'Sports', sold: 275 },
+  { genre: 'Strategy', sold: 115 },
+  { genre: 'Action', sold: 120 },
+  { genre: 'Shooter', sold: 350 },
+  { genre: 'Other', sold: 150 }
+]; // G2 对数据源格式的要求，仅仅是 JSON 数组，数组的每个元素是一个标准 JSON 对象
+
+// Step 1: 创建 Chart 对象
+const chart = new G2.Chart({
+  container: 'c1', // 指定图表容器 ID
+  width : 600, // 指定图表宽度
+  height : 300 // 指定图表高度
+});
+
+// Step 2: 载入数据源
+chart.source(data);
+
+// Step 3：创建图形语法，绘制柱状图，由 genre 和 sold 两个属性决定图形位置，genre 映射至 x 轴，sold 映射至 y 轴
+chart.interval().position('genre*sold').color('genre')
+
+// Step 4: 渲染图表
+chart.render();
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;可视化框架的构成&quot;&gt;可视化框架的构成&lt;/h3&gt;
+
+&lt;p&gt;一个可视化框架需要四部分：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;数据处理模块，对数据进行加工的模块，包括一些数据处理方法。例如：合并、分组、排序、过滤、计算统计信息等&lt;/li&gt;
+  &lt;li&gt;图形映射模块，将数据映射到图形视觉通道的过程。例如：将数据映射成颜色、位置、大小等&lt;/li&gt;
+  &lt;li&gt;图形展示模块，决定使用何种图形来展示数据，点、线、面等图形标记&lt;/li&gt;
+  &lt;li&gt;辅助信息模块，用于说明视觉通道跟数据的映射关系，例如：坐标轴、图例、辅助文本等&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;数据处理模块&quot;&gt;数据处理模块&lt;/h3&gt;
+
+&lt;p&gt;数据处理模块已经从 G2 中独立出来，作为 DataSet 模块单独提供，主要包含下面几个模块：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;DataSet 包含多个 DataView, 管理多个数据源&lt;/li&gt;
+  &lt;li&gt;DataView 每个 DataView 对应一个数据源，可以理解为一个图表，可以进行布局（Layout)、数据加工（Transform)&lt;/li&gt;
+  &lt;li&gt;Layout 对数据进行布局&lt;/li&gt;
+  &lt;li&gt;Transform 对数据进行加工、统计等处理，包括对地图数据的处理，这个很强大&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;图形映射模块&quot;&gt;图形映射模块&lt;/h3&gt;
+
+&lt;p&gt;图形映射模块完成了将数据映射到数学空间
+[0-1]，再从数学空间映射到画布空间的整个过程，主要包括三个模块：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Scale 将数据映射到 0-1 之间，方便映射到画布上&lt;/li&gt;
+  &lt;li&gt;Attr 图形属性，数据映射到图形的属性（视觉通道），包括位置、颜色、大小、形状等&lt;/li&gt;
+  &lt;li&gt;Coord 展示图形需用到的坐标系，将数据映射到位置的属性（视觉通道）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;辅助信息&quot;&gt;辅助信息&lt;/h3&gt;
+
+&lt;p&gt;辅助信息用于标示数据在各种图形属性上的映射，使得用户更容易的理解数据，主要包括下面几个模块：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Axis 坐标轴，辅助用户识别图形所在的位置，判断数据大小的辅助元素&lt;/li&gt;
+  &lt;li&gt;Tooltip 提示信息，用户鼠标在画布上移动时，实时出现的鼠标附近的数据信息&lt;/li&gt;
+  &lt;li&gt;Guide 其他辅助元素，可以在图上添加辅助的文本、辅助图片、辅助线等，增强用户对图形的认知。&lt;/li&gt;
+  &lt;li&gt;Legend 图例，辅助用户识别图形的大小、颜色、形状，通常用于判断数据对应图形的分类&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;图形展示&quot;&gt;图形展示&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Chart 图表，展示图形的入口，会生成一个画布，同时管理数据到图形映射的所有周期&lt;/li&gt;
+  &lt;li&gt;View 视图，一个画布上可以显示多张图表，每个图表有各自的绘图区域、数据源、坐标系等信息&lt;/li&gt;
+  &lt;li&gt;Geom 数据映射到的图形标识，G2 中的图形标识有：点、线、路径、面积、多边形等&lt;/li&gt;
+  &lt;li&gt;Shape 更加细分的图形标识，例如，点可以分为圆点、正方形、十字等，线可以分为点线、折线、曲线等&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;数据处理模块之&quot;&gt;数据处理模块之&lt;/h3&gt;
+
+&lt;p&gt;数据处理分为两个大的步骤：数据连接（Connector）和数据转换（Transform）。&lt;/p&gt;
+
+&lt;p&gt;Connector 负责导入和归一化数据（譬如导入 CSV 数据，导入 GeoJSON 数据等），
+Transform 负责进行各种数据转换操作（譬如图布局、数据统计、数据补全等）。&lt;/p&gt;
+
+&lt;p&gt;通过这样的分层，支持了前端社区非常全面的数据处理相关的算法和模块；其次，在单个数据视图（DataView）的基础上增加了数据集（DataSet）的概念，通过统一的 DataSet 管理，实现了各个数据视图之间的状态同步和交互。&lt;/p&gt;
+
+&lt;p&gt;一、DataSet&lt;/p&gt;
+
+&lt;p&gt;dataSet主要通过state状态管理多个dataview视图，实现多图联动，或者关联视图。
+dataView则是对应的是每一个数据源，通过connector来接入不同类型的数据，通过tranform进行数据的转换或者过滤。最后输出我们理想的数据，dataSet是与g2分离的，需要用到的时候可以加载
+在图形映射模块上，&lt;/p&gt;
+
+&lt;p&gt;DataSet的使用语法&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// step1 创建 dataset 指定状态量
+const ds = new DataSet({
+  state: {
+    year: '2010'
+  }
+});
+
+// step2 创建 DataView
+const dv = ds.createView().source(data);
+
+dv.transform({
+  type: 'filter',
+  callback(row) {
+    return row.year === ds.state.year;
+  }
+});
+
+
+// step3 引用 DataView
+chart.source(dv);
+
+// step4 更新状态量
+ds.setState('year', '2012');
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;DataSet 主要完成了以下功能：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;源数据的解析，将csv, dsv,geojson 转成标准的JSON，查看Connector&lt;/li&gt;
+  &lt;li&gt;加工数据，包括 filter,map,fold(补数据) 等操作，查看 Transform&lt;/li&gt;
+  &lt;li&gt;统计函数，汇总统计、百分比、封箱 等统计函数，查看 Transform&lt;/li&gt;
+  &lt;li&gt;特殊数据处理，包括 地理数据、矩形树图、桑基图、文字云 的数据处理，查看 Transform&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;（一）Connector&lt;/p&gt;
+
+&lt;p&gt;接入语法：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dv.source(data, {
+  type: connectorName,   connectorName//就是下面几种数据类型
+  ...otherOptions
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;可接入的数据类型：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;default 默认 //普通二维数据&lt;/li&gt;
+  &lt;li&gt;dsv&lt;/li&gt;
+  &lt;li&gt;csv&lt;/li&gt;
+  &lt;li&gt;tsv&lt;/li&gt;
+  &lt;li&gt;GeoJSON  //地理数据&lt;/li&gt;
+  &lt;li&gt;TopoJSON //树结构数据&lt;/li&gt;
+  &lt;li&gt;hierarchy&lt;/li&gt;
+  &lt;li&gt;graph    //图数据&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;可以这样理解，以上几种类型，分别对应着几种实例，可以使用该种实例提供的方法，比如GeoJSON这种类型，在制作地图时需要用到的类型，以中国地图为例，传入中国的省市名称，这个类型能根据这些地名提供对应的地理位置区域，从而画出地图中对应的区域。&lt;/p&gt;
+
+&lt;p&gt;（二）Transform&lt;/p&gt;
+
+&lt;p&gt;功能很强大，只概括几种常见的：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;过滤&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dv.transform({
+  type: 'filter',
+  callback(row) { // 判断某一行是否保留，默认返回true
+    return row.year &amp;gt; 1998;
+  }
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;数据加工&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dv.transform({
+  type: 'map',
+  callback(row) { // 加工数据后返回新的一行，默认返回行数据本身
+    row.newCol = row.xxx + row.yyy;
+    return row;
+  }
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;字段重命名&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dv.transform({
+  type: 'rename',
+  map: {
+    xxx: 'yyy' // row.xxx 会被替换成 row.yyy
+  }
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;数据排序&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dv.transform({
+  type: 'sort',
+  callback(a, b) { // 排序依据，和原生js的排序callback一致
+    return a.year - b.year;
+  }
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;percent 总和百分比&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dv.transform({
+  type: 'percent',
+  field: 'sold',           // 统计销量
+  dimension: 'year',       // 每年的占比
+  groupBy: [ 'category' ], // 以不同产品类别为分组
+  as: 'percent'            // 结果存储在 percent 字段
+});
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;几个字段的意思：&lt;/p&gt;
+
+&lt;p&gt;field 是统计发生的字段（求和，求百分比），
+dimension 是统计的维度字段，也就是”每个不同的 dimension 下，
+field 值占总和的百分比”，
+groupBy 则是分组字段，每一个分组内部独立求百分比（每一个分组内，最后的 percent 字段相加之和为 1）。&lt;/p&gt;
+
+&lt;p&gt;再看一下其它几个非常重要的属性：&lt;/p&gt;
+
+&lt;h2 id=&quot;scale-度量&quot;&gt;Scale 度量&lt;/h2&gt;
+
+&lt;p&gt;定义：度量 Scale，是数据空间到图形空间的转换桥梁，负责原始数据到 [0, 1] 区间数值的相互转换工作，从原始数据到 [0, 1] 区间的转换我们称之为归一化操作。不同的数据类型对应不同的度量，如&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;连续数据类型，如 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 一组数据，在其原始数值范围 [0, 10] 内通过度量转换至 [0, 1] 范围的数据，变成 0, 0.1, 0.2, …, 0.9, 1，同时通过 invert 反转，还需要度量后的数值恢复至原始值；&lt;/li&gt;
+  &lt;li&gt;分类数据类型，如 [‘男’, ‘女’] 这一组数据，通过度量转换后变成 [0, 1]，同样时通过 invert 反转可恢复至原始值。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;在 G2 中度量用于完成以下功能：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;将数据转换到 [0, 1] 范围内，方便将数据映射到位置、颜色、大小等图形属性；&lt;/li&gt;
+  &lt;li&gt;将归一化后的数据反转回原始值。例如 分类a 转换成 0.2，那么对应 0.2 需要反转回 分类a；&lt;/li&gt;
+  &lt;li&gt;划分数据，用于在坐标轴、图例显示数值的范围、分类等信息。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Scale 的功能非常简单易理解，但是在 G2 的数据处理流程中起着非常重要的承接作用，&lt;/p&gt;
+
+&lt;p&gt;根据数据分类方式，G2 提供了不同的度量类型：&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;数据类型&lt;/td&gt;
+      &lt;td&gt;度量类型&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;连续&lt;/td&gt;
+      &lt;td&gt;linear、log、pow、time&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;分类（非连续）&lt;/td&gt;
+      &lt;td&gt;cat、timeCat&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;对于 G2 生成的所有度量对象，均拥有以下属性，这些属性均可以由用户进行配置。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{
+  type: {string}, // 度量的类型
+  range: {array}, // 数值范围区间，即度量转换的范围，默认为 [0, 1]
+  alias: {string}, // 为数据属性定义别名，用于图例、坐标轴、tooltip 的个性化显示
+  ticks: {array}, // 存储坐标轴上的刻度点文本信息
+  tickCount: {number}, // 坐标轴上刻度点的个数，不同的度量类型对应不同的默认值
+  formatter: {function}, // 回调函数，用于格式化坐标轴刻度点的文本显示，会影响数据在坐标轴、图例、tooltip 上的显示
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;默认生成度量的机制如下：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;查看用户是否制定了对应字段的数据类型，查看列定义&lt;/li&gt;
+  &lt;li&gt;如果没有，判断字段的第一条数据的字段类型&lt;/li&gt;
+  &lt;li&gt;如果数据中不存在对应的字段，则为 ‘identity’&lt;/li&gt;
+  &lt;li&gt;如果是数字则为 ‘linear’；&lt;/li&gt;
+  &lt;li&gt;如果是字符串，判定是否是时间格式，如果是时间格式则为时间类型 ‘time’,&lt;/li&gt;
+  &lt;li&gt;否则是分类类型 ‘cat’&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;度量中的每个类型的定义，这里只说个大概，具体看官网上的解释吧。&lt;/p&gt;
+
+&lt;h2 id=&quot;图表的组成&quot;&gt;图表的组成&lt;/h2&gt;
+
+&lt;h3 id=&quot;坐标轴-axis&quot;&gt;坐标轴 axis&lt;/h3&gt;
+
+&lt;p&gt;通常包含两个坐标轴，在笛卡尔坐标系下，分别为 x 轴和 y 轴，在极坐标轴下，则分别由角度和半径2个维度构成。 每个坐标轴由坐标轴线、刻度线、刻度文本、标题以及网格线组成。&lt;/p&gt;
+
+&lt;h3 id=&quot;图例-legend&quot;&gt;图例 legend&lt;/h3&gt;
+
+&lt;p&gt;图例作为图表的辅助元素，用于标定不同的数据类型以及数据的范围，用于辅助阅读图表，帮助用户在图表中进行数据的筛选过滤。&lt;/p&gt;
+
+&lt;h3 id=&quot;几何标记-geom&quot;&gt;几何标记 geom&lt;/h3&gt;
+
+&lt;p&gt;几何标记，即我们所说的点、线、面这些几何图形，在 G2 中几何标记的类型决定了生成图表的类型。也就是数据被可视化后的实际表现，不同的几何标都对应自己能识别的图形属性。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;G2 的核心既是将数据从数据空间转换到图形空间。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;提示信息-tooltip&quot;&gt;提示信息 tooltip&lt;/h3&gt;
+
+&lt;p&gt;当鼠标悬停在某个点上时，会以框的形式显示当前点对应的数据的信息，比如该点的值，数据单位等。数据提示框内提示的信息还可以通过格式化函数动态指定。&lt;/p&gt;
+
+&lt;h3 id=&quot;辅助标记-guide&quot;&gt;辅助标记 guide&lt;/h3&gt;
+
+&lt;p&gt;当需要在图表上绘制一些辅助线、辅助框或者图片时，比如增加平均值线、最高值线或者标示明显的范围区域时，可以使用辅助标记 guide。&lt;/p&gt;
+
+&lt;h2 id=&quot;g2的dom结构也是canvas&quot;&gt;G2的dom结构也是canvas&lt;/h2&gt;
+
+&lt;p&gt;它是由三层 canvas 构成的，这三层 canvas 分别对应 chart 对象的如下三个属性：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;frontCanvas 最上层 canvas，图例 legend、提示信息 tooltip、和 text tag html 这三种类型的辅助标记 guide 在这一层绘制；&lt;/li&gt;
+  &lt;li&gt;canvas 中间层，绘制图表的主体内容几何标记 geom；&lt;/li&gt;
+  &lt;li&gt;backCanvas 最下层 canvas，坐标轴 axis 和 line image rect arc 这四种类型的辅助标记 guide 在这一层绘制。&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>weili</name></author></entry><entry><title type="html">HTML 5.2?</title><link href="http://localhost:4000/2018/05/03/HTML5_2.html" rel="alternate" type="text/html" title="HTML 5.2?" /><published>2018-05-03T00:00:00+08:00</published><updated>2018-05-03T00:00:00+08:00</updated><id>http://localhost:4000/2018/05/03/HTML5_2</id><content type="html" xml:base="http://localhost:4000/2018/05/03/HTML5_2.html">&lt;p&gt;一个月前，HTML 5.2 正式成为了 W3C 的推荐标准（REC）。当一个规范到达 REC 阶段，就意味着它已经正式得到了 W3C 成员和理事长的认可。并且 W3C 将正式推荐浏览器厂商部署、web 开发者实现此规范。&lt;/p&gt;
 
 &lt;p&gt;在 HTML 5.2 中有一些添加和删除,&lt;a href=&quot;https://www.w3.org/TR/html52/changes.html#changes&quot;&gt;更多详细参考–HTML 5.2 变动内容&lt;/a&gt;&lt;/p&gt;
 
@@ -139,7 +531,159 @@ menu 与 menuitem：曾经用于创建导航与内容菜单
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.01//EN&quot; &quot;http://www.w3.org/TR/html4/strict.dtd&quot;&amp;gt;&lt;/span&gt; 
 
 &lt;span class=&quot;cp&quot;&gt;&amp;lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&amp;gt;&lt;/span&gt; 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>weili</name></author><category term="JS" /><category term="HTML" /><summary type="html">一个月前，HTML 5.2 正式成为了 W3C 的推荐标准（REC）。当一个规范到达 REC 阶段，就意味着它已经正式得到了 W3C 成员和理事长的认可。并且 W3C 将正式推荐浏览器厂商部署、web 开发者实现此规范。 在 HTML 5.2 中有一些添加和删除,更多详细参考–HTML 5.2 变动内容 增加的新特性 dialog 原生对话框 在 web 中，对话框比比皆是，但是它们的实现方式都各有不同。对话框很难实现可访问性，这导致大多数的对话框对那些不方便以视觉方式访问网页的用户来说都是不可用的。 新的 dialog 元素旨在改变这种状况，它提供了一种简单的方式来实现模态对话框。之后我会单独写一篇文章专门介绍这个元素的工作方式，在此先简单介绍一下。 由一个 &amp;lt;dialog&amp;gt; 元素创建对话框： &amp;lt;dialog&amp;gt; &amp;lt;h2&amp;gt;Dialog Title&amp;lt;/h2&amp;gt; &amp;lt;p&amp;gt;Dialog content and other stuff will go here&amp;lt;/p&amp;gt; &amp;lt;/dialog&amp;gt; 默认情况下，对话框会在视图中（以及 DOM 访问中）隐藏，只有设置 open 属性后，对话框才会显示。 &amp;lt;dialog open&amp;gt; open 属性可以通过调用 show() 与 close() 方法开启或关闭，任何 HTMLDialogElement 都可以调用这两个方法。 &amp;lt;button id=&quot;open&quot;&amp;gt;Open Dialog&amp;lt;/button&amp;gt; &amp;lt;button id=&quot;close&quot;&amp;gt;Close Dialog&amp;lt;/button&amp;gt; &amp;lt;dialog id=&quot;dialog&quot;&amp;gt; &amp;lt;h2&amp;gt;Dialog Title&amp;lt;/h2&amp;gt; &amp;lt;p&amp;gt;Dialog content and other stuff will go here&amp;lt;/p&amp;gt; &amp;lt;/dialog&amp;gt; &amp;lt;script&amp;gt; const dialog = document.getElementById(&quot;dialog&quot;); document.getElementById(&quot;open&quot;).addEventListener(&quot;click&quot;, () =&amp;gt; { dialog.show(); }); document.getElementById(&quot;close&quot;).addEventListener(&quot;click&quot;, () =&amp;gt; { dialog.close(); }); &amp;lt;/script&amp;gt; Chrome 浏览器已经支持 元素，Firefox 也即将支持（behind a flag） 主流浏览器兼容情况的数据 在 iFrame 中使用 Payment Request API（支付请求 API） Payment Request API 是支付结算表单的原生替代方案。它将支付信息置于浏览器处理，用来代替之前各个网站各不相同的结算表单，旨在为用户提供一种标准、一致的支付方式。 在 HTML 5.2 之前，这种支付请求无法在文档嵌入的 iframe 中使用，导致第三方嵌入式支付解决方案（如 Stripe, Paystack）基本不可能使用这个 API，因为它们通常是在 iframe 中处理支付接口。 为此，HTML 5.2 引入了用于 iframe 的 allowpaymentrequest 属性，允许用户在宿主网页中访问 iframe 的 Payment Request API。 &amp;lt;iframe allowpaymentrequest&amp;gt; 苹果的图标尺寸 如要定义网页图标，我们可以在文档的 head 中使用 link rel 元素。如果要定义不同尺寸的图标，我们可以使用 sizes 属性。 &amp;lt;link rel=&quot;icon&quot; sizes=&quot;16x16&quot; href=&quot;path/to/icon16.png&quot;&amp;gt; &amp;lt;link rel=&quot;icon&quot; sizes=&quot;32x32&quot; href=&quot;path/to/icon32.png&quot;&amp;gt; 这个属性虽然纯粹是个建议，但如果提供了多种尺寸的图标，可以让用户代理（UA）决定使用哪种尺寸的图标。在大多数设备有着不同的“最佳”图标尺寸时尤为重要。 在 HTML 5.2 之前，sizes 属性仅能用于 rel 为 icon 的 link 元素中。然而，苹果的 iOS 设备不支持 sizes 属性。为了解决这个问题，苹果自己引入了一个他们设备专用的 rel appple-touch-icon 用于定义他们设备上使用的图标。 在 HTML 5.2 中，规范定义了 sizes 属性不再仅仅可用于 rel 为 icon 的元素，也能用于 rel 为 apple-touch-icon 的元素。这样可以让我们为不同的苹果设备提供不同尺寸的图标。不过直到现在为止，据我所知苹果的设备还是不支持 sizes 属性。在将来苹果最终支持此规范时，它将派上用场。 新的有效实践 除了新特性之外，HTML 5.2 还将一些之前无效的 HTML 写法认定为有效。 多个 main 元素 main 元素代表网页的主要内容。虽然不同网页的重复内容可以放在 header、section 或者其它元素中，但 main 元素是为页面上的特定内容保留的。因此在 HTML 5.2 之前，main 元素在 DOM 中必须唯一才能令页面有效。 随着单页面应用（SPA）的普及，要坚持这个原则变得困难起来。在同一个网页的 DOM 中可能会有多个 main 元素，但在任意时刻只能给用户展示其中的一个。 使用 HTML 5.2，我们只要保证同一时刻只有一个 main 元素可见，就能在我们的标签中使用多个 main 元素。与此同时其它的 main 元素必须使用 hidden 属性进行隐藏。 &amp;lt;main&amp;gt;...&amp;lt;/main&amp;gt; &amp;lt;main hidden&amp;gt;...&amp;lt;/main&amp;gt; &amp;lt;main hidden&amp;gt;...&amp;lt;/main&amp;gt; 我们都知道，通过 CSS 来隐藏元素的方法有很多，但多余的 main 元素必须使用 hidden 属性进行隐藏。任何其它隐藏此元素的方法（如 display: none; 和 visibility: hidden;）都将无效。 legend 中的标题元素 在表单中，legend 元素表示 fieldset 表单域中的标题。在 HTML 5.2 前，legend 元素的内容必须为纯文本。而现在，它可以包含标题元素（h1等）了。 &amp;lt;fieldset&amp;gt; &amp;lt;legend&amp;gt;&amp;lt;h2&amp;gt;Basic Information&amp;lt;/h2&amp;gt;&amp;lt;/legend&amp;gt; &amp;lt;!-- Form fields for basic information --&amp;gt; &amp;lt;/fieldset&amp;gt; &amp;lt;fieldset&amp;gt; &amp;lt;legend&amp;gt;&amp;lt;h2&amp;gt;Contact Information&amp;lt;/h2&amp;gt;&amp;lt;/legend&amp;gt; &amp;lt;!-- Form fields for contact information --&amp;gt; &amp;lt;/fieldset&amp;gt; 当我们想用 fieldset 对表单中不同部分进行分组时，这个特性非常有用。在这种情况下使用标题元素是有意义的，因为这能让那些依赖于文档大纲的用户可以轻松导航至表单的对应部分。 移除的特性 在 HTML 5.2 中移除了一些元素，具体为： keygen：曾经用于帮助表单生成公钥 menu 与 menuitem：曾经用于创建导航与内容菜单 新的无效实践 最后，一些开发实践方式被规定不再有效。 在 p 中不再能包含行内、浮动、块类型的子元素 在 HTML 5.2 中，p 元素中唯一合法的子元素只能是文字内容。这也意味着以下类型的元素不再能嵌套于段落标签 p 内： 行内块（Inline blocks） 行内表格（Inline tables） 浮动块与固定位置块 不再支持严格文档类型（Strict Doctypes） &amp;lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.01//EN&quot; &quot;http://www.w3.org/TR/html4/strict.dtd&quot;&amp;gt; &amp;lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&amp;gt;</summary></entry><entry><title type="html">basic-knowledge(一).md</title><link href="http://localhost:4000/js/2018/03/31/basic-knowledge-1.html" rel="alternate" type="text/html" title="basic-knowledge(一).md" /><published>2018-03-31T00:00:00+08:00</published><updated>2018-03-31T00:00:00+08:00</updated><id>http://localhost:4000/js/2018/03/31/basic-knowledge-1</id><content type="html" xml:base="http://localhost:4000/js/2018/03/31/basic-knowledge-1.html">&lt;h1 id=&quot;项目小知识点&quot;&gt;项目小知识点&lt;/h1&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>weili</name></author><category term="JS" /><category term="HTML" /><summary type="html">一个月前，HTML 5.2 正式成为了 W3C 的推荐标准（REC）。当一个规范到达 REC 阶段，就意味着它已经正式得到了 W3C 成员和理事长的认可。并且 W3C 将正式推荐浏览器厂商部署、web 开发者实现此规范。 在 HTML 5.2 中有一些添加和删除,更多详细参考–HTML 5.2 变动内容 增加的新特性 dialog 原生对话框 在 web 中，对话框比比皆是，但是它们的实现方式都各有不同。对话框很难实现可访问性，这导致大多数的对话框对那些不方便以视觉方式访问网页的用户来说都是不可用的。 新的 dialog 元素旨在改变这种状况，它提供了一种简单的方式来实现模态对话框。之后我会单独写一篇文章专门介绍这个元素的工作方式，在此先简单介绍一下。 由一个 &amp;lt;dialog&amp;gt; 元素创建对话框： &amp;lt;dialog&amp;gt; &amp;lt;h2&amp;gt;Dialog Title&amp;lt;/h2&amp;gt; &amp;lt;p&amp;gt;Dialog content and other stuff will go here&amp;lt;/p&amp;gt; &amp;lt;/dialog&amp;gt; 默认情况下，对话框会在视图中（以及 DOM 访问中）隐藏，只有设置 open 属性后，对话框才会显示。 &amp;lt;dialog open&amp;gt; open 属性可以通过调用 show() 与 close() 方法开启或关闭，任何 HTMLDialogElement 都可以调用这两个方法。 &amp;lt;button id=&quot;open&quot;&amp;gt;Open Dialog&amp;lt;/button&amp;gt; &amp;lt;button id=&quot;close&quot;&amp;gt;Close Dialog&amp;lt;/button&amp;gt; &amp;lt;dialog id=&quot;dialog&quot;&amp;gt; &amp;lt;h2&amp;gt;Dialog Title&amp;lt;/h2&amp;gt; &amp;lt;p&amp;gt;Dialog content and other stuff will go here&amp;lt;/p&amp;gt; &amp;lt;/dialog&amp;gt; &amp;lt;script&amp;gt; const dialog = document.getElementById(&quot;dialog&quot;); document.getElementById(&quot;open&quot;).addEventListener(&quot;click&quot;, () =&amp;gt; { dialog.show(); }); document.getElementById(&quot;close&quot;).addEventListener(&quot;click&quot;, () =&amp;gt; { dialog.close(); }); &amp;lt;/script&amp;gt; Chrome 浏览器已经支持 元素，Firefox 也即将支持（behind a flag） 主流浏览器兼容情况的数据 在 iFrame 中使用 Payment Request API（支付请求 API） Payment Request API 是支付结算表单的原生替代方案。它将支付信息置于浏览器处理，用来代替之前各个网站各不相同的结算表单，旨在为用户提供一种标准、一致的支付方式。 在 HTML 5.2 之前，这种支付请求无法在文档嵌入的 iframe 中使用，导致第三方嵌入式支付解决方案（如 Stripe, Paystack）基本不可能使用这个 API，因为它们通常是在 iframe 中处理支付接口。 为此，HTML 5.2 引入了用于 iframe 的 allowpaymentrequest 属性，允许用户在宿主网页中访问 iframe 的 Payment Request API。 &amp;lt;iframe allowpaymentrequest&amp;gt; 苹果的图标尺寸 如要定义网页图标，我们可以在文档的 head 中使用 link rel 元素。如果要定义不同尺寸的图标，我们可以使用 sizes 属性。 &amp;lt;link rel=&quot;icon&quot; sizes=&quot;16x16&quot; href=&quot;path/to/icon16.png&quot;&amp;gt; &amp;lt;link rel=&quot;icon&quot; sizes=&quot;32x32&quot; href=&quot;path/to/icon32.png&quot;&amp;gt; 这个属性虽然纯粹是个建议，但如果提供了多种尺寸的图标，可以让用户代理（UA）决定使用哪种尺寸的图标。在大多数设备有着不同的“最佳”图标尺寸时尤为重要。 在 HTML 5.2 之前，sizes 属性仅能用于 rel 为 icon 的 link 元素中。然而，苹果的 iOS 设备不支持 sizes 属性。为了解决这个问题，苹果自己引入了一个他们设备专用的 rel appple-touch-icon 用于定义他们设备上使用的图标。 在 HTML 5.2 中，规范定义了 sizes 属性不再仅仅可用于 rel 为 icon 的元素，也能用于 rel 为 apple-touch-icon 的元素。这样可以让我们为不同的苹果设备提供不同尺寸的图标。不过直到现在为止，据我所知苹果的设备还是不支持 sizes 属性。在将来苹果最终支持此规范时，它将派上用场。 新的有效实践 除了新特性之外，HTML 5.2 还将一些之前无效的 HTML 写法认定为有效。 多个 main 元素 main 元素代表网页的主要内容。虽然不同网页的重复内容可以放在 header、section 或者其它元素中，但 main 元素是为页面上的特定内容保留的。因此在 HTML 5.2 之前，main 元素在 DOM 中必须唯一才能令页面有效。 随着单页面应用（SPA）的普及，要坚持这个原则变得困难起来。在同一个网页的 DOM 中可能会有多个 main 元素，但在任意时刻只能给用户展示其中的一个。 使用 HTML 5.2，我们只要保证同一时刻只有一个 main 元素可见，就能在我们的标签中使用多个 main 元素。与此同时其它的 main 元素必须使用 hidden 属性进行隐藏。 &amp;lt;main&amp;gt;...&amp;lt;/main&amp;gt; &amp;lt;main hidden&amp;gt;...&amp;lt;/main&amp;gt; &amp;lt;main hidden&amp;gt;...&amp;lt;/main&amp;gt; 我们都知道，通过 CSS 来隐藏元素的方法有很多，但多余的 main 元素必须使用 hidden 属性进行隐藏。任何其它隐藏此元素的方法（如 display: none; 和 visibility: hidden;）都将无效。 legend 中的标题元素 在表单中，legend 元素表示 fieldset 表单域中的标题。在 HTML 5.2 前，legend 元素的内容必须为纯文本。而现在，它可以包含标题元素（h1等）了。 &amp;lt;fieldset&amp;gt; &amp;lt;legend&amp;gt;&amp;lt;h2&amp;gt;Basic Information&amp;lt;/h2&amp;gt;&amp;lt;/legend&amp;gt; &amp;lt;!-- Form fields for basic information --&amp;gt; &amp;lt;/fieldset&amp;gt; &amp;lt;fieldset&amp;gt; &amp;lt;legend&amp;gt;&amp;lt;h2&amp;gt;Contact Information&amp;lt;/h2&amp;gt;&amp;lt;/legend&amp;gt; &amp;lt;!-- Form fields for contact information --&amp;gt; &amp;lt;/fieldset&amp;gt; 当我们想用 fieldset 对表单中不同部分进行分组时，这个特性非常有用。在这种情况下使用标题元素是有意义的，因为这能让那些依赖于文档大纲的用户可以轻松导航至表单的对应部分。 移除的特性 在 HTML 5.2 中移除了一些元素，具体为： keygen：曾经用于帮助表单生成公钥 menu 与 menuitem：曾经用于创建导航与内容菜单 新的无效实践 最后，一些开发实践方式被规定不再有效。 在 p 中不再能包含行内、浮动、块类型的子元素 在 HTML 5.2 中，p 元素中唯一合法的子元素只能是文字内容。这也意味着以下类型的元素不再能嵌套于段落标签 p 内： 行内块（Inline blocks） 行内表格（Inline tables） 浮动块与固定位置块 不再支持严格文档类型（Strict Doctypes） &amp;lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.01//EN&quot; &quot;http://www.w3.org/TR/html4/strict.dtd&quot;&amp;gt; &amp;lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&amp;gt;</summary></entry><entry><title type="html">Promise 对象</title><link href="http://localhost:4000/2018/04/03/Promise.html" rel="alternate" type="text/html" title="Promise 对象" /><published>2018-04-03T00:00:00+08:00</published><updated>2018-04-03T00:00:00+08:00</updated><id>http://localhost:4000/2018/04/03/Promise</id><content type="html" xml:base="http://localhost:4000/2018/04/03/Promise.html">&lt;h1 id=&quot;promise-对象&quot;&gt;Promise 对象&lt;/h1&gt;
+
+&lt;p&gt;ES6中，新增了Promise对象，它主要用于处理异步回调代码，让代码不至于陷入回调嵌套的死路中。&lt;/p&gt;
+
+&lt;h2 id=&quot;promise本质&quot;&gt;Promise本质&lt;/h2&gt;
+
+&lt;p&gt;Promise本质上是一个构造器 ，专门用来构造对象的。自己身上有all、reject、resolve等方法，原型上有then、catch等的方法，它接受一个函数作为参数&lt;/p&gt;
+
+&lt;h2 id=&quot;promise的几个重要方法&quot;&gt;Promise的几个重要方法&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;promise Promise.prototype.then( resolveFn, [rejectFn] )
+
+  @param resolveFn( ...args )  
+    函数，当Promise实例状态变为“完成”状态时会被执行，  
+    用于将从当前promise中取出reresolve( ...args )中得到的参数（...args），  
+    并进行相应的操作，比如将（args）传入另一个封装了promise构造器的函数，  
+    并将该函数执行完成后返回的promise实例返回  
+    @param ...args  
+      参数列表，当前promise实例处于“完成”状态时，通过resolve(...args)得到的值。  
+  @param [rejectFn( ...args )]  
+    函数，可选，当Promise实例状态变为“失败”状态时会被执行，  
+    用于将从当前promise中取出reject( ...args )中得到的参数（...args），  
+    并进行相应的操作，比如将（args）传入另一个封装了promise构造器的函数，  
+    并将该函数执行完成后返回的promise实例返回  
+    @param ...args  
+      参数列表，当前promise处于“完成”状态时，通过resolve(...args)得到的值。  
+  @return promise  
+    promise对象，resolveFn或rejectFn执行后的返回值，  
+    我们一般会在fn中调用另一个封装了promise构造器的函数，  
+    然后将其返回给then()方法，then()方法再将其作为then的返回值返回给当前链式调用处，  
+    如果fn()返回的不是一个promise对象，then()会帮我们将fn()返回值封装成promise对象，  
+    这样，我们就可以确保能够链式调用then()方法，并取得当前promise中获得的函数运行结果。  
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;then()方法定义在Promise.prototype上，用于为Promise实例添加状态更改时的回调函数，相当于监听一样。
+当当前promise实例状态变为“完成”状态时，resolveFn函数自动执行。
+当当前promise实例状态变为“失败”状态时，rejectFn函数自动执行。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;promise Promise.prototype.catch( rejectFn )
+
+  @param rejectFn( ...args )  
+    函数，当Promise实例状态变为“失败”状态时会被执行，  
+    用于将从当前promise中取出reject( ...args )中得到的参数（...args），  
+    并进行相应的操作，比如将（args）传入另一个封装了promise构造器的函数，  
+    并将该函数执行完成后返回的promise实例返回  
+    @param ...args  
+      参数列表，当前promise处于“完成”状态时，通过resolve(...args)得到的值。  
+  @return promise  
+    promise对象，rejectFn执行后的返回值，  
+    如果fn()返回的不是一个promise对象，catch()会帮我们将fn()返回值封装成promise对象，  
+    并将其返回，以确保promise能够被继续链式调用下去。  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;该方法其实是“.then(null, rejectFn)”的别名，用于指定状态转为“失败”时的回调函数。
+建议不要在then()方法中定义第二个参数，而应该使用catch()，结构层次会更好一些。
+如果没有使用catch()方法指定错误错误处理的回调函数，promise实例抛出的错误不会传递到外层代码。
+如果promise状态已经变为了resolved（“失败”状态），再抛出任何错误，都是无效的。
+promise实例中抛出的错误具有冒泡的特性，它会一直向后传递，直到被捕获为止。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Promise.all( [promise1, promise2, …, promisen] )
+
+  @param [promise1, promise2, ..., promisen]
+    可遍历对象，一个由promise对象构成的可遍历对象，常用数组表示
+  @return promise
+    promise对象
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Promise.all()用于将多个Promise实例包装成一个新的Promise实例，并返回。
+Promise.all()方法接受一个由Promise实例组成的可遍历对象。如果可遍历对象中存在有不是Promise实例的元素，就会调用Promise.resolve()方法，将其转为Promise实例。
+本文的可遍历对象，指的是那些具有Iterator接口的对象，如Array、WeakSet、Map、Set、WeakMap等函数的实例。&lt;/p&gt;
+
+&lt;p&gt;Promise.all()方法返回的Promise实例的状态分成两种情况：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;可遍历对象中的Promise实例状态全变为 完成 状态时，该实例的状态才会转变为 完成 状态，此时，可遍历对象中的Promise实例的返回值会组成一个数组，传给该实例的回调。&lt;/li&gt;
+  &lt;li&gt;可遍历对象只要存在Promise实例状态转为 失败 状态时，该实例的状态就会转变为 失败 状态，此时，第一个转为 失败 状态的Promise实例的返回值会传给该实例的回调。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Promise.race( [promise1, promise2, …, promisen] )
+  @param [promise1, promise2, ..., promisen]
+    可遍历对象，一个由promise对象构成的可遍历对象，常用数组表示
+  @return promise
+    promise对象
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Promise.race()与Promise.all()用法基本上一致，功能上也几乎相同，唯一的差异就是： 
+Promise.race()方法返回的Promise实例的状态分成两种情况：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;可遍历对象只要存在Promise实例状态转为 完成 状态时，该实例的状态才会转变为 完成 状态，此时，第一个转为 完成 状态的Promise实例的返回值，会作为该实例的then()方法的回调函数的参数。&lt;/li&gt;
+  &lt;li&gt;可遍历对象只要存在Promise实例状态转为 失败 状态时，该实例的状态就会转变为 失败 状态，此时，第一个转为 失败 状态的Promise实例的返回值，会作为该实例的then()方法的回调函数的参数。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;promise Promise.resolve( notHaveThenMethodObject )
+  @param notHaveThenMethodObject
+    对象，一个原型链上不具有then()方法的对象
+  @return promise
+    promise对象
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;如果Promise.resolve()的参数的原型链上不具有then方法，则返回一个新的Promise实例，且其状态为 完成 状态，并且会将它的参数作为该实例的then()方法的回调函数的参数。&lt;/p&gt;
+
+&lt;p&gt;如果Promise.resolve()的参数是一个Promise实例（原型链上具有then方法），则将其原封不动地返回。&lt;/p&gt;
+
+&lt;p&gt;Promise.resolve()方法允许调用时不使用任何参数。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;promise Promise.reject( something )
+  @param something
+    任意值，用于传递给返回值的then()方法的回调函数参数的值
+  @return promise
+    promise对象
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Promise.reject方法的用法和resolve方法基本一样，只是它返回的Promise实例，状态都是 失败 状态。
+Promise.reject方法的参数会被作为该实例的then()方法的回调函数的参数。
+Promise.resolve()方法允许调用时不使用任何参数。&lt;/p&gt;
+
+&lt;p&gt;Promise构造器回调函数参数中的 resolve 和 reject 和Promise构造器方法中的 reject() 和 resolve() 效果是不一样的。
+Promise构造器回调函数参数中的 resolve 和 reject 用于更改当前Promise的状态，并将其值返回给当前Promise的then()方法的参数。 Promise构造器方法中的 reject() 和 resolve() 可以直接返回一个已经改变状态的新的Promise对象。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Promise.reject() Promise.resolve()&lt;/li&gt;
+  &lt;li&gt;new Promise((resolve, reject)=&amp;gt;{ resolve(…) 或 reject(…) })&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Promise.prototype.done( [resolveFn], [rejectFn] )
+  @param [resolveFn( ...args )]  
+    函数，可选，当Promise实例状态变为“完成”状态时会被执行，  
+    用于将从当前promise中取出reresolve( ...args )中得到的参数（...args），  
+    并进行相应的操作，比如将（args）传入另一个封装了promise构造器的函数，  
+    并将该函数执行完成后返回的promise实例返回  
+    @param ...args  
+      参数列表，当前promise实例处于“完成”状态时，通过resolve(...args)得到的值。  
+  @param [rejectFn( ...args )]  
+    函数，可选，当Promise实例状态变为“失败”状态时会被执行，  
+    用于将从当前promise中取出reject( ...args )中得到的参数（...args），  
+    并进行相应的操作，比如将（args）传入另一个封装了promise构造器的函数，  
+    并将该函数执行完成后返回的promise实例返回  
+    @param ...args  
+      参数列表，当前promise处于“完成”状态时，通过resolve(...args)得到的值。
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;不管以then()或catch()方法结尾，若最后一个方法抛出错误，则在内部可能无法捕捉到该错误，外界也无法获得，为了避免这种情况发生，Promise构造器的原型链上提供了done()方法。&lt;/p&gt;
+
+&lt;p&gt;promise.done()方法总是处于会调链的低端，它可以捕捉到任何在回调链上抛出的错误，并将其抛出。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Promise.prototype.finally( simpleFn )
+  @param simpleFn  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;一个普通函数，这个普通函数无论如何都会被执行。&lt;br /&gt;
+finally方法指定，不管Promise对象最后状态如何，都会执行的操作。&lt;/p&gt;</content><author><name>weili</name></author><category term="JS" /><category term="Promise" /><category term="前端" /><summary type="html">Promise 对象 ES6中，新增了Promise对象，它主要用于处理异步回调代码，让代码不至于陷入回调嵌套的死路中。 Promise本质 Promise本质上是一个构造器 ，专门用来构造对象的。自己身上有all、reject、resolve等方法，原型上有then、catch等的方法，它接受一个函数作为参数 Promise的几个重要方法 promise Promise.prototype.then( resolveFn, [rejectFn] ) @param resolveFn( ...args ) 函数，当Promise实例状态变为“完成”状态时会被执行， 用于将从当前promise中取出reresolve( ...args )中得到的参数（...args）， 并进行相应的操作，比如将（args）传入另一个封装了promise构造器的函数， 并将该函数执行完成后返回的promise实例返回 @param ...args 参数列表，当前promise实例处于“完成”状态时，通过resolve(...args)得到的值。 @param [rejectFn( ...args )] 函数，可选，当Promise实例状态变为“失败”状态时会被执行， 用于将从当前promise中取出reject( ...args )中得到的参数（...args）， 并进行相应的操作，比如将（args）传入另一个封装了promise构造器的函数， 并将该函数执行完成后返回的promise实例返回 @param ...args 参数列表，当前promise处于“完成”状态时，通过resolve(...args)得到的值。 @return promise promise对象，resolveFn或rejectFn执行后的返回值， 我们一般会在fn中调用另一个封装了promise构造器的函数， 然后将其返回给then()方法，then()方法再将其作为then的返回值返回给当前链式调用处， 如果fn()返回的不是一个promise对象，then()会帮我们将fn()返回值封装成promise对象， 这样，我们就可以确保能够链式调用then()方法，并取得当前promise中获得的函数运行结果。 then()方法定义在Promise.prototype上，用于为Promise实例添加状态更改时的回调函数，相当于监听一样。 当当前promise实例状态变为“完成”状态时，resolveFn函数自动执行。 当当前promise实例状态变为“失败”状态时，rejectFn函数自动执行。 promise Promise.prototype.catch( rejectFn ) @param rejectFn( ...args ) 函数，当Promise实例状态变为“失败”状态时会被执行， 用于将从当前promise中取出reject( ...args )中得到的参数（...args）， 并进行相应的操作，比如将（args）传入另一个封装了promise构造器的函数， 并将该函数执行完成后返回的promise实例返回 @param ...args 参数列表，当前promise处于“完成”状态时，通过resolve(...args)得到的值。 @return promise promise对象，rejectFn执行后的返回值， 如果fn()返回的不是一个promise对象，catch()会帮我们将fn()返回值封装成promise对象， 并将其返回，以确保promise能够被继续链式调用下去。 该方法其实是“.then(null, rejectFn)”的别名，用于指定状态转为“失败”时的回调函数。 建议不要在then()方法中定义第二个参数，而应该使用catch()，结构层次会更好一些。 如果没有使用catch()方法指定错误错误处理的回调函数，promise实例抛出的错误不会传递到外层代码。 如果promise状态已经变为了resolved（“失败”状态），再抛出任何错误，都是无效的。 promise实例中抛出的错误具有冒泡的特性，它会一直向后传递，直到被捕获为止。 Promise.all( [promise1, promise2, …, promisen] ) @param [promise1, promise2, ..., promisen] 可遍历对象，一个由promise对象构成的可遍历对象，常用数组表示 @return promise promise对象 Promise.all()用于将多个Promise实例包装成一个新的Promise实例，并返回。 Promise.all()方法接受一个由Promise实例组成的可遍历对象。如果可遍历对象中存在有不是Promise实例的元素，就会调用Promise.resolve()方法，将其转为Promise实例。 本文的可遍历对象，指的是那些具有Iterator接口的对象，如Array、WeakSet、Map、Set、WeakMap等函数的实例。 Promise.all()方法返回的Promise实例的状态分成两种情况： 可遍历对象中的Promise实例状态全变为 完成 状态时，该实例的状态才会转变为 完成 状态，此时，可遍历对象中的Promise实例的返回值会组成一个数组，传给该实例的回调。 可遍历对象只要存在Promise实例状态转为 失败 状态时，该实例的状态就会转变为 失败 状态，此时，第一个转为 失败 状态的Promise实例的返回值会传给该实例的回调。 Promise.race( [promise1, promise2, …, promisen] ) @param [promise1, promise2, ..., promisen] 可遍历对象，一个由promise对象构成的可遍历对象，常用数组表示 @return promise promise对象 Promise.race()与Promise.all()用法基本上一致，功能上也几乎相同，唯一的差异就是： Promise.race()方法返回的Promise实例的状态分成两种情况： 可遍历对象只要存在Promise实例状态转为 完成 状态时，该实例的状态才会转变为 完成 状态，此时，第一个转为 完成 状态的Promise实例的返回值，会作为该实例的then()方法的回调函数的参数。 可遍历对象只要存在Promise实例状态转为 失败 状态时，该实例的状态就会转变为 失败 状态，此时，第一个转为 失败 状态的Promise实例的返回值，会作为该实例的then()方法的回调函数的参数。 promise Promise.resolve( notHaveThenMethodObject ) @param notHaveThenMethodObject 对象，一个原型链上不具有then()方法的对象 @return promise promise对象 如果Promise.resolve()的参数的原型链上不具有then方法，则返回一个新的Promise实例，且其状态为 完成 状态，并且会将它的参数作为该实例的then()方法的回调函数的参数。 如果Promise.resolve()的参数是一个Promise实例（原型链上具有then方法），则将其原封不动地返回。 Promise.resolve()方法允许调用时不使用任何参数。 promise Promise.reject( something ) @param something 任意值，用于传递给返回值的then()方法的回调函数参数的值 @return promise promise对象 Promise.reject方法的用法和resolve方法基本一样，只是它返回的Promise实例，状态都是 失败 状态。 Promise.reject方法的参数会被作为该实例的then()方法的回调函数的参数。 Promise.resolve()方法允许调用时不使用任何参数。 Promise构造器回调函数参数中的 resolve 和 reject 和Promise构造器方法中的 reject() 和 resolve() 效果是不一样的。 Promise构造器回调函数参数中的 resolve 和 reject 用于更改当前Promise的状态，并将其值返回给当前Promise的then()方法的参数。 Promise构造器方法中的 reject() 和 resolve() 可以直接返回一个已经改变状态的新的Promise对象。 Promise.reject() Promise.resolve() new Promise((resolve, reject)=&amp;gt;{ resolve(…) 或 reject(…) }) Promise.prototype.done( [resolveFn], [rejectFn] ) @param [resolveFn( ...args )] 函数，可选，当Promise实例状态变为“完成”状态时会被执行， 用于将从当前promise中取出reresolve( ...args )中得到的参数（...args）， 并进行相应的操作，比如将（args）传入另一个封装了promise构造器的函数， 并将该函数执行完成后返回的promise实例返回 @param ...args 参数列表，当前promise实例处于“完成”状态时，通过resolve(...args)得到的值。 @param [rejectFn( ...args )] 函数，可选，当Promise实例状态变为“失败”状态时会被执行， 用于将从当前promise中取出reject( ...args )中得到的参数（...args）， 并进行相应的操作，比如将（args）传入另一个封装了promise构造器的函数， 并将该函数执行完成后返回的promise实例返回 @param ...args 参数列表，当前promise处于“完成”状态时，通过resolve(...args)得到的值。 不管以then()或catch()方法结尾，若最后一个方法抛出错误，则在内部可能无法捕捉到该错误，外界也无法获得，为了避免这种情况发生，Promise构造器的原型链上提供了done()方法。 promise.done()方法总是处于会调链的低端，它可以捕捉到任何在回调链上抛出的错误，并将其抛出。 Promise.prototype.finally( simpleFn ) @param simpleFn 一个普通函数，这个普通函数无论如何都会被执行。 finally方法指定，不管Promise对象最后状态如何，都会执行的操作。</summary></entry><entry><title type="html">basic-knowledge(一).md</title><link href="http://localhost:4000/js/2018/03/31/basic-knowledge-1.html" rel="alternate" type="text/html" title="basic-knowledge(一).md" /><published>2018-03-31T00:00:00+08:00</published><updated>2018-03-31T00:00:00+08:00</updated><id>http://localhost:4000/js/2018/03/31/basic-knowledge-1</id><content type="html" xml:base="http://localhost:4000/js/2018/03/31/basic-knowledge-1.html">&lt;h1 id=&quot;项目小知识点&quot;&gt;项目小知识点&lt;/h1&gt;
 
 &lt;p&gt;项目中用到的一些小知识点，用于记录一下：&lt;/p&gt;
 
@@ -202,272 +746,208 @@ menu 与 menuitem：曾经用于创建导航与内容菜单
         })
         return temp
     }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>weili</name></author><category term="[&quot;JS&quot;]" /><summary type="html">项目小知识点 项目中用到的一些小知识点，用于记录一下： 1、 数组去重 var arr = [1,10,4,6,10,9,8,6,10] // 从前向后逐个比较，相同的删除 Array.prototype.distinct1 = function () { var arr = this; for(var i=0; i&amp;lt;arr.length; i++) { for(var j=i+1; j&amp;lt;arr.length; j++) { if(arr[i] === arr[j]) { arr.splice(j,1) j = ++i; } } } return arr } // 从前向后比较，不相同的push到新数组 Array.prototype.distinct2 = function () { var arr = this; var temp = []; for(var i=0; i&amp;lt;arr.length; i++) { for(var j=i+1; j&amp;lt;arr.length; j++) { if(arr[i] === arr[j]) { j = ++i; } } temp.push(arr[i]) } return temp } // 利用对象属性名不能重复的特性 Array.prototype.distinct3 = function () { var obj = {}; var arr =this; var temp = []; for(var i=0; i&amp;lt;arr.length; i++) { if(!obj[arr[i]]) { temp.push(arr[i]) obj[arr[i]] = 1; } } return temp } // 利用indexOf 如果无法匹配到相同的，push进新数组 Array.prototype.distinct4 = function () { var arr = this; var temp = []; arr.forEach(function (item, i) { var num = arr.indexOf(item, i+1) if(num === -1) { temp.push(item) } }) return temp }</summary></entry><entry><title type="html">什么是G2?</title><link href="http://localhost:4000/2018/03/23/anvt_G2_1.html" rel="alternate" type="text/html" title="什么是G2?" /><published>2018-03-23T00:00:00+08:00</published><updated>2018-03-23T00:00:00+08:00</updated><id>http://localhost:4000/2018/03/23/anvt_G2_1</id><content type="html" xml:base="http://localhost:4000/2018/03/23/anvt_G2_1.html">&lt;h2 id=&quot;什么是g2&quot;&gt;什么是G2?&lt;/h2&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>weili</name></author><category term="[&quot;JS&quot;]" /><summary type="html">项目小知识点 项目中用到的一些小知识点，用于记录一下： 1、 数组去重 var arr = [1,10,4,6,10,9,8,6,10] // 从前向后逐个比较，相同的删除 Array.prototype.distinct1 = function () { var arr = this; for(var i=0; i&amp;lt;arr.length; i++) { for(var j=i+1; j&amp;lt;arr.length; j++) { if(arr[i] === arr[j]) { arr.splice(j,1) j = ++i; } } } return arr } // 从前向后比较，不相同的push到新数组 Array.prototype.distinct2 = function () { var arr = this; var temp = []; for(var i=0; i&amp;lt;arr.length; i++) { for(var j=i+1; j&amp;lt;arr.length; j++) { if(arr[i] === arr[j]) { j = ++i; } } temp.push(arr[i]) } return temp } // 利用对象属性名不能重复的特性 Array.prototype.distinct3 = function () { var obj = {}; var arr =this; var temp = []; for(var i=0; i&amp;lt;arr.length; i++) { if(!obj[arr[i]]) { temp.push(arr[i]) obj[arr[i]] = 1; } } return temp } // 利用indexOf 如果无法匹配到相同的，push进新数组 Array.prototype.distinct4 = function () { var arr = this; var temp = []; arr.forEach(function (item, i) { var num = arr.indexOf(item, i+1) if(num === -1) { temp.push(item) } }) return temp }</summary></entry><entry><title type="html">HTML5_Video视频WebVTT字幕</title><link href="http://localhost:4000/video/2018/03/26/HTML5_Video%E8%A7%86%E9%A2%91WebVTT%E5%AD%97%E5%B9%95.html" rel="alternate" type="text/html" title="HTML5_Video视频WebVTT字幕" /><published>2018-03-26T00:00:00+08:00</published><updated>2018-03-26T00:00:00+08:00</updated><id>http://localhost:4000/video/2018/03/26/HTML5_Video%E8%A7%86%E9%A2%91WebVTT%E5%AD%97%E5%B9%95</id><content type="html" xml:base="http://localhost:4000/video/2018/03/26/HTML5_Video%E8%A7%86%E9%A2%91WebVTT%E5%AD%97%E5%B9%95.html">&lt;h2 id=&quot;html5-video视频与webvtt字幕&quot;&gt;HTML5 Video视频与WebVTT字幕&lt;/h2&gt;
 
-&lt;p&gt;G2 是一套基于可视化编码的图形语法，以数据驱动，具有高度的易用性和扩展性，用户无需关注各种繁琐的实现细节，一条语句即可构建出各种各样的可交互的统计图表。&lt;/p&gt;
+&lt;p&gt;HTML5 Videov字幕通用是WebVTT（后缀.vtt），这个各个浏览器厂商都支持的比较好。&lt;/p&gt;
 
-&lt;p&gt;就是这个样子：&lt;/p&gt;
+&lt;h3 id=&quot;track&quot;&gt;track??&lt;/h3&gt;
 
-&lt;h3 id=&quot;引入方法&quot;&gt;引入方法&lt;/h3&gt;
+&lt;p&gt;完整写法:&lt;/p&gt;
 
-&lt;p&gt;1、直接引入&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;script src=&quot;https://gw.alipayobjects.com/os/antv/assets/g2/3.0.5-beta.5/g2.min.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;video controls width=&quot;400&quot; height=&quot;300&quot;&amp;gt;
+    &amp;lt;source src=&quot;../test.mp4&quot; type=&quot;video/mp4&quot;&amp;gt;
+    &amp;lt;track src=&quot;test.vtt&quot; srclang=&quot;zh&quot; kind=&quot;subtitles&quot; label=&quot;中文&quot; default&amp;gt;
+    &amp;lt;track src=&quot;test_en.vtt&quot; srclang=&quot;en&quot; kind=&quot;subtitles&quot; label=&quot;English&quot;&amp;gt;
+&amp;lt;/video&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;2、npm功安装完成之后，import 或 require 引用&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm install @antv/g2 --save
+&lt;ul&gt;
+  &lt;li&gt;如果有多个语言字幕可以添加多条&lt;track /&gt;，供用户切换选择&lt;/li&gt;
+  &lt;li&gt;标注为default的&lt;track /&gt;表示默认使用的字幕。&lt;/li&gt;
+  &lt;li&gt;只要src属性地址OK，同时有default属性，字幕就会生效。&lt;/li&gt;
+&lt;/ul&gt;
 
-import G2 from '@antv/g2';
+&lt;track /&gt;
+&lt;p&gt;元素的属性如下:&lt;/p&gt;
 
-const chart = new G2.Chart({
-  container: 'c1',
-  width: 600,
-  height: 300
-});
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;名称&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;值&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;说明&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;kind&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;subtitles&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;字幕，详见表格后&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;captions&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;字幕，详见表格后&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;descriptions&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;描述，视频的文本描述&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;chapters&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;章节导航&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;metadata&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;元数据&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;src&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;URL&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;指定资源URL&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;srclang&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;Language code&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;在 src 资源的语言,VTT文本信息使用的语言。例如，中文zh，英文en&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;label&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;Free text&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;点击CC按钮选择字幕时候出现的文字&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;default&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;n/a&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;default指的是默认会显示的字幕。例如两个&lt;track /&gt;元素，如果都没有default属性，那都不显示，需要用户手动调出。另外，default只能出现在一个&lt;track /&gt;元素上&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1) kind:   可选值 subtitles&lt;/td&gt;
+      &lt;td&gt;captions&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
 
-&lt;h3 id=&quot;如何使用&quot;&gt;如何使用？&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;创建 div 图表容器&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;div id=&quot;c1&quot;&amp;gt;&amp;lt;/div&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;定制图表进行绘制
-    &lt;ul&gt;
-      &lt;li&gt;创建 Chart 图表对象，指定图表所在的容器 ID；&lt;/li&gt;
-      &lt;li&gt;载入图表数据源；&lt;/li&gt;
-      &lt;li&gt;使用图形语法进行图表的绘制；&lt;/li&gt;
-      &lt;li&gt;渲染图表。&lt;/li&gt;
-    &lt;/ul&gt;
+&lt;ul&gt;
+  &lt;li&gt;subtitles: 平常看电影看动漫时候下面出现的字幕，一般是翻译，或者采访时候口音不清的字幕显示。有时候还会标注一些说明，例如，显示人物姓名身份，当前场景地或者标注之前语言的梗在哪里等&lt;/li&gt;
+  &lt;li&gt;这里captions专指隐藏式字幕（Closed Captions），简称CC
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;隐藏字幕（Closed Captioning，简称CC)是电视节目或影碟中为有特殊情况或者需要的观众而准备的宇幕，例如观众在听力上有障碍，或者需要无音条件下观赏节目。此时字幕中可使用一些解释性的语言来描述节目内容。
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
   &lt;/li&gt;
-&lt;/ol&gt;
+  &lt;li&gt;subtitles主要就是对人说话进行翻译或确认；而captions不仅需要人对话的内容提示，紧张的背景音乐，或者汽车吱吱作响的刹车声都需要在字幕中描述出来。这样，即使用户静音也能知道视频里到底在玩些什么。我想，如果是经常看国外影视作品的小伙伴肯定会有类似的字幕体验，有的就对话字幕，有的事无巨细，就是subtitles和captions的区别&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;数据源
-const data = [
-  { genre: 'Sports', sold: 275 },
-  { genre: 'Strategy', sold: 115 },
-  { genre: 'Action', sold: 120 },
-  { genre: 'Shooter', sold: 350 },
-  { genre: 'Other', sold: 150 }
-]; // G2 对数据源格式的要求，仅仅是 JSON 数组，数组的每个元素是一个标准 JSON 对象
+&lt;h3 id=&quot;vtt文件&quot;&gt;.vtt文件&lt;/h3&gt;
 
-// Step 1: 创建 Chart 对象
-const chart = new G2.Chart({
-  container: 'c1', // 指定图表容器 ID
-  width : 600, // 指定图表宽度
-  height : 300 // 指定图表高度
-});
+&lt;p&gt;格式如下：&lt;/p&gt;
 
-// Step 2: 载入数据源
-chart.source(data);
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;WEBVTT
 
-// Step 3：创建图形语法，绘制柱状图，由 genre 和 sold 两个属性决定图形位置，genre 映射至 x 轴，sold 映射至 y 轴
-chart.interval().position('genre*sold').color('genre')
+00:11.000 --&amp;gt; 00:13.000
+&amp;lt;v Roger Bingham&amp;gt;We are in New York City
 
-// Step 4: 渲染图表
-chart.render();
+00:13.000 --&amp;gt; 00:16.000
+&amp;lt;v Roger Bingham&amp;gt;We’re actually at the Lucern Hotel, just down the street
+
+00:16.000 --&amp;gt; 00:18.000
+&amp;lt;v Roger Bingham&amp;gt;from the American Museum of Natural History
+
+00:18.000 --&amp;gt; 00:20.000
+&amp;lt;v Roger Bingham&amp;gt;And with me is Neil deGrasse Tyson
+
+00:20.000 --&amp;gt; 00:22.000
+&amp;lt;v Roger Bingham&amp;gt;Astrophysicist, Director of the Hayden Planetarium
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;h3 id=&quot;可视化框架的构成&quot;&gt;可视化框架的构成&lt;/h3&gt;
+&lt;p&gt;就是个文本文件，格式很简单，一开始声明下WebVTT，然后下面就是视频时间范围，下一行就是字幕内容，时间可以精确到毫秒，但通常0.5秒足矣。&lt;/p&gt;
 
-&lt;p&gt;一个可视化框架需要四部分：&lt;/p&gt;
+&lt;p&gt;更多规则解释详见&lt;a href=&quot;https://w3c.github.io/webvtt/&quot;&gt;官网文档&lt;/a&gt;&lt;/p&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;数据处理模块，对数据进行加工的模块，包括一些数据处理方法。例如：合并、分组、排序、过滤、计算统计信息等&lt;/li&gt;
-  &lt;li&gt;图形映射模块，将数据映射到图形视觉通道的过程。例如：将数据映射成颜色、位置、大小等&lt;/li&gt;
-  &lt;li&gt;图形展示模块，决定使用何种图形来展示数据，点、线、面等图形标记&lt;/li&gt;
-  &lt;li&gt;辅助信息模块，用于说明视觉通道跟数据的映射关系，例如：坐标轴、图例、辅助文本等&lt;/li&gt;
-&lt;/ul&gt;
+&lt;h2 id=&quot;html5-video视频字幕的样式控制&quot;&gt;HTML5 Video视频字幕的样式控制&lt;/h2&gt;
 
-&lt;h3 id=&quot;数据处理模块&quot;&gt;数据处理模块&lt;/h3&gt;
+&lt;p&gt;CSS中有专门的伪元素::cue可以控制字幕的样式。&lt;/p&gt;
 
-&lt;p&gt;数据处理模块已经从 G2 中独立出来，作为 DataSet 模块单独提供，主要包含下面几个模块：&lt;/p&gt;
+&lt;p&gt;可以控制的CSS属性包括：&lt;/p&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;DataSet 包含多个 DataView, 管理多个数据源&lt;/li&gt;
-  &lt;li&gt;DataView 每个 DataView 对应一个数据源，可以理解为一个图表，可以进行布局（Layout)、数据加工（Transform)&lt;/li&gt;
-  &lt;li&gt;Layout 对数据进行布局&lt;/li&gt;
-  &lt;li&gt;Transform 对数据进行加工、统计等处理，包括对地图数据的处理，这个很强大&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;图形映射模块&quot;&gt;图形映射模块&lt;/h3&gt;
-
-&lt;p&gt;图形映射模块完成了将数据映射到数学空间
-[0-1]，再从数学空间映射到画布空间的整个过程，主要包括三个模块：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Scale 将数据映射到 0-1 之间，方便映射到画布上&lt;/li&gt;
-  &lt;li&gt;Attr 图形属性，数据映射到图形的属性（视觉通道），包括位置、颜色、大小、形状等&lt;/li&gt;
-  &lt;li&gt;Coord 展示图形需用到的坐标系，将数据映射到位置的属性（视觉通道）&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;辅助信息&quot;&gt;辅助信息&lt;/h3&gt;
-
-&lt;p&gt;辅助信息用于标示数据在各种图形属性上的映射，使得用户更容易的理解数据，主要包括下面几个模块：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Axis 坐标轴，辅助用户识别图形所在的位置，判断数据大小的辅助元素&lt;/li&gt;
-  &lt;li&gt;Tooltip 提示信息，用户鼠标在画布上移动时，实时出现的鼠标附近的数据信息&lt;/li&gt;
-  &lt;li&gt;Guide 其他辅助元素，可以在图上添加辅助的文本、辅助图片、辅助线等，增强用户对图形的认知。&lt;/li&gt;
-  &lt;li&gt;Legend 图例，辅助用户识别图形的大小、颜色、形状，通常用于判断数据对应图形的分类&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;图形展示&quot;&gt;图形展示&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Chart 图表，展示图形的入口，会生成一个画布，同时管理数据到图形映射的所有周期&lt;/li&gt;
-  &lt;li&gt;View 视图，一个画布上可以显示多张图表，每个图表有各自的绘图区域、数据源、坐标系等信息&lt;/li&gt;
-  &lt;li&gt;Geom 数据映射到的图形标识，G2 中的图形标识有：点、线、路径、面积、多边形等&lt;/li&gt;
-  &lt;li&gt;Shape 更加细分的图形标识，例如，点可以分为圆点、正方形、十字等，线可以分为点线、折线、曲线等&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;数据处理模块之&quot;&gt;数据处理模块之&lt;/h2&gt;
-
-&lt;p&gt;一、DataSet&lt;/p&gt;
-
-&lt;p&gt;dataSet主要通过state状态管理多个dataview视图，实现多图联动，或者关联视图。
-dataView则是对应的是每一个数据源，通过connector来接入不同类型的数据，通过tranform进行数据的转换或者过滤。最后输出我们理想的数据，dataSet是与g2分离的，需要用到的时候可以加载
-在图形映射模块上，&lt;/p&gt;
-
-&lt;p&gt;DataSet的使用语法&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// step1 创建 dataset 指定状态量
-const ds = new DataSet({
-  state: {
-    year: '2010'
-  }
-});
-
-// step2 创建 DataView
-const dv = ds.createView().source(data);
-
-dv.transform({
-  type: 'filter',
-  callback(row) {
-    return row.year === ds.state.year;
-  }
-});
-
-
-// step3 引用 DataView
-chart.source(dv);
-
-// step4 更新状态量
-ds.setState('year', '2012');
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;color
+opacity
+visibility
+text-decoration及相关属性
+text-shadow
+background及相关属性
+outline及相关属性
+font及相关属性，包括line-height
+white-space
+text-combine-upright
+ruby-position
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;DataSet 主要完成了以下功能：&lt;/p&gt;
+&lt;p&gt;WebVTT还支持一些内联样式控制，常见的&lt;/p&gt;
 
-&lt;ol&gt;
-  &lt;li&gt;源数据的解析，将csv, dsv,geojson 转成标准的JSON，查看Connector&lt;/li&gt;
-  &lt;li&gt;加工数据，包括 filter,map,fold(补数据) 等操作，查看 Transform&lt;/li&gt;
-  &lt;li&gt;统计函数，汇总统计、百分比、封箱 等统计函数，查看 Transform&lt;/li&gt;
-  &lt;li&gt;特殊数据处理，包括 地理数据、矩形树图、桑基图、文字云 的数据处理，查看 Transform&lt;/li&gt;
-&lt;/ol&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;值&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;说明&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;c&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;用 c 定义 （CSS）类, 例如， &lt;c.className&gt;Cue text&amp;lt;/c&amp;gt;&lt;/c.className&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;i&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;斜体字&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;b&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;粗体字&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;u&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;添加下划线&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;ruby&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;详见表格后&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;v&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;如有提供，则用来指定声音标签。例如， &lt;v Ian=&quot;&quot;&gt;This is useful for adding subtitles&lt;/v&gt;。注意此声音标签不会显示，它只是作为一个样式标记。&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
 
-&lt;p&gt;（一）Connector&lt;/p&gt;
-
-&lt;p&gt;接入语法：&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dv.source(data, {
-  type: connectorName,   connectorName//就是下面几种数据类型
-  ...otherOptions
-});
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ruby : 定义类似于 HTML5 的 &amp;lt;ruby&amp;gt; 元素。在这样的内联样式中，允许出现一个或多个 &amp;lt;rt&amp;gt; 元素。（&amp;lt;ruby&amp;gt; 元素用于标注汉字等东亚字符的发音）
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;可接入的数据类型：&lt;/p&gt;
+&lt;p&gt;使用方法如下所示：&lt;/p&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;default 默认 //普通二维数据&lt;/li&gt;
-  &lt;li&gt;dsv&lt;/li&gt;
-  &lt;li&gt;csv&lt;/li&gt;
-  &lt;li&gt;tsv&lt;/li&gt;
-  &lt;li&gt;GeoJSON  //地理数据&lt;/li&gt;
-  &lt;li&gt;TopoJSON //树结构数据&lt;/li&gt;
-  &lt;li&gt;hierarchy&lt;/li&gt;
-  &lt;li&gt;graph    //图数据&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;可以这样理解，以上几种类型，分别对应着几种实例，可以使用该种实例提供的方法，比如GeoJSON这种类型，在制作地图时需要用到的类型，以中国地图为例，传入中国的省市名称，这个类型能根据这些地名提供对应的地理位置区域，从而画出地图中对应的区域。&lt;/p&gt;
-
-&lt;p&gt;（二）Transform&lt;/p&gt;
-
-&lt;p&gt;功能很强大，只概括几种常见的：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;过滤&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dv.transform({
-  type: 'filter',
-  callback(row) { // 判断某一行是否保留，默认返回true
-    return row.year &amp;gt; 1998;
-  }
-});
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;00:00:52.000 --&amp;gt; 00:00:54.000 align:start size:15%
+&amp;lt;v Emo&amp;gt;I don’t think so. &amp;lt;c.question&amp;gt;You?&amp;lt;/c&amp;gt;&amp;lt;/v&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;数据加工&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;给 Cue 文本添加两种不同的声音标签： Emo 和 Proog（自定义的） 。另外，一个 question（自定义的） 的 CSS 类被指定，可以按惯常方法在 CSS 链接文件 或 HTML 页面里为其指定样式。&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dv.transform({
-  type: 'map',
-  callback(row) { // 加工数据后返回新的一行，默认返回行数据本身
-    row.newCol = row.xxx + row.yyy;
-    return row;
-  }
-});
+&lt;p&gt;注意要给 Cue 文本添加 CSS 样式，你需要用一个特定的伪选择元素，例子如下:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;video::cue(v[voice=&quot;Emo&quot;]) { color:lime }
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;字段重命名&lt;/li&gt;
-&lt;/ul&gt;
+&lt;h3 id=&quot;更全面的样式控制&quot;&gt;更全面的样式控制&lt;/h3&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dv.transform({
-  type: 'rename',
-  map: {
-    xxx: 'yyy' // row.xxx 会被替换成 row.yyy
-  }
-});
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;原生的字幕样式控制，有CSS属性和字幕HTML标签双重限制，不是很灵活&lt;/p&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;数据排序&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dv.transform({
-  type: 'sort',
-  callback(a, b) { // 排序依据，和原生js的排序callback一致
-    return a.year - b.year;
-  }
-});
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;percent 总和百分比&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dv.transform({
-  type: 'percent',
-  field: 'sold',           // 统计销量
-  dimension: 'year',       // 每年的占比
-  groupBy: [ 'category' ], // 以不同产品类别为分组
-  as: 'percent'            // 结果存储在 percent 字段
-});
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;几个字段的意思：&lt;/p&gt;
-
-&lt;p&gt;field 是统计发生的字段（求和，求百分比），
-dimension 是统计的维度字段，也就是”每个不同的 dimension 下，
-field 值占总和的百分比”，
-groupBy 则是分组字段，每一个分组内部独立求百分比（每一个分组内，最后的 percent 字段相加之和为 1）。&lt;/p&gt;</content><author><name>weili</name></author><category term="JS" /><category term="g2" /><category term="图形化数据" /><summary type="html">什么是G2? G2 是一套基于可视化编码的图形语法，以数据驱动，具有高度的易用性和扩展性，用户无需关注各种繁琐的实现细节，一条语句即可构建出各种各样的可交互的统计图表。 就是这个样子： 引入方法 1、直接引入 &amp;lt;script src=&quot;https://gw.alipayobjects.com/os/antv/assets/g2/3.0.5-beta.5/g2.min.js&quot;&amp;gt;&amp;lt;/script&amp;gt; 2、npm功安装完成之后，import 或 require 引用 npm install @antv/g2 --save import G2 from '@antv/g2'; const chart = new G2.Chart({ container: 'c1', width: 600, height: 300 }); 如何使用？ 创建 div 图表容器 &amp;lt;div id=&quot;c1&quot;&amp;gt;&amp;lt;/div&amp;gt; 定制图表进行绘制 创建 Chart 图表对象，指定图表所在的容器 ID； 载入图表数据源； 使用图形语法进行图表的绘制； 渲染图表。 数据源 const data = [ { genre: 'Sports', sold: 275 }, { genre: 'Strategy', sold: 115 }, { genre: 'Action', sold: 120 }, { genre: 'Shooter', sold: 350 }, { genre: 'Other', sold: 150 } ]; // G2 对数据源格式的要求，仅仅是 JSON 数组，数组的每个元素是一个标准 JSON 对象 // Step 1: 创建 Chart 对象 const chart = new G2.Chart({ container: 'c1', // 指定图表容器 ID width : 600, // 指定图表宽度 height : 300 // 指定图表高度 }); // Step 2: 载入数据源 chart.source(data); // Step 3：创建图形语法，绘制柱状图，由 genre 和 sold 两个属性决定图形位置，genre 映射至 x 轴，sold 映射至 y 轴 chart.interval().position('genre*sold').color('genre') // Step 4: 渲染图表 chart.render(); 可视化框架的构成 一个可视化框架需要四部分： 数据处理模块，对数据进行加工的模块，包括一些数据处理方法。例如：合并、分组、排序、过滤、计算统计信息等 图形映射模块，将数据映射到图形视觉通道的过程。例如：将数据映射成颜色、位置、大小等 图形展示模块，决定使用何种图形来展示数据，点、线、面等图形标记 辅助信息模块，用于说明视觉通道跟数据的映射关系，例如：坐标轴、图例、辅助文本等 数据处理模块 数据处理模块已经从 G2 中独立出来，作为 DataSet 模块单独提供，主要包含下面几个模块： DataSet 包含多个 DataView, 管理多个数据源 DataView 每个 DataView 对应一个数据源，可以理解为一个图表，可以进行布局（Layout)、数据加工（Transform) Layout 对数据进行布局 Transform 对数据进行加工、统计等处理，包括对地图数据的处理，这个很强大 图形映射模块 图形映射模块完成了将数据映射到数学空间 [0-1]，再从数学空间映射到画布空间的整个过程，主要包括三个模块： Scale 将数据映射到 0-1 之间，方便映射到画布上 Attr 图形属性，数据映射到图形的属性（视觉通道），包括位置、颜色、大小、形状等 Coord 展示图形需用到的坐标系，将数据映射到位置的属性（视觉通道） 辅助信息 辅助信息用于标示数据在各种图形属性上的映射，使得用户更容易的理解数据，主要包括下面几个模块： Axis 坐标轴，辅助用户识别图形所在的位置，判断数据大小的辅助元素 Tooltip 提示信息，用户鼠标在画布上移动时，实时出现的鼠标附近的数据信息 Guide 其他辅助元素，可以在图上添加辅助的文本、辅助图片、辅助线等，增强用户对图形的认知。 Legend 图例，辅助用户识别图形的大小、颜色、形状，通常用于判断数据对应图形的分类 图形展示 Chart 图表，展示图形的入口，会生成一个画布，同时管理数据到图形映射的所有周期 View 视图，一个画布上可以显示多张图表，每个图表有各自的绘图区域、数据源、坐标系等信息 Geom 数据映射到的图形标识，G2 中的图形标识有：点、线、路径、面积、多边形等 Shape 更加细分的图形标识，例如，点可以分为圆点、正方形、十字等，线可以分为点线、折线、曲线等 数据处理模块之 一、DataSet dataSet主要通过state状态管理多个dataview视图，实现多图联动，或者关联视图。 dataView则是对应的是每一个数据源，通过connector来接入不同类型的数据，通过tranform进行数据的转换或者过滤。最后输出我们理想的数据，dataSet是与g2分离的，需要用到的时候可以加载 在图形映射模块上， DataSet的使用语法 // step1 创建 dataset 指定状态量 const ds = new DataSet({ state: { year: '2010' } }); // step2 创建 DataView const dv = ds.createView().source(data); dv.transform({ type: 'filter', callback(row) { return row.year === ds.state.year; } }); // step3 引用 DataView chart.source(dv); // step4 更新状态量 ds.setState('year', '2012'); DataSet 主要完成了以下功能： 源数据的解析，将csv, dsv,geojson 转成标准的JSON，查看Connector 加工数据，包括 filter,map,fold(补数据) 等操作，查看 Transform 统计函数，汇总统计、百分比、封箱 等统计函数，查看 Transform 特殊数据处理，包括 地理数据、矩形树图、桑基图、文字云 的数据处理，查看 Transform （一）Connector 接入语法： dv.source(data, { type: connectorName, connectorName//就是下面几种数据类型 ...otherOptions }); 可接入的数据类型： default 默认 //普通二维数据 dsv csv tsv GeoJSON //地理数据 TopoJSON //树结构数据 hierarchy graph //图数据 可以这样理解，以上几种类型，分别对应着几种实例，可以使用该种实例提供的方法，比如GeoJSON这种类型，在制作地图时需要用到的类型，以中国地图为例，传入中国的省市名称，这个类型能根据这些地名提供对应的地理位置区域，从而画出地图中对应的区域。 （二）Transform 功能很强大，只概括几种常见的： 过滤 dv.transform({ type: 'filter', callback(row) { // 判断某一行是否保留，默认返回true return row.year &amp;gt; 1998; } }); 数据加工 dv.transform({ type: 'map', callback(row) { // 加工数据后返回新的一行，默认返回行数据本身 row.newCol = row.xxx + row.yyy; return row; } }); 字段重命名 dv.transform({ type: 'rename', map: { xxx: 'yyy' // row.xxx 会被替换成 row.yyy } }); 数据排序 dv.transform({ type: 'sort', callback(a, b) { // 排序依据，和原生js的排序callback一致 return a.year - b.year; } }); percent 总和百分比 dv.transform({ type: 'percent', field: 'sold', // 统计销量 dimension: 'year', // 每年的占比 groupBy: [ 'category' ], // 以不同产品类别为分组 as: 'percent' // 结果存储在 percent 字段 }); 几个字段的意思： field 是统计发生的字段（求和，求百分比）， dimension 是统计的维度字段，也就是”每个不同的 dimension 下， field 值占总和的百分比”， groupBy 则是分组字段，每一个分组内部独立求百分比（每一个分组内，最后的 percent 字段相加之和为 1）。</summary></entry><entry><title type="html">JS基础–高级算法–贪心算法</title><link href="http://localhost:4000/js/2018/03/16/AdvancedAlgorithms-2.html" rel="alternate" type="text/html" title="JS基础--高级算法--贪心算法" /><published>2018-03-16T00:00:00+08:00</published><updated>2018-03-16T00:00:00+08:00</updated><id>http://localhost:4000/js/2018/03/16/AdvancedAlgorithms-2</id><content type="html" xml:base="http://localhost:4000/js/2018/03/16/AdvancedAlgorithms-2.html">&lt;h1 id=&quot;高级算法贪心算法&quot;&gt;高级算法–贪心算法&lt;/h1&gt;
+&lt;p&gt;可以使用开源的HTML5视频项目：&lt;a href=&quot;https://github.com/paypal/accessible-html5-video-player&quot;&gt;accessible-html5-video-player&lt;/a&gt;，paypal的开源项目，可以对原生的video进行UI重定值，JS很小，未压缩版本就几十K，其会把VTT文件中HTML片段直接完整输出到页面中，于是乎，所有的CSS属性我们都可以使用了，例如可以把字幕在视频上方直接一个绝对定位上去就好了。&lt;/p&gt;</content><author><name>weili</name></author><category term="[&quot;video&quot;]" /><summary type="html">HTML5 Video视频与WebVTT字幕 HTML5 Videov字幕通用是WebVTT（后缀.vtt），这个各个浏览器厂商都支持的比较好。 track?? 完整写法: &amp;lt;video controls width=&quot;400&quot; height=&quot;300&quot;&amp;gt; &amp;lt;source src=&quot;../test.mp4&quot; type=&quot;video/mp4&quot;&amp;gt; &amp;lt;track src=&quot;test.vtt&quot; srclang=&quot;zh&quot; kind=&quot;subtitles&quot; label=&quot;中文&quot; default&amp;gt; &amp;lt;track src=&quot;test_en.vtt&quot; srclang=&quot;en&quot; kind=&quot;subtitles&quot; label=&quot;English&quot;&amp;gt; &amp;lt;/video&amp;gt; 如果有多个语言字幕可以添加多条，供用户切换选择 标注为default的表示默认使用的字幕。 只要src属性地址OK，同时有default属性，字幕就会生效。 元素的属性如下: 名称 值 说明 kind subtitles 字幕，详见表格后   captions 字幕，详见表格后   descriptions 描述，视频的文本描述   chapters 章节导航   metadata 元数据 src URL 指定资源URL srclang Language code 在 src 资源的语言,VTT文本信息使用的语言。例如，中文zh，英文en label Free text 点击CC按钮选择字幕时候出现的文字 default n/a default指的是默认会显示的字幕。例如两个元素，如果都没有default属性，那都不显示，需要用户手动调出。另外，default只能出现在一个元素上 1) kind: 可选值 subtitles captions subtitles: 平常看电影看动漫时候下面出现的字幕，一般是翻译，或者采访时候口音不清的字幕显示。有时候还会标注一些说明，例如，显示人物姓名身份，当前场景地或者标注之前语言的梗在哪里等 这里captions专指隐藏式字幕（Closed Captions），简称CC 隐藏字幕（Closed Captioning，简称CC)是电视节目或影碟中为有特殊情况或者需要的观众而准备的宇幕，例如观众在听力上有障碍，或者需要无音条件下观赏节目。此时字幕中可使用一些解释性的语言来描述节目内容。 subtitles主要就是对人说话进行翻译或确认；而captions不仅需要人对话的内容提示，紧张的背景音乐，或者汽车吱吱作响的刹车声都需要在字幕中描述出来。这样，即使用户静音也能知道视频里到底在玩些什么。我想，如果是经常看国外影视作品的小伙伴肯定会有类似的字幕体验，有的就对话字幕，有的事无巨细，就是subtitles和captions的区别 .vtt文件 格式如下： WEBVTT 00:11.000 --&amp;gt; 00:13.000 &amp;lt;v Roger Bingham&amp;gt;We are in New York City 00:13.000 --&amp;gt; 00:16.000 &amp;lt;v Roger Bingham&amp;gt;We’re actually at the Lucern Hotel, just down the street 00:16.000 --&amp;gt; 00:18.000 &amp;lt;v Roger Bingham&amp;gt;from the American Museum of Natural History 00:18.000 --&amp;gt; 00:20.000 &amp;lt;v Roger Bingham&amp;gt;And with me is Neil deGrasse Tyson 00:20.000 --&amp;gt; 00:22.000 &amp;lt;v Roger Bingham&amp;gt;Astrophysicist, Director of the Hayden Planetarium 就是个文本文件，格式很简单，一开始声明下WebVTT，然后下面就是视频时间范围，下一行就是字幕内容，时间可以精确到毫秒，但通常0.5秒足矣。 更多规则解释详见官网文档 HTML5 Video视频字幕的样式控制 CSS中有专门的伪元素::cue可以控制字幕的样式。 可以控制的CSS属性包括： color opacity visibility text-decoration及相关属性 text-shadow background及相关属性 outline及相关属性 font及相关属性，包括line-height white-space text-combine-upright ruby-position WebVTT还支持一些内联样式控制，常见的 值 说明 c 用 c 定义 （CSS）类, 例如， Cue text&amp;lt;/c&amp;gt; i 斜体字 b 粗体字 u 添加下划线 ruby 详见表格后 v 如有提供，则用来指定声音标签。例如， This is useful for adding subtitles。注意此声音标签不会显示，它只是作为一个样式标记。 ruby : 定义类似于 HTML5 的 &amp;lt;ruby&amp;gt; 元素。在这样的内联样式中，允许出现一个或多个 &amp;lt;rt&amp;gt; 元素。（&amp;lt;ruby&amp;gt; 元素用于标注汉字等东亚字符的发音） 使用方法如下所示： 00:00:52.000 --&amp;gt; 00:00:54.000 align:start size:15% &amp;lt;v Emo&amp;gt;I don’t think so. &amp;lt;c.question&amp;gt;You?&amp;lt;/c&amp;gt;&amp;lt;/v&amp;gt; 给 Cue 文本添加两种不同的声音标签： Emo 和 Proog（自定义的） 。另外，一个 question（自定义的） 的 CSS 类被指定，可以按惯常方法在 CSS 链接文件 或 HTML 页面里为其指定样式。 注意要给 Cue 文本添加 CSS 样式，你需要用一个特定的伪选择元素，例子如下: video::cue(v[voice=&quot;Emo&quot;]) { color:lime } 更全面的样式控制 原生的字幕样式控制，有CSS属性和字幕HTML标签双重限制，不是很灵活 可以使用开源的HTML5视频项目：accessible-html5-video-player，paypal的开源项目，可以对原生的video进行UI重定值，JS很小，未压缩版本就几十K，其会把VTT文件中HTML片段直接完整输出到页面中，于是乎，所有的CSS属性我们都可以使用了，例如可以把字幕在视频上方直接一个绝对定位上去就好了。</summary></entry><entry><title type="html">JS基础–高级算法–贪心算法</title><link href="http://localhost:4000/js/2018/03/16/AdvancedAlgorithms-2.html" rel="alternate" type="text/html" title="JS基础--高级算法--贪心算法" /><published>2018-03-16T00:00:00+08:00</published><updated>2018-03-16T00:00:00+08:00</updated><id>http://localhost:4000/js/2018/03/16/AdvancedAlgorithms-2</id><content type="html" xml:base="http://localhost:4000/js/2018/03/16/AdvancedAlgorithms-2.html">&lt;h1 id=&quot;高级算法贪心算法&quot;&gt;高级算法–贪心算法&lt;/h1&gt;
 
 &lt;p&gt;贪心算法总是会选择当下的最优解，而不去考虑这一次的选择会不会对未来的选择造成影响，目的是得到当前最优解。&lt;/p&gt;
 
@@ -1180,380 +1660,4 @@ document.write(nums.toString() + '&amp;lt;br /&amp;gt;');
 
 &lt;p&gt;&lt;img src=&quot;http://0.0.0.0:4000/img/20180201/20180201-2.jpg&quot; alt=&quot;图&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;一开始每个元素都在左子序列或右子序列中。然后将左右子序列合并，首先每次合并成两 个元素的子序列，然后合并成四个元素的子序列，3 和 5 除外，它们会一直保留到最后一次 迭代，那时会把它们合并成右子序列，然后再与最后的左子序列合并成最终的有序数组。&lt;/p&gt;</content><author><name>weili</name></author><category term="[&quot;JS&quot;]" /><summary type="html">高级排序—归并排序 实现原理:把一系列排好序的子序列合并成一个大的完整有序序列。 归并排序 从理论上讲，这个算法很容易实现。我们需要两个排好序的子数组，然后通过比较数据大小，先从最小的数据开始插入，最后合并得到第三个数组。 然而，在实际情况中，归并排序还有一些问题，当用这个算法对一个很大的数据集进行排序时，需要相当大的空间来合并存储两个子数组。就现在来讲，内存不那么昂贵，空间不是问题，因此值得我们去实现一下归并排序，比较它和其他排序算法的执行效率。 自底向上的归并排序 采用非递归或者迭代版本的归并排序是一个自底向上的过程。这个算法首先将数据集分解 为一组只有一个元素的数组。然后通过创建一组左右子数组将它们慢慢合并起来，每次合 并都保存一部分排好序的数据，直到最后剩下的这个数组所有的数据都已完美排序。 下图演示了自底向上的归并排序算法是如何运行的 JavaScript 实现的自底向上归并排序算法: function mergeSort() { if (this.dataStore.length &amp;lt; 2) { return; } var step = 1; var left, right; while (step &amp;lt; this.dataStore.length) { left = 0; right = step; while (right + step &amp;lt;= this.dataStore.length) { mergeArrays(this.dataStore, left, left+step, right, right+step); left = right + step; right = left + step; } if (right &amp;lt; this.dataStore.length) { mergeArrays(this.dataStore, left, left+step, right, this.dataStore.length); } step *= 2; } } function mergeArrays(arr,startLeft, stopLeft, startRight, stopRight) { var rightArr = new Array(stopRight - startRight + 1); var leftArr = new Array(stopLeft - startLeft + 1); k = startRight; for (var i = 0; i &amp;lt; (rightArr.length-1); ++i) { rightArr[i] = arr[k]; ++k; } k = startLeft; for (var i = 0; i &amp;lt; (leftArr.length-1); ++i) { leftArr[i] = arr[k]; ++k; } rightArr[rightArr.length-1] = Infinity; // 哨兵值 leftArr[leftArr.length-1] = Infinity; // 哨兵值 var m = 0; var n = 0; for (var k = startLeft; k &amp;lt; stopRight; ++k) { if (leftArr[m] &amp;lt;= rightArr[n]) { arr[k] = leftArr[m]; m++; } else { arr[k] = rightArr[n]; n++; } } document.write(&quot;left array - &quot;, leftArr + '&amp;lt;br /&amp;gt;'); document.write(&quot;right array - &quot;, rightArr + '&amp;lt;br /&amp;gt;'); } mergeSort() 函数中的关键点就是 step 这个变量，它用来控制 mergeArrays() 函数生成的 leftArr 和 rightArr 这两个子序列的大小。通过控制子序列的大小，处理排序是比较高效 的，因为它在对小数组进行排序时不需要花费太多时间。合并之所以高效，还有一个原 因，由于未合并的数据已经是排好序的，将它们合并到一个有序数组的过程非常容易。 初始化10数的结果： var nums = new CArray(10); nums.setData(); document.write(nums.toString() + '&amp;lt;br /&amp;gt;'); nums.mergeSort(); document.write(nums.toString() + '&amp;lt;br /&amp;gt;'); 一开始每个元素都在左子序列或右子序列中。然后将左右子序列合并，首先每次合并成两 个元素的子序列，然后合并成四个元素的子序列，3 和 5 除外，它们会一直保留到最后一次 迭代，那时会把它们合并成右子序列，然后再与最后的左子序列合并成最终的有序数组。</summary></entry><entry><title type="html">JS基础–高级排序(一)</title><link href="http://localhost:4000/js/2018/01/25/senior_Sort_1.html" rel="alternate" type="text/html" title="JS基础--高级排序(一)" /><published>2018-01-25T00:00:00+08:00</published><updated>2018-01-25T00:00:00+08:00</updated><id>http://localhost:4000/js/2018/01/25/senior_Sort_1</id><content type="html" xml:base="http://localhost:4000/js/2018/01/25/senior_Sort_1.html">&lt;h1 id=&quot;高级排序-希尔排序&quot;&gt;高级排序— 希尔排序&lt;/h1&gt;
-
-&lt;p&gt;本章讲解的高级排序算法，通常被认为是处理大型数据集的最高效排序算法，它们处理的数据集可以达到上百万个元素，而不仅仅是几百个或者几千个。&lt;/p&gt;
-
-&lt;h3 id=&quot;希尔排序&quot;&gt;希尔排序&lt;/h3&gt;
-
-&lt;p&gt;这个算法在插入排序的基础上做了很大的改善。希尔排序的核心理念与插入排序 不同，它会首先比较距离较远的元素，而非相邻的元素。和简单地比较相邻元素相比，使 用这种方案可以使离正确位置很远的元素更快地回到合适的位置。当开始用这个算法遍历 数据集时，所有元素之间的距离会不断减小，直到处理到数据集的末尾，这时算法比较的 就是相邻元素了。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//希尔排序
-function shellsort() {
-    for (var g = 0; g &amp;lt; this.gaps.length; ++g) {
-       for (var i = this.gaps[g]; i &amp;lt; this.dataStore.length; ++i) {
-          var temp = this.dataStore[i];
-          for (var j = i; j &amp;gt;= this.gaps[g] &amp;amp;&amp;amp;
-                this.dataStore[j-this.gaps[g]] &amp;gt; temp;
-               j -= this.gaps[g]) {
-             this.dataStore[j] = this.dataStore[j - this.gaps[g]];
-          }
-          this.dataStore[j] = temp;
-       }
-        document.write('&amp;lt;br /&amp;gt;');
-        document.write(this.toString());
-        document.write('&amp;lt;br /&amp;gt;');
-    } 
-}
-
-function setGaps(arr) {
-    this.gaps = arr;
-}
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;为了能让这个程序在 CArray 类测试平台中运行，我们需要在这个类的定义里增加一个对间 隔序列的定义。请将下面代码添加到 CArray 的构造函数中&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;this.gaps = [5,3,1];
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;外循环控制间隔序列的移动。也就是说，算法在第一次处理数据集时，会检查所有间隔为 5 的元素。下一次遍历会检查所有间隔为 3 的元素。最后一次则会对间隔为 1 的元素，也 就是相邻元素执行标准插入排序。在开始做最后一次处理时，大部分元素都将在正确的位 置，算法就不必对很多元素进行交换。这就是希尔排序比插入排序更高效的地方。下图演示了如何使用间隔序列为5, 3, 1的希尔排序算法。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;希尔排序原理图：&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20180125/20180125-1.jpg&quot; alt=&quot;图&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;初始化一个例子，对10个数字进行希尔排序，跟踪这个算法的执行过程&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    var nums = new CArray(100);
-    nums.setData();
-    document.write(&quot;希尔排序前:&amp;lt;br /&amp;gt;&quot;); 
-    document.write(nums.toString()); 
-    document.write(&quot;&amp;lt;br /&amp;gt;希尔排序中:&amp;lt;br /&amp;gt;&quot;); 
-    nums.shellsort();
-    document.write(&quot;&amp;lt;br /&amp;gt;希尔排序后:&amp;lt;br /&amp;gt;&quot;); 
-    document.write(nums.toString());
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20180125/20180125-2.jpg&quot; alt=&quot;图&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;要理解希尔排序是如何运行的，可以对比数组的初始状态和执行完间隔序列为 5 的排序后的状态。初始状态时的第一个元素 6，和它后面的第 5 个元素 5，进行了互换，因为 5 &amp;lt; 6。&lt;/p&gt;
-
-&lt;p&gt;再来比较 gap 5 和 gap 3 这两行。在 gap 5 这行中的数字 3 和数字 2 进行了互换， 因为 2 &amp;lt; 3，并且 2 是 3 后面的第 3 个元素。从循环中当前元素所在位置往后数，简单地数到第 gap 个数的位置，然后比较这个位置和当前元素所在位置上的两个数字，就可以对希 尔排序过程中的任何步骤进行跟踪。&lt;/p&gt;
-
-&lt;h3 id=&quot;动态计算间隔序列的希尔排序&quot;&gt;动态计算间隔序列的希尔排序&lt;/h3&gt;
-
-&lt;p&gt;《算法(第4版)》(人民邮电出版社)的合著者Robert Sedgewick定义了一个shellsort() 函数，在这个函数中可以通过一个公式来对希尔排序用到的间隔序列进行动态计算。 Sedgewick 的算法是通过下面的代码片段来决定初始间隔值的:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    var N = this.dataStore.length;
-    var h = 1;
-    while (h &amp;lt; N/3) {
-        h = 3 * h + 1; 
-    }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;间隔值确定好后，这个函数就可以像之前定义的 shellsort() 函数一样运行了，唯一的区 别是，回到外循环之前的最后一条语句会计算一个新的间隔值:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;h = (h-1)/3;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;修改后的shellsort1函数如下：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function shellsort1() {
-    var N = this.dataStore.length;
-    var h = 1;
-    while (h &amp;lt; N/3) {
-      h = 3 * h + 1; 
-    }
-    while (h &amp;gt;= 1) {
-       for (var i = h; i &amp;lt; N; i++) {
-          for (var j = i; j &amp;gt;= h &amp;amp;&amp;amp; this.dataStore[j] &amp;lt; this.dataStore[j-h];
-               j -= h) {
-             swap(this.dataStore, j, j-h);
-          }
-      }
-      h = (h-1)/3; 
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;同样初始化10个数，shellsort1后的结果：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20180125/20180125-3.jpg&quot; alt=&quot;图&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;比较-shellsort-算法&quot;&gt;比较 shellsort() 算法&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    var nums = new CArray(100000);
-    nums.setData();
-    var start = new Date().getTime();
-    nums.shellsort();
-    var stop = new Date().getTime();
-    var elapsed = stop - start;
-    document.write(&quot; 硬编码间隔序列的希尔排序消耗的时间为:&quot; + elapsed + &quot; 毫秒。&quot;); 
-    nums.clear();
-
-    nums.setData();
-    start = new Date().getTime();
-    nums.shellsort1();
-    stop = new Date().getTime();
-    document.write(&quot; 动态间隔序列的希尔排序消耗的时间为:&quot; + elapsed + &quot; 毫秒。&quot;);
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20180125/20180125-4.jpg&quot; alt=&quot;图&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;很明显，这两个希尔排序算法的效率是一样的，因此你可以根据需要随意使用&lt;/p&gt;</content><author><name>weili</name></author><category term="[&quot;JS&quot;]" /><summary type="html">高级排序— 希尔排序 本章讲解的高级排序算法，通常被认为是处理大型数据集的最高效排序算法，它们处理的数据集可以达到上百万个元素，而不仅仅是几百个或者几千个。 希尔排序 这个算法在插入排序的基础上做了很大的改善。希尔排序的核心理念与插入排序 不同，它会首先比较距离较远的元素，而非相邻的元素。和简单地比较相邻元素相比，使 用这种方案可以使离正确位置很远的元素更快地回到合适的位置。当开始用这个算法遍历 数据集时，所有元素之间的距离会不断减小，直到处理到数据集的末尾，这时算法比较的 就是相邻元素了。 //希尔排序 function shellsort() { for (var g = 0; g &amp;lt; this.gaps.length; ++g) { for (var i = this.gaps[g]; i &amp;lt; this.dataStore.length; ++i) { var temp = this.dataStore[i]; for (var j = i; j &amp;gt;= this.gaps[g] &amp;amp;&amp;amp; this.dataStore[j-this.gaps[g]] &amp;gt; temp; j -= this.gaps[g]) { this.dataStore[j] = this.dataStore[j - this.gaps[g]]; } this.dataStore[j] = temp; } document.write('&amp;lt;br /&amp;gt;'); document.write(this.toString()); document.write('&amp;lt;br /&amp;gt;'); } } function setGaps(arr) { this.gaps = arr; } 为了能让这个程序在 CArray 类测试平台中运行，我们需要在这个类的定义里增加一个对间 隔序列的定义。请将下面代码添加到 CArray 的构造函数中 this.gaps = [5,3,1]; 外循环控制间隔序列的移动。也就是说，算法在第一次处理数据集时，会检查所有间隔为 5 的元素。下一次遍历会检查所有间隔为 3 的元素。最后一次则会对间隔为 1 的元素，也 就是相邻元素执行标准插入排序。在开始做最后一次处理时，大部分元素都将在正确的位 置，算法就不必对很多元素进行交换。这就是希尔排序比插入排序更高效的地方。下图演示了如何使用间隔序列为5, 3, 1的希尔排序算法。 希尔排序原理图： 初始化一个例子，对10个数字进行希尔排序，跟踪这个算法的执行过程 var nums = new CArray(100); nums.setData(); document.write(&quot;希尔排序前:&amp;lt;br /&amp;gt;&quot;); document.write(nums.toString()); document.write(&quot;&amp;lt;br /&amp;gt;希尔排序中:&amp;lt;br /&amp;gt;&quot;); nums.shellsort(); document.write(&quot;&amp;lt;br /&amp;gt;希尔排序后:&amp;lt;br /&amp;gt;&quot;); document.write(nums.toString()); 要理解希尔排序是如何运行的，可以对比数组的初始状态和执行完间隔序列为 5 的排序后的状态。初始状态时的第一个元素 6，和它后面的第 5 个元素 5，进行了互换，因为 5 &amp;lt; 6。 再来比较 gap 5 和 gap 3 这两行。在 gap 5 这行中的数字 3 和数字 2 进行了互换， 因为 2 &amp;lt; 3，并且 2 是 3 后面的第 3 个元素。从循环中当前元素所在位置往后数，简单地数到第 gap 个数的位置，然后比较这个位置和当前元素所在位置上的两个数字，就可以对希 尔排序过程中的任何步骤进行跟踪。 动态计算间隔序列的希尔排序 《算法(第4版)》(人民邮电出版社)的合著者Robert Sedgewick定义了一个shellsort() 函数，在这个函数中可以通过一个公式来对希尔排序用到的间隔序列进行动态计算。 Sedgewick 的算法是通过下面的代码片段来决定初始间隔值的: var N = this.dataStore.length; var h = 1; while (h &amp;lt; N/3) { h = 3 * h + 1; } 间隔值确定好后，这个函数就可以像之前定义的 shellsort() 函数一样运行了，唯一的区 别是，回到外循环之前的最后一条语句会计算一个新的间隔值: h = (h-1)/3; 修改后的shellsort1函数如下： function shellsort1() { var N = this.dataStore.length; var h = 1; while (h &amp;lt; N/3) { h = 3 * h + 1; } while (h &amp;gt;= 1) { for (var i = h; i &amp;lt; N; i++) { for (var j = i; j &amp;gt;= h &amp;amp;&amp;amp; this.dataStore[j] &amp;lt; this.dataStore[j-h]; j -= h) { swap(this.dataStore, j, j-h); } } h = (h-1)/3; } } 同样初始化10个数，shellsort1后的结果： 比较 shellsort() 算法 var nums = new CArray(100000); nums.setData(); var start = new Date().getTime(); nums.shellsort(); var stop = new Date().getTime(); var elapsed = stop - start; document.write(&quot; 硬编码间隔序列的希尔排序消耗的时间为:&quot; + elapsed + &quot; 毫秒。&quot;); nums.clear(); nums.setData(); start = new Date().getTime(); nums.shellsort1(); stop = new Date().getTime(); document.write(&quot; 动态间隔序列的希尔排序消耗的时间为:&quot; + elapsed + &quot; 毫秒。&quot;); 很明显，这两个希尔排序算法的效率是一样的，因此你可以根据需要随意使用</summary></entry><entry><title type="html">JS基础– 基本排序</title><link href="http://localhost:4000/js/2018/01/11/basic_Sort.html" rel="alternate" type="text/html" title="JS基础-- 基本排序" /><published>2018-01-11T00:00:00+08:00</published><updated>2018-01-11T00:00:00+08:00</updated><id>http://localhost:4000/js/2018/01/11/basic_Sort</id><content type="html" xml:base="http://localhost:4000/js/2018/01/11/basic_Sort.html">&lt;h1 id=&quot;基本排序算法&quot;&gt;基本排序算法&lt;/h1&gt;
-
-&lt;p&gt;这里介绍的基本排序算法其核心思想是指对一组数据按照一定的顺序重新排列。重新排列时用到的技术是一组嵌套的 for 循环。其中外循环会遍历数组的每一项，内循环则用于比较元素。&lt;/p&gt;
-
-&lt;p&gt;在讲这几个基本排序之前，先初始化一个类，因为下面所有的排序都是基于这个类实现的。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function CArray(numElements) {
-    this.dataStore = [];
-    this.pos = 0;
-    this.numElements = numElements;
-    this.insert = insert;
-    this.toString = toString;
-    this.clear = clear;
-    this.setData = setData;
-    this.bubbleSort = bubbleSort;
-    this.swap = swap;
-	for ( var i = 0; i &amp;lt; numElements; ++i ) {
-		this.dataStore[i] = i;
-	} 
-}
-
-function setData() {
-    for ( var i = 0; i &amp;lt; this.numElements; ++i ) {
-       this.dataStore[i] = Math.floor(Math.random() * (this.numElements + 1));
-    }
-}
-
-function clear() {
-	for ( var i = 0; i &amp;lt; this.dataStore.length; ++i ) {
-	   this.dataStore[i] = 0;
-	}
-}
-
-
-function insert(element) {
-    this.dataStore[this.pos++] = element;
-}
-
-
-function toString() {
-	var retstr = &quot;&quot;;
-	for ( var i = 0; i &amp;lt; this.dataStore.length; ++i ) {
-	   retstr += this.dataStore[i] + &quot; &quot;;
-	   if (i &amp;gt; 0 &amp;amp; i % 10 == 0) {
-	      retstr += &quot;\n&quot;;
-	   }
-	}
-	return retstr;
-}
-
-
-function swap(arr, index1, index2) {
-	var temp = arr[index1];
-	arr[index1] = arr[index2];
-	arr[index2] = temp;
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;上面的类包含下面几个功能&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;插入新数据&lt;/li&gt;
-  &lt;li&gt;显示数组数据&lt;/li&gt;
-  &lt;li&gt;调用不同的排序算法&lt;/li&gt;
-  &lt;li&gt;交换数组元素&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;冒泡排序&quot;&gt;冒泡排序&lt;/h4&gt;
-
-&lt;p&gt;冒泡排序算法，它是最慢的排序算法之一，但也是一种最容易实现的排序算法&lt;/p&gt;
-
-&lt;p&gt;之所以叫冒泡排序是因为使用这种排序算法排序时，数据值会像气泡一样从数组的一端漂 浮到另一端。假设正在将一组数字按照升序排列，较大的值会浮动到数组的右侧，而较小 的值则会浮动到数组的左侧。之所以会产生这种现象是因为算法会多次在数组中移动，比 较相邻的数据，当左侧值大于右侧值时将它们进行互换&lt;/p&gt;
-
-&lt;p&gt;如下图演示了如何对一个大的数字数据集合进行冒泡排序的过程&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://lilywei739.github.io/img/20180112/20180112-1.jpg&quot; alt=&quot;冒泡排序的过程&quot; /&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function bubbleSort() {
-        var numElements = this.dataStore.length;
-        var temp;
-        for ( var outer = numElements; outer &amp;gt;= 2; --outer) {
-           for ( var inner = 0; inner &amp;lt;= outer - 1; ++inner ) {
-              if (this.dataStore[inner] &amp;gt; this.dataStore[inner + 1]) {
-                 swap(this.dataStore, inner, inner + 1);
-              }
- 	   } 
- 	}
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;初始化个例子：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var numElements = 10;
-var mynums = new CArray(numElements);
-mynums.setData();
-document.write(mynums.toString());
-mynums.bubbleSort();
-document.write('&amp;lt;br /&amp;gt;');
-document.write(mynums.toString());
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;排序结果如下：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://lilywei739.github.io/img/20180112/20180112-2.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;增加一行代码，就可看到这个数组在排序过程中的当前状态&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function bubbleSort() {
-    var numElements = this.dataStore.length;
-    var temp;
-    for (var outer = numElements; outer &amp;gt;= 2; --outer) {
-       for (var inner = 0; inner &amp;lt;= outer - 1; ++inner) {
-
-          if (this.dataStore[inner] &amp;gt; this.dataStore[inner + 1]) {
-             swap(this.dataStore, inner, inner + 1);
-          }
-		}
-        document.write('&amp;lt;br /&amp;gt;');
-        document.write(this.toString());
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;排序结果如下：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://lilywei739.github.io/img/20180112/20180112-3.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;通过这个输出结果，我们可以更加容易地看出小的值是如何移到数组开头的，大的值又是 如何移到数组末尾的。&lt;/p&gt;
-
-&lt;h4 id=&quot;选择排序&quot;&gt;选择排序&lt;/h4&gt;
-
-&lt;p&gt;选择排序从数组的开头开始，将第一个元素和其他元 素进行比较。检查完所有元素后，最小的元素会被放到数组的第一个位置，然后算法会从 第二个位置继续。这个过程一直进行，当进行到数组的倒数第二个位置时，所有的数据便 完成了排序。&lt;/p&gt;
-
-&lt;p&gt;选择排序会用到嵌套循环。外循环从数组的第一个元素移动到倒数第二个元素;内循环从第 二个数组元素移动到最后一个元素，查找比当前外循环所指向的元素小的元素。每次内循环 迭代后，数组中最小的值都会被赋值到合适的位置。&lt;/p&gt;
-
-&lt;p&gt;选择排序算法的原理：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://lilywei739.github.io/img/20180112/20180112-4.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function selectionSort() {
-    var min, temp;
-    for (var outer = 0; outer &amp;lt;= this.dataStore.length-2; ++outer) {
-       min = outer;
-       for (var inner = outer + 1;
-           inner &amp;lt;= this.dataStore.length-1; ++inner) {
-          if (this.dataStore[inner] &amp;lt; this.dataStore[min]) {
-			  min = inner; 
-		  }
-          swap(this.dataStore, outer, min);
-          document.write('&amp;lt;br /&amp;gt;');
-          document.write(this.toString());
-       }
-    } 
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var numElements = 10;
-var mynums = new CArray(numElements);
-mynums.setData();
-mynums.selectionSort();
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;排序结果如下：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://lilywei739.github.io/img/20180112/20180112-5.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;插入排序&quot;&gt;插入排序&lt;/h4&gt;
-
-&lt;p&gt;插入排序类似于人类按数字或字母顺序对数据进行排序&lt;/p&gt;
-
-&lt;p&gt;举个例子，将卡片带回办公室，清理好书桌，然后拿起第一张卡片。卡片上的姓氏是 Smith。我把 它放到桌子的左上角，然后再拿起第二张卡片。这张卡片上的姓氏是 Brown。我把 Smith 移右，把 Brown 放到 Smith 的前面。下一张卡片是 Williams，可以把它放到桌面最右边， 而不用移动其他任何卡片。下一张卡片是 Acklin。这张卡片必须放在这些卡片的最前面， 因此其他所有卡片必须向右移动一个位置来为 Acklin 这张卡片腾出位置。这就是插入排序 的排序原理。&lt;/p&gt;
-
-&lt;p&gt;插入排序有两个循环。外循环将数组元素挨个移动，而内循环则对外循环中选中的元素及 它后面的那个元素进行比较。如果外循环中选中的元素比内循环中选中的元素小，那么数 组元素会向右移动，为内循环中的这个元素腾出位置，就像之前介绍的姓氏卡片一样。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function insertionSort() {
-        var temp, inner;
-        for (var outer = 1; outer &amp;lt;= this.dataStore.length - 1; ++outer) {
-           temp = this.dataStore[outer];
-           inner = outer;
-           while (inner &amp;gt; 0 &amp;amp;&amp;amp; (this.dataStore[inner - 1] &amp;gt;= temp)) {
-              this.dataStore[inner] = this.dataStore[inner - 1];
---inner; }
-           this.dataStore[inner] = temp;
-           document.write('&amp;lt;br /&amp;gt;');
-       	   document.write(this.toString());
-        }
-}
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var numElements = 10;
-var mynums = new CArray(numElements);
-mynums.setData();
-mynums.insertionSort();
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;排序结果如下：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://lilywei739.github.io/img/20180112/20180112-6.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;这段输出结果清楚地显示了插入排序的运行并非通过数据交换，而是通过将较大的数组元 素移动到右侧，为数组左侧的较小元素腾出位置。&lt;/p&gt;
-
-&lt;h4 id=&quot;基本排序算法的计时比较&quot;&gt;基本排序算法的计时比较&lt;/h4&gt;
-
-&lt;p&gt;这三种排序算法的复杂度非常相似，从理论上来说，它们的执行效率也应该差不多。要确 定这三种算法的性能差异，我们可以使用一个非正式的计时系统来比较它们对数据集合进 行排序所花费的时间。能够对算法进行计时非常重要，因为，对 100 个或 1000 个元素进 行排序时，你看不出这些排序算法的差异。但是如果对上百万个元素进行排序，这些排序 算法之间可能存在巨大的不同。&lt;/p&gt;
-
-&lt;p&gt;这个函数的运行方式如下所示:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var start = new Date().getTime();
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;要记录代码执行的时间，首先启动计时器，执行代码，然后在代码执行结束时停止计时 器。计时器停止时记录的时间与计时器启动时记录的时间之差就是排序所花费的时间。&lt;/p&gt;
-
-&lt;p&gt;有了度量排序算法效率的工具，那我们就来做一些测试，对它们进行比较&lt;/p&gt;
-
-&lt;p&gt;为了比较基本排序算法，我们将在数组大小分别为100、1000和10 000时对这三种排序算 法计时。我们预期在数据大小为 100 和 1000 的情况下看不出这些算法的差异，但是在数 据大小为 10000时可以看到。&lt;/p&gt;
-
-&lt;p&gt;测试代码如下：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var numElements = 100;    //测试数据100、1000、10000
-var nums = new CArray(numElements);
-nums.setData();
-var start = new Date().getTime();
-nums.bubbleSort();
-var stop = new Date().getTime();
-var elapsed = stop - start;
-document.write(&quot;对&quot; + numElements + &quot;个元素执行冒泡排序消耗的时间为:&quot; +
-elapsed + &quot;毫秒。&amp;lt;br /&amp;gt;&quot;);
-start = new Date().getTime();
-nums.selectionSort();
-stop = new Date().getTime();
-elapsed = stop - start;
-document.write(&quot;对&quot; + numElements + &quot;个元素执行选择排序消耗的时间为:&quot; +
-elapsed + &quot;毫秒。&amp;lt;br /&amp;gt;&quot;);
-start = new Date().getTime();
-nums.insertionSort();
-stop = new Date().getTime();
-elapsed = stop - start;
-document.write(&quot;对&quot; + numElements + &quot;个元素执行插入排序消耗的时间为:&quot; +
-elapsed + &quot;毫秒。&quot;);
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;测试数据100结果：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://lilywei739.github.io/img/20180112/20180112-7.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;测试数据1000结果：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://lilywei739.github.io/img/20180112/20180112-8.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;测试数据10000结果：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://lilywei739.github.io/img/20180112/20180112-9.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;通过上面的结果，可得出选择排序和插入排序要比冒泡排序快，插入排序是这三种算法中最快的。不过要记住，这些测试必须经过多次的运行， 最后得到的结果才可被视为是有效的统计。&lt;/p&gt;</content><author><name>weili</name></author><category term="[&quot;JS&quot;]" /><summary type="html">基本排序算法 这里介绍的基本排序算法其核心思想是指对一组数据按照一定的顺序重新排列。重新排列时用到的技术是一组嵌套的 for 循环。其中外循环会遍历数组的每一项，内循环则用于比较元素。 在讲这几个基本排序之前，先初始化一个类，因为下面所有的排序都是基于这个类实现的。 function CArray(numElements) { this.dataStore = []; this.pos = 0; this.numElements = numElements; this.insert = insert; this.toString = toString; this.clear = clear; this.setData = setData; this.bubbleSort = bubbleSort; this.swap = swap; for ( var i = 0; i &amp;lt; numElements; ++i ) { this.dataStore[i] = i; } } function setData() { for ( var i = 0; i &amp;lt; this.numElements; ++i ) { this.dataStore[i] = Math.floor(Math.random() * (this.numElements + 1)); } } function clear() { for ( var i = 0; i &amp;lt; this.dataStore.length; ++i ) { this.dataStore[i] = 0; } } function insert(element) { this.dataStore[this.pos++] = element; } function toString() { var retstr = &quot;&quot;; for ( var i = 0; i &amp;lt; this.dataStore.length; ++i ) { retstr += this.dataStore[i] + &quot; &quot;; if (i &amp;gt; 0 &amp;amp; i % 10 == 0) { retstr += &quot;\n&quot;; } } return retstr; } function swap(arr, index1, index2) { var temp = arr[index1]; arr[index1] = arr[index2]; arr[index2] = temp; } 上面的类包含下面几个功能 插入新数据 显示数组数据 调用不同的排序算法 交换数组元素 冒泡排序 冒泡排序算法，它是最慢的排序算法之一，但也是一种最容易实现的排序算法 之所以叫冒泡排序是因为使用这种排序算法排序时，数据值会像气泡一样从数组的一端漂 浮到另一端。假设正在将一组数字按照升序排列，较大的值会浮动到数组的右侧，而较小 的值则会浮动到数组的左侧。之所以会产生这种现象是因为算法会多次在数组中移动，比 较相邻的数据，当左侧值大于右侧值时将它们进行互换 如下图演示了如何对一个大的数字数据集合进行冒泡排序的过程 function bubbleSort() { var numElements = this.dataStore.length; var temp; for ( var outer = numElements; outer &amp;gt;= 2; --outer) { for ( var inner = 0; inner &amp;lt;= outer - 1; ++inner ) { if (this.dataStore[inner] &amp;gt; this.dataStore[inner + 1]) { swap(this.dataStore, inner, inner + 1); } } } } 初始化个例子： var numElements = 10; var mynums = new CArray(numElements); mynums.setData(); document.write(mynums.toString()); mynums.bubbleSort(); document.write('&amp;lt;br /&amp;gt;'); document.write(mynums.toString()); 排序结果如下： 增加一行代码，就可看到这个数组在排序过程中的当前状态 function bubbleSort() { var numElements = this.dataStore.length; var temp; for (var outer = numElements; outer &amp;gt;= 2; --outer) { for (var inner = 0; inner &amp;lt;= outer - 1; ++inner) { if (this.dataStore[inner] &amp;gt; this.dataStore[inner + 1]) { swap(this.dataStore, inner, inner + 1); } } document.write('&amp;lt;br /&amp;gt;'); document.write(this.toString()); } } 排序结果如下： 通过这个输出结果，我们可以更加容易地看出小的值是如何移到数组开头的，大的值又是 如何移到数组末尾的。 选择排序 选择排序从数组的开头开始，将第一个元素和其他元 素进行比较。检查完所有元素后，最小的元素会被放到数组的第一个位置，然后算法会从 第二个位置继续。这个过程一直进行，当进行到数组的倒数第二个位置时，所有的数据便 完成了排序。 选择排序会用到嵌套循环。外循环从数组的第一个元素移动到倒数第二个元素;内循环从第 二个数组元素移动到最后一个元素，查找比当前外循环所指向的元素小的元素。每次内循环 迭代后，数组中最小的值都会被赋值到合适的位置。 选择排序算法的原理： function selectionSort() { var min, temp; for (var outer = 0; outer &amp;lt;= this.dataStore.length-2; ++outer) { min = outer; for (var inner = outer + 1; inner &amp;lt;= this.dataStore.length-1; ++inner) { if (this.dataStore[inner] &amp;lt; this.dataStore[min]) { min = inner; } swap(this.dataStore, outer, min); document.write('&amp;lt;br /&amp;gt;'); document.write(this.toString()); } } } var numElements = 10; var mynums = new CArray(numElements); mynums.setData(); mynums.selectionSort(); 排序结果如下： 插入排序 插入排序类似于人类按数字或字母顺序对数据进行排序 举个例子，将卡片带回办公室，清理好书桌，然后拿起第一张卡片。卡片上的姓氏是 Smith。我把 它放到桌子的左上角，然后再拿起第二张卡片。这张卡片上的姓氏是 Brown。我把 Smith 移右，把 Brown 放到 Smith 的前面。下一张卡片是 Williams，可以把它放到桌面最右边， 而不用移动其他任何卡片。下一张卡片是 Acklin。这张卡片必须放在这些卡片的最前面， 因此其他所有卡片必须向右移动一个位置来为 Acklin 这张卡片腾出位置。这就是插入排序 的排序原理。 插入排序有两个循环。外循环将数组元素挨个移动，而内循环则对外循环中选中的元素及 它后面的那个元素进行比较。如果外循环中选中的元素比内循环中选中的元素小，那么数 组元素会向右移动，为内循环中的这个元素腾出位置，就像之前介绍的姓氏卡片一样。 function insertionSort() { var temp, inner; for (var outer = 1; outer &amp;lt;= this.dataStore.length - 1; ++outer) { temp = this.dataStore[outer]; inner = outer; while (inner &amp;gt; 0 &amp;amp;&amp;amp; (this.dataStore[inner - 1] &amp;gt;= temp)) { this.dataStore[inner] = this.dataStore[inner - 1]; --inner; } this.dataStore[inner] = temp; document.write('&amp;lt;br /&amp;gt;'); document.write(this.toString()); } } var numElements = 10; var mynums = new CArray(numElements); mynums.setData(); mynums.insertionSort(); 排序结果如下： 这段输出结果清楚地显示了插入排序的运行并非通过数据交换，而是通过将较大的数组元 素移动到右侧，为数组左侧的较小元素腾出位置。 基本排序算法的计时比较 这三种排序算法的复杂度非常相似，从理论上来说，它们的执行效率也应该差不多。要确 定这三种算法的性能差异，我们可以使用一个非正式的计时系统来比较它们对数据集合进 行排序所花费的时间。能够对算法进行计时非常重要，因为，对 100 个或 1000 个元素进 行排序时，你看不出这些排序算法的差异。但是如果对上百万个元素进行排序，这些排序 算法之间可能存在巨大的不同。 这个函数的运行方式如下所示: var start = new Date().getTime(); 要记录代码执行的时间，首先启动计时器，执行代码，然后在代码执行结束时停止计时 器。计时器停止时记录的时间与计时器启动时记录的时间之差就是排序所花费的时间。 有了度量排序算法效率的工具，那我们就来做一些测试，对它们进行比较 为了比较基本排序算法，我们将在数组大小分别为100、1000和10 000时对这三种排序算 法计时。我们预期在数据大小为 100 和 1000 的情况下看不出这些算法的差异，但是在数 据大小为 10000时可以看到。 测试代码如下： var numElements = 100; //测试数据100、1000、10000 var nums = new CArray(numElements); nums.setData(); var start = new Date().getTime(); nums.bubbleSort(); var stop = new Date().getTime(); var elapsed = stop - start; document.write(&quot;对&quot; + numElements + &quot;个元素执行冒泡排序消耗的时间为:&quot; + elapsed + &quot;毫秒。&amp;lt;br /&amp;gt;&quot;); start = new Date().getTime(); nums.selectionSort(); stop = new Date().getTime(); elapsed = stop - start; document.write(&quot;对&quot; + numElements + &quot;个元素执行选择排序消耗的时间为:&quot; + elapsed + &quot;毫秒。&amp;lt;br /&amp;gt;&quot;); start = new Date().getTime(); nums.insertionSort(); stop = new Date().getTime(); elapsed = stop - start; document.write(&quot;对&quot; + numElements + &quot;个元素执行插入排序消耗的时间为:&quot; + elapsed + &quot;毫秒。&quot;); 测试数据100结果： 测试数据1000结果： 测试数据10000结果： 通过上面的结果，可得出选择排序和插入排序要比冒泡排序快，插入排序是这三种算法中最快的。不过要记住，这些测试必须经过多次的运行， 最后得到的结果才可被视为是有效的统计。</summary></entry></feed>
+&lt;p&gt;一开始每个元素都在左子序列或右子序列中。然后将左右子序列合并，首先每次合并成两 个元素的子序列，然后合并成四个元素的子序列，3 和 5 除外，它们会一直保留到最后一次 迭代，那时会把它们合并成右子序列，然后再与最后的左子序列合并成最终的有序数组。&lt;/p&gt;</content><author><name>weili</name></author><category term="[&quot;JS&quot;]" /><summary type="html">高级排序—归并排序 实现原理:把一系列排好序的子序列合并成一个大的完整有序序列。 归并排序 从理论上讲，这个算法很容易实现。我们需要两个排好序的子数组，然后通过比较数据大小，先从最小的数据开始插入，最后合并得到第三个数组。 然而，在实际情况中，归并排序还有一些问题，当用这个算法对一个很大的数据集进行排序时，需要相当大的空间来合并存储两个子数组。就现在来讲，内存不那么昂贵，空间不是问题，因此值得我们去实现一下归并排序，比较它和其他排序算法的执行效率。 自底向上的归并排序 采用非递归或者迭代版本的归并排序是一个自底向上的过程。这个算法首先将数据集分解 为一组只有一个元素的数组。然后通过创建一组左右子数组将它们慢慢合并起来，每次合 并都保存一部分排好序的数据，直到最后剩下的这个数组所有的数据都已完美排序。 下图演示了自底向上的归并排序算法是如何运行的 JavaScript 实现的自底向上归并排序算法: function mergeSort() { if (this.dataStore.length &amp;lt; 2) { return; } var step = 1; var left, right; while (step &amp;lt; this.dataStore.length) { left = 0; right = step; while (right + step &amp;lt;= this.dataStore.length) { mergeArrays(this.dataStore, left, left+step, right, right+step); left = right + step; right = left + step; } if (right &amp;lt; this.dataStore.length) { mergeArrays(this.dataStore, left, left+step, right, this.dataStore.length); } step *= 2; } } function mergeArrays(arr,startLeft, stopLeft, startRight, stopRight) { var rightArr = new Array(stopRight - startRight + 1); var leftArr = new Array(stopLeft - startLeft + 1); k = startRight; for (var i = 0; i &amp;lt; (rightArr.length-1); ++i) { rightArr[i] = arr[k]; ++k; } k = startLeft; for (var i = 0; i &amp;lt; (leftArr.length-1); ++i) { leftArr[i] = arr[k]; ++k; } rightArr[rightArr.length-1] = Infinity; // 哨兵值 leftArr[leftArr.length-1] = Infinity; // 哨兵值 var m = 0; var n = 0; for (var k = startLeft; k &amp;lt; stopRight; ++k) { if (leftArr[m] &amp;lt;= rightArr[n]) { arr[k] = leftArr[m]; m++; } else { arr[k] = rightArr[n]; n++; } } document.write(&quot;left array - &quot;, leftArr + '&amp;lt;br /&amp;gt;'); document.write(&quot;right array - &quot;, rightArr + '&amp;lt;br /&amp;gt;'); } mergeSort() 函数中的关键点就是 step 这个变量，它用来控制 mergeArrays() 函数生成的 leftArr 和 rightArr 这两个子序列的大小。通过控制子序列的大小，处理排序是比较高效 的，因为它在对小数组进行排序时不需要花费太多时间。合并之所以高效，还有一个原 因，由于未合并的数据已经是排好序的，将它们合并到一个有序数组的过程非常容易。 初始化10数的结果： var nums = new CArray(10); nums.setData(); document.write(nums.toString() + '&amp;lt;br /&amp;gt;'); nums.mergeSort(); document.write(nums.toString() + '&amp;lt;br /&amp;gt;'); 一开始每个元素都在左子序列或右子序列中。然后将左右子序列合并，首先每次合并成两 个元素的子序列，然后合并成四个元素的子序列，3 和 5 除外，它们会一直保留到最后一次 迭代，那时会把它们合并成右子序列，然后再与最后的左子序列合并成最终的有序数组。</summary></entry></feed>
