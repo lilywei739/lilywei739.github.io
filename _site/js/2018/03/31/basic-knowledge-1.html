@@ -1,9 +1,9 @@
 <!DOCTYPE html><html lang="en">
   <head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>anvt-g2 - Weili's Blog</title>
-<meta name="description" content="fdsfafafadsfadsf">
-<link rel="canonical" href="http://0.0.0.0:4000/js/2018/03/24/Anvt-1.html"><link rel="alternate" type="application/rss+xml" title="Weili's Blog" href="http://0.0.0.0:4000/feed.xml">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>basic-knowledge(一).md - Weili's Blog</title>
+<meta name="description" content="项目小知识点项目中用到的一些小知识点，用于记录一下：1、 数组去重var arr = [1,10,4,6,10,9,8,6,10]    // 从前向后逐个比较，相同的删除    Array.prototype.distinct1 = function () {        var arr = this;   ...">
+<link rel="canonical" href="http://localhost:4000/js/2018/03/31/basic-knowledge-1.html"><link rel="alternate" type="application/rss+xml" title="Weili's Blog" href="http://localhost:4000/feed.xml">
 <!-- for Safari on iOS https://developer.apple.com/ios/human-interface-guidelines/icons-and-images/app-icon/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/images/logo/icon-180x180.png"><link rel="apple-touch-icon" sizes="167x167" href="/assets/images/logo/icon-167x167.png"><link rel="apple-touch-icon" sizes="152x152" href="/assets/images/logo/icon-152x152.png"><link rel="apple-touch-icon" sizes="120x120" href="/assets/images/logo/icon-120x120.png"><link rel="shortcut icon" href="/assets/images/logo/icon-120x120.png">
 <!-- for Chrome on Android https://developer.chrome.com/multidevice/android/installtohomescreen -->
 <meta name="mobile-web-app-capable" content="yes"><link rel="icon" sizes="192x192" href="/assets/images/logo/icon-192x192.png">
@@ -36,14 +36,76 @@
 		<div class="col-1">
 			<article itemscope itemtype="http://schema.org/BlogPosting">
 				<meta itemprop="mainEntityOfPage" itemscope itemType="https://schema.org/WebPage"/>
-				<header class="main-header"><h1 itemprop="headline" itemprop="name headline">anvt-g2</h1><div class="m-article-data clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="weili"/></meta><div class="other-wrapper"><div class="date-wrapper"><time class="article-meta" datetime="2018-03-24T00:00:00+08:00"
-          itemprop="datePublished">Mar 24, 2018
+				<header class="main-header"><h1 itemprop="headline" itemprop="name headline">basic-knowledge(一).md</h1><div class="m-article-data clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="weili"/></meta><div class="other-wrapper"><div class="date-wrapper"><time class="article-meta" datetime="2018-03-31T00:00:00+08:00"
+          itemprop="datePublished">Mar 31, 2018
         </time></div>
   </div>
 </div>
 </header>
-				<div class="m-article-content js-article-content" itemprop="articleBody"><h1 id="fdsfafa">fdsfafa</h1>
-<p>fadsfadsf</p>
+				<div class="m-article-content js-article-content" itemprop="articleBody"><h1 id="项目小知识点">项目小知识点</h1>
+
+<p>项目中用到的一些小知识点，用于记录一下：</p>
+
+<p>1、 数组去重</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var arr = [1,10,4,6,10,9,8,6,10]
+
+    // 从前向后逐个比较，相同的删除
+    Array.prototype.distinct1 = function () {
+        var arr = this;
+        for(var i=0; i&lt;arr.length; i++) {
+            for(var j=i+1; j&lt;arr.length; j++) {
+                if(arr[i] === arr[j]) {
+                    arr.splice(j,1)
+                    j = ++i;
+                }
+            }
+        }
+        return arr
+    }
+
+    // 从前向后比较，不相同的push到新数组
+    Array.prototype.distinct2 = function () {
+        var arr = this;
+        var temp = [];
+        for(var i=0; i&lt;arr.length; i++) {
+            for(var j=i+1; j&lt;arr.length; j++) {
+                if(arr[i] === arr[j]) {
+                    j = ++i;
+                }
+            }
+            temp.push(arr[i])
+        }
+        return temp
+    }
+
+    // 利用对象属性名不能重复的特性
+    Array.prototype.distinct3 = function () {
+        var obj = {};
+        var arr =this;
+        var temp = [];
+        for(var i=0; i&lt;arr.length; i++) {
+            if(!obj[arr[i]]) {
+                temp.push(arr[i])
+                obj[arr[i]] = 1;
+            }
+        }
+        return temp
+    }
+
+    // 利用indexOf 如果无法匹配到相同的，push进新数组
+    Array.prototype.distinct4 = function () {
+        var arr = this;
+        var temp = [];
+        arr.forEach(function (item, i) {
+            var num = arr.indexOf(item, i+1)
+            if(num === -1) {
+                temp.push(item)
+            }
+        })
+        return temp
+    }
+</code></pre></div></div>
 
 </div></article>
 		</div>
@@ -159,7 +221,7 @@
   <div class="main">
     <aside><div class="follow-me"><ul itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="weili">
-    <link itemprop="url" href="http://0.0.0.0:4000/"></ul></div>
+    <link itemprop="url" href="http://localhost:4000/"></ul></div>
 </aside>
     <footer class="site-info">
       <p>© Weili's Blog 2018</p>

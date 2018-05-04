@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>All Posts - Weili's Blog</title>
 <meta name="description" content="Weili's blog
 ">
-<link rel="canonical" href="http://0.0.0.0:4000/all.html"><link rel="alternate" type="application/rss+xml" title="Weili's Blog" href="http://0.0.0.0:4000/feed.xml">
+<link rel="canonical" href="http://localhost:4000/all.html"><link rel="alternate" type="application/rss+xml" title="Weili's Blog" href="http://localhost:4000/feed.xml">
 <!-- for Safari on iOS https://developer.apple.com/ios/human-interface-guidelines/icons-and-images/app-icon/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/images/logo/icon-180x180.png"><link rel="apple-touch-icon" sizes="167x167" href="/assets/images/logo/icon-167x167.png"><link rel="apple-touch-icon" sizes="152x152" href="/assets/images/logo/icon-152x152.png"><link rel="apple-touch-icon" sizes="120x120" href="/assets/images/logo/icon-120x120.png"><link rel="shortcut icon" href="/assets/images/logo/icon-120x120.png">
 <!-- for Chrome on Android https://developer.chrome.com/multidevice/android/installtohomescreen -->
 <meta name="mobile-web-app-capable" content="yes"><link rel="icon" sizes="192x192" href="/assets/images/logo/icon-192x192.png">
@@ -34,11 +34,15 @@
   <ul>
     <li>
       <button type="button" class="js-article-tag js-tag-show-all all pill-button" onclick="tagSelect('')">Show All
-        <div class="tag-count">41</div>
+        <div class="tag-count">43</div>
       </button>
     </li><li><button type="button" class="js-article-tag tag-1 pill-button"
         data-tag="DNS%E3%80%81CDN" onclick="tagSelect('DNS%E3%80%81CDN')">
           <span>DNS、CDN</span><div class="tag-count">1</div>
+        </button>
+      </li><li><button type="button" class="js-article-tag tag-1 pill-button"
+        data-tag="HTML" onclick="tagSelect('HTML')">
+          <span>HTML</span><div class="tag-count">1</div>
         </button>
       </li><li><button type="button" class="js-article-tag tag-1 pill-button"
         data-tag="HTTP%E3%80%81HTTPS" onclick="tagSelect('HTTP%E3%80%81HTTPS')">
@@ -46,7 +50,7 @@
         </button>
       </li><li><button type="button" class="js-article-tag tag-4 pill-button"
         data-tag="JS" onclick="tagSelect('JS')">
-          <span>JS</span><div class="tag-count">13</div>
+          <span>JS</span><div class="tag-count">15</div>
         </button>
       </li><li><button type="button" class="js-article-tag tag-1 pill-button"
         data-tag="JS%E5%B0%8F%E7%9F%A5%E8%AF%86%E7%82%B9" onclick="tagSelect('JS%E5%B0%8F%E7%9F%A5%E8%AF%86%E7%82%B9')">
@@ -55,6 +59,10 @@
       </li><li><button type="button" class="js-article-tag tag-1 pill-button"
         data-tag="Js+%E4%BC%98%E5%8C%96" onclick="tagSelect('Js+%E4%BC%98%E5%8C%96')">
           <span>Js 优化</span><div class="tag-count">1</div>
+        </button>
+      </li><li><button type="button" class="js-article-tag tag-1 pill-button"
+        data-tag="g2" onclick="tagSelect('g2')">
+          <span>g2</span><div class="tag-count">1</div>
         </button>
       </li><li><button type="button" class="js-article-tag tag-1 pill-button"
         data-tag="video" onclick="tagSelect('video')">
@@ -67,6 +75,10 @@
       </li><li><button type="button" class="js-article-tag tag-1 pill-button"
         data-tag="%E5%8A%A8%E7%94%BB%E4%BA%8B%E4%BB%B6" onclick="tagSelect('%E5%8A%A8%E7%94%BB%E4%BA%8B%E4%BB%B6')">
           <span>动画事件</span><div class="tag-count">1</div>
+        </button>
+      </li><li><button type="button" class="js-article-tag tag-1 pill-button"
+        data-tag="%E5%9B%BE%E5%BD%A2%E5%8C%96%E6%95%B0%E6%8D%AE" onclick="tagSelect('%E5%9B%BE%E5%BD%A2%E5%8C%96%E6%95%B0%E6%8D%AE')">
+          <span>图形化数据</span><div class="tag-count">1</div>
         </button>
       </li><li><button type="button" class="js-article-tag tag-1 pill-button"
         data-tag="%E5%AF%B9%E8%B1%A1%E5%85%8B%E9%9A%86" onclick="tagSelect('%E5%AF%B9%E8%B1%A1%E5%85%8B%E9%9A%86')">
@@ -97,9 +109,15 @@
 <!--group by year: http://stackoverflow.com/questions/19086284/jekyll-liquid-templating-how-to-group-blog-posts-by-year-->
     <section class="js-year-wrapper"><section id="2018">
           <h2 class="year-title" id="year-2018">2018</h2>
-          <ul class="year-list"><li class="js-post-block" data-tag="">
-          <span class="post-date">Mar 24</span>
-          <a class="post-link" href="/js/2018/03/24/Anvt-1.html">anvt-g2</a>
+          <ul class="year-list"><li class="js-post-block" data-tag="JS,HTML">
+          <span class="post-date">May 03</span>
+          <a class="post-link" href="/2018/05/03/HTML5_2.html">HTML 5.2?</a>
+        </li><li class="js-post-block" data-tag="">
+          <span class="post-date">Mar 31</span>
+          <a class="post-link" href="/js/2018/03/31/basic-knowledge-1.html">basic-knowledge(一).md</a>
+        </li><li class="js-post-block" data-tag="JS,g2,%E5%9B%BE%E5%BD%A2%E5%8C%96%E6%95%B0%E6%8D%AE">
+          <span class="post-date">Mar 23</span>
+          <a class="post-link" href="/2018/03/23/anvt_G2_1.html">什么是G2?</a>
         </li><li class="js-post-block" data-tag="">
           <span class="post-date">Mar 16</span>
           <a class="post-link" href="/js/2018/03/16/AdvancedAlgorithms-2.html">JS基础--高级算法--贪心算法</a>
@@ -327,7 +345,7 @@
   <div class="main">
     <aside><div class="follow-me"><ul itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="weili">
-    <link itemprop="url" href="http://0.0.0.0:4000/"></ul></div>
+    <link itemprop="url" href="http://localhost:4000/"></ul></div>
 </aside>
     <footer class="site-info">
       <p>© Weili's Blog 2018</p>
