@@ -14,12 +14,12 @@ tags:
 * HTTP请求(Request)报文，报文格式为：请求行 – HTTP头(通用信息头，请求头，实体头) – 请求报文主体(只有POST才有报文主体)，如下图
 
 
-![image01](http://127.0.0.1:4000/img/20180511/20180511-1.jpg)
+![image01](https://lilywei739.github.io/img/20180511/20180511-1.jpg)
 
 
 * HTTP响应(Response)报文，报文格式为：状态行 – HTTP头(通用信息头，响应头，实体头) – 响应报文主体，如下图
 
-![image01](http://127.0.0.1:4000/img/20180511/20180511-2.jpg)
+![image01](https://lilywei739.github.io/img/20180511/20180511-2.jpg)
 
 
 注：
@@ -36,7 +36,7 @@ tags:
 浏览器与服务器通信的方式为应答模式，即是：浏览器发起HTTP请求 – 服务器响应该请求。那么浏览器第一次向服务器发起该请求后拿到请求结果，会根据响应报文中HTTP头的缓存标识，决定是否缓存结果，是则将请求结果和缓存标识存入浏览器缓存中，简单的过程如下图：
 
 
-![image01](http://127.0.0.1:4000/img/20180511/20180511-3.jpg)
+![image01](https://lilywei739.github.io/img/20180511/20180511-3.jpg)
 
 
 由上图我们可以知道：
@@ -54,17 +54,17 @@ tags:
 不存在该缓存结果和缓存标识，强制缓存失效，则直接向服务器发起请求（跟第一次发起请求一致），如下图：
 
 
-![image01](http://127.0.0.1:4000/img/20180511/20180511-4.jpg)
+![image01](https://lilywei739.github.io/img/20180511/20180511-4.jpg)
 
 
 存在该缓存结果和缓存标识，但该结果已失效，强制缓存失效，则使用协商缓存(暂不分析)，如下图
 
-![image01](http://127.0.0.1:4000/img/20180511/20180511-5.jpg)
+![image01](https://lilywei739.github.io/img/20180511/20180511-5.jpg)
 
 
 存在该缓存结果和缓存标识，且该结果尚未失效，强制缓存生效，直接返回该结果，如下图
 
-![image01](http://127.0.0.1:4000/img/20180511/20180511-6.jpg)
+![image01](https://lilywei739.github.io/img/20180511/20180511-6.jpg)
 
 
 #### 强制缓存的缓存规则
@@ -101,7 +101,7 @@ Expires是HTTP/1.0控制网页缓存的字段，其值为服务器返回该请�
 
 看一个例子
 
-![image01](http://127.0.0.1:4000/img/20180511/20180511-7.jpg)
+![image01](https://lilywei739.github.io/img/20180511/20180511-7.jpg)
 
 
 由上面的例子我们可以知道：
@@ -116,7 +116,7 @@ Expires是HTTP/1.0控制网页缓存的字段，其值为服务器返回该请�
 
 > 浏览器的缓存存放在哪里，如何在浏览器中判断强制缓存是否生效？
 
-![image01](http://127.0.0.1:4000/img/20180511/20180511-8.png)
+![image01](https://lilywei739.github.io/img/20180511/20180511-8.png)
 
 状态码为灰色的请求则代表使用了强制缓存，请求对应的Size值则代表该缓存存放的位置，分别为from memory cache 和 from disk cache。
 
@@ -134,19 +134,19 @@ from memory cache代表使用内存中的缓存，from disk cache则代表使用
 
 1) 访问www.babytree.com
 
-![image01](http://127.0.0.1:4000/img/20180511/20180511-9.jpg)
+![image01](https://lilywei739.github.io/img/20180511/20180511-9.jpg)
 
 
 2) 关闭页面 
 
 3) 重新打开 
 
-![image01](http://127.0.0.1:4000/img/20180511/20180511-10.jpg)
+![image01](https://lilywei739.github.io/img/20180511/20180511-10.jpg)
 
 
 4) 刷新 
 
-![image01](http://127.0.0.1:4000/img/20180511/20180511-11.jpg)
+![image01](https://lilywei739.github.io/img/20180511/20180511-11.jpg)
 
 
 
@@ -175,14 +175,14 @@ from memory cache代表使用内存中的缓存，from disk cache则代表使用
 
 * 协商缓存生效，返回304，如下
 
-![image01](http://127.0.0.1:4000/img/20180511/20180511-12.jpg)
+![image01](https://lilywei739.github.io/img/20180511/20180511-12.jpg)
 
 
 
 
 * 协商缓存失效，返回200和请求结果结果，如下
 
-![image01](http://127.0.0.1:4000/img/20180511/20180511-13.jpg)
+![image01](https://lilywei739.github.io/img/20180511/20180511-13.jpg)
 
 
 
@@ -195,13 +195,13 @@ from memory cache代表使用内存中的缓存，from disk cache则代表使用
 Last-Modified是服务器响应请求时，返回该资源文件在服务器最后被修改的时间，如下。
 
 
-![image01](http://127.0.0.1:4000/img/20180511/20180511-14.jpg)
+![image01](https://lilywei739.github.io/img/20180511/20180511-14.jpg)
 
 
 If-Modified-Since则是客户端再次发起该请求时，携带上次请求返回的Last-Modified值，通过此字段值告诉服务器该资源上次请求返回的最后被修改时间。服务器收到该请求，发现请求头含有If-Modified-Since字段，则会根据If-Modified-Since的字段值与该资源在服务器的最后被修改时间做对比，若服务器的资源最后被修改时间大于If-Modified-Since的字段值，则重新返回资源，状态码为200；否则则返回304，代表资源无更新，可继续使用缓存文件，如下
 
 
-![image01](http://127.0.0.1:4000/img/20180511/20180511-15.jpg)
+![image01](https://lilywei739.github.io/img/20180511/20180511-15.jpg)
 
 
 ##### Etag / If-None-Match
@@ -210,14 +210,14 @@ Etag是服务器响应请求时，返回当前资源文件的一个唯一标识(
 
 
 
-![image01](http://127.0.0.1:4000/img/20180511/20180511-16.jpg)
+![image01](https://lilywei739.github.io/img/20180511/20180511-16.jpg)
 
 
 If-None-Match是客户端再次发起该请求时，携带上次请求返回的唯一标识Etag值，通过此字段值告诉服务器该资源上次请求返回的唯一标识值。服务器收到该请求后，发现该请求头中含有If-None-Match，则会根据If-None-Match的字段值与该资源在服务器的Etag值做对比，一致则返回304，代表资源无更新，继续使用缓存文件；不一致则重新返回资源文件，状态码为200，如下
 
 
 
-![image01](http://127.0.0.1:4000/img/20180511/20180511-17.jpg)
+![image01](https://lilywei739.github.io/img/20180511/20180511-17.jpg)
 
 
 注：Etag / If-None-Match优先级高于Last-Modified / If-Modified-Since，同时存在则只有Etag / If-None-Match生效。
@@ -227,7 +227,7 @@ If-None-Match是客户端再次发起该请求时，携带上次请求返回的�
 强制缓存优先于协商缓存进行，若强制缓存(Expires和Cache-Control)生效则直接使用缓存，若不生效则进行协商缓存(Last-Modified / If-Modified-Since和Etag / If-None-Match)，协商缓存由服务器决定是否使用缓存，若协商缓存失效，那么代表该请求的缓存失效，重新获取请求结果，再存入浏览器缓存中；生效则返回304，继续使用缓存，主要过程如下：
 
 
-![image01](http://127.0.0.1:4000/img/20180511/20180511-18.jpg)
+![image01](https://lilywei739.github.io/img/20180511/20180511-18.jpg)
 
 
 
