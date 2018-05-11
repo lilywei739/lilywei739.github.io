@@ -1,397 +1,505 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.7.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2018-05-04T18:47:47+08:00</updated><id>http://localhost:4000/</id><title type="html">Weili’s Blog</title><subtitle>Weili's blog
-</subtitle><author><name>weili</name></author><entry><title type="html"></title><link href="http://localhost:4000/2018/05/04/2018-3-23-anvt_G2.html" rel="alternate" type="text/html" title="" /><published>2018-05-04T18:47:47+08:00</published><updated>2018-05-04T18:47:47+08:00</updated><id>http://localhost:4000/2018/05/04/2018-3-23-anvt_G2</id><content type="html" xml:base="http://localhost:4000/2018/05/04/2018-3-23-anvt_G2.html">&lt;h2 id=&quot;什么是g2&quot;&gt;什么是G2?&lt;/h2&gt;
-&lt;p&gt;=======
-title: AntV-G2使用总结
-category: [‘g2’] [‘图形化数据’] 
-—&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.7.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2018-05-11T18:17:50+08:00</updated><id>http://localhost:4000/</id><title type="html">Weili’s Blog</title><subtitle>Weili's blog
+</subtitle><author><name>weili</name></author><entry><title type="html">彻底理解浏览器的缓存机制</title><link href="http://localhost:4000/2018/05/11/browsers_caching.html" rel="alternate" type="text/html" title="彻底理解浏览器的缓存机制" /><published>2018-05-11T00:00:00+08:00</published><updated>2018-05-11T00:00:00+08:00</updated><id>http://localhost:4000/2018/05/11/browsers_caching</id><content type="html" xml:base="http://localhost:4000/2018/05/11/browsers_caching.html">&lt;h2 id=&quot;定义&quot;&gt;定义&lt;/h2&gt;
 
-&lt;h1 id=&quot;什么是g2-1&quot;&gt;什么是G2?&lt;/h1&gt;
+&lt;p&gt;浏览器的缓存机制也就是我们说的HTTP缓存机制，其机制是根据HTTP报文的缓存标识进行的，所以在分析浏览器缓存机制之前，我们先使用图文简单介绍一下HTTP报文，HTTP报文分为两种：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;HTTP请求(Request)报文，报文格式为：请求行 – HTTP头(通用信息头，请求头，实体头) – 请求报文主体(只有POST才有报文主体)，如下图&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://127.0.0.1:4000/img/20180511/20180511-1.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;HTTP响应(Response)报文，报文格式为：状态行 – HTTP头(通用信息头，响应头，实体头) – 响应报文主体，如下图&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://127.0.0.1:4000/img/20180511/20180511-2.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;注：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;通用信息头指的是请求和响应报文都支持的头域，分别为Cache-Control、Connection、Date、Pragma、Transfer-Encoding、Upgrade、Via；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;实体头则是实体信息的实体头域，分别为Allow、Content-Base、Content-Encoding、Content-Language、Content-Length、Content-Location、Content-MD5、Content-Range、Content-Type、Etag、Expires、Last-Modified、extension-header。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;这里只是为了方便理解，将通用信息头，响应头/请求头，实体头都归为了HTTP头。&lt;/p&gt;
+
+&lt;h2 id=&quot;缓存过程分析&quot;&gt;缓存过程分析&lt;/h2&gt;
+
+&lt;p&gt;浏览器与服务器通信的方式为应答模式，即是：浏览器发起HTTP请求 – 服务器响应该请求。那么浏览器第一次向服务器发起该请求后拿到请求结果，会根据响应报文中HTTP头的缓存标识，决定是否缓存结果，是则将请求结果和缓存标识存入浏览器缓存中，简单的过程如下图：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://127.0.0.1:4000/img/20180511/20180511-3.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;由上图我们可以知道：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;浏览器每次发起请求，都会先在浏览器缓存中查找该请求的结果以及缓存标识&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;浏览器每次拿到返回的请求结果都会将该结果和缓存标识存入浏览器缓存中&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;以上两点结论就是浏览器缓存机制的关键，他确保了每个请求的缓存存入与读取，只要我们再理解浏览器缓存的使用规则，那么所有的问题就迎刃而解了，本文也将围绕着这点进行详细分析。为了方便理解，这里根据是否需要向服务器重新发起HTTP请求将缓存过程分为两个部分，分别是&lt;strong&gt;强制缓存和协商缓存&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;h3 id=&quot;强制缓存&quot;&gt;强制缓存&lt;/h3&gt;
+
+&lt;p&gt;强制缓存就是向浏览器缓存查找该请求结果，并根据该结果的缓存规则来决定是否使用该缓存结果的过程，强制缓存的情况主要有三种(暂不分析协商缓存过程)，如下：&lt;/p&gt;
+
+&lt;p&gt;不存在该缓存结果和缓存标识，强制缓存失效，则直接向服务器发起请求（跟第一次发起请求一致），如下图：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://127.0.0.1:4000/img/20180511/20180511-4.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;存在该缓存结果和缓存标识，但该结果已失效，强制缓存失效，则使用协商缓存(暂不分析)，如下图&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://127.0.0.1:4000/img/20180511/20180511-5.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;存在该缓存结果和缓存标识，且该结果尚未失效，强制缓存生效，直接返回该结果，如下图&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://127.0.0.1:4000/img/20180511/20180511-6.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;强制缓存的缓存规则&quot;&gt;强制缓存的缓存规则&lt;/h4&gt;
+
+&lt;p&gt;当浏览器向服务器发起请求时，服务器会将缓存规则放入HTTP响应报文的HTTP头中和请求结果一起返回给浏览器，控制强制缓存的字段分别是Expires和Cache-Control，其中Cache-Control优先级比Expires高。&lt;/p&gt;
+
+&lt;h5 id=&quot;expires&quot;&gt;Expires&lt;/h5&gt;
+
+&lt;p&gt;Expires是HTTP/1.0控制网页缓存的字段，其值为服务器返回该请求结果缓存的到期时间，即再次发起该请求时，如果客户端的时间小于Expires的值时，直接使用缓存结果。&lt;/p&gt;
+
 &lt;blockquote&gt;
-  &lt;blockquote&gt;
-    &lt;blockquote&gt;
-      &lt;blockquote&gt;
-        &lt;blockquote&gt;
-          &lt;blockquote&gt;
-            &lt;blockquote&gt;
-              &lt;p&gt;51d42c2a5d9ff67329220238e0f78dc25c36f318:_posts/2018-3-23-anvt_G2.md&lt;/p&gt;
-            &lt;/blockquote&gt;
-          &lt;/blockquote&gt;
-        &lt;/blockquote&gt;
-      &lt;/blockquote&gt;
-    &lt;/blockquote&gt;
-  &lt;/blockquote&gt;
+  &lt;p&gt;Expires是HTTP/1.0的字段，但是现在浏览器默认使用的是HTTP/1.1，那么在HTTP/1.1中网页缓存还是否由Expires控制？&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;G2 是一套基于可视化编码的图形语法，以数据驱动，具有高度的易用性和扩展性，用户无需关注各种繁琐的实现细节，一条语句即可构建出各种各样的可交互的统计图表。&lt;/p&gt;
+&lt;p&gt;到了HTTP/1.1，Expire已经被Cache-Control替代，原因在于Expires控制缓存的原理是使用客户端的时间与服务端返回的时间做对比，那么如果客户端与服务端的时间因为某些原因（例如时区不同；客户端和服务端有一方的时间不准确）发生误差，那么强制缓存则会直接失效，这样的话强制缓存的存在则毫无意义，那么Cache-Control又是如何控制的呢？&lt;/p&gt;
 
-&lt;p&gt;就是这个样子：&lt;/p&gt;
+&lt;h5 id=&quot;cache-control&quot;&gt;Cache-Control&lt;/h5&gt;
 
-&lt;h3 id=&quot;引入方法&quot;&gt;引入方法&lt;/h3&gt;
+&lt;p&gt;在HTTP/1.1中，Cache-Control是最重要的规则，主要用于控制网页缓存，主要取值为：&lt;/p&gt;
 
-&lt;p&gt;1、直接引入&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;script src=&quot;https://gw.alipayobjects.com/os/antv/assets/g2/3.0.5-beta.5/g2.min.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;2、npm功安装完成之后，import 或 require 引用&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm install @antv/g2 --save
-
-import G2 from '@antv/g2';
-
-const chart = new G2.Chart({
-  container: 'c1',
-  width: 600,
-  height: 300
-});
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;如何使用&quot;&gt;如何使用？&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;创建 div 图表容器&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;div id=&quot;c1&quot;&amp;gt;&amp;lt;/div&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;定制图表进行绘制
-    &lt;ul&gt;
-      &lt;li&gt;创建 Chart 图表对象，指定图表所在的容器 ID；&lt;/li&gt;
-      &lt;li&gt;载入图表数据源；&lt;/li&gt;
-      &lt;li&gt;使用图形语法进行图表的绘制；&lt;/li&gt;
-      &lt;li&gt;渲染图表。&lt;/li&gt;
-    &lt;/ul&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;public：所有内容都将被缓存（客户端和代理服务器都可缓存）&lt;/p&gt;
   &lt;/li&gt;
-&lt;/ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;private：所有内容只有客户端可以缓存，Cache-Control的默认取值&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;no-cache：客户端缓存内容，但是是否使用缓存则需要经过协商缓存来验证决定&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;no-store：所有内容都不会被缓存，即不使用强制缓存，也不使用协商缓存&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;max-age=xxx (xxx is numeric)：缓存内容将在xxx秒后失效&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;数据源
-const data = [
-  { genre: 'Sports', sold: 275 },
-  { genre: 'Strategy', sold: 115 },
-  { genre: 'Action', sold: 120 },
-  { genre: 'Shooter', sold: 350 },
-  { genre: 'Other', sold: 150 }
-]; // G2 对数据源格式的要求，仅仅是 JSON 数组，数组的每个元素是一个标准 JSON 对象
+&lt;p&gt;看一个例子&lt;/p&gt;
 
-// Step 1: 创建 Chart 对象
-const chart = new G2.Chart({
-  container: 'c1', // 指定图表容器 ID
-  width : 600, // 指定图表宽度
-  height : 300 // 指定图表高度
-});
+&lt;p&gt;&lt;img src=&quot;http://127.0.0.1:4000/img/20180511/20180511-7.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
 
-// Step 2: 载入数据源
-chart.source(data);
+&lt;p&gt;由上面的例子我们可以知道：&lt;/p&gt;
 
-// Step 3：创建图形语法，绘制柱状图，由 genre 和 sold 两个属性决定图形位置，genre 映射至 x 轴，sold 映射至 y 轴
-chart.interval().position('genre*sold').color('genre')
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;HTTP响应报文中expires的时间值，是一个绝对值&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;HTTP响应报文中Cache-Control为max-age=600，是相对值&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
 
-// Step 4: 渲染图表
-chart.render();
+&lt;p&gt;由于Cache-Control的优先级比expires，那么直接根据Cache-Control的值进行缓存，意思就是说在600秒内再次发起该请求，则会直接使用缓存结果，强制缓存生效。&lt;/p&gt;
+
+&lt;p&gt;注：在无法确定客户端的时间是否与服务端的时间同步的情况下，Cache-Control相比于expires是更好的选择，所以同时存在时，只有Cache-Control生效。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;浏览器的缓存存放在哪里，如何在浏览器中判断强制缓存是否生效？&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://127.0.0.1:4000/img/20180511/20180511-8.png&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;状态码为灰色的请求则代表使用了强制缓存，请求对应的Size值则代表该缓存存放的位置，分别为from memory cache 和 from disk cache。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;那么from memory cache 和 from disk cache又分别代表的是什么呢？什么时候会使用from disk cache，什么时候会使用from memory cache呢？&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;from memory cache代表使用内存中的缓存，from disk cache则代表使用的是硬盘中的缓存，浏览器读取缓存的顺序为memory –&amp;gt; disk。&lt;/p&gt;
+
+&lt;p&gt;接下来再一起详细分析一下缓存读取问题：&lt;/p&gt;
+
+&lt;p&gt;访问https://www.babytree.com –&amp;gt; 200 –&amp;gt; 关闭网站的标签页 –&amp;gt; 重新打开https://www.babytree.com –&amp;gt; 200(from disk cache) –&amp;gt; 刷新 –&amp;gt; 200(from memory cache)&lt;/p&gt;
+
+&lt;p&gt;过程如下：&lt;/p&gt;
+
+&lt;p&gt;1) 访问www.babytree.com&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://127.0.0.1:4000/img/20180511/20180511-9.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;2) 关闭页面&lt;/p&gt;
+
+&lt;p&gt;3) 重新打开&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://127.0.0.1:4000/img/20180511/20180511-10.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;4) 刷新&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://127.0.0.1:4000/img/20180511/20180511-11.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;最后一个步骤刷新的时候，不是同时存在着from disk cache和from memory cache吗？&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;对于这个问题，需要了解内存缓存(from memory cache)和硬盘缓存(from disk cache)，如下:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;内存缓存(from memory cache)：内存缓存具有两个特点，分别是快速读取和时效性：&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;快速读取：内存缓存会将编译解析后的文件，直接存入该进程的内存中，占据该进程一定的内存资源，以方便下次运行使用时的快速读取。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;时效性：一旦该进程关闭，则该进程的内存则会清空。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;硬盘缓存(from disk cache)：硬盘缓存则是直接将缓存写入硬盘文件中，读取缓存需要对该缓存存放的硬盘文件进行I/O操作，然后重新解析该缓存内容，读取复杂，速度比内存缓存慢。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;在浏览器中，浏览器会在js和图片等文件解析执行后直接存入内存缓存中，那么当刷新页面时只需直接从内存缓存中读取(from memory cache)；而css文件则会存入硬盘文件中，所以每次渲染页面都需要从硬盘读取缓存(from disk cache)。&lt;/p&gt;
+
+&lt;h3 id=&quot;协商缓存&quot;&gt;协商缓存&lt;/h3&gt;
+
+&lt;p&gt;协商缓存就是强制缓存失效后，浏览器携带缓存标识向服务器发起请求，由服务器根据缓存标识决定是否使用缓存的过程，主要有以下两种情况：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;协商缓存生效，返回304，如下&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://127.0.0.1:4000/img/20180511/20180511-12.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;协商缓存失效，返回200和请求结果结果，如下&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://127.0.0.1:4000/img/20180511/20180511-13.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;同样，协商缓存的标识也是在响应报文的HTTP头中和请求结果一起返回给浏览器的，控制协商缓存的字段分别有：Last-Modified / If-Modified-Since和Etag / If-None-Match，其中Etag / If-None-Match的优先级比Last-Modified / If-Modified-Since高。&lt;/p&gt;
+
+&lt;h5 id=&quot;last-modified--if-modified-since&quot;&gt;Last-Modified / If-Modified-Since&lt;/h5&gt;
+
+&lt;p&gt;Last-Modified是服务器响应请求时，返回该资源文件在服务器最后被修改的时间，如下。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://127.0.0.1:4000/img/20180511/20180511-14.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;If-Modified-Since则是客户端再次发起该请求时，携带上次请求返回的Last-Modified值，通过此字段值告诉服务器该资源上次请求返回的最后被修改时间。服务器收到该请求，发现请求头含有If-Modified-Since字段，则会根据If-Modified-Since的字段值与该资源在服务器的最后被修改时间做对比，若服务器的资源最后被修改时间大于If-Modified-Since的字段值，则重新返回资源，状态码为200；否则则返回304，代表资源无更新，可继续使用缓存文件，如下&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://127.0.0.1:4000/img/20180511/20180511-15.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;etag--if-none-match&quot;&gt;Etag / If-None-Match&lt;/h5&gt;
+
+&lt;p&gt;Etag是服务器响应请求时，返回当前资源文件的一个唯一标识(由服务器生成)，如下。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://127.0.0.1:4000/img/20180511/20180511-16.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;If-None-Match是客户端再次发起该请求时，携带上次请求返回的唯一标识Etag值，通过此字段值告诉服务器该资源上次请求返回的唯一标识值。服务器收到该请求后，发现该请求头中含有If-None-Match，则会根据If-None-Match的字段值与该资源在服务器的Etag值做对比，一致则返回304，代表资源无更新，继续使用缓存文件；不一致则重新返回资源文件，状态码为200，如下&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://127.0.0.1:4000/img/20180511/20180511-17.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;注：Etag / If-None-Match优先级高于Last-Modified / If-Modified-Since，同时存在则只有Etag / If-None-Match生效。&lt;/p&gt;
+
+&lt;h2 id=&quot;总结&quot;&gt;总结&lt;/h2&gt;
+
+&lt;p&gt;强制缓存优先于协商缓存进行，若强制缓存(Expires和Cache-Control)生效则直接使用缓存，若不生效则进行协商缓存(Last-Modified / If-Modified-Since和Etag / If-None-Match)，协商缓存由服务器决定是否使用缓存，若协商缓存失效，那么代表该请求的缓存失效，重新获取请求结果，再存入浏览器缓存中；生效则返回304，继续使用缓存，主要过程如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://127.0.0.1:4000/img/20180511/20180511-18.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;</content><author><name>weili</name></author><category term="JS" /><category term="缓存机制" /><summary type="html">定义 浏览器的缓存机制也就是我们说的HTTP缓存机制，其机制是根据HTTP报文的缓存标识进行的，所以在分析浏览器缓存机制之前，我们先使用图文简单介绍一下HTTP报文，HTTP报文分为两种： HTTP请求(Request)报文，报文格式为：请求行 – HTTP头(通用信息头，请求头，实体头) – 请求报文主体(只有POST才有报文主体)，如下图 HTTP响应(Response)报文，报文格式为：状态行 – HTTP头(通用信息头，响应头，实体头) – 响应报文主体，如下图 注： 通用信息头指的是请求和响应报文都支持的头域，分别为Cache-Control、Connection、Date、Pragma、Transfer-Encoding、Upgrade、Via； 实体头则是实体信息的实体头域，分别为Allow、Content-Base、Content-Encoding、Content-Language、Content-Length、Content-Location、Content-MD5、Content-Range、Content-Type、Etag、Expires、Last-Modified、extension-header。 这里只是为了方便理解，将通用信息头，响应头/请求头，实体头都归为了HTTP头。 缓存过程分析 浏览器与服务器通信的方式为应答模式，即是：浏览器发起HTTP请求 – 服务器响应该请求。那么浏览器第一次向服务器发起该请求后拿到请求结果，会根据响应报文中HTTP头的缓存标识，决定是否缓存结果，是则将请求结果和缓存标识存入浏览器缓存中，简单的过程如下图： 由上图我们可以知道： 浏览器每次发起请求，都会先在浏览器缓存中查找该请求的结果以及缓存标识 浏览器每次拿到返回的请求结果都会将该结果和缓存标识存入浏览器缓存中 以上两点结论就是浏览器缓存机制的关键，他确保了每个请求的缓存存入与读取，只要我们再理解浏览器缓存的使用规则，那么所有的问题就迎刃而解了，本文也将围绕着这点进行详细分析。为了方便理解，这里根据是否需要向服务器重新发起HTTP请求将缓存过程分为两个部分，分别是强制缓存和协商缓存。 强制缓存 强制缓存就是向浏览器缓存查找该请求结果，并根据该结果的缓存规则来决定是否使用该缓存结果的过程，强制缓存的情况主要有三种(暂不分析协商缓存过程)，如下： 不存在该缓存结果和缓存标识，强制缓存失效，则直接向服务器发起请求（跟第一次发起请求一致），如下图： 存在该缓存结果和缓存标识，但该结果已失效，强制缓存失效，则使用协商缓存(暂不分析)，如下图 存在该缓存结果和缓存标识，且该结果尚未失效，强制缓存生效，直接返回该结果，如下图 强制缓存的缓存规则 当浏览器向服务器发起请求时，服务器会将缓存规则放入HTTP响应报文的HTTP头中和请求结果一起返回给浏览器，控制强制缓存的字段分别是Expires和Cache-Control，其中Cache-Control优先级比Expires高。 Expires Expires是HTTP/1.0控制网页缓存的字段，其值为服务器返回该请求结果缓存的到期时间，即再次发起该请求时，如果客户端的时间小于Expires的值时，直接使用缓存结果。 Expires是HTTP/1.0的字段，但是现在浏览器默认使用的是HTTP/1.1，那么在HTTP/1.1中网页缓存还是否由Expires控制？ 到了HTTP/1.1，Expire已经被Cache-Control替代，原因在于Expires控制缓存的原理是使用客户端的时间与服务端返回的时间做对比，那么如果客户端与服务端的时间因为某些原因（例如时区不同；客户端和服务端有一方的时间不准确）发生误差，那么强制缓存则会直接失效，这样的话强制缓存的存在则毫无意义，那么Cache-Control又是如何控制的呢？ Cache-Control 在HTTP/1.1中，Cache-Control是最重要的规则，主要用于控制网页缓存，主要取值为： public：所有内容都将被缓存（客户端和代理服务器都可缓存） private：所有内容只有客户端可以缓存，Cache-Control的默认取值 no-cache：客户端缓存内容，但是是否使用缓存则需要经过协商缓存来验证决定 no-store：所有内容都不会被缓存，即不使用强制缓存，也不使用协商缓存 max-age=xxx (xxx is numeric)：缓存内容将在xxx秒后失效 看一个例子 由上面的例子我们可以知道： HTTP响应报文中expires的时间值，是一个绝对值 HTTP响应报文中Cache-Control为max-age=600，是相对值 由于Cache-Control的优先级比expires，那么直接根据Cache-Control的值进行缓存，意思就是说在600秒内再次发起该请求，则会直接使用缓存结果，强制缓存生效。 注：在无法确定客户端的时间是否与服务端的时间同步的情况下，Cache-Control相比于expires是更好的选择，所以同时存在时，只有Cache-Control生效。 浏览器的缓存存放在哪里，如何在浏览器中判断强制缓存是否生效？ 状态码为灰色的请求则代表使用了强制缓存，请求对应的Size值则代表该缓存存放的位置，分别为from memory cache 和 from disk cache。 那么from memory cache 和 from disk cache又分别代表的是什么呢？什么时候会使用from disk cache，什么时候会使用from memory cache呢？ from memory cache代表使用内存中的缓存，from disk cache则代表使用的是硬盘中的缓存，浏览器读取缓存的顺序为memory –&amp;gt; disk。 接下来再一起详细分析一下缓存读取问题： 访问https://www.babytree.com –&amp;gt; 200 –&amp;gt; 关闭网站的标签页 –&amp;gt; 重新打开https://www.babytree.com –&amp;gt; 200(from disk cache) –&amp;gt; 刷新 –&amp;gt; 200(from memory cache) 过程如下： 1) 访问www.babytree.com 2) 关闭页面 3) 重新打开 4) 刷新 最后一个步骤刷新的时候，不是同时存在着from disk cache和from memory cache吗？ 对于这个问题，需要了解内存缓存(from memory cache)和硬盘缓存(from disk cache)，如下: 内存缓存(from memory cache)：内存缓存具有两个特点，分别是快速读取和时效性： 快速读取：内存缓存会将编译解析后的文件，直接存入该进程的内存中，占据该进程一定的内存资源，以方便下次运行使用时的快速读取。 时效性：一旦该进程关闭，则该进程的内存则会清空。 硬盘缓存(from disk cache)：硬盘缓存则是直接将缓存写入硬盘文件中，读取缓存需要对该缓存存放的硬盘文件进行I/O操作，然后重新解析该缓存内容，读取复杂，速度比内存缓存慢。 在浏览器中，浏览器会在js和图片等文件解析执行后直接存入内存缓存中，那么当刷新页面时只需直接从内存缓存中读取(from memory cache)；而css文件则会存入硬盘文件中，所以每次渲染页面都需要从硬盘读取缓存(from disk cache)。 协商缓存 协商缓存就是强制缓存失效后，浏览器携带缓存标识向服务器发起请求，由服务器根据缓存标识决定是否使用缓存的过程，主要有以下两种情况： 协商缓存生效，返回304，如下 协商缓存失效，返回200和请求结果结果，如下 同样，协商缓存的标识也是在响应报文的HTTP头中和请求结果一起返回给浏览器的，控制协商缓存的字段分别有：Last-Modified / If-Modified-Since和Etag / If-None-Match，其中Etag / If-None-Match的优先级比Last-Modified / If-Modified-Since高。 Last-Modified / If-Modified-Since Last-Modified是服务器响应请求时，返回该资源文件在服务器最后被修改的时间，如下。 If-Modified-Since则是客户端再次发起该请求时，携带上次请求返回的Last-Modified值，通过此字段值告诉服务器该资源上次请求返回的最后被修改时间。服务器收到该请求，发现请求头含有If-Modified-Since字段，则会根据If-Modified-Since的字段值与该资源在服务器的最后被修改时间做对比，若服务器的资源最后被修改时间大于If-Modified-Since的字段值，则重新返回资源，状态码为200；否则则返回304，代表资源无更新，可继续使用缓存文件，如下 Etag / If-None-Match Etag是服务器响应请求时，返回当前资源文件的一个唯一标识(由服务器生成)，如下。 If-None-Match是客户端再次发起该请求时，携带上次请求返回的唯一标识Etag值，通过此字段值告诉服务器该资源上次请求返回的唯一标识值。服务器收到该请求后，发现该请求头中含有If-None-Match，则会根据If-None-Match的字段值与该资源在服务器的Etag值做对比，一致则返回304，代表资源无更新，继续使用缓存文件；不一致则重新返回资源文件，状态码为200，如下 注：Etag / If-None-Match优先级高于Last-Modified / If-Modified-Since，同时存在则只有Etag / If-None-Match生效。 总结 强制缓存优先于协商缓存进行，若强制缓存(Expires和Cache-Control)生效则直接使用缓存，若不生效则进行协商缓存(Last-Modified / If-Modified-Since和Etag / If-None-Match)，协商缓存由服务器决定是否使用缓存，若协商缓存失效，那么代表该请求的缓存失效，重新获取请求结果，再存入浏览器缓存中；生效则返回304，继续使用缓存，主要过程如下：</summary></entry><entry><title type="html">HTML 5.2?</title><link href="http://localhost:4000/2018/05/11/HTML5_2.html" rel="alternate" type="text/html" title="HTML 5.2?" /><published>2018-05-11T00:00:00+08:00</published><updated>2018-05-11T00:00:00+08:00</updated><id>http://localhost:4000/2018/05/11/HTML5_2</id><content type="html" xml:base="http://localhost:4000/2018/05/11/HTML5_2.html">&lt;p&gt;一个月前，HTML 5.2 正式成为了 W3C 的推荐标准（REC）。当一个规范到达 REC 阶段，就意味着它已经正式得到了 W3C 成员和理事长的认可。并且 W3C 将正式推荐浏览器厂商部署、web 开发者实现此规范。&lt;/p&gt;
+
+&lt;p&gt;在 HTML 5.2 中有一些添加和删除,&lt;a href=&quot;https://www.w3.org/TR/html52/changes.html#changes&quot;&gt;更多详细参考–HTML 5.2 变动内容&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;增加的新特性&quot;&gt;增加的新特性&lt;/h2&gt;
+
+&lt;h3 id=&quot;dialog--原生对话框&quot;&gt;dialog  原生对话框&lt;/h3&gt;
+
+&lt;p&gt;在 web 中，对话框比比皆是，但是它们的实现方式都各有不同。对话框很难实现可访问性，这导致大多数的对话框对那些不方便以视觉方式访问网页的用户来说都是不可用的。&lt;/p&gt;
+
+&lt;p&gt;新的 dialog 元素旨在改变这种状况，它提供了一种简单的方式来实现模态对话框。之后我会单独写一篇文章专门介绍这个元素的工作方式，在此先简单介绍一下。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;由一个 &amp;lt;dialog&amp;gt; 元素创建对话框：
+
+&amp;lt;dialog&amp;gt;  
+  &amp;lt;h2&amp;gt;Dialog Title&amp;lt;/h2&amp;gt;
+  &amp;lt;p&amp;gt;Dialog content and other stuff will go here&amp;lt;/p&amp;gt;
+&amp;lt;/dialog&amp;gt;  
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;h3 id=&quot;可视化框架的构成&quot;&gt;可视化框架的构成&lt;/h3&gt;
+&lt;p&gt;默认情况下，对话框会在视图中（以及 DOM 访问中）隐藏，只有设置 open 属性后，对话框才会显示。&lt;/p&gt;
 
-&lt;p&gt;一个可视化框架需要四部分：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;数据处理模块，对数据进行加工的模块，包括一些数据处理方法。例如：合并、分组、排序、过滤、计算统计信息等&lt;/li&gt;
-  &lt;li&gt;图形映射模块，将数据映射到图形视觉通道的过程。例如：将数据映射成颜色、位置、大小等&lt;/li&gt;
-  &lt;li&gt;图形展示模块，决定使用何种图形来展示数据，点、线、面等图形标记&lt;/li&gt;
-  &lt;li&gt;辅助信息模块，用于说明视觉通道跟数据的映射关系，例如：坐标轴、图例、辅助文本等&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;数据处理模块&quot;&gt;数据处理模块&lt;/h3&gt;
-
-&lt;p&gt;数据处理模块已经从 G2 中独立出来，作为 DataSet 模块单独提供，主要包含下面几个模块：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;DataSet 包含多个 DataView, 管理多个数据源&lt;/li&gt;
-  &lt;li&gt;DataView 每个 DataView 对应一个数据源，可以理解为一个图表，可以进行布局（Layout)、数据加工（Transform)&lt;/li&gt;
-  &lt;li&gt;Layout 对数据进行布局&lt;/li&gt;
-  &lt;li&gt;Transform 对数据进行加工、统计等处理，包括对地图数据的处理，这个很强大&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;图形映射模块&quot;&gt;图形映射模块&lt;/h3&gt;
-
-&lt;p&gt;图形映射模块完成了将数据映射到数学空间
-[0-1]，再从数学空间映射到画布空间的整个过程，主要包括三个模块：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Scale 将数据映射到 0-1 之间，方便映射到画布上&lt;/li&gt;
-  &lt;li&gt;Attr 图形属性，数据映射到图形的属性（视觉通道），包括位置、颜色、大小、形状等&lt;/li&gt;
-  &lt;li&gt;Coord 展示图形需用到的坐标系，将数据映射到位置的属性（视觉通道）&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;辅助信息&quot;&gt;辅助信息&lt;/h3&gt;
-
-&lt;p&gt;辅助信息用于标示数据在各种图形属性上的映射，使得用户更容易的理解数据，主要包括下面几个模块：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Axis 坐标轴，辅助用户识别图形所在的位置，判断数据大小的辅助元素&lt;/li&gt;
-  &lt;li&gt;Tooltip 提示信息，用户鼠标在画布上移动时，实时出现的鼠标附近的数据信息&lt;/li&gt;
-  &lt;li&gt;Guide 其他辅助元素，可以在图上添加辅助的文本、辅助图片、辅助线等，增强用户对图形的认知。&lt;/li&gt;
-  &lt;li&gt;Legend 图例，辅助用户识别图形的大小、颜色、形状，通常用于判断数据对应图形的分类&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;图形展示&quot;&gt;图形展示&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Chart 图表，展示图形的入口，会生成一个画布，同时管理数据到图形映射的所有周期&lt;/li&gt;
-  &lt;li&gt;View 视图，一个画布上可以显示多张图表，每个图表有各自的绘图区域、数据源、坐标系等信息&lt;/li&gt;
-  &lt;li&gt;Geom 数据映射到的图形标识，G2 中的图形标识有：点、线、路径、面积、多边形等&lt;/li&gt;
-  &lt;li&gt;Shape 更加细分的图形标识，例如，点可以分为圆点、正方形、十字等，线可以分为点线、折线、曲线等&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;数据处理模块之&quot;&gt;数据处理模块之&lt;/h3&gt;
-
-&lt;p&gt;数据处理分为两个大的步骤：数据连接（Connector）和数据转换（Transform）。&lt;/p&gt;
-
-&lt;p&gt;Connector 负责导入和归一化数据（譬如导入 CSV 数据，导入 GeoJSON 数据等），
-Transform 负责进行各种数据转换操作（譬如图布局、数据统计、数据补全等）。&lt;/p&gt;
-
-&lt;p&gt;通过这样的分层，支持了前端社区非常全面的数据处理相关的算法和模块；其次，在单个数据视图（DataView）的基础上增加了数据集（DataSet）的概念，通过统一的 DataSet 管理，实现了各个数据视图之间的状态同步和交互。&lt;/p&gt;
-
-&lt;p&gt;一、DataSet&lt;/p&gt;
-
-&lt;p&gt;dataSet主要通过state状态管理多个dataview视图，实现多图联动，或者关联视图。
-dataView则是对应的是每一个数据源，通过connector来接入不同类型的数据，通过tranform进行数据的转换或者过滤。最后输出我们理想的数据，dataSet是与g2分离的，需要用到的时候可以加载
-在图形映射模块上，&lt;/p&gt;
-
-&lt;p&gt;DataSet的使用语法&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// step1 创建 dataset 指定状态量
-const ds = new DataSet({
-  state: {
-    year: '2010'
-  }
-});
-
-// step2 创建 DataView
-const dv = ds.createView().source(data);
-
-dv.transform({
-  type: 'filter',
-  callback(row) {
-    return row.year === ds.state.year;
-  }
-});
-
-
-// step3 引用 DataView
-chart.source(dv);
-
-// step4 更新状态量
-ds.setState('year', '2012');
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;dialog open&amp;gt; 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;DataSet 主要完成了以下功能：&lt;/p&gt;
+&lt;p&gt;open 属性可以通过调用 show() 与 close() 方法开启或关闭，任何 HTMLDialogElement 都可以调用这两个方法。&lt;/p&gt;
 
-&lt;ol&gt;
-  &lt;li&gt;源数据的解析，将csv, dsv,geojson 转成标准的JSON，查看Connector&lt;/li&gt;
-  &lt;li&gt;加工数据，包括 filter,map,fold(补数据) 等操作，查看 Transform&lt;/li&gt;
-  &lt;li&gt;统计函数，汇总统计、百分比、封箱 等统计函数，查看 Transform&lt;/li&gt;
-  &lt;li&gt;特殊数据处理，包括 地理数据、矩形树图、桑基图、文字云 的数据处理，查看 Transform&lt;/li&gt;
-&lt;/ol&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;button id=&quot;open&quot;&amp;gt;Open Dialog&amp;lt;/button&amp;gt;  
+&amp;lt;button id=&quot;close&quot;&amp;gt;Close Dialog&amp;lt;/button&amp;gt;
 
-&lt;p&gt;（一）Connector&lt;/p&gt;
+&amp;lt;dialog id=&quot;dialog&quot;&amp;gt;  
+  &amp;lt;h2&amp;gt;Dialog Title&amp;lt;/h2&amp;gt;
+  &amp;lt;p&amp;gt;Dialog content and other stuff will go here&amp;lt;/p&amp;gt;
+&amp;lt;/dialog&amp;gt;
 
-&lt;p&gt;接入语法：&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dv.source(data, {
-  type: connectorName,   connectorName//就是下面几种数据类型
-  ...otherOptions
-});
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&amp;lt;script&amp;gt;  
+const dialog = document.getElementById(&quot;dialog&quot;);
 
-&lt;p&gt;可接入的数据类型：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;default 默认 //普通二维数据&lt;/li&gt;
-  &lt;li&gt;dsv&lt;/li&gt;
-  &lt;li&gt;csv&lt;/li&gt;
-  &lt;li&gt;tsv&lt;/li&gt;
-  &lt;li&gt;GeoJSON  //地理数据&lt;/li&gt;
-  &lt;li&gt;TopoJSON //树结构数据&lt;/li&gt;
-  &lt;li&gt;hierarchy&lt;/li&gt;
-  &lt;li&gt;graph    //图数据&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;可以这样理解，以上几种类型，分别对应着几种实例，可以使用该种实例提供的方法，比如GeoJSON这种类型，在制作地图时需要用到的类型，以中国地图为例，传入中国的省市名称，这个类型能根据这些地名提供对应的地理位置区域，从而画出地图中对应的区域。&lt;/p&gt;
-
-&lt;p&gt;（二）Transform&lt;/p&gt;
-
-&lt;p&gt;功能很强大，只概括几种常见的：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;过滤&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dv.transform({
-  type: 'filter',
-  callback(row) { // 判断某一行是否保留，默认返回true
-    return row.year &amp;gt; 1998;
-  }
-});
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;数据加工&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dv.transform({
-  type: 'map',
-  callback(row) { // 加工数据后返回新的一行，默认返回行数据本身
-    row.newCol = row.xxx + row.yyy;
-    return row;
-  }
-});
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;字段重命名&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dv.transform({
-  type: 'rename',
-  map: {
-    xxx: 'yyy' // row.xxx 会被替换成 row.yyy
-  }
-});
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;数据排序&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dv.transform({
-  type: 'sort',
-  callback(a, b) { // 排序依据，和原生js的排序callback一致
-    return a.year - b.year;
-  }
-});
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;percent 总和百分比&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dv.transform({
-  type: 'percent',
-  field: 'sold',           // 统计销量
-  dimension: 'year',       // 每年的占比
-  groupBy: [ 'category' ], // 以不同产品类别为分组
-  as: 'percent'            // 结果存储在 percent 字段
+document.getElementById(&quot;open&quot;).addEventListener(&quot;click&quot;, () =&amp;gt; {  
+  dialog.show();
 });
 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;几个字段的意思：&lt;/p&gt;
+document.getElementById(&quot;close&quot;).addEventListener(&quot;click&quot;, () =&amp;gt; {  
+  dialog.close();
+});
+&amp;lt;/script&amp;gt;
 
-&lt;p&gt;field 是统计发生的字段（求和，求百分比），
-dimension 是统计的维度字段，也就是”每个不同的 dimension 下，
-field 值占总和的百分比”，
-groupBy 则是分组字段，每一个分组内部独立求百分比（每一个分组内，最后的 percent 字段相加之和为 1）。&lt;/p&gt;
-
-&lt;p&gt;再看一下其它几个非常重要的属性：&lt;/p&gt;
-
-&lt;h2 id=&quot;scale-度量&quot;&gt;Scale 度量&lt;/h2&gt;
-
-&lt;p&gt;定义：度量 Scale，是数据空间到图形空间的转换桥梁，负责原始数据到 [0, 1] 区间数值的相互转换工作，从原始数据到 [0, 1] 区间的转换我们称之为归一化操作。不同的数据类型对应不同的度量，如&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;连续数据类型，如 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 一组数据，在其原始数值范围 [0, 10] 内通过度量转换至 [0, 1] 范围的数据，变成 0, 0.1, 0.2, …, 0.9, 1，同时通过 invert 反转，还需要度量后的数值恢复至原始值；&lt;/li&gt;
-  &lt;li&gt;分类数据类型，如 [‘男’, ‘女’] 这一组数据，通过度量转换后变成 [0, 1]，同样时通过 invert 反转可恢复至原始值。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;在 G2 中度量用于完成以下功能：&lt;/strong&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;将数据转换到 [0, 1] 范围内，方便将数据映射到位置、颜色、大小等图形属性；&lt;/li&gt;
-  &lt;li&gt;将归一化后的数据反转回原始值。例如 分类a 转换成 0.2，那么对应 0.2 需要反转回 分类a；&lt;/li&gt;
-  &lt;li&gt;划分数据，用于在坐标轴、图例显示数值的范围、分类等信息。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Scale 的功能非常简单易理解，但是在 G2 的数据处理流程中起着非常重要的承接作用，&lt;/p&gt;
-
-&lt;p&gt;根据数据分类方式，G2 提供了不同的度量类型：&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;数据类型&lt;/td&gt;
-      &lt;td&gt;度量类型&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;连续&lt;/td&gt;
-      &lt;td&gt;linear、log、pow、time&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;分类（非连续）&lt;/td&gt;
-      &lt;td&gt;cat、timeCat&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;对于 G2 生成的所有度量对象，均拥有以下属性，这些属性均可以由用户进行配置。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{
-  type: {string}, // 度量的类型
-  range: {array}, // 数值范围区间，即度量转换的范围，默认为 [0, 1]
-  alias: {string}, // 为数据属性定义别名，用于图例、坐标轴、tooltip 的个性化显示
-  ticks: {array}, // 存储坐标轴上的刻度点文本信息
-  tickCount: {number}, // 坐标轴上刻度点的个数，不同的度量类型对应不同的默认值
-  formatter: {function}, // 回调函数，用于格式化坐标轴刻度点的文本显示，会影响数据在坐标轴、图例、tooltip 上的显示
-}
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;默认生成度量的机制如下：&lt;/p&gt;
+&lt;p&gt;Chrome 浏览器已经支持 &lt;dialog&gt; 元素，Firefox 也即将支持（behind a flag）&lt;/dialog&gt;&lt;/p&gt;
+
+&lt;p&gt;主流浏览器兼容情况的数据&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20180503/20180503-1.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;在-iframe-中使用-payment-request-api支付请求-api&quot;&gt;在 iFrame 中使用 Payment Request API（支付请求 API）&lt;/h3&gt;
+
+&lt;p&gt;Payment Request API 是支付结算表单的原生替代方案。它将支付信息置于浏览器处理，用来代替之前各个网站各不相同的结算表单，旨在为用户提供一种标准、一致的支付方式。&lt;/p&gt;
+
+&lt;p&gt;在 HTML 5.2 之前，这种支付请求无法在文档嵌入的 iframe 中使用，导致第三方嵌入式支付解决方案（如 Stripe, Paystack）基本不可能使用这个 API，因为它们通常是在 iframe 中处理支付接口。&lt;/p&gt;
+
+&lt;p&gt;为此，HTML 5.2 引入了用于 iframe 的 allowpaymentrequest 属性，允许用户在宿主网页中访问 iframe 的 Payment Request API。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;iframe allowpaymentrequest&amp;gt;  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;苹果的图标尺寸&quot;&gt;苹果的图标尺寸&lt;/h3&gt;
+
+&lt;p&gt;如要定义网页图标，我们可以在文档的 head 中使用 link rel 元素。如果要定义不同尺寸的图标，我们可以使用 sizes 属性。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;link rel=&quot;icon&quot; sizes=&quot;16x16&quot; href=&quot;path/to/icon16.png&quot;&amp;gt;  
+&amp;lt;link rel=&quot;icon&quot; sizes=&quot;32x32&quot; href=&quot;path/to/icon32.png&quot;&amp;gt;  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;这个属性虽然纯粹是个建议，但如果提供了多种尺寸的图标，可以让用户代理（UA）决定使用哪种尺寸的图标。在大多数设备有着不同的“最佳”图标尺寸时尤为重要。&lt;/p&gt;
+
+&lt;p&gt;在 HTML 5.2 之前，sizes 属性仅能用于 rel 为 icon 的 link 元素中。然而，苹果的 iOS 设备不支持 sizes 属性。为了解决这个问题，苹果自己引入了一个他们设备专用的 rel appple-touch-icon 用于定义他们设备上使用的图标。&lt;/p&gt;
+
+&lt;p&gt;在 HTML 5.2 中，规范定义了 sizes 属性不再仅仅可用于 rel 为 icon 的元素，也能用于 rel 为 apple-touch-icon 的元素。这样可以让我们为不同的苹果设备提供不同尺寸的图标。不过直到现在为止，据我所知苹果的设备还是不支持 sizes 属性。在将来苹果最终支持此规范时，它将派上用场。&lt;/p&gt;
+
+&lt;h2 id=&quot;新的有效实践&quot;&gt;新的有效实践&lt;/h2&gt;
+
+&lt;p&gt;除了新特性之外，HTML 5.2 还将一些之前无效的 HTML 写法认定为有效。&lt;/p&gt;
+
+&lt;h3 id=&quot;多个-main-元素&quot;&gt;多个 main 元素&lt;/h3&gt;
+&lt;p&gt;main 元素代表网页的主要内容。虽然不同网页的重复内容可以放在 header、section 或者其它元素中，但 main 元素是为页面上的特定内容保留的。因此在 HTML 5.2 之前，main 元素在 DOM 中必须唯一才能令页面有效。&lt;/p&gt;
+
+&lt;p&gt;随着单页面应用（SPA）的普及，要坚持这个原则变得困难起来。在同一个网页的 DOM 中可能会有多个 main 元素，但在任意时刻只能给用户展示其中的一个。
+使用 HTML 5.2，我们只要保证同一时刻只有一个 main 元素可见，就能在我们的标签中使用多个 main 元素。与此同时其它的 main 元素必须使用 hidden 属性进行隐藏。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;main&amp;gt;...&amp;lt;/main&amp;gt;  
+&amp;lt;main hidden&amp;gt;...&amp;lt;/main&amp;gt;  
+&amp;lt;main hidden&amp;gt;...&amp;lt;/main&amp;gt;  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;我们都知道，通过 CSS 来隐藏元素的方法有很多，但多余的 main 元素必须使用 hidden 属性进行隐藏。任何其它隐藏此元素的方法（如 display: none; 和 visibility: hidden;）都将无效。&lt;/p&gt;
+
+&lt;h3 id=&quot;legend-中的标题元素&quot;&gt;legend 中的标题元素&lt;/h3&gt;
+
+&lt;p&gt;在表单中，legend 元素表示 fieldset 表单域中的标题。在 HTML 5.2 前，legend 元素的内容必须为纯文本。而现在，它可以包含标题元素（h1等）了。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;fieldset&amp;gt;  
+    &amp;lt;legend&amp;gt;&amp;lt;h2&amp;gt;Basic Information&amp;lt;/h2&amp;gt;&amp;lt;/legend&amp;gt;
+    &amp;lt;!-- Form fields for basic information --&amp;gt;
+&amp;lt;/fieldset&amp;gt;  
+&amp;lt;fieldset&amp;gt;  
+    &amp;lt;legend&amp;gt;&amp;lt;h2&amp;gt;Contact Information&amp;lt;/h2&amp;gt;&amp;lt;/legend&amp;gt;
+    &amp;lt;!-- Form fields for contact information --&amp;gt;
+&amp;lt;/fieldset&amp;gt;  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;当我们想用 fieldset 对表单中不同部分进行分组时，这个特性非常有用。在这种情况下使用标题元素是有意义的，因为这能让那些依赖于文档大纲的用户可以轻松导航至表单的对应部分。&lt;/p&gt;
+
+&lt;h2 id=&quot;移除的特性&quot;&gt;移除的特性&lt;/h2&gt;
+
+&lt;p&gt;在 HTML 5.2 中移除了一些元素，具体为：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;keygen：曾经用于帮助表单生成公钥
+menu 与 menuitem：曾经用于创建导航与内容菜单
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;新的无效实践&quot;&gt;新的无效实践&lt;/h2&gt;
+
+&lt;p&gt;最后，一些开发实践方式被规定不再有效。&lt;/p&gt;
+
+&lt;p&gt;在 p 中不再能包含行内、浮动、块类型的子元素&lt;/p&gt;
+
+&lt;p&gt;在 HTML 5.2 中，p 元素中唯一合法的子元素只能是文字内容。这也意味着以下类型的元素不再能嵌套于段落标签 p 内：&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;查看用户是否制定了对应字段的数据类型，查看列定义&lt;/li&gt;
-  &lt;li&gt;如果没有，判断字段的第一条数据的字段类型&lt;/li&gt;
-  &lt;li&gt;如果数据中不存在对应的字段，则为 ‘identity’&lt;/li&gt;
-  &lt;li&gt;如果是数字则为 ‘linear’；&lt;/li&gt;
-  &lt;li&gt;如果是字符串，判定是否是时间格式，如果是时间格式则为时间类型 ‘time’,&lt;/li&gt;
-  &lt;li&gt;否则是分类类型 ‘cat’&lt;/li&gt;
+  &lt;li&gt;行内块（Inline blocks）&lt;/li&gt;
+  &lt;li&gt;行内表格（Inline tables）&lt;/li&gt;
+  &lt;li&gt;浮动块与固定位置块&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;度量中的每个类型的定义，这里只说个大概，具体看官网上的解释吧。&lt;/p&gt;
+&lt;p&gt;不再支持严格文档类型（Strict Doctypes）&lt;/p&gt;
 
-&lt;h2 id=&quot;图表的组成&quot;&gt;图表的组成&lt;/h2&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.01//EN&quot; &quot;http://www.w3.org/TR/html4/strict.dtd&quot;&amp;gt;&lt;/span&gt; 
 
-&lt;h3 id=&quot;坐标轴-axis&quot;&gt;坐标轴 axis&lt;/h3&gt;
+&lt;span class=&quot;cp&quot;&gt;&amp;lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&amp;gt;&lt;/span&gt; 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>weili</name></author><category term="JS" /><category term="HTML" /><summary type="html">一个月前，HTML 5.2 正式成为了 W3C 的推荐标准（REC）。当一个规范到达 REC 阶段，就意味着它已经正式得到了 W3C 成员和理事长的认可。并且 W3C 将正式推荐浏览器厂商部署、web 开发者实现此规范。 在 HTML 5.2 中有一些添加和删除,更多详细参考–HTML 5.2 变动内容 增加的新特性 dialog 原生对话框 在 web 中，对话框比比皆是，但是它们的实现方式都各有不同。对话框很难实现可访问性，这导致大多数的对话框对那些不方便以视觉方式访问网页的用户来说都是不可用的。 新的 dialog 元素旨在改变这种状况，它提供了一种简单的方式来实现模态对话框。之后我会单独写一篇文章专门介绍这个元素的工作方式，在此先简单介绍一下。 由一个 &amp;lt;dialog&amp;gt; 元素创建对话框： &amp;lt;dialog&amp;gt; &amp;lt;h2&amp;gt;Dialog Title&amp;lt;/h2&amp;gt; &amp;lt;p&amp;gt;Dialog content and other stuff will go here&amp;lt;/p&amp;gt; &amp;lt;/dialog&amp;gt; 默认情况下，对话框会在视图中（以及 DOM 访问中）隐藏，只有设置 open 属性后，对话框才会显示。 &amp;lt;dialog open&amp;gt; open 属性可以通过调用 show() 与 close() 方法开启或关闭，任何 HTMLDialogElement 都可以调用这两个方法。 &amp;lt;button id=&quot;open&quot;&amp;gt;Open Dialog&amp;lt;/button&amp;gt; &amp;lt;button id=&quot;close&quot;&amp;gt;Close Dialog&amp;lt;/button&amp;gt; &amp;lt;dialog id=&quot;dialog&quot;&amp;gt; &amp;lt;h2&amp;gt;Dialog Title&amp;lt;/h2&amp;gt; &amp;lt;p&amp;gt;Dialog content and other stuff will go here&amp;lt;/p&amp;gt; &amp;lt;/dialog&amp;gt; &amp;lt;script&amp;gt; const dialog = document.getElementById(&quot;dialog&quot;); document.getElementById(&quot;open&quot;).addEventListener(&quot;click&quot;, () =&amp;gt; { dialog.show(); }); document.getElementById(&quot;close&quot;).addEventListener(&quot;click&quot;, () =&amp;gt; { dialog.close(); }); &amp;lt;/script&amp;gt; Chrome 浏览器已经支持 元素，Firefox 也即将支持（behind a flag） 主流浏览器兼容情况的数据 在 iFrame 中使用 Payment Request API（支付请求 API） Payment Request API 是支付结算表单的原生替代方案。它将支付信息置于浏览器处理，用来代替之前各个网站各不相同的结算表单，旨在为用户提供一种标准、一致的支付方式。 在 HTML 5.2 之前，这种支付请求无法在文档嵌入的 iframe 中使用，导致第三方嵌入式支付解决方案（如 Stripe, Paystack）基本不可能使用这个 API，因为它们通常是在 iframe 中处理支付接口。 为此，HTML 5.2 引入了用于 iframe 的 allowpaymentrequest 属性，允许用户在宿主网页中访问 iframe 的 Payment Request API。 &amp;lt;iframe allowpaymentrequest&amp;gt; 苹果的图标尺寸 如要定义网页图标，我们可以在文档的 head 中使用 link rel 元素。如果要定义不同尺寸的图标，我们可以使用 sizes 属性。 &amp;lt;link rel=&quot;icon&quot; sizes=&quot;16x16&quot; href=&quot;path/to/icon16.png&quot;&amp;gt; &amp;lt;link rel=&quot;icon&quot; sizes=&quot;32x32&quot; href=&quot;path/to/icon32.png&quot;&amp;gt; 这个属性虽然纯粹是个建议，但如果提供了多种尺寸的图标，可以让用户代理（UA）决定使用哪种尺寸的图标。在大多数设备有着不同的“最佳”图标尺寸时尤为重要。 在 HTML 5.2 之前，sizes 属性仅能用于 rel 为 icon 的 link 元素中。然而，苹果的 iOS 设备不支持 sizes 属性。为了解决这个问题，苹果自己引入了一个他们设备专用的 rel appple-touch-icon 用于定义他们设备上使用的图标。 在 HTML 5.2 中，规范定义了 sizes 属性不再仅仅可用于 rel 为 icon 的元素，也能用于 rel 为 apple-touch-icon 的元素。这样可以让我们为不同的苹果设备提供不同尺寸的图标。不过直到现在为止，据我所知苹果的设备还是不支持 sizes 属性。在将来苹果最终支持此规范时，它将派上用场。 新的有效实践 除了新特性之外，HTML 5.2 还将一些之前无效的 HTML 写法认定为有效。 多个 main 元素 main 元素代表网页的主要内容。虽然不同网页的重复内容可以放在 header、section 或者其它元素中，但 main 元素是为页面上的特定内容保留的。因此在 HTML 5.2 之前，main 元素在 DOM 中必须唯一才能令页面有效。 随着单页面应用（SPA）的普及，要坚持这个原则变得困难起来。在同一个网页的 DOM 中可能会有多个 main 元素，但在任意时刻只能给用户展示其中的一个。 使用 HTML 5.2，我们只要保证同一时刻只有一个 main 元素可见，就能在我们的标签中使用多个 main 元素。与此同时其它的 main 元素必须使用 hidden 属性进行隐藏。 &amp;lt;main&amp;gt;...&amp;lt;/main&amp;gt; &amp;lt;main hidden&amp;gt;...&amp;lt;/main&amp;gt; &amp;lt;main hidden&amp;gt;...&amp;lt;/main&amp;gt; 我们都知道，通过 CSS 来隐藏元素的方法有很多，但多余的 main 元素必须使用 hidden 属性进行隐藏。任何其它隐藏此元素的方法（如 display: none; 和 visibility: hidden;）都将无效。 legend 中的标题元素 在表单中，legend 元素表示 fieldset 表单域中的标题。在 HTML 5.2 前，legend 元素的内容必须为纯文本。而现在，它可以包含标题元素（h1等）了。 &amp;lt;fieldset&amp;gt; &amp;lt;legend&amp;gt;&amp;lt;h2&amp;gt;Basic Information&amp;lt;/h2&amp;gt;&amp;lt;/legend&amp;gt; &amp;lt;!-- Form fields for basic information --&amp;gt; &amp;lt;/fieldset&amp;gt; &amp;lt;fieldset&amp;gt; &amp;lt;legend&amp;gt;&amp;lt;h2&amp;gt;Contact Information&amp;lt;/h2&amp;gt;&amp;lt;/legend&amp;gt; &amp;lt;!-- Form fields for contact information --&amp;gt; &amp;lt;/fieldset&amp;gt; 当我们想用 fieldset 对表单中不同部分进行分组时，这个特性非常有用。在这种情况下使用标题元素是有意义的，因为这能让那些依赖于文档大纲的用户可以轻松导航至表单的对应部分。 移除的特性 在 HTML 5.2 中移除了一些元素，具体为： keygen：曾经用于帮助表单生成公钥 menu 与 menuitem：曾经用于创建导航与内容菜单 新的无效实践 最后，一些开发实践方式被规定不再有效。 在 p 中不再能包含行内、浮动、块类型的子元素 在 HTML 5.2 中，p 元素中唯一合法的子元素只能是文字内容。这也意味着以下类型的元素不再能嵌套于段落标签 p 内： 行内块（Inline blocks） 行内表格（Inline tables） 浮动块与固定位置块 不再支持严格文档类型（Strict Doctypes） &amp;lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.01//EN&quot; &quot;http://www.w3.org/TR/html4/strict.dtd&quot;&amp;gt; &amp;lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&amp;gt;</summary></entry><entry><title type="html">HTML 5.2?</title><link href="http://localhost:4000/2018/05/11/.html" rel="alternate" type="text/html" title="HTML 5.2?" /><published>2018-05-11T00:00:00+08:00</published><updated>2018-05-11T00:00:00+08:00</updated><id>http://localhost:4000/2018/05/11/</id><content type="html" xml:base="http://localhost:4000/2018/05/11/.html">&lt;p&gt;一个月前，HTML 5.2 正式成为了 W3C 的推荐标准（REC）。当一个规范到达 REC 阶段，就意味着它已经正式得到了 W3C 成员和理事长的认可。并且 W3C 将正式推荐浏览器厂商部署、web 开发者实现此规范。&lt;/p&gt;
 
-&lt;p&gt;通常包含两个坐标轴，在笛卡尔坐标系下，分别为 x 轴和 y 轴，在极坐标轴下，则分别由角度和半径2个维度构成。 每个坐标轴由坐标轴线、刻度线、刻度文本、标题以及网格线组成。&lt;/p&gt;
+&lt;p&gt;在 HTML 5.2 中有一些添加和删除,&lt;a href=&quot;https://www.w3.org/TR/html52/changes.html#changes&quot;&gt;更多详细参考–HTML 5.2 变动内容&lt;/a&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;图例-legend&quot;&gt;图例 legend&lt;/h3&gt;
+&lt;h2 id=&quot;增加的新特性&quot;&gt;增加的新特性&lt;/h2&gt;
 
-&lt;p&gt;图例作为图表的辅助元素，用于标定不同的数据类型以及数据的范围，用于辅助阅读图表，帮助用户在图表中进行数据的筛选过滤。&lt;/p&gt;
+&lt;h3 id=&quot;dialog--原生对话框&quot;&gt;dialog  原生对话框&lt;/h3&gt;
 
-&lt;h3 id=&quot;几何标记-geom&quot;&gt;几何标记 geom&lt;/h3&gt;
+&lt;p&gt;在 web 中，对话框比比皆是，但是它们的实现方式都各有不同。对话框很难实现可访问性，这导致大多数的对话框对那些不方便以视觉方式访问网页的用户来说都是不可用的。&lt;/p&gt;
 
-&lt;p&gt;几何标记，即我们所说的点、线、面这些几何图形，在 G2 中几何标记的类型决定了生成图表的类型。也就是数据被可视化后的实际表现，不同的几何标都对应自己能识别的图形属性。&lt;/p&gt;
+&lt;p&gt;新的 dialog 元素旨在改变这种状况，它提供了一种简单的方式来实现模态对话框。之后我会单独写一篇文章专门介绍这个元素的工作方式，在此先简单介绍一下。&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;G2 的核心既是将数据从数据空间转换到图形空间。&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;由一个 &amp;lt;dialog&amp;gt; 元素创建对话框：
 
-&lt;h3 id=&quot;提示信息-tooltip&quot;&gt;提示信息 tooltip&lt;/h3&gt;
+&amp;lt;dialog&amp;gt;  
+  &amp;lt;h2&amp;gt;Dialog Title&amp;lt;/h2&amp;gt;
+  &amp;lt;p&amp;gt;Dialog content and other stuff will go here&amp;lt;/p&amp;gt;
+&amp;lt;/dialog&amp;gt;  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;当鼠标悬停在某个点上时，会以框的形式显示当前点对应的数据的信息，比如该点的值，数据单位等。数据提示框内提示的信息还可以通过格式化函数动态指定。&lt;/p&gt;
+&lt;p&gt;默认情况下，对话框会在视图中（以及 DOM 访问中）隐藏，只有设置 open 属性后，对话框才会显示。&lt;/p&gt;
 
-&lt;h3 id=&quot;辅助标记-guide&quot;&gt;辅助标记 guide&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;dialog open&amp;gt; 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;当需要在图表上绘制一些辅助线、辅助框或者图片时，比如增加平均值线、最高值线或者标示明显的范围区域时，可以使用辅助标记 guide。&lt;/p&gt;
+&lt;p&gt;open 属性可以通过调用 show() 与 close() 方法开启或关闭，任何 HTMLDialogElement 都可以调用这两个方法。&lt;/p&gt;
 
-&lt;h2 id=&quot;g2的dom结构也是canvas&quot;&gt;G2的dom结构也是canvas&lt;/h2&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;button id=&quot;open&quot;&amp;gt;Open Dialog&amp;lt;/button&amp;gt;  
+&amp;lt;button id=&quot;close&quot;&amp;gt;Close Dialog&amp;lt;/button&amp;gt;
 
-&lt;p&gt;它是由三层 canvas 构成的，这三层 canvas 分别对应 chart 对象的如下三个属性：&lt;/p&gt;
+&amp;lt;dialog id=&quot;dialog&quot;&amp;gt;  
+  &amp;lt;h2&amp;gt;Dialog Title&amp;lt;/h2&amp;gt;
+  &amp;lt;p&amp;gt;Dialog content and other stuff will go here&amp;lt;/p&amp;gt;
+&amp;lt;/dialog&amp;gt;
+
+&amp;lt;script&amp;gt;  
+const dialog = document.getElementById(&quot;dialog&quot;);
+
+document.getElementById(&quot;open&quot;).addEventListener(&quot;click&quot;, () =&amp;gt; {  
+  dialog.show();
+});
+
+document.getElementById(&quot;close&quot;).addEventListener(&quot;click&quot;, () =&amp;gt; {  
+  dialog.close();
+});
+&amp;lt;/script&amp;gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Chrome 浏览器已经支持 &lt;dialog&gt; 元素，Firefox 也即将支持（behind a flag）&lt;/dialog&gt;&lt;/p&gt;
+
+&lt;p&gt;主流浏览器兼容情况的数据&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20180503/20180503-1.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;在-iframe-中使用-payment-request-api支付请求-api&quot;&gt;在 iFrame 中使用 Payment Request API（支付请求 API）&lt;/h3&gt;
+
+&lt;p&gt;Payment Request API 是支付结算表单的原生替代方案。它将支付信息置于浏览器处理，用来代替之前各个网站各不相同的结算表单，旨在为用户提供一种标准、一致的支付方式。&lt;/p&gt;
+
+&lt;p&gt;在 HTML 5.2 之前，这种支付请求无法在文档嵌入的 iframe 中使用，导致第三方嵌入式支付解决方案（如 Stripe, Paystack）基本不可能使用这个 API，因为它们通常是在 iframe 中处理支付接口。&lt;/p&gt;
+
+&lt;p&gt;为此，HTML 5.2 引入了用于 iframe 的 allowpaymentrequest 属性，允许用户在宿主网页中访问 iframe 的 Payment Request API。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;iframe allowpaymentrequest&amp;gt;  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;苹果的图标尺寸&quot;&gt;苹果的图标尺寸&lt;/h3&gt;
+
+&lt;p&gt;如要定义网页图标，我们可以在文档的 head 中使用 link rel 元素。如果要定义不同尺寸的图标，我们可以使用 sizes 属性。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;link rel=&quot;icon&quot; sizes=&quot;16x16&quot; href=&quot;path/to/icon16.png&quot;&amp;gt;  
+&amp;lt;link rel=&quot;icon&quot; sizes=&quot;32x32&quot; href=&quot;path/to/icon32.png&quot;&amp;gt;  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;这个属性虽然纯粹是个建议，但如果提供了多种尺寸的图标，可以让用户代理（UA）决定使用哪种尺寸的图标。在大多数设备有着不同的“最佳”图标尺寸时尤为重要。&lt;/p&gt;
+
+&lt;p&gt;在 HTML 5.2 之前，sizes 属性仅能用于 rel 为 icon 的 link 元素中。然而，苹果的 iOS 设备不支持 sizes 属性。为了解决这个问题，苹果自己引入了一个他们设备专用的 rel appple-touch-icon 用于定义他们设备上使用的图标。&lt;/p&gt;
+
+&lt;p&gt;在 HTML 5.2 中，规范定义了 sizes 属性不再仅仅可用于 rel 为 icon 的元素，也能用于 rel 为 apple-touch-icon 的元素。这样可以让我们为不同的苹果设备提供不同尺寸的图标。不过直到现在为止，据我所知苹果的设备还是不支持 sizes 属性。在将来苹果最终支持此规范时，它将派上用场。&lt;/p&gt;
+
+&lt;h2 id=&quot;新的有效实践&quot;&gt;新的有效实践&lt;/h2&gt;
+
+&lt;p&gt;除了新特性之外，HTML 5.2 还将一些之前无效的 HTML 写法认定为有效。&lt;/p&gt;
+
+&lt;h3 id=&quot;多个-main-元素&quot;&gt;多个 main 元素&lt;/h3&gt;
+&lt;p&gt;main 元素代表网页的主要内容。虽然不同网页的重复内容可以放在 header、section 或者其它元素中，但 main 元素是为页面上的特定内容保留的。因此在 HTML 5.2 之前，main 元素在 DOM 中必须唯一才能令页面有效。&lt;/p&gt;
+
+&lt;p&gt;随着单页面应用（SPA）的普及，要坚持这个原则变得困难起来。在同一个网页的 DOM 中可能会有多个 main 元素，但在任意时刻只能给用户展示其中的一个。
+使用 HTML 5.2，我们只要保证同一时刻只有一个 main 元素可见，就能在我们的标签中使用多个 main 元素。与此同时其它的 main 元素必须使用 hidden 属性进行隐藏。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;main&amp;gt;...&amp;lt;/main&amp;gt;  
+&amp;lt;main hidden&amp;gt;...&amp;lt;/main&amp;gt;  
+&amp;lt;main hidden&amp;gt;...&amp;lt;/main&amp;gt;  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;我们都知道，通过 CSS 来隐藏元素的方法有很多，但多余的 main 元素必须使用 hidden 属性进行隐藏。任何其它隐藏此元素的方法（如 display: none; 和 visibility: hidden;）都将无效。&lt;/p&gt;
+
+&lt;h3 id=&quot;legend-中的标题元素&quot;&gt;legend 中的标题元素&lt;/h3&gt;
+
+&lt;p&gt;在表单中，legend 元素表示 fieldset 表单域中的标题。在 HTML 5.2 前，legend 元素的内容必须为纯文本。而现在，它可以包含标题元素（h1等）了。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;fieldset&amp;gt;  
+    &amp;lt;legend&amp;gt;&amp;lt;h2&amp;gt;Basic Information&amp;lt;/h2&amp;gt;&amp;lt;/legend&amp;gt;
+    &amp;lt;!-- Form fields for basic information --&amp;gt;
+&amp;lt;/fieldset&amp;gt;  
+&amp;lt;fieldset&amp;gt;  
+    &amp;lt;legend&amp;gt;&amp;lt;h2&amp;gt;Contact Information&amp;lt;/h2&amp;gt;&amp;lt;/legend&amp;gt;
+    &amp;lt;!-- Form fields for contact information --&amp;gt;
+&amp;lt;/fieldset&amp;gt;  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;当我们想用 fieldset 对表单中不同部分进行分组时，这个特性非常有用。在这种情况下使用标题元素是有意义的，因为这能让那些依赖于文档大纲的用户可以轻松导航至表单的对应部分。&lt;/p&gt;
+
+&lt;h2 id=&quot;移除的特性&quot;&gt;移除的特性&lt;/h2&gt;
+
+&lt;p&gt;在 HTML 5.2 中移除了一些元素，具体为：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;keygen：曾经用于帮助表单生成公钥
+menu 与 menuitem：曾经用于创建导航与内容菜单
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;新的无效实践&quot;&gt;新的无效实践&lt;/h2&gt;
+
+&lt;p&gt;最后，一些开发实践方式被规定不再有效。&lt;/p&gt;
+
+&lt;p&gt;在 p 中不再能包含行内、浮动、块类型的子元素&lt;/p&gt;
+
+&lt;p&gt;在 HTML 5.2 中，p 元素中唯一合法的子元素只能是文字内容。这也意味着以下类型的元素不再能嵌套于段落标签 p 内：&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;frontCanvas 最上层 canvas，图例 legend、提示信息 tooltip、和 text tag html 这三种类型的辅助标记 guide 在这一层绘制；&lt;/li&gt;
-  &lt;li&gt;canvas 中间层，绘制图表的主体内容几何标记 geom；&lt;/li&gt;
-  &lt;li&gt;backCanvas 最下层 canvas，坐标轴 axis 和 line image rect arc 这四种类型的辅助标记 guide 在这一层绘制。&lt;/li&gt;
-&lt;/ul&gt;</content><author><name>weili</name></author></entry><entry><title type="html">HTML 5.2?</title><link href="http://localhost:4000/2018/05/03/HTML5_2.html" rel="alternate" type="text/html" title="HTML 5.2?" /><published>2018-05-03T00:00:00+08:00</published><updated>2018-05-03T00:00:00+08:00</updated><id>http://localhost:4000/2018/05/03/HTML5_2</id><content type="html" xml:base="http://localhost:4000/2018/05/03/HTML5_2.html">&lt;p&gt;一个月前，HTML 5.2 正式成为了 W3C 的推荐标准（REC）。当一个规范到达 REC 阶段，就意味着它已经正式得到了 W3C 成员和理事长的认可。并且 W3C 将正式推荐浏览器厂商部署、web 开发者实现此规范。&lt;/p&gt;
+  &lt;li&gt;行内块（Inline blocks）&lt;/li&gt;
+  &lt;li&gt;行内表格（Inline tables）&lt;/li&gt;
+  &lt;li&gt;浮动块与固定位置块&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;不再支持严格文档类型（Strict Doctypes）&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.01//EN&quot; &quot;http://www.w3.org/TR/html4/strict.dtd&quot;&amp;gt;&lt;/span&gt; 
+
+&lt;span class=&quot;cp&quot;&gt;&amp;lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&amp;gt;&lt;/span&gt; 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>weili</name></author><category term="JS" /><category term="HTML" /><summary type="html">一个月前，HTML 5.2 正式成为了 W3C 的推荐标准（REC）。当一个规范到达 REC 阶段，就意味着它已经正式得到了 W3C 成员和理事长的认可。并且 W3C 将正式推荐浏览器厂商部署、web 开发者实现此规范。 在 HTML 5.2 中有一些添加和删除,更多详细参考–HTML 5.2 变动内容 增加的新特性 dialog 原生对话框 在 web 中，对话框比比皆是，但是它们的实现方式都各有不同。对话框很难实现可访问性，这导致大多数的对话框对那些不方便以视觉方式访问网页的用户来说都是不可用的。 新的 dialog 元素旨在改变这种状况，它提供了一种简单的方式来实现模态对话框。之后我会单独写一篇文章专门介绍这个元素的工作方式，在此先简单介绍一下。 由一个 &amp;lt;dialog&amp;gt; 元素创建对话框： &amp;lt;dialog&amp;gt; &amp;lt;h2&amp;gt;Dialog Title&amp;lt;/h2&amp;gt; &amp;lt;p&amp;gt;Dialog content and other stuff will go here&amp;lt;/p&amp;gt; &amp;lt;/dialog&amp;gt; 默认情况下，对话框会在视图中（以及 DOM 访问中）隐藏，只有设置 open 属性后，对话框才会显示。 &amp;lt;dialog open&amp;gt; open 属性可以通过调用 show() 与 close() 方法开启或关闭，任何 HTMLDialogElement 都可以调用这两个方法。 &amp;lt;button id=&quot;open&quot;&amp;gt;Open Dialog&amp;lt;/button&amp;gt; &amp;lt;button id=&quot;close&quot;&amp;gt;Close Dialog&amp;lt;/button&amp;gt; &amp;lt;dialog id=&quot;dialog&quot;&amp;gt; &amp;lt;h2&amp;gt;Dialog Title&amp;lt;/h2&amp;gt; &amp;lt;p&amp;gt;Dialog content and other stuff will go here&amp;lt;/p&amp;gt; &amp;lt;/dialog&amp;gt; &amp;lt;script&amp;gt; const dialog = document.getElementById(&quot;dialog&quot;); document.getElementById(&quot;open&quot;).addEventListener(&quot;click&quot;, () =&amp;gt; { dialog.show(); }); document.getElementById(&quot;close&quot;).addEventListener(&quot;click&quot;, () =&amp;gt; { dialog.close(); }); &amp;lt;/script&amp;gt; Chrome 浏览器已经支持 元素，Firefox 也即将支持（behind a flag） 主流浏览器兼容情况的数据 在 iFrame 中使用 Payment Request API（支付请求 API） Payment Request API 是支付结算表单的原生替代方案。它将支付信息置于浏览器处理，用来代替之前各个网站各不相同的结算表单，旨在为用户提供一种标准、一致的支付方式。 在 HTML 5.2 之前，这种支付请求无法在文档嵌入的 iframe 中使用，导致第三方嵌入式支付解决方案（如 Stripe, Paystack）基本不可能使用这个 API，因为它们通常是在 iframe 中处理支付接口。 为此，HTML 5.2 引入了用于 iframe 的 allowpaymentrequest 属性，允许用户在宿主网页中访问 iframe 的 Payment Request API。 &amp;lt;iframe allowpaymentrequest&amp;gt; 苹果的图标尺寸 如要定义网页图标，我们可以在文档的 head 中使用 link rel 元素。如果要定义不同尺寸的图标，我们可以使用 sizes 属性。 &amp;lt;link rel=&quot;icon&quot; sizes=&quot;16x16&quot; href=&quot;path/to/icon16.png&quot;&amp;gt; &amp;lt;link rel=&quot;icon&quot; sizes=&quot;32x32&quot; href=&quot;path/to/icon32.png&quot;&amp;gt; 这个属性虽然纯粹是个建议，但如果提供了多种尺寸的图标，可以让用户代理（UA）决定使用哪种尺寸的图标。在大多数设备有着不同的“最佳”图标尺寸时尤为重要。 在 HTML 5.2 之前，sizes 属性仅能用于 rel 为 icon 的 link 元素中。然而，苹果的 iOS 设备不支持 sizes 属性。为了解决这个问题，苹果自己引入了一个他们设备专用的 rel appple-touch-icon 用于定义他们设备上使用的图标。 在 HTML 5.2 中，规范定义了 sizes 属性不再仅仅可用于 rel 为 icon 的元素，也能用于 rel 为 apple-touch-icon 的元素。这样可以让我们为不同的苹果设备提供不同尺寸的图标。不过直到现在为止，据我所知苹果的设备还是不支持 sizes 属性。在将来苹果最终支持此规范时，它将派上用场。 新的有效实践 除了新特性之外，HTML 5.2 还将一些之前无效的 HTML 写法认定为有效。 多个 main 元素 main 元素代表网页的主要内容。虽然不同网页的重复内容可以放在 header、section 或者其它元素中，但 main 元素是为页面上的特定内容保留的。因此在 HTML 5.2 之前，main 元素在 DOM 中必须唯一才能令页面有效。 随着单页面应用（SPA）的普及，要坚持这个原则变得困难起来。在同一个网页的 DOM 中可能会有多个 main 元素，但在任意时刻只能给用户展示其中的一个。 使用 HTML 5.2，我们只要保证同一时刻只有一个 main 元素可见，就能在我们的标签中使用多个 main 元素。与此同时其它的 main 元素必须使用 hidden 属性进行隐藏。 &amp;lt;main&amp;gt;...&amp;lt;/main&amp;gt; &amp;lt;main hidden&amp;gt;...&amp;lt;/main&amp;gt; &amp;lt;main hidden&amp;gt;...&amp;lt;/main&amp;gt; 我们都知道，通过 CSS 来隐藏元素的方法有很多，但多余的 main 元素必须使用 hidden 属性进行隐藏。任何其它隐藏此元素的方法（如 display: none; 和 visibility: hidden;）都将无效。 legend 中的标题元素 在表单中，legend 元素表示 fieldset 表单域中的标题。在 HTML 5.2 前，legend 元素的内容必须为纯文本。而现在，它可以包含标题元素（h1等）了。 &amp;lt;fieldset&amp;gt; &amp;lt;legend&amp;gt;&amp;lt;h2&amp;gt;Basic Information&amp;lt;/h2&amp;gt;&amp;lt;/legend&amp;gt; &amp;lt;!-- Form fields for basic information --&amp;gt; &amp;lt;/fieldset&amp;gt; &amp;lt;fieldset&amp;gt; &amp;lt;legend&amp;gt;&amp;lt;h2&amp;gt;Contact Information&amp;lt;/h2&amp;gt;&amp;lt;/legend&amp;gt; &amp;lt;!-- Form fields for contact information --&amp;gt; &amp;lt;/fieldset&amp;gt; 当我们想用 fieldset 对表单中不同部分进行分组时，这个特性非常有用。在这种情况下使用标题元素是有意义的，因为这能让那些依赖于文档大纲的用户可以轻松导航至表单的对应部分。 移除的特性 在 HTML 5.2 中移除了一些元素，具体为： keygen：曾经用于帮助表单生成公钥 menu 与 menuitem：曾经用于创建导航与内容菜单 新的无效实践 最后，一些开发实践方式被规定不再有效。 在 p 中不再能包含行内、浮动、块类型的子元素 在 HTML 5.2 中，p 元素中唯一合法的子元素只能是文字内容。这也意味着以下类型的元素不再能嵌套于段落标签 p 内： 行内块（Inline blocks） 行内表格（Inline tables） 浮动块与固定位置块 不再支持严格文档类型（Strict Doctypes） &amp;lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.01//EN&quot; &quot;http://www.w3.org/TR/html4/strict.dtd&quot;&amp;gt; &amp;lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&amp;gt;</summary></entry><entry><title type="html">HTML 5.2?</title><link href="http://localhost:4000/2018/05/03/HTML5_2.html" rel="alternate" type="text/html" title="HTML 5.2?" /><published>2018-05-03T00:00:00+08:00</published><updated>2018-05-03T00:00:00+08:00</updated><id>http://localhost:4000/2018/05/03/HTML5_2</id><content type="html" xml:base="http://localhost:4000/2018/05/03/HTML5_2.html">&lt;p&gt;一个月前，HTML 5.2 正式成为了 W3C 的推荐标准（REC）。当一个规范到达 REC 阶段，就意味着它已经正式得到了 W3C 成员和理事长的认可。并且 W3C 将正式推荐浏览器厂商部署、web 开发者实现此规范。&lt;/p&gt;
 
 &lt;p&gt;在 HTML 5.2 中有一些添加和删除,&lt;a href=&quot;https://www.w3.org/TR/html52/changes.html#changes&quot;&gt;更多详细参考–HTML 5.2 变动内容&lt;/a&gt;&lt;/p&gt;
 
@@ -947,7 +1055,378 @@ ruby-position
 
 &lt;p&gt;原生的字幕样式控制，有CSS属性和字幕HTML标签双重限制，不是很灵活&lt;/p&gt;
 
-&lt;p&gt;可以使用开源的HTML5视频项目：&lt;a href=&quot;https://github.com/paypal/accessible-html5-video-player&quot;&gt;accessible-html5-video-player&lt;/a&gt;，paypal的开源项目，可以对原生的video进行UI重定值，JS很小，未压缩版本就几十K，其会把VTT文件中HTML片段直接完整输出到页面中，于是乎，所有的CSS属性我们都可以使用了，例如可以把字幕在视频上方直接一个绝对定位上去就好了。&lt;/p&gt;</content><author><name>weili</name></author><category term="[&quot;video&quot;]" /><summary type="html">HTML5 Video视频与WebVTT字幕 HTML5 Videov字幕通用是WebVTT（后缀.vtt），这个各个浏览器厂商都支持的比较好。 track?? 完整写法: &amp;lt;video controls width=&quot;400&quot; height=&quot;300&quot;&amp;gt; &amp;lt;source src=&quot;../test.mp4&quot; type=&quot;video/mp4&quot;&amp;gt; &amp;lt;track src=&quot;test.vtt&quot; srclang=&quot;zh&quot; kind=&quot;subtitles&quot; label=&quot;中文&quot; default&amp;gt; &amp;lt;track src=&quot;test_en.vtt&quot; srclang=&quot;en&quot; kind=&quot;subtitles&quot; label=&quot;English&quot;&amp;gt; &amp;lt;/video&amp;gt; 如果有多个语言字幕可以添加多条，供用户切换选择 标注为default的表示默认使用的字幕。 只要src属性地址OK，同时有default属性，字幕就会生效。 元素的属性如下: 名称 值 说明 kind subtitles 字幕，详见表格后   captions 字幕，详见表格后   descriptions 描述，视频的文本描述   chapters 章节导航   metadata 元数据 src URL 指定资源URL srclang Language code 在 src 资源的语言,VTT文本信息使用的语言。例如，中文zh，英文en label Free text 点击CC按钮选择字幕时候出现的文字 default n/a default指的是默认会显示的字幕。例如两个元素，如果都没有default属性，那都不显示，需要用户手动调出。另外，default只能出现在一个元素上 1) kind: 可选值 subtitles captions subtitles: 平常看电影看动漫时候下面出现的字幕，一般是翻译，或者采访时候口音不清的字幕显示。有时候还会标注一些说明，例如，显示人物姓名身份，当前场景地或者标注之前语言的梗在哪里等 这里captions专指隐藏式字幕（Closed Captions），简称CC 隐藏字幕（Closed Captioning，简称CC)是电视节目或影碟中为有特殊情况或者需要的观众而准备的宇幕，例如观众在听力上有障碍，或者需要无音条件下观赏节目。此时字幕中可使用一些解释性的语言来描述节目内容。 subtitles主要就是对人说话进行翻译或确认；而captions不仅需要人对话的内容提示，紧张的背景音乐，或者汽车吱吱作响的刹车声都需要在字幕中描述出来。这样，即使用户静音也能知道视频里到底在玩些什么。我想，如果是经常看国外影视作品的小伙伴肯定会有类似的字幕体验，有的就对话字幕，有的事无巨细，就是subtitles和captions的区别 .vtt文件 格式如下： WEBVTT 00:11.000 --&amp;gt; 00:13.000 &amp;lt;v Roger Bingham&amp;gt;We are in New York City 00:13.000 --&amp;gt; 00:16.000 &amp;lt;v Roger Bingham&amp;gt;We’re actually at the Lucern Hotel, just down the street 00:16.000 --&amp;gt; 00:18.000 &amp;lt;v Roger Bingham&amp;gt;from the American Museum of Natural History 00:18.000 --&amp;gt; 00:20.000 &amp;lt;v Roger Bingham&amp;gt;And with me is Neil deGrasse Tyson 00:20.000 --&amp;gt; 00:22.000 &amp;lt;v Roger Bingham&amp;gt;Astrophysicist, Director of the Hayden Planetarium 就是个文本文件，格式很简单，一开始声明下WebVTT，然后下面就是视频时间范围，下一行就是字幕内容，时间可以精确到毫秒，但通常0.5秒足矣。 更多规则解释详见官网文档 HTML5 Video视频字幕的样式控制 CSS中有专门的伪元素::cue可以控制字幕的样式。 可以控制的CSS属性包括： color opacity visibility text-decoration及相关属性 text-shadow background及相关属性 outline及相关属性 font及相关属性，包括line-height white-space text-combine-upright ruby-position WebVTT还支持一些内联样式控制，常见的 值 说明 c 用 c 定义 （CSS）类, 例如， Cue text&amp;lt;/c&amp;gt; i 斜体字 b 粗体字 u 添加下划线 ruby 详见表格后 v 如有提供，则用来指定声音标签。例如， This is useful for adding subtitles。注意此声音标签不会显示，它只是作为一个样式标记。 ruby : 定义类似于 HTML5 的 &amp;lt;ruby&amp;gt; 元素。在这样的内联样式中，允许出现一个或多个 &amp;lt;rt&amp;gt; 元素。（&amp;lt;ruby&amp;gt; 元素用于标注汉字等东亚字符的发音） 使用方法如下所示： 00:00:52.000 --&amp;gt; 00:00:54.000 align:start size:15% &amp;lt;v Emo&amp;gt;I don’t think so. &amp;lt;c.question&amp;gt;You?&amp;lt;/c&amp;gt;&amp;lt;/v&amp;gt; 给 Cue 文本添加两种不同的声音标签： Emo 和 Proog（自定义的） 。另外，一个 question（自定义的） 的 CSS 类被指定，可以按惯常方法在 CSS 链接文件 或 HTML 页面里为其指定样式。 注意要给 Cue 文本添加 CSS 样式，你需要用一个特定的伪选择元素，例子如下: video::cue(v[voice=&quot;Emo&quot;]) { color:lime } 更全面的样式控制 原生的字幕样式控制，有CSS属性和字幕HTML标签双重限制，不是很灵活 可以使用开源的HTML5视频项目：accessible-html5-video-player，paypal的开源项目，可以对原生的video进行UI重定值，JS很小，未压缩版本就几十K，其会把VTT文件中HTML片段直接完整输出到页面中，于是乎，所有的CSS属性我们都可以使用了，例如可以把字幕在视频上方直接一个绝对定位上去就好了。</summary></entry><entry><title type="html">JS基础–高级算法–贪心算法</title><link href="http://localhost:4000/js/2018/03/16/AdvancedAlgorithms-2.html" rel="alternate" type="text/html" title="JS基础--高级算法--贪心算法" /><published>2018-03-16T00:00:00+08:00</published><updated>2018-03-16T00:00:00+08:00</updated><id>http://localhost:4000/js/2018/03/16/AdvancedAlgorithms-2</id><content type="html" xml:base="http://localhost:4000/js/2018/03/16/AdvancedAlgorithms-2.html">&lt;h1 id=&quot;高级算法贪心算法&quot;&gt;高级算法–贪心算法&lt;/h1&gt;
+&lt;p&gt;可以使用开源的HTML5视频项目：&lt;a href=&quot;https://github.com/paypal/accessible-html5-video-player&quot;&gt;accessible-html5-video-player&lt;/a&gt;，paypal的开源项目，可以对原生的video进行UI重定值，JS很小，未压缩版本就几十K，其会把VTT文件中HTML片段直接完整输出到页面中，于是乎，所有的CSS属性我们都可以使用了，例如可以把字幕在视频上方直接一个绝对定位上去就好了。&lt;/p&gt;</content><author><name>weili</name></author><category term="[&quot;video&quot;]" /><summary type="html">HTML5 Video视频与WebVTT字幕 HTML5 Videov字幕通用是WebVTT（后缀.vtt），这个各个浏览器厂商都支持的比较好。 track?? 完整写法: &amp;lt;video controls width=&quot;400&quot; height=&quot;300&quot;&amp;gt; &amp;lt;source src=&quot;../test.mp4&quot; type=&quot;video/mp4&quot;&amp;gt; &amp;lt;track src=&quot;test.vtt&quot; srclang=&quot;zh&quot; kind=&quot;subtitles&quot; label=&quot;中文&quot; default&amp;gt; &amp;lt;track src=&quot;test_en.vtt&quot; srclang=&quot;en&quot; kind=&quot;subtitles&quot; label=&quot;English&quot;&amp;gt; &amp;lt;/video&amp;gt; 如果有多个语言字幕可以添加多条，供用户切换选择 标注为default的表示默认使用的字幕。 只要src属性地址OK，同时有default属性，字幕就会生效。 元素的属性如下: 名称 值 说明 kind subtitles 字幕，详见表格后   captions 字幕，详见表格后   descriptions 描述，视频的文本描述   chapters 章节导航   metadata 元数据 src URL 指定资源URL srclang Language code 在 src 资源的语言,VTT文本信息使用的语言。例如，中文zh，英文en label Free text 点击CC按钮选择字幕时候出现的文字 default n/a default指的是默认会显示的字幕。例如两个元素，如果都没有default属性，那都不显示，需要用户手动调出。另外，default只能出现在一个元素上 1) kind: 可选值 subtitles captions subtitles: 平常看电影看动漫时候下面出现的字幕，一般是翻译，或者采访时候口音不清的字幕显示。有时候还会标注一些说明，例如，显示人物姓名身份，当前场景地或者标注之前语言的梗在哪里等 这里captions专指隐藏式字幕（Closed Captions），简称CC 隐藏字幕（Closed Captioning，简称CC)是电视节目或影碟中为有特殊情况或者需要的观众而准备的宇幕，例如观众在听力上有障碍，或者需要无音条件下观赏节目。此时字幕中可使用一些解释性的语言来描述节目内容。 subtitles主要就是对人说话进行翻译或确认；而captions不仅需要人对话的内容提示，紧张的背景音乐，或者汽车吱吱作响的刹车声都需要在字幕中描述出来。这样，即使用户静音也能知道视频里到底在玩些什么。我想，如果是经常看国外影视作品的小伙伴肯定会有类似的字幕体验，有的就对话字幕，有的事无巨细，就是subtitles和captions的区别 .vtt文件 格式如下： WEBVTT 00:11.000 --&amp;gt; 00:13.000 &amp;lt;v Roger Bingham&amp;gt;We are in New York City 00:13.000 --&amp;gt; 00:16.000 &amp;lt;v Roger Bingham&amp;gt;We’re actually at the Lucern Hotel, just down the street 00:16.000 --&amp;gt; 00:18.000 &amp;lt;v Roger Bingham&amp;gt;from the American Museum of Natural History 00:18.000 --&amp;gt; 00:20.000 &amp;lt;v Roger Bingham&amp;gt;And with me is Neil deGrasse Tyson 00:20.000 --&amp;gt; 00:22.000 &amp;lt;v Roger Bingham&amp;gt;Astrophysicist, Director of the Hayden Planetarium 就是个文本文件，格式很简单，一开始声明下WebVTT，然后下面就是视频时间范围，下一行就是字幕内容，时间可以精确到毫秒，但通常0.5秒足矣。 更多规则解释详见官网文档 HTML5 Video视频字幕的样式控制 CSS中有专门的伪元素::cue可以控制字幕的样式。 可以控制的CSS属性包括： color opacity visibility text-decoration及相关属性 text-shadow background及相关属性 outline及相关属性 font及相关属性，包括line-height white-space text-combine-upright ruby-position WebVTT还支持一些内联样式控制，常见的 值 说明 c 用 c 定义 （CSS）类, 例如， Cue text&amp;lt;/c&amp;gt; i 斜体字 b 粗体字 u 添加下划线 ruby 详见表格后 v 如有提供，则用来指定声音标签。例如， This is useful for adding subtitles。注意此声音标签不会显示，它只是作为一个样式标记。 ruby : 定义类似于 HTML5 的 &amp;lt;ruby&amp;gt; 元素。在这样的内联样式中，允许出现一个或多个 &amp;lt;rt&amp;gt; 元素。（&amp;lt;ruby&amp;gt; 元素用于标注汉字等东亚字符的发音） 使用方法如下所示： 00:00:52.000 --&amp;gt; 00:00:54.000 align:start size:15% &amp;lt;v Emo&amp;gt;I don’t think so. &amp;lt;c.question&amp;gt;You?&amp;lt;/c&amp;gt;&amp;lt;/v&amp;gt; 给 Cue 文本添加两种不同的声音标签： Emo 和 Proog（自定义的） 。另外，一个 question（自定义的） 的 CSS 类被指定，可以按惯常方法在 CSS 链接文件 或 HTML 页面里为其指定样式。 注意要给 Cue 文本添加 CSS 样式，你需要用一个特定的伪选择元素，例子如下: video::cue(v[voice=&quot;Emo&quot;]) { color:lime } 更全面的样式控制 原生的字幕样式控制，有CSS属性和字幕HTML标签双重限制，不是很灵活 可以使用开源的HTML5视频项目：accessible-html5-video-player，paypal的开源项目，可以对原生的video进行UI重定值，JS很小，未压缩版本就几十K，其会把VTT文件中HTML片段直接完整输出到页面中，于是乎，所有的CSS属性我们都可以使用了，例如可以把字幕在视频上方直接一个绝对定位上去就好了。</summary></entry><entry><title type="html">什么是G2</title><link href="http://localhost:4000/2018/03/23/anvt_G2.html" rel="alternate" type="text/html" title="什么是G2" /><published>2018-03-23T00:00:00+08:00</published><updated>2018-03-23T00:00:00+08:00</updated><id>http://localhost:4000/2018/03/23/anvt_G2</id><content type="html" xml:base="http://localhost:4000/2018/03/23/anvt_G2.html">&lt;h2 id=&quot;什么是g2&quot;&gt;什么是G2?&lt;/h2&gt;
+
+&lt;p&gt;G2 是一套基于可视化编码的图形语法，以数据驱动，具有高度的易用性和扩展性，用户无需关注各种繁琐的实现细节，一条语句即可构建出各种各样的可交互的统计图表。&lt;/p&gt;
+
+&lt;p&gt;就是这个样子：&lt;/p&gt;
+
+&lt;h3 id=&quot;引入方法&quot;&gt;引入方法&lt;/h3&gt;
+
+&lt;p&gt;1、直接引入&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;script src=&quot;https://gw.alipayobjects.com/os/antv/assets/g2/3.0.5-beta.5/g2.min.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;2、npm功安装完成之后，import 或 require 引用&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm install @antv/g2 --save
+
+import G2 from '@antv/g2';
+
+const chart = new G2.Chart({
+  container: 'c1',
+  width: 600,
+  height: 300
+});
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;如何使用&quot;&gt;如何使用？&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;创建 div 图表容器&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;div id=&quot;c1&quot;&amp;gt;&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;定制图表进行绘制
+    &lt;ul&gt;
+      &lt;li&gt;创建 Chart 图表对象，指定图表所在的容器 ID；&lt;/li&gt;
+      &lt;li&gt;载入图表数据源；&lt;/li&gt;
+      &lt;li&gt;使用图形语法进行图表的绘制；&lt;/li&gt;
+      &lt;li&gt;渲染图表。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;数据源
+const data = [
+  { genre: 'Sports', sold: 275 },
+  { genre: 'Strategy', sold: 115 },
+  { genre: 'Action', sold: 120 },
+  { genre: 'Shooter', sold: 350 },
+  { genre: 'Other', sold: 150 }
+]; // G2 对数据源格式的要求，仅仅是 JSON 数组，数组的每个元素是一个标准 JSON 对象
+
+// Step 1: 创建 Chart 对象
+const chart = new G2.Chart({
+  container: 'c1', // 指定图表容器 ID
+  width : 600, // 指定图表宽度
+  height : 300 // 指定图表高度
+});
+
+// Step 2: 载入数据源
+chart.source(data);
+
+// Step 3：创建图形语法，绘制柱状图，由 genre 和 sold 两个属性决定图形位置，genre 映射至 x 轴，sold 映射至 y 轴
+chart.interval().position('genre*sold').color('genre')
+
+// Step 4: 渲染图表
+chart.render();
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;可视化框架的构成&quot;&gt;可视化框架的构成&lt;/h3&gt;
+
+&lt;p&gt;一个可视化框架需要四部分：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;数据处理模块，对数据进行加工的模块，包括一些数据处理方法。例如：合并、分组、排序、过滤、计算统计信息等&lt;/li&gt;
+  &lt;li&gt;图形映射模块，将数据映射到图形视觉通道的过程。例如：将数据映射成颜色、位置、大小等&lt;/li&gt;
+  &lt;li&gt;图形展示模块，决定使用何种图形来展示数据，点、线、面等图形标记&lt;/li&gt;
+  &lt;li&gt;辅助信息模块，用于说明视觉通道跟数据的映射关系，例如：坐标轴、图例、辅助文本等&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;数据处理模块&quot;&gt;数据处理模块&lt;/h3&gt;
+
+&lt;p&gt;数据处理模块已经从 G2 中独立出来，作为 DataSet 模块单独提供，主要包含下面几个模块：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;DataSet 包含多个 DataView, 管理多个数据源&lt;/li&gt;
+  &lt;li&gt;DataView 每个 DataView 对应一个数据源，可以理解为一个图表，可以进行布局（Layout)、数据加工（Transform)&lt;/li&gt;
+  &lt;li&gt;Layout 对数据进行布局&lt;/li&gt;
+  &lt;li&gt;Transform 对数据进行加工、统计等处理，包括对地图数据的处理，这个很强大&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;图形映射模块&quot;&gt;图形映射模块&lt;/h3&gt;
+
+&lt;p&gt;图形映射模块完成了将数据映射到数学空间
+[0-1]，再从数学空间映射到画布空间的整个过程，主要包括三个模块：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Scale 将数据映射到 0-1 之间，方便映射到画布上&lt;/li&gt;
+  &lt;li&gt;Attr 图形属性，数据映射到图形的属性（视觉通道），包括位置、颜色、大小、形状等&lt;/li&gt;
+  &lt;li&gt;Coord 展示图形需用到的坐标系，将数据映射到位置的属性（视觉通道）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;辅助信息&quot;&gt;辅助信息&lt;/h3&gt;
+
+&lt;p&gt;辅助信息用于标示数据在各种图形属性上的映射，使得用户更容易的理解数据，主要包括下面几个模块：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Axis 坐标轴，辅助用户识别图形所在的位置，判断数据大小的辅助元素&lt;/li&gt;
+  &lt;li&gt;Tooltip 提示信息，用户鼠标在画布上移动时，实时出现的鼠标附近的数据信息&lt;/li&gt;
+  &lt;li&gt;Guide 其他辅助元素，可以在图上添加辅助的文本、辅助图片、辅助线等，增强用户对图形的认知。&lt;/li&gt;
+  &lt;li&gt;Legend 图例，辅助用户识别图形的大小、颜色、形状，通常用于判断数据对应图形的分类&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;图形展示&quot;&gt;图形展示&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Chart 图表，展示图形的入口，会生成一个画布，同时管理数据到图形映射的所有周期&lt;/li&gt;
+  &lt;li&gt;View 视图，一个画布上可以显示多张图表，每个图表有各自的绘图区域、数据源、坐标系等信息&lt;/li&gt;
+  &lt;li&gt;Geom 数据映射到的图形标识，G2 中的图形标识有：点、线、路径、面积、多边形等&lt;/li&gt;
+  &lt;li&gt;Shape 更加细分的图形标识，例如，点可以分为圆点、正方形、十字等，线可以分为点线、折线、曲线等&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;数据处理模块之&quot;&gt;数据处理模块之&lt;/h3&gt;
+
+&lt;p&gt;数据处理分为两个大的步骤：数据连接（Connector）和数据转换（Transform）。&lt;/p&gt;
+
+&lt;p&gt;Connector 负责导入和归一化数据（譬如导入 CSV 数据，导入 GeoJSON 数据等），
+Transform 负责进行各种数据转换操作（譬如图布局、数据统计、数据补全等）。&lt;/p&gt;
+
+&lt;p&gt;通过这样的分层，支持了前端社区非常全面的数据处理相关的算法和模块；其次，在单个数据视图（DataView）的基础上增加了数据集（DataSet）的概念，通过统一的 DataSet 管理，实现了各个数据视图之间的状态同步和交互。&lt;/p&gt;
+
+&lt;p&gt;一、DataSet&lt;/p&gt;
+
+&lt;p&gt;dataSet主要通过state状态管理多个dataview视图，实现多图联动，或者关联视图。
+dataView则是对应的是每一个数据源，通过connector来接入不同类型的数据，通过tranform进行数据的转换或者过滤。最后输出我们理想的数据，dataSet是与g2分离的，需要用到的时候可以加载
+在图形映射模块上，&lt;/p&gt;
+
+&lt;p&gt;DataSet的使用语法&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// step1 创建 dataset 指定状态量
+const ds = new DataSet({
+  state: {
+    year: '2010'
+  }
+});
+
+// step2 创建 DataView
+const dv = ds.createView().source(data);
+
+dv.transform({
+  type: 'filter',
+  callback(row) {
+    return row.year === ds.state.year;
+  }
+});
+
+
+// step3 引用 DataView
+chart.source(dv);
+
+// step4 更新状态量
+ds.setState('year', '2012');
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;DataSet 主要完成了以下功能：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;源数据的解析，将csv, dsv,geojson 转成标准的JSON，查看Connector&lt;/li&gt;
+  &lt;li&gt;加工数据，包括 filter,map,fold(补数据) 等操作，查看 Transform&lt;/li&gt;
+  &lt;li&gt;统计函数，汇总统计、百分比、封箱 等统计函数，查看 Transform&lt;/li&gt;
+  &lt;li&gt;特殊数据处理，包括 地理数据、矩形树图、桑基图、文字云 的数据处理，查看 Transform&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;（一）Connector&lt;/p&gt;
+
+&lt;p&gt;接入语法：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dv.source(data, {
+  type: connectorName,   connectorName//就是下面几种数据类型
+  ...otherOptions
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;可接入的数据类型：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;default 默认 //普通二维数据&lt;/li&gt;
+  &lt;li&gt;dsv&lt;/li&gt;
+  &lt;li&gt;csv&lt;/li&gt;
+  &lt;li&gt;tsv&lt;/li&gt;
+  &lt;li&gt;GeoJSON  //地理数据&lt;/li&gt;
+  &lt;li&gt;TopoJSON //树结构数据&lt;/li&gt;
+  &lt;li&gt;hierarchy&lt;/li&gt;
+  &lt;li&gt;graph    //图数据&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;可以这样理解，以上几种类型，分别对应着几种实例，可以使用该种实例提供的方法，比如GeoJSON这种类型，在制作地图时需要用到的类型，以中国地图为例，传入中国的省市名称，这个类型能根据这些地名提供对应的地理位置区域，从而画出地图中对应的区域。&lt;/p&gt;
+
+&lt;p&gt;（二）Transform&lt;/p&gt;
+
+&lt;p&gt;功能很强大，只概括几种常见的：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;过滤&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dv.transform({
+  type: 'filter',
+  callback(row) { // 判断某一行是否保留，默认返回true
+    return row.year &amp;gt; 1998;
+  }
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;数据加工&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dv.transform({
+  type: 'map',
+  callback(row) { // 加工数据后返回新的一行，默认返回行数据本身
+    row.newCol = row.xxx + row.yyy;
+    return row;
+  }
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;字段重命名&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dv.transform({
+  type: 'rename',
+  map: {
+    xxx: 'yyy' // row.xxx 会被替换成 row.yyy
+  }
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;数据排序&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dv.transform({
+  type: 'sort',
+  callback(a, b) { // 排序依据，和原生js的排序callback一致
+    return a.year - b.year;
+  }
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;percent 总和百分比&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dv.transform({
+  type: 'percent',
+  field: 'sold',           // 统计销量
+  dimension: 'year',       // 每年的占比
+  groupBy: [ 'category' ], // 以不同产品类别为分组
+  as: 'percent'            // 结果存储在 percent 字段
+});
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;几个字段的意思：&lt;/p&gt;
+
+&lt;p&gt;field 是统计发生的字段（求和，求百分比），
+dimension 是统计的维度字段，也就是”每个不同的 dimension 下，
+field 值占总和的百分比”，
+groupBy 则是分组字段，每一个分组内部独立求百分比（每一个分组内，最后的 percent 字段相加之和为 1）。&lt;/p&gt;
+
+&lt;p&gt;再看一下其它几个非常重要的属性：&lt;/p&gt;
+
+&lt;h2 id=&quot;scale-度量&quot;&gt;Scale 度量&lt;/h2&gt;
+
+&lt;p&gt;定义：度量 Scale，是数据空间到图形空间的转换桥梁，负责原始数据到 [0, 1] 区间数值的相互转换工作，从原始数据到 [0, 1] 区间的转换我们称之为归一化操作。不同的数据类型对应不同的度量，如&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;连续数据类型，如 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 一组数据，在其原始数值范围 [0, 10] 内通过度量转换至 [0, 1] 范围的数据，变成 0, 0.1, 0.2, …, 0.9, 1，同时通过 invert 反转，还需要度量后的数值恢复至原始值；&lt;/li&gt;
+  &lt;li&gt;分类数据类型，如 [‘男’, ‘女’] 这一组数据，通过度量转换后变成 [0, 1]，同样时通过 invert 反转可恢复至原始值。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;在 G2 中度量用于完成以下功能：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;将数据转换到 [0, 1] 范围内，方便将数据映射到位置、颜色、大小等图形属性；&lt;/li&gt;
+  &lt;li&gt;将归一化后的数据反转回原始值。例如 分类a 转换成 0.2，那么对应 0.2 需要反转回 分类a；&lt;/li&gt;
+  &lt;li&gt;划分数据，用于在坐标轴、图例显示数值的范围、分类等信息。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Scale 的功能非常简单易理解，但是在 G2 的数据处理流程中起着非常重要的承接作用，&lt;/p&gt;
+
+&lt;p&gt;根据数据分类方式，G2 提供了不同的度量类型：&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;数据类型&lt;/td&gt;
+      &lt;td&gt;度量类型&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;连续&lt;/td&gt;
+      &lt;td&gt;linear、log、pow、time&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;分类（非连续）&lt;/td&gt;
+      &lt;td&gt;cat、timeCat&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;对于 G2 生成的所有度量对象，均拥有以下属性，这些属性均可以由用户进行配置。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{
+  type: {string}, // 度量的类型
+  range: {array}, // 数值范围区间，即度量转换的范围，默认为 [0, 1]
+  alias: {string}, // 为数据属性定义别名，用于图例、坐标轴、tooltip 的个性化显示
+  ticks: {array}, // 存储坐标轴上的刻度点文本信息
+  tickCount: {number}, // 坐标轴上刻度点的个数，不同的度量类型对应不同的默认值
+  formatter: {function}, // 回调函数，用于格式化坐标轴刻度点的文本显示，会影响数据在坐标轴、图例、tooltip 上的显示
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;默认生成度量的机制如下：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;查看用户是否制定了对应字段的数据类型，查看列定义&lt;/li&gt;
+  &lt;li&gt;如果没有，判断字段的第一条数据的字段类型&lt;/li&gt;
+  &lt;li&gt;如果数据中不存在对应的字段，则为 ‘identity’&lt;/li&gt;
+  &lt;li&gt;如果是数字则为 ‘linear’；&lt;/li&gt;
+  &lt;li&gt;如果是字符串，判定是否是时间格式，如果是时间格式则为时间类型 ‘time’,&lt;/li&gt;
+  &lt;li&gt;否则是分类类型 ‘cat’&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;度量中的每个类型的定义，这里只说个大概，具体看官网上的解释吧。&lt;/p&gt;
+
+&lt;h2 id=&quot;图表的组成&quot;&gt;图表的组成&lt;/h2&gt;
+
+&lt;h3 id=&quot;坐标轴-axis&quot;&gt;坐标轴 axis&lt;/h3&gt;
+
+&lt;p&gt;通常包含两个坐标轴，在笛卡尔坐标系下，分别为 x 轴和 y 轴，在极坐标轴下，则分别由角度和半径2个维度构成。 每个坐标轴由坐标轴线、刻度线、刻度文本、标题以及网格线组成。&lt;/p&gt;
+
+&lt;h3 id=&quot;图例-legend&quot;&gt;图例 legend&lt;/h3&gt;
+
+&lt;p&gt;图例作为图表的辅助元素，用于标定不同的数据类型以及数据的范围，用于辅助阅读图表，帮助用户在图表中进行数据的筛选过滤。&lt;/p&gt;
+
+&lt;h3 id=&quot;几何标记-geom&quot;&gt;几何标记 geom&lt;/h3&gt;
+
+&lt;p&gt;几何标记，即我们所说的点、线、面这些几何图形，在 G2 中几何标记的类型决定了生成图表的类型。也就是数据被可视化后的实际表现，不同的几何标都对应自己能识别的图形属性。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;G2 的核心既是将数据从数据空间转换到图形空间。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;提示信息-tooltip&quot;&gt;提示信息 tooltip&lt;/h3&gt;
+
+&lt;p&gt;当鼠标悬停在某个点上时，会以框的形式显示当前点对应的数据的信息，比如该点的值，数据单位等。数据提示框内提示的信息还可以通过格式化函数动态指定。&lt;/p&gt;
+
+&lt;h3 id=&quot;辅助标记-guide&quot;&gt;辅助标记 guide&lt;/h3&gt;
+
+&lt;p&gt;当需要在图表上绘制一些辅助线、辅助框或者图片时，比如增加平均值线、最高值线或者标示明显的范围区域时，可以使用辅助标记 guide。&lt;/p&gt;
+
+&lt;h2 id=&quot;g2的dom结构也是canvas&quot;&gt;G2的dom结构也是canvas&lt;/h2&gt;
+
+&lt;p&gt;它是由三层 canvas 构成的，这三层 canvas 分别对应 chart 对象的如下三个属性：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;frontCanvas 最上层 canvas，图例 legend、提示信息 tooltip、和 text tag html 这三种类型的辅助标记 guide 在这一层绘制；&lt;/li&gt;
+  &lt;li&gt;canvas 中间层，绘制图表的主体内容几何标记 geom；&lt;/li&gt;
+  &lt;li&gt;backCanvas 最下层 canvas，坐标轴 axis 和 line image rect arc 这四种类型的辅助标记 guide 在这一层绘制。&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>weili</name></author><category term="JS" /><summary type="html">什么是G2? G2 是一套基于可视化编码的图形语法，以数据驱动，具有高度的易用性和扩展性，用户无需关注各种繁琐的实现细节，一条语句即可构建出各种各样的可交互的统计图表。 就是这个样子： 引入方法 1、直接引入 &amp;lt;script src=&quot;https://gw.alipayobjects.com/os/antv/assets/g2/3.0.5-beta.5/g2.min.js&quot;&amp;gt;&amp;lt;/script&amp;gt; 2、npm功安装完成之后，import 或 require 引用 npm install @antv/g2 --save import G2 from '@antv/g2'; const chart = new G2.Chart({ container: 'c1', width: 600, height: 300 }); 如何使用？ 创建 div 图表容器 &amp;lt;div id=&quot;c1&quot;&amp;gt;&amp;lt;/div&amp;gt; 定制图表进行绘制 创建 Chart 图表对象，指定图表所在的容器 ID； 载入图表数据源； 使用图形语法进行图表的绘制； 渲染图表。 数据源 const data = [ { genre: 'Sports', sold: 275 }, { genre: 'Strategy', sold: 115 }, { genre: 'Action', sold: 120 }, { genre: 'Shooter', sold: 350 }, { genre: 'Other', sold: 150 } ]; // G2 对数据源格式的要求，仅仅是 JSON 数组，数组的每个元素是一个标准 JSON 对象 // Step 1: 创建 Chart 对象 const chart = new G2.Chart({ container: 'c1', // 指定图表容器 ID width : 600, // 指定图表宽度 height : 300 // 指定图表高度 }); // Step 2: 载入数据源 chart.source(data); // Step 3：创建图形语法，绘制柱状图，由 genre 和 sold 两个属性决定图形位置，genre 映射至 x 轴，sold 映射至 y 轴 chart.interval().position('genre*sold').color('genre') // Step 4: 渲染图表 chart.render(); 可视化框架的构成 一个可视化框架需要四部分： 数据处理模块，对数据进行加工的模块，包括一些数据处理方法。例如：合并、分组、排序、过滤、计算统计信息等 图形映射模块，将数据映射到图形视觉通道的过程。例如：将数据映射成颜色、位置、大小等 图形展示模块，决定使用何种图形来展示数据，点、线、面等图形标记 辅助信息模块，用于说明视觉通道跟数据的映射关系，例如：坐标轴、图例、辅助文本等 数据处理模块 数据处理模块已经从 G2 中独立出来，作为 DataSet 模块单独提供，主要包含下面几个模块： DataSet 包含多个 DataView, 管理多个数据源 DataView 每个 DataView 对应一个数据源，可以理解为一个图表，可以进行布局（Layout)、数据加工（Transform) Layout 对数据进行布局 Transform 对数据进行加工、统计等处理，包括对地图数据的处理，这个很强大 图形映射模块 图形映射模块完成了将数据映射到数学空间 [0-1]，再从数学空间映射到画布空间的整个过程，主要包括三个模块： Scale 将数据映射到 0-1 之间，方便映射到画布上 Attr 图形属性，数据映射到图形的属性（视觉通道），包括位置、颜色、大小、形状等 Coord 展示图形需用到的坐标系，将数据映射到位置的属性（视觉通道） 辅助信息 辅助信息用于标示数据在各种图形属性上的映射，使得用户更容易的理解数据，主要包括下面几个模块： Axis 坐标轴，辅助用户识别图形所在的位置，判断数据大小的辅助元素 Tooltip 提示信息，用户鼠标在画布上移动时，实时出现的鼠标附近的数据信息 Guide 其他辅助元素，可以在图上添加辅助的文本、辅助图片、辅助线等，增强用户对图形的认知。 Legend 图例，辅助用户识别图形的大小、颜色、形状，通常用于判断数据对应图形的分类 图形展示 Chart 图表，展示图形的入口，会生成一个画布，同时管理数据到图形映射的所有周期 View 视图，一个画布上可以显示多张图表，每个图表有各自的绘图区域、数据源、坐标系等信息 Geom 数据映射到的图形标识，G2 中的图形标识有：点、线、路径、面积、多边形等 Shape 更加细分的图形标识，例如，点可以分为圆点、正方形、十字等，线可以分为点线、折线、曲线等 数据处理模块之 数据处理分为两个大的步骤：数据连接（Connector）和数据转换（Transform）。 Connector 负责导入和归一化数据（譬如导入 CSV 数据，导入 GeoJSON 数据等）， Transform 负责进行各种数据转换操作（譬如图布局、数据统计、数据补全等）。 通过这样的分层，支持了前端社区非常全面的数据处理相关的算法和模块；其次，在单个数据视图（DataView）的基础上增加了数据集（DataSet）的概念，通过统一的 DataSet 管理，实现了各个数据视图之间的状态同步和交互。 一、DataSet dataSet主要通过state状态管理多个dataview视图，实现多图联动，或者关联视图。 dataView则是对应的是每一个数据源，通过connector来接入不同类型的数据，通过tranform进行数据的转换或者过滤。最后输出我们理想的数据，dataSet是与g2分离的，需要用到的时候可以加载 在图形映射模块上， DataSet的使用语法 // step1 创建 dataset 指定状态量 const ds = new DataSet({ state: { year: '2010' } }); // step2 创建 DataView const dv = ds.createView().source(data); dv.transform({ type: 'filter', callback(row) { return row.year === ds.state.year; } }); // step3 引用 DataView chart.source(dv); // step4 更新状态量 ds.setState('year', '2012'); DataSet 主要完成了以下功能： 源数据的解析，将csv, dsv,geojson 转成标准的JSON，查看Connector 加工数据，包括 filter,map,fold(补数据) 等操作，查看 Transform 统计函数，汇总统计、百分比、封箱 等统计函数，查看 Transform 特殊数据处理，包括 地理数据、矩形树图、桑基图、文字云 的数据处理，查看 Transform （一）Connector 接入语法： dv.source(data, { type: connectorName, connectorName//就是下面几种数据类型 ...otherOptions }); 可接入的数据类型： default 默认 //普通二维数据 dsv csv tsv GeoJSON //地理数据 TopoJSON //树结构数据 hierarchy graph //图数据 可以这样理解，以上几种类型，分别对应着几种实例，可以使用该种实例提供的方法，比如GeoJSON这种类型，在制作地图时需要用到的类型，以中国地图为例，传入中国的省市名称，这个类型能根据这些地名提供对应的地理位置区域，从而画出地图中对应的区域。 （二）Transform 功能很强大，只概括几种常见的： 过滤 dv.transform({ type: 'filter', callback(row) { // 判断某一行是否保留，默认返回true return row.year &amp;gt; 1998; } }); 数据加工 dv.transform({ type: 'map', callback(row) { // 加工数据后返回新的一行，默认返回行数据本身 row.newCol = row.xxx + row.yyy; return row; } }); 字段重命名 dv.transform({ type: 'rename', map: { xxx: 'yyy' // row.xxx 会被替换成 row.yyy } }); 数据排序 dv.transform({ type: 'sort', callback(a, b) { // 排序依据，和原生js的排序callback一致 return a.year - b.year; } }); percent 总和百分比 dv.transform({ type: 'percent', field: 'sold', // 统计销量 dimension: 'year', // 每年的占比 groupBy: [ 'category' ], // 以不同产品类别为分组 as: 'percent' // 结果存储在 percent 字段 }); 几个字段的意思： field 是统计发生的字段（求和，求百分比）， dimension 是统计的维度字段，也就是”每个不同的 dimension 下， field 值占总和的百分比”， groupBy 则是分组字段，每一个分组内部独立求百分比（每一个分组内，最后的 percent 字段相加之和为 1）。 再看一下其它几个非常重要的属性： Scale 度量 定义：度量 Scale，是数据空间到图形空间的转换桥梁，负责原始数据到 [0, 1] 区间数值的相互转换工作，从原始数据到 [0, 1] 区间的转换我们称之为归一化操作。不同的数据类型对应不同的度量，如 连续数据类型，如 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 一组数据，在其原始数值范围 [0, 10] 内通过度量转换至 [0, 1] 范围的数据，变成 0, 0.1, 0.2, …, 0.9, 1，同时通过 invert 反转，还需要度量后的数值恢复至原始值； 分类数据类型，如 [‘男’, ‘女’] 这一组数据，通过度量转换后变成 [0, 1]，同样时通过 invert 反转可恢复至原始值。 在 G2 中度量用于完成以下功能： 将数据转换到 [0, 1] 范围内，方便将数据映射到位置、颜色、大小等图形属性； 将归一化后的数据反转回原始值。例如 分类a 转换成 0.2，那么对应 0.2 需要反转回 分类a； 划分数据，用于在坐标轴、图例显示数值的范围、分类等信息。 Scale 的功能非常简单易理解，但是在 G2 的数据处理流程中起着非常重要的承接作用， 根据数据分类方式，G2 提供了不同的度量类型： 数据类型 度量类型 连续 linear、log、pow、time 分类（非连续） cat、timeCat 对于 G2 生成的所有度量对象，均拥有以下属性，这些属性均可以由用户进行配置。 { type: {string}, // 度量的类型 range: {array}, // 数值范围区间，即度量转换的范围，默认为 [0, 1] alias: {string}, // 为数据属性定义别名，用于图例、坐标轴、tooltip 的个性化显示 ticks: {array}, // 存储坐标轴上的刻度点文本信息 tickCount: {number}, // 坐标轴上刻度点的个数，不同的度量类型对应不同的默认值 formatter: {function}, // 回调函数，用于格式化坐标轴刻度点的文本显示，会影响数据在坐标轴、图例、tooltip 上的显示 } 默认生成度量的机制如下： 查看用户是否制定了对应字段的数据类型，查看列定义 如果没有，判断字段的第一条数据的字段类型 如果数据中不存在对应的字段，则为 ‘identity’ 如果是数字则为 ‘linear’； 如果是字符串，判定是否是时间格式，如果是时间格式则为时间类型 ‘time’, 否则是分类类型 ‘cat’ 度量中的每个类型的定义，这里只说个大概，具体看官网上的解释吧。 图表的组成 坐标轴 axis 通常包含两个坐标轴，在笛卡尔坐标系下，分别为 x 轴和 y 轴，在极坐标轴下，则分别由角度和半径2个维度构成。 每个坐标轴由坐标轴线、刻度线、刻度文本、标题以及网格线组成。 图例 legend 图例作为图表的辅助元素，用于标定不同的数据类型以及数据的范围，用于辅助阅读图表，帮助用户在图表中进行数据的筛选过滤。 几何标记 geom 几何标记，即我们所说的点、线、面这些几何图形，在 G2 中几何标记的类型决定了生成图表的类型。也就是数据被可视化后的实际表现，不同的几何标都对应自己能识别的图形属性。 G2 的核心既是将数据从数据空间转换到图形空间。 提示信息 tooltip 当鼠标悬停在某个点上时，会以框的形式显示当前点对应的数据的信息，比如该点的值，数据单位等。数据提示框内提示的信息还可以通过格式化函数动态指定。 辅助标记 guide 当需要在图表上绘制一些辅助线、辅助框或者图片时，比如增加平均值线、最高值线或者标示明显的范围区域时，可以使用辅助标记 guide。 G2的dom结构也是canvas 它是由三层 canvas 构成的，这三层 canvas 分别对应 chart 对象的如下三个属性： frontCanvas 最上层 canvas，图例 legend、提示信息 tooltip、和 text tag html 这三种类型的辅助标记 guide 在这一层绘制； canvas 中间层，绘制图表的主体内容几何标记 geom； backCanvas 最下层 canvas，坐标轴 axis 和 line image rect arc 这四种类型的辅助标记 guide 在这一层绘制。</summary></entry><entry><title type="html">JS基础–高级算法–贪心算法</title><link href="http://localhost:4000/js/2018/03/16/AdvancedAlgorithms-2.html" rel="alternate" type="text/html" title="JS基础--高级算法--贪心算法" /><published>2018-03-16T00:00:00+08:00</published><updated>2018-03-16T00:00:00+08:00</updated><id>http://localhost:4000/js/2018/03/16/AdvancedAlgorithms-2</id><content type="html" xml:base="http://localhost:4000/js/2018/03/16/AdvancedAlgorithms-2.html">&lt;h1 id=&quot;高级算法贪心算法&quot;&gt;高级算法–贪心算法&lt;/h1&gt;
 
 &lt;p&gt;贪心算法总是会选择当下的最优解，而不去考虑这一次的选择会不会对未来的选择造成影响，目的是得到当前最优解。&lt;/p&gt;
 
@@ -1290,374 +1769,4 @@ document.write(dKnapsack(capacity, size, value, n));
 0 0 0 4 5 5 5 10 11 11 14 15 16 16 19 21 21 
 0 0 0 4 5 5 5 10 11 13 14 15 17 18 19 21 23 
 23
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>weili</name></author><category term="[&quot;JS&quot;]" /><summary type="html">高级算法–动态规划 动态规则与递归的关系与区别 动态规划有时被认为是一种与递归相反的技术。 递归是从顶部开始将问题分解，通过解决掉所有分解出小问题的方式，来解决整 个问题。 动态规划解决方案从底部开始解决问题，将所有小问题解决掉，然后合并成一个 整体解决方案，从而解决掉整个大问题。 递归去解决问题虽然简洁，但效率不高,许多使用递归去解决的编程问题，可以重写为使用动态规划的技巧去解决 动态规划方案 动态规划方案通常会使用一个数组来建立一张表，用于存放被分解成众多子问题的解。当算法执行完 毕，最终的解将会在这个表中很明显的地方被找到 使用动态规划方案能做点什么？ 计算斐波那契数列 斐波那契数列可以定义为以下序列: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, … 该序列是由前两项数值相加而成的 递归的实现方式： function recurFib(n) { if (n &amp;lt; 2) { return n; } else { return recurFib(n-1) + recurFib(n-2); } } document.write(recurFib(10)); // 显示 55 在这个计算过程当中，有太多值在递归调用中被重新计算,这也是递归方法效率低下的原因。 再看下动态规则的实现方法： function dynFib(n) { var val = []; for (var i = 0; i &amp;lt;= n; ++i) { val[i] = 0; } if (n == 1 || n == 2) { return 1; } else { val[1] = 1; val[2] = 2; for (var i = 3; i &amp;lt;= n; ++i) { val[i] = val[i-1] + val[i-2]; } return val[n-1]; } } 在这个数组 val 中保存了中间结果。如果要计算的斐波那契数是 1 或者 2，那么 if 语 句会返回 1。否则，数值 1 和 2 将被保存在 val 数组中 1 和 2 的位置。循环将会从 3 到输 入的参数之间进行遍历，将数组的每个元素赋值为前两个元素之和，循环结束，数组的最 后一个元素值即为最终计算得到的斐波那契数值，这个数值也将作为函数的返回值。 斐波那契数列在数组 val 中的排列顺序如下: val[0] = 0 val[1] = 1 val[2] = 2 val[3] = 3 val[4] = 5 val[5] = 8 val[6] = 13 寻找最长公共子串 用动态规划去寻找两个字符串的最长公共子串。例如，在单词 “raven”和“havoc”中，最长的公共子串是“av”。 原理： 使用一个二维数组存储两个字符串相同 位置的字符比较结果。初始化时，该数组的每一个元素被设置为 0。每次在这两个数组的 相同位置发现了匹配，就将数组对应行和列的元素加 1，否则保持为 0。按照这种方式，一个变量会持续记录下找到了多少个匹配项。当算法执行完毕时，这个变 量会结合一个索引变量来获得最长公共子串。 function lcs(word1, word2) { var max = 0; var index = 0; var lcsarr = new Array(word1.length + 1); for (var i = 0; i &amp;lt;= word1.length + 1; ++i) { lcsarr[i] = new Array(word2.length + 1); for (var j = 0; j &amp;lt;= word2.length + 1; ++j) { lcsarr[i][j] = 0; } } //上面这一部分初始化了两个变量以及一个二维数组。多数语言对二维数组的声明都很 简单，但在 JavaScript 中需要很费劲地在一个数组中定义另一个数组，这样才能声明一个 二维数组。以下代码片段中的最后一个 for 循环会对这个数组进行初始化， for (var i = 0; i &amp;lt;= word1.length; ++i) { for (var j = 0; j &amp;lt;= word2.length; ++j) { if (i == 0 || j == 0) { lcsarr[i][j] = 0; } else { if (word1[i - 1] == word2[j - 1]) { lcsarr[i][j] = lcsarr[i - 1][j - 1] + 1; } else { lcsarr[i][j] = 0; } } if (max &amp;lt; lcsarr[i][j]) { max = lcsarr[i][j]; index = i; } } } //这一部分构建了用于保存字符匹配记录的表。数组的第一个元素总是被设置为 0。如果两 个字符串相应位置的字符进行了匹配，当前数组元素的值将被设置为前一次循环中数组元 素保存的值加 1。比如，如果两个字符串 &quot;back&quot; 和 &quot;cace&quot;，当算法运行到第二个字符处 时，那么数值 1 将被保存到当前元素中，因为前一个元素并不匹配，0 被保存在那个元素 中(0+1)。接下来算法移动到下一个位置，由于此时两个字符仍被匹配，当前数组元素将 被设置为 2(1+1)。由于两个字符串的最后一个字符不匹配，所以最长公共子串的长度是 2。最后，如果变量 max 的值比现在存储在数组中的当前元素要小，max 的值将被赋值给这 个元素，变量 index 的值将被设置为 i 的当前值。这两个变量将在函数的最后一部分用于 确定从哪里开始获取最长公共子串。 var str = &quot;&quot;; if (max == 0) { return &quot;&quot;; } else { for (var i = index - max; i &amp;lt;= max; ++i) { str += word2[i]; } return str; } //这一部分代码用于确认从哪里开始构建这个最长公共子串。以变量 index 减去变量 max 的差值作为起始点，以变量 max 的值作为终点: } 背包问题:递归解决方案 function max(a, b) { return (a &amp;gt; b) ? a : b; } function knapsack(capacity, size, value, n) { if (n == 0 || capacity == 0) { return 0; } if (size[n - 1] &amp;gt; capacity) { return knapsack(capacity, size, value, n - 1); } else { return max(value[n - 1] + knapsack(capacity - size[n - 1], size, value, n - 1), knapsack(capacity, size, value, n - 1)); } } var value = [4, 5, 10, 11, 13]; var size = [3, 4, 7, 8, 9]; var capacity = 16; var n = 5; document.write(knapsack(capacity, size, value, n)); //结果：23 背包问题:动态规划方案 function max(a, b) { return (a &amp;gt; b) ? a : b; } function dKnapsack(capacity, size, value, n) { var K = []; for (var i = 0; i &amp;lt;= capacity + 1; i++) { K[i] = []; } for (var i = 0; i &amp;lt;= n; i++) { for (var w = 0; w &amp;lt;= capacity; w++) { if (i == 0 || w == 0) { K[i][w] = 0; } else if (size[i - 1] &amp;lt;= w) { K[i][w] = max(value[i - 1] + K[i-1][w-size[i-1]], K[i-1][w]); } else { K[i][w] = K[i - 1][w]; } document.write(K[i][w] + &quot; &quot;); } } return K[n][capacity]; } var value = [4, 5, 10, 11, 13]; var size = [3, 4, 7, 8, 9]; var capacity = 16; var n = 5; document.write(dKnapsack(capacity, size, value, n)); 结果： 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 4 4 4 4 4 4 4 4 4 4 4 4 4 4 0 0 0 4 5 5 5 9 9 9 9 9 9 9 9 9 9 0 0 0 4 5 5 5 10 10 10 14 15 15 15 19 19 19 0 0 0 4 5 5 5 10 11 11 14 15 16 16 19 21 21 0 0 0 4 5 5 5 10 11 13 14 15 17 18 19 21 23 23</summary></entry><entry><title type="html">JS基础–检索算法</title><link href="http://localhost:4000/js/2018/03/02/jiansuo-1.html" rel="alternate" type="text/html" title="JS基础--检索算法" /><published>2018-03-02T00:00:00+08:00</published><updated>2018-03-02T00:00:00+08:00</updated><id>http://localhost:4000/js/2018/03/02/jiansuo-1</id><content type="html" xml:base="http://localhost:4000/js/2018/03/02/jiansuo-1.html">&lt;h1 id=&quot;检索算法&quot;&gt;检索算法&lt;/h1&gt;
-
-&lt;p&gt;本章介绍了数据检索的一个方面: 如何在列表中查找特定的值。&lt;/p&gt;
-
-&lt;p&gt;在列表中查找数据有两种方式: &lt;strong&gt;顺序查找&lt;/strong&gt;和&lt;strong&gt;二分查找&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;顺序查找适用于元素随机排列的列表;&lt;/li&gt;
-  &lt;li&gt;二分查找适用于元素已排序的列表。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;二分查找效率更高，但是你必须在进行查找之前 花费额外的时间将列表中的元素排序。&lt;/p&gt;
-
-&lt;h2 id=&quot;顺序查找&quot;&gt;顺序查找&lt;/h2&gt;
-
-&lt;p&gt;对于查找数据来说，最简单的方法就是从列表的第一个元素开始对列表元素逐个进行判 断，直到找到了想要的结果，或者直到列表结尾也没有找到。这种方法称为顺序查找，有 时也被称为线性查找。它属于暴力查找技巧的一种，在执行查找时可能会访问到数据结构 里的所有元素。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;顺序查找的实现：&lt;/strong&gt;
-只要从列表的第一个元素开始循环，然后逐个与要查找的数据进 行比较。如果匹配到了，则结束查找。如果到了列表的结尾也没有匹配到，那么这个数据 就不存在于这个列表中。&lt;/p&gt;
-
-&lt;p&gt;代码实现：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function seqSearch(arr, data) {
-    for (var i = 0; i &amp;lt; arr.length; ++i) {
-        if (arr[i] == data) {
-            return i;
-        }
-    }
-    return -1;
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;如果在数组中找到了参数 data，返回所在的位置，如果没有找到要查找的数据，函数返回-1。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;seqSearch() 函数的执行速度比内置的 Array.indexof() 方法慢，这里仅用来演示 顺序查找是如何运行的。&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;查找最小值和最大值&quot;&gt;查找最小值和最大值&lt;/h3&gt;
-
-&lt;h4 id=&quot;查找最小值&quot;&gt;查找最小值&lt;/h4&gt;
-
-&lt;p&gt;首先看看如何在数组中查找最小值，算法如下。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;将数组第一个元素赋值给一个变量，把这个变量作为最小值。&lt;/li&gt;
-  &lt;li&gt;开始遍历数组，从第二个元素开始依次同当前最小值进行比较。&lt;/li&gt;
-  &lt;li&gt;如果当前元素数值小于当前最小值，则将当前元素设为新的最小值。&lt;/li&gt;
-  &lt;li&gt;移动到下一个元素，并且重复步骤 3。&lt;/li&gt;
-  &lt;li&gt;当程序结束时，这个变量中存储的就是最小值。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;代码实现如下：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function findMin(arr) {
-  var min = arr[0];
-  for (var i = 1; i &amp;lt; arr.length; ++i) {
-     if (arr[i] &amp;lt; min) {
-        min = arr[i];
-     } 
-  }
-  return min; 
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;需要注意的关键部分，由于我们假设数组的第一个元素就是当前的最小值，所以这个函数 会从数组的第二个元素开始进行处理。&lt;/p&gt;
-
-&lt;h4 id=&quot;查找最大值&quot;&gt;查找最大值&lt;/h4&gt;
-
-&lt;p&gt;查找最大值和查找最小值的原理是一样的，只不过是先把数组的第一个元素设置为最大值。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function findMax(arr) {
-    var max = arr[0];
-    for (var i = 1; i &amp;lt; arr.length; ++i) {
-       if (arr[i] &amp;gt; max) {
-          max = arr[i];
-       } 
-    }
-    return max; 
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;实例化个例子：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var nums = [];
-for (var i = 0; i &amp;lt; 100; ++i) {
-  nums[i] = Math.floor(Math.random() * 101);
-}
-
-document.getElementById('box').innerHTML = nums;
-
-var minValue = this.findMin(nums); 
-var maxValue = this.findMax(nums); 
-
-document.write(&quot;最小值是:&quot; + minValue + '&amp;lt;br /&amp;gt;');
-document.write(&quot;最小值是:&quot; + maxValue);
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://127.0.0.1:4000/img/20180222/20180222-1.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;使用自组织数据&quot;&gt;使用自组织数据&lt;/h3&gt;
-
-&lt;p&gt;对于未排序的数据集来说，当被查找的数据位于数据集的起始位置时，查找是最快、最成功的。通过将成功找到的元素置于数据集的起始位置，可以保证在以后的操作中该元素能被更快地查找到。&lt;/p&gt;
-
-&lt;p&gt;通过将频繁查找到的元素置于数据集的起始位置来最小化查找次数，这就叫做自组织数据。&lt;/p&gt;
-
-&lt;p&gt;由于对数据的查找遵循“80-20 原则”，因此将你的数据转化为自组织的形式是很有意义 的。&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;“80-20 原则”是指对某一数据集执行的 80% 的查找操作都是对其中 20% 的数据元素 进行查找。自组织的方式最终会把这 20% 的数据置于数据集的起始位置，这样便可以通过 一个简单的顺序查找快速找到它们。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;举个例子，理解对 seqSearch() 函数进行改动以加入自组织方式&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var numbers = [5,1,7,4,2,10,9,3,6,8];
-
-//改动后的seqSearch() 函数
-function seqSearch(arr,data) {
-    for(var i = 0; i &amp;lt; arr.length; ++i) {
-        if(arr[i] === data) {
-            if( i &amp;gt; 0) {
-                swap(arr,i,i-1);
-            }
-            return true;
-        }
-    }
-    return false;
-}
- 
-//swap() 函数来对这次找到的数据与当前存储在上一个位置的数据进行互换。
-function swap(arr,index,index1) {
-    temp = arr[index];
-    arr[index] = arr[index1];
-    arr[index1] = temp;
-}
-
-for (var i = 0; i &amp;lt;= 5; i++) {
-  seqSearch(numbers, 4);
-  console.log(numbers);
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://127.0.0.1:4000/img/20180222/20180222-2.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;这种写法同时可以保证已经在数据集前面的元素不会被越移越远。&lt;/p&gt;
-
-&lt;h2 id=&quot;二分查找&quot;&gt;二分查找&lt;/h2&gt;
-
-&lt;p&gt;如果你要查找的数据是有序的，二分查找算法比顺序查找算法更高效。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var nums = [0,5,46,85,102,212,503];  //必须先排序好
- 
-function binSearch(arr,data) {
-    var upperBound = arr.length - 1;
-        lowerBound = 0;
-    while(lowerBound &amp;lt;= upperBound) {
-        var mid = Math.floor((upperBound + lowerBound) / 2);
-        console.log('此时的中点：' + mid);
-        if(arr[mid] &amp;lt; data) {
-            lowerBound = mid + 1;
-        } else if(arr[mid] &amp;gt; data) {
-            upperBound = mid - 1;
-        } else {
-            return mid;
-        }
-    }
-    return -1;
-}
-
-console.log(binSearch(nums,46));
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://127.0.0.1:4000/img/20180222/20180222-3.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;计算重复次数&quot;&gt;计算重复次数&lt;/h3&gt;
-
-&lt;p&gt;count函数一开始调用 binSearch() 函数来查找指定的值。如果在数据集中能找到这个值， 那么这个函数将开始通过两个循环来统计这个值出现的次数。第一个循环向下遍历数组， 统计找到的值出现的次数，当下一个值与要查找的值不匹配时则停止计数。第二个循环向 上遍历数组，统计找到的值出现的次数，当下一个值与要查找的值不匹配时则停止计数。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function count(arr,data) {
-    var count = 0,
-        position = binSearch(arr,data);
-        if(position &amp;gt; -1) {
-            ++count;
-            for(var i = position-1; i &amp;gt; 0; --i) {
-                if(arr[i] === data) {
-                    ++count;
-                } else {
-                    break;
-                }
-            }
-            for(var i = position + 1; i &amp;lt; arr.length; ++i) {
-                if(arr[i] === data) {
-                    ++count;
-                } else {
-                    break;
-                }
-            }
-        }
-        return count;
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>weili</name></author><category term="[&quot;JS&quot;]" /><summary type="html">检索算法 本章介绍了数据检索的一个方面: 如何在列表中查找特定的值。 在列表中查找数据有两种方式: 顺序查找和二分查找。 顺序查找适用于元素随机排列的列表; 二分查找适用于元素已排序的列表。 二分查找效率更高，但是你必须在进行查找之前 花费额外的时间将列表中的元素排序。 顺序查找 对于查找数据来说，最简单的方法就是从列表的第一个元素开始对列表元素逐个进行判 断，直到找到了想要的结果，或者直到列表结尾也没有找到。这种方法称为顺序查找，有 时也被称为线性查找。它属于暴力查找技巧的一种，在执行查找时可能会访问到数据结构 里的所有元素。 顺序查找的实现： 只要从列表的第一个元素开始循环，然后逐个与要查找的数据进 行比较。如果匹配到了，则结束查找。如果到了列表的结尾也没有匹配到，那么这个数据 就不存在于这个列表中。 代码实现： function seqSearch(arr, data) { for (var i = 0; i &amp;lt; arr.length; ++i) { if (arr[i] == data) { return i; } } return -1; } 如果在数组中找到了参数 data，返回所在的位置，如果没有找到要查找的数据，函数返回-1。 seqSearch() 函数的执行速度比内置的 Array.indexof() 方法慢，这里仅用来演示 顺序查找是如何运行的。 查找最小值和最大值 查找最小值 首先看看如何在数组中查找最小值，算法如下。 将数组第一个元素赋值给一个变量，把这个变量作为最小值。 开始遍历数组，从第二个元素开始依次同当前最小值进行比较。 如果当前元素数值小于当前最小值，则将当前元素设为新的最小值。 移动到下一个元素，并且重复步骤 3。 当程序结束时，这个变量中存储的就是最小值。 代码实现如下： function findMin(arr) { var min = arr[0]; for (var i = 1; i &amp;lt; arr.length; ++i) { if (arr[i] &amp;lt; min) { min = arr[i]; } } return min; } 需要注意的关键部分，由于我们假设数组的第一个元素就是当前的最小值，所以这个函数 会从数组的第二个元素开始进行处理。 查找最大值 查找最大值和查找最小值的原理是一样的，只不过是先把数组的第一个元素设置为最大值。 function findMax(arr) { var max = arr[0]; for (var i = 1; i &amp;lt; arr.length; ++i) { if (arr[i] &amp;gt; max) { max = arr[i]; } } return max; } 实例化个例子： var nums = []; for (var i = 0; i &amp;lt; 100; ++i) { nums[i] = Math.floor(Math.random() * 101); } document.getElementById('box').innerHTML = nums; var minValue = this.findMin(nums); var maxValue = this.findMax(nums); document.write(&quot;最小值是:&quot; + minValue + '&amp;lt;br /&amp;gt;'); document.write(&quot;最小值是:&quot; + maxValue); 使用自组织数据 对于未排序的数据集来说，当被查找的数据位于数据集的起始位置时，查找是最快、最成功的。通过将成功找到的元素置于数据集的起始位置，可以保证在以后的操作中该元素能被更快地查找到。 通过将频繁查找到的元素置于数据集的起始位置来最小化查找次数，这就叫做自组织数据。 由于对数据的查找遵循“80-20 原则”，因此将你的数据转化为自组织的形式是很有意义 的。 “80-20 原则”是指对某一数据集执行的 80% 的查找操作都是对其中 20% 的数据元素 进行查找。自组织的方式最终会把这 20% 的数据置于数据集的起始位置，这样便可以通过 一个简单的顺序查找快速找到它们。 举个例子，理解对 seqSearch() 函数进行改动以加入自组织方式 var numbers = [5,1,7,4,2,10,9,3,6,8]; //改动后的seqSearch() 函数 function seqSearch(arr,data) { for(var i = 0; i &amp;lt; arr.length; ++i) { if(arr[i] === data) { if( i &amp;gt; 0) { swap(arr,i,i-1); } return true; } } return false; } //swap() 函数来对这次找到的数据与当前存储在上一个位置的数据进行互换。 function swap(arr,index,index1) { temp = arr[index]; arr[index] = arr[index1]; arr[index1] = temp; } for (var i = 0; i &amp;lt;= 5; i++) { seqSearch(numbers, 4); console.log(numbers); } 这种写法同时可以保证已经在数据集前面的元素不会被越移越远。 二分查找 如果你要查找的数据是有序的，二分查找算法比顺序查找算法更高效。 var nums = [0,5,46,85,102,212,503]; //必须先排序好 function binSearch(arr,data) { var upperBound = arr.length - 1; lowerBound = 0; while(lowerBound &amp;lt;= upperBound) { var mid = Math.floor((upperBound + lowerBound) / 2); console.log('此时的中点：' + mid); if(arr[mid] &amp;lt; data) { lowerBound = mid + 1; } else if(arr[mid] &amp;gt; data) { upperBound = mid - 1; } else { return mid; } } return -1; } console.log(binSearch(nums,46)); 计算重复次数 count函数一开始调用 binSearch() 函数来查找指定的值。如果在数据集中能找到这个值， 那么这个函数将开始通过两个循环来统计这个值出现的次数。第一个循环向下遍历数组， 统计找到的值出现的次数，当下一个值与要查找的值不匹配时则停止计数。第二个循环向 上遍历数组，统计找到的值出现的次数，当下一个值与要查找的值不匹配时则停止计数。 function count(arr,data) { var count = 0, position = binSearch(arr,data); if(position &amp;gt; -1) { ++count; for(var i = position-1; i &amp;gt; 0; --i) { if(arr[i] === data) { ++count; } else { break; } } for(var i = position + 1; i &amp;lt; arr.length; ++i) { if(arr[i] === data) { ++count; } else { break; } } } return count; }</summary></entry><entry><title type="html">JS基础–高级排序(三)</title><link href="http://localhost:4000/js/2018/02/11/senior_Sort_3.html" rel="alternate" type="text/html" title="JS基础--高级排序(三)" /><published>2018-02-11T00:00:00+08:00</published><updated>2018-02-11T00:00:00+08:00</updated><id>http://localhost:4000/js/2018/02/11/senior_Sort_3</id><content type="html" xml:base="http://localhost:4000/js/2018/02/11/senior_Sort_3.html">&lt;h1 id=&quot;高级排序快速排序&quot;&gt;高级排序—快速排序&lt;/h1&gt;
-
-&lt;p&gt;快速排序是处理大数据集最快的排序算法之一。&lt;/p&gt;
-
-&lt;p&gt;它是一种分而治之的算法，通过递归的方式将数据依次分解为包含较小元素和较大元素的不同子序列。该算法不断重复这个步骤直到所有数据都是有序的。&lt;/p&gt;
-
-&lt;h3 id=&quot;快速排序&quot;&gt;快速排序&lt;/h3&gt;
-
-&lt;p&gt;这个算法首先要在列表中选择一个元素作为基准值(pivot)。数据排序围绕基准值进行， 将列表中小于基准值的元素移到数组的底部，将大于基准值的元素移到数组的顶部。&lt;/p&gt;
-
-&lt;h4 id=&quot;自底向上的归并排序&quot;&gt;自底向上的归并排序&lt;/h4&gt;
-
-&lt;p&gt;采用非递归或者迭代版本的归并排序是一个自底向上的过程。这个算法首先将数据集分解 为一组只有一个元素的数组。然后通过创建一组左右子数组将它们慢慢合并起来，每次合 并都保存一部分排好序的数据，直到最后剩下的这个数组所有的数据都已完美排序。&lt;/p&gt;
-
-&lt;p&gt;下图演示了自底向上的归并排序算法是如何运行的&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://0.0.0.0:4000/img/20180201/20180201-1.jpg&quot; alt=&quot;图&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;JavaScript 实现的自底向上归并排序算法:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function mergeSort() {
-    if (this.dataStore.length &amp;lt; 2) {
-        return; 
-    }
-    var step = 1;
-    var left, right;
-    while (step &amp;lt; this.dataStore.length) {
-       left = 0;
-       right = step;
-       while (right + step &amp;lt;= this.dataStore.length) {
-          mergeArrays(this.dataStore, left, left+step, right, right+step);
-          left = right + step;
-          right = left + step;
-       }
-       if (right &amp;lt; this.dataStore.length) {
-            mergeArrays(this.dataStore, left, left+step, right, this.dataStore.length); 
-        }
-        step *= 2;
-    }
-}
-
-function mergeArrays(arr,startLeft, stopLeft, startRight, stopRight) {
-   var rightArr = new Array(stopRight - startRight + 1);
-   var leftArr = new Array(stopLeft - startLeft + 1);
-   k = startRight;
-   for (var i = 0; i &amp;lt; (rightArr.length-1); ++i) {
-      rightArr[i] = arr[k];
-      ++k;
-   } 
-   k = startLeft;
-   for (var i = 0; i &amp;lt; (leftArr.length-1); ++i) {
-        leftArr[i] = arr[k];
-        ++k; 
-   }
-
-    rightArr[rightArr.length-1] = Infinity; // 哨兵值 
-    leftArr[leftArr.length-1] = Infinity; // 哨兵值 
-    var m = 0;
-    var n = 0;
-   for (var k = startLeft; k &amp;lt; stopRight; ++k) {
-        if (leftArr[m] &amp;lt;= rightArr[n]) {
-            arr[k] = leftArr[m];
-            m++; 
-        } else {
-            arr[k] = rightArr[n];
-            n++;
-        } 
-    }
-    document.write(&quot;left array - &quot;, leftArr + '&amp;lt;br /&amp;gt;');
-    document.write(&quot;right array - &quot;, rightArr + '&amp;lt;br /&amp;gt;');
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;mergeSort() 函数中的关键点就是 step 这个变量，它用来控制 mergeArrays() 函数生成的 leftArr 和 rightArr 这两个子序列的大小。通过控制子序列的大小，处理排序是比较高效 的，因为它在对小数组进行排序时不需要花费太多时间。合并之所以高效，还有一个原 因，由于未合并的数据已经是排好序的，将它们合并到一个有序数组的过程非常容易。&lt;/p&gt;
-
-&lt;p&gt;初始化10数的结果：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var nums = new CArray(10);
-nums.setData();
-document.write(nums.toString() + '&amp;lt;br /&amp;gt;');
-nums.mergeSort();
-document.write(nums.toString() + '&amp;lt;br /&amp;gt;');
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://0.0.0.0:4000/img/20180201/20180201-2.jpg&quot; alt=&quot;图&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;一开始每个元素都在左子序列或右子序列中。然后将左右子序列合并，首先每次合并成两 个元素的子序列，然后合并成四个元素的子序列，3 和 5 除外，它们会一直保留到最后一次 迭代，那时会把它们合并成右子序列，然后再与最后的左子序列合并成最终的有序数组。&lt;/p&gt;</content><author><name>weili</name></author><category term="[&quot;JS&quot;]" /><summary type="html">高级排序—快速排序 快速排序是处理大数据集最快的排序算法之一。 它是一种分而治之的算法，通过递归的方式将数据依次分解为包含较小元素和较大元素的不同子序列。该算法不断重复这个步骤直到所有数据都是有序的。 快速排序 这个算法首先要在列表中选择一个元素作为基准值(pivot)。数据排序围绕基准值进行， 将列表中小于基准值的元素移到数组的底部，将大于基准值的元素移到数组的顶部。 自底向上的归并排序 采用非递归或者迭代版本的归并排序是一个自底向上的过程。这个算法首先将数据集分解 为一组只有一个元素的数组。然后通过创建一组左右子数组将它们慢慢合并起来，每次合 并都保存一部分排好序的数据，直到最后剩下的这个数组所有的数据都已完美排序。 下图演示了自底向上的归并排序算法是如何运行的 JavaScript 实现的自底向上归并排序算法: function mergeSort() { if (this.dataStore.length &amp;lt; 2) { return; } var step = 1; var left, right; while (step &amp;lt; this.dataStore.length) { left = 0; right = step; while (right + step &amp;lt;= this.dataStore.length) { mergeArrays(this.dataStore, left, left+step, right, right+step); left = right + step; right = left + step; } if (right &amp;lt; this.dataStore.length) { mergeArrays(this.dataStore, left, left+step, right, this.dataStore.length); } step *= 2; } } function mergeArrays(arr,startLeft, stopLeft, startRight, stopRight) { var rightArr = new Array(stopRight - startRight + 1); var leftArr = new Array(stopLeft - startLeft + 1); k = startRight; for (var i = 0; i &amp;lt; (rightArr.length-1); ++i) { rightArr[i] = arr[k]; ++k; } k = startLeft; for (var i = 0; i &amp;lt; (leftArr.length-1); ++i) { leftArr[i] = arr[k]; ++k; } rightArr[rightArr.length-1] = Infinity; // 哨兵值 leftArr[leftArr.length-1] = Infinity; // 哨兵值 var m = 0; var n = 0; for (var k = startLeft; k &amp;lt; stopRight; ++k) { if (leftArr[m] &amp;lt;= rightArr[n]) { arr[k] = leftArr[m]; m++; } else { arr[k] = rightArr[n]; n++; } } document.write(&quot;left array - &quot;, leftArr + '&amp;lt;br /&amp;gt;'); document.write(&quot;right array - &quot;, rightArr + '&amp;lt;br /&amp;gt;'); } mergeSort() 函数中的关键点就是 step 这个变量，它用来控制 mergeArrays() 函数生成的 leftArr 和 rightArr 这两个子序列的大小。通过控制子序列的大小，处理排序是比较高效 的，因为它在对小数组进行排序时不需要花费太多时间。合并之所以高效，还有一个原 因，由于未合并的数据已经是排好序的，将它们合并到一个有序数组的过程非常容易。 初始化10数的结果： var nums = new CArray(10); nums.setData(); document.write(nums.toString() + '&amp;lt;br /&amp;gt;'); nums.mergeSort(); document.write(nums.toString() + '&amp;lt;br /&amp;gt;'); 一开始每个元素都在左子序列或右子序列中。然后将左右子序列合并，首先每次合并成两 个元素的子序列，然后合并成四个元素的子序列，3 和 5 除外，它们会一直保留到最后一次 迭代，那时会把它们合并成右子序列，然后再与最后的左子序列合并成最终的有序数组。</summary></entry><entry><title type="html">JS基础–高级排序(二)</title><link href="http://localhost:4000/js/2018/02/01/senior_Sort_2.html" rel="alternate" type="text/html" title="JS基础--高级排序(二)" /><published>2018-02-01T00:00:00+08:00</published><updated>2018-02-01T00:00:00+08:00</updated><id>http://localhost:4000/js/2018/02/01/senior_Sort_2</id><content type="html" xml:base="http://localhost:4000/js/2018/02/01/senior_Sort_2.html">&lt;h1 id=&quot;高级排序归并排序&quot;&gt;高级排序—归并排序&lt;/h1&gt;
-
-&lt;p&gt;实现原理:把一系列排好序的子序列合并成一个大的完整有序序列。&lt;/p&gt;
-
-&lt;h3 id=&quot;归并排序&quot;&gt;归并排序&lt;/h3&gt;
-
-&lt;p&gt;从理论上讲，这个算法很容易实现。我们需要两个排好序的子数组，然后通过比较数据大小，先从最小的数据开始插入，最后合并得到第三个数组。&lt;/p&gt;
-
-&lt;p&gt;然而，在实际情况中，归并排序还有一些问题，当用这个算法对一个很大的数据集进行排序时，需要相当大的空间来合并存储两个子数组。就现在来讲，内存不那么昂贵，空间不是问题，因此值得我们去实现一下归并排序，比较它和其他排序算法的执行效率。&lt;/p&gt;
-
-&lt;h4 id=&quot;自底向上的归并排序&quot;&gt;自底向上的归并排序&lt;/h4&gt;
-
-&lt;p&gt;采用非递归或者迭代版本的归并排序是一个自底向上的过程。这个算法首先将数据集分解 为一组只有一个元素的数组。然后通过创建一组左右子数组将它们慢慢合并起来，每次合 并都保存一部分排好序的数据，直到最后剩下的这个数组所有的数据都已完美排序。&lt;/p&gt;
-
-&lt;p&gt;下图演示了自底向上的归并排序算法是如何运行的&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://0.0.0.0:4000/img/20180201/20180201-1.jpg&quot; alt=&quot;图&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;JavaScript 实现的自底向上归并排序算法:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function mergeSort() {
-    if (this.dataStore.length &amp;lt; 2) {
-        return; 
-    }
-    var step = 1;
-    var left, right;
-    while (step &amp;lt; this.dataStore.length) {
-       left = 0;
-       right = step;
-       while (right + step &amp;lt;= this.dataStore.length) {
-          mergeArrays(this.dataStore, left, left+step, right, right+step);
-          left = right + step;
-          right = left + step;
-       }
-       if (right &amp;lt; this.dataStore.length) {
-            mergeArrays(this.dataStore, left, left+step, right, this.dataStore.length); 
-        }
-        step *= 2;
-    }
-}
-
-function mergeArrays(arr,startLeft, stopLeft, startRight, stopRight) {
-   var rightArr = new Array(stopRight - startRight + 1);
-   var leftArr = new Array(stopLeft - startLeft + 1);
-   k = startRight;
-   for (var i = 0; i &amp;lt; (rightArr.length-1); ++i) {
-      rightArr[i] = arr[k];
-      ++k;
-   } 
-   k = startLeft;
-   for (var i = 0; i &amp;lt; (leftArr.length-1); ++i) {
-        leftArr[i] = arr[k];
-        ++k; 
-   }
-
-    rightArr[rightArr.length-1] = Infinity; // 哨兵值 
-    leftArr[leftArr.length-1] = Infinity; // 哨兵值 
-    var m = 0;
-    var n = 0;
-   for (var k = startLeft; k &amp;lt; stopRight; ++k) {
-        if (leftArr[m] &amp;lt;= rightArr[n]) {
-            arr[k] = leftArr[m];
-            m++; 
-        } else {
-            arr[k] = rightArr[n];
-            n++;
-        } 
-    }
-    document.write(&quot;left array - &quot;, leftArr + '&amp;lt;br /&amp;gt;');
-    document.write(&quot;right array - &quot;, rightArr + '&amp;lt;br /&amp;gt;');
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;mergeSort() 函数中的关键点就是 step 这个变量，它用来控制 mergeArrays() 函数生成的 leftArr 和 rightArr 这两个子序列的大小。通过控制子序列的大小，处理排序是比较高效 的，因为它在对小数组进行排序时不需要花费太多时间。合并之所以高效，还有一个原 因，由于未合并的数据已经是排好序的，将它们合并到一个有序数组的过程非常容易。&lt;/p&gt;
-
-&lt;p&gt;初始化10数的结果：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var nums = new CArray(10);
-nums.setData();
-document.write(nums.toString() + '&amp;lt;br /&amp;gt;');
-nums.mergeSort();
-document.write(nums.toString() + '&amp;lt;br /&amp;gt;');
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://0.0.0.0:4000/img/20180201/20180201-2.jpg&quot; alt=&quot;图&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;一开始每个元素都在左子序列或右子序列中。然后将左右子序列合并，首先每次合并成两 个元素的子序列，然后合并成四个元素的子序列，3 和 5 除外，它们会一直保留到最后一次 迭代，那时会把它们合并成右子序列，然后再与最后的左子序列合并成最终的有序数组。&lt;/p&gt;</content><author><name>weili</name></author><category term="[&quot;JS&quot;]" /><summary type="html">高级排序—归并排序 实现原理:把一系列排好序的子序列合并成一个大的完整有序序列。 归并排序 从理论上讲，这个算法很容易实现。我们需要两个排好序的子数组，然后通过比较数据大小，先从最小的数据开始插入，最后合并得到第三个数组。 然而，在实际情况中，归并排序还有一些问题，当用这个算法对一个很大的数据集进行排序时，需要相当大的空间来合并存储两个子数组。就现在来讲，内存不那么昂贵，空间不是问题，因此值得我们去实现一下归并排序，比较它和其他排序算法的执行效率。 自底向上的归并排序 采用非递归或者迭代版本的归并排序是一个自底向上的过程。这个算法首先将数据集分解 为一组只有一个元素的数组。然后通过创建一组左右子数组将它们慢慢合并起来，每次合 并都保存一部分排好序的数据，直到最后剩下的这个数组所有的数据都已完美排序。 下图演示了自底向上的归并排序算法是如何运行的 JavaScript 实现的自底向上归并排序算法: function mergeSort() { if (this.dataStore.length &amp;lt; 2) { return; } var step = 1; var left, right; while (step &amp;lt; this.dataStore.length) { left = 0; right = step; while (right + step &amp;lt;= this.dataStore.length) { mergeArrays(this.dataStore, left, left+step, right, right+step); left = right + step; right = left + step; } if (right &amp;lt; this.dataStore.length) { mergeArrays(this.dataStore, left, left+step, right, this.dataStore.length); } step *= 2; } } function mergeArrays(arr,startLeft, stopLeft, startRight, stopRight) { var rightArr = new Array(stopRight - startRight + 1); var leftArr = new Array(stopLeft - startLeft + 1); k = startRight; for (var i = 0; i &amp;lt; (rightArr.length-1); ++i) { rightArr[i] = arr[k]; ++k; } k = startLeft; for (var i = 0; i &amp;lt; (leftArr.length-1); ++i) { leftArr[i] = arr[k]; ++k; } rightArr[rightArr.length-1] = Infinity; // 哨兵值 leftArr[leftArr.length-1] = Infinity; // 哨兵值 var m = 0; var n = 0; for (var k = startLeft; k &amp;lt; stopRight; ++k) { if (leftArr[m] &amp;lt;= rightArr[n]) { arr[k] = leftArr[m]; m++; } else { arr[k] = rightArr[n]; n++; } } document.write(&quot;left array - &quot;, leftArr + '&amp;lt;br /&amp;gt;'); document.write(&quot;right array - &quot;, rightArr + '&amp;lt;br /&amp;gt;'); } mergeSort() 函数中的关键点就是 step 这个变量，它用来控制 mergeArrays() 函数生成的 leftArr 和 rightArr 这两个子序列的大小。通过控制子序列的大小，处理排序是比较高效 的，因为它在对小数组进行排序时不需要花费太多时间。合并之所以高效，还有一个原 因，由于未合并的数据已经是排好序的，将它们合并到一个有序数组的过程非常容易。 初始化10数的结果： var nums = new CArray(10); nums.setData(); document.write(nums.toString() + '&amp;lt;br /&amp;gt;'); nums.mergeSort(); document.write(nums.toString() + '&amp;lt;br /&amp;gt;'); 一开始每个元素都在左子序列或右子序列中。然后将左右子序列合并，首先每次合并成两 个元素的子序列，然后合并成四个元素的子序列，3 和 5 除外，它们会一直保留到最后一次 迭代，那时会把它们合并成右子序列，然后再与最后的左子序列合并成最终的有序数组。</summary></entry></feed>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>weili</name></author><category term="[&quot;JS&quot;]" /><summary type="html">高级算法–动态规划 动态规则与递归的关系与区别 动态规划有时被认为是一种与递归相反的技术。 递归是从顶部开始将问题分解，通过解决掉所有分解出小问题的方式，来解决整 个问题。 动态规划解决方案从底部开始解决问题，将所有小问题解决掉，然后合并成一个 整体解决方案，从而解决掉整个大问题。 递归去解决问题虽然简洁，但效率不高,许多使用递归去解决的编程问题，可以重写为使用动态规划的技巧去解决 动态规划方案 动态规划方案通常会使用一个数组来建立一张表，用于存放被分解成众多子问题的解。当算法执行完 毕，最终的解将会在这个表中很明显的地方被找到 使用动态规划方案能做点什么？ 计算斐波那契数列 斐波那契数列可以定义为以下序列: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, … 该序列是由前两项数值相加而成的 递归的实现方式： function recurFib(n) { if (n &amp;lt; 2) { return n; } else { return recurFib(n-1) + recurFib(n-2); } } document.write(recurFib(10)); // 显示 55 在这个计算过程当中，有太多值在递归调用中被重新计算,这也是递归方法效率低下的原因。 再看下动态规则的实现方法： function dynFib(n) { var val = []; for (var i = 0; i &amp;lt;= n; ++i) { val[i] = 0; } if (n == 1 || n == 2) { return 1; } else { val[1] = 1; val[2] = 2; for (var i = 3; i &amp;lt;= n; ++i) { val[i] = val[i-1] + val[i-2]; } return val[n-1]; } } 在这个数组 val 中保存了中间结果。如果要计算的斐波那契数是 1 或者 2，那么 if 语 句会返回 1。否则，数值 1 和 2 将被保存在 val 数组中 1 和 2 的位置。循环将会从 3 到输 入的参数之间进行遍历，将数组的每个元素赋值为前两个元素之和，循环结束，数组的最 后一个元素值即为最终计算得到的斐波那契数值，这个数值也将作为函数的返回值。 斐波那契数列在数组 val 中的排列顺序如下: val[0] = 0 val[1] = 1 val[2] = 2 val[3] = 3 val[4] = 5 val[5] = 8 val[6] = 13 寻找最长公共子串 用动态规划去寻找两个字符串的最长公共子串。例如，在单词 “raven”和“havoc”中，最长的公共子串是“av”。 原理： 使用一个二维数组存储两个字符串相同 位置的字符比较结果。初始化时，该数组的每一个元素被设置为 0。每次在这两个数组的 相同位置发现了匹配，就将数组对应行和列的元素加 1，否则保持为 0。按照这种方式，一个变量会持续记录下找到了多少个匹配项。当算法执行完毕时，这个变 量会结合一个索引变量来获得最长公共子串。 function lcs(word1, word2) { var max = 0; var index = 0; var lcsarr = new Array(word1.length + 1); for (var i = 0; i &amp;lt;= word1.length + 1; ++i) { lcsarr[i] = new Array(word2.length + 1); for (var j = 0; j &amp;lt;= word2.length + 1; ++j) { lcsarr[i][j] = 0; } } //上面这一部分初始化了两个变量以及一个二维数组。多数语言对二维数组的声明都很 简单，但在 JavaScript 中需要很费劲地在一个数组中定义另一个数组，这样才能声明一个 二维数组。以下代码片段中的最后一个 for 循环会对这个数组进行初始化， for (var i = 0; i &amp;lt;= word1.length; ++i) { for (var j = 0; j &amp;lt;= word2.length; ++j) { if (i == 0 || j == 0) { lcsarr[i][j] = 0; } else { if (word1[i - 1] == word2[j - 1]) { lcsarr[i][j] = lcsarr[i - 1][j - 1] + 1; } else { lcsarr[i][j] = 0; } } if (max &amp;lt; lcsarr[i][j]) { max = lcsarr[i][j]; index = i; } } } //这一部分构建了用于保存字符匹配记录的表。数组的第一个元素总是被设置为 0。如果两 个字符串相应位置的字符进行了匹配，当前数组元素的值将被设置为前一次循环中数组元 素保存的值加 1。比如，如果两个字符串 &quot;back&quot; 和 &quot;cace&quot;，当算法运行到第二个字符处 时，那么数值 1 将被保存到当前元素中，因为前一个元素并不匹配，0 被保存在那个元素 中(0+1)。接下来算法移动到下一个位置，由于此时两个字符仍被匹配，当前数组元素将 被设置为 2(1+1)。由于两个字符串的最后一个字符不匹配，所以最长公共子串的长度是 2。最后，如果变量 max 的值比现在存储在数组中的当前元素要小，max 的值将被赋值给这 个元素，变量 index 的值将被设置为 i 的当前值。这两个变量将在函数的最后一部分用于 确定从哪里开始获取最长公共子串。 var str = &quot;&quot;; if (max == 0) { return &quot;&quot;; } else { for (var i = index - max; i &amp;lt;= max; ++i) { str += word2[i]; } return str; } //这一部分代码用于确认从哪里开始构建这个最长公共子串。以变量 index 减去变量 max 的差值作为起始点，以变量 max 的值作为终点: } 背包问题:递归解决方案 function max(a, b) { return (a &amp;gt; b) ? a : b; } function knapsack(capacity, size, value, n) { if (n == 0 || capacity == 0) { return 0; } if (size[n - 1] &amp;gt; capacity) { return knapsack(capacity, size, value, n - 1); } else { return max(value[n - 1] + knapsack(capacity - size[n - 1], size, value, n - 1), knapsack(capacity, size, value, n - 1)); } } var value = [4, 5, 10, 11, 13]; var size = [3, 4, 7, 8, 9]; var capacity = 16; var n = 5; document.write(knapsack(capacity, size, value, n)); //结果：23 背包问题:动态规划方案 function max(a, b) { return (a &amp;gt; b) ? a : b; } function dKnapsack(capacity, size, value, n) { var K = []; for (var i = 0; i &amp;lt;= capacity + 1; i++) { K[i] = []; } for (var i = 0; i &amp;lt;= n; i++) { for (var w = 0; w &amp;lt;= capacity; w++) { if (i == 0 || w == 0) { K[i][w] = 0; } else if (size[i - 1] &amp;lt;= w) { K[i][w] = max(value[i - 1] + K[i-1][w-size[i-1]], K[i-1][w]); } else { K[i][w] = K[i - 1][w]; } document.write(K[i][w] + &quot; &quot;); } } return K[n][capacity]; } var value = [4, 5, 10, 11, 13]; var size = [3, 4, 7, 8, 9]; var capacity = 16; var n = 5; document.write(dKnapsack(capacity, size, value, n)); 结果： 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 4 4 4 4 4 4 4 4 4 4 4 4 4 4 0 0 0 4 5 5 5 9 9 9 9 9 9 9 9 9 9 0 0 0 4 5 5 5 10 10 10 14 15 15 15 19 19 19 0 0 0 4 5 5 5 10 11 11 14 15 16 16 19 21 21 0 0 0 4 5 5 5 10 11 13 14 15 17 18 19 21 23 23</summary></entry></feed>
