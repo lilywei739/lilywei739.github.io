@@ -1,0 +1,307 @@
+<!DOCTYPE html><html lang="en">
+  <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>React 组件的性能优化 - Weili's Blog</title>
+<meta name="description" content="虽然react已经提供了很好的渲染性能，但要让程序发挥到极致，还需要进一步了解性能优化的方法，本章节主要从三个方面讲解：  单个react组件的性能优化  多个react组件的性能优化  用reselect提高数据获取性能单个react组件的性能优化react渲染之所以快，是因为利用Virtual DOM来计算出...">
+<link rel="canonical" href="http://localhost:4000/2018/06/02/react_performance.html"><link rel="alternate" type="application/rss+xml" title="Weili's Blog" href="http://localhost:4000/feed.xml">
+<!-- for Safari on iOS https://developer.apple.com/ios/human-interface-guidelines/icons-and-images/app-icon/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/images/logo/icon-180x180.png"><link rel="apple-touch-icon" sizes="167x167" href="/assets/images/logo/icon-167x167.png"><link rel="apple-touch-icon" sizes="152x152" href="/assets/images/logo/icon-152x152.png"><link rel="apple-touch-icon" sizes="120x120" href="/assets/images/logo/icon-120x120.png"><link rel="shortcut icon" href="/assets/images/logo/icon-120x120.png">
+<!-- for Chrome on Android https://developer.chrome.com/multidevice/android/installtohomescreen -->
+<meta name="mobile-web-app-capable" content="yes"><link rel="icon" sizes="192x192" href="/assets/images/logo/icon-192x192.png">
+<!-- for Edge on Windows 10 https://msdn.microsoft.com/en-us/library/dn255024(v=vs.85).aspx --><meta name="msapplication-TileImage" content="/assets/images/logo/icon-144x144.png"><meta name="msapplication-square310x310logo" content="/assets/images/logo/icon-310x310.png"><meta name="msapplication-wide310x150logo" content="/assets/images/logo/icon-310x150.png"><meta name="msapplication-square150x150logo" content="/assets/images/logo/icon-150x150.png"><meta name="msapplication-square70x70logo" content="/assets/images/logo/icon-70x70.png">
+<meta name="msapplication-TileColor" content="#eeeeee"><link rel="stylesheet" href="/assets/css/blog.css">
+    <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="m-page-stage js-page-stage"><div class="m-page-content"><header class="m-page-header">
+  <div class="main clearfix">
+    <div class='site-logo'><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="24px" height="24px" viewBox="0 0 24 24">
+<style type="text/css">
+	.st0{fill:#666666;}
+</style>
+<path class="st0" d="M1.7,22.3c5.7-5.7,11.3-5.7,17,0c3.3-3.3,3.5-5.3,0.8-6c2.7,0.7,3.5-1.1,2.3-5.6s-3.3-5.2-6.3-2.1
+	c3-3,2.3-5.2-2.1-6.3S7,1.8,7.7,4.6C7,1.8,5,2.1,1.7,5.3C7.3,11,7.3,16.7,1.7,22.3"/>
+</svg><a title="Weili's blog
+" href="/">Weili's Blog</a></div>
+    <nav>
+      <ul><li><a href="/">Home</a></li><li><a href="/all.html">All</a></li><li><a href="/about.html">About</a></li></ul>
+    </nav>
+  </div>
+</header>
+<div class="m-page-main"><div class="m-post">
+	<div class="main js-main clearfix">
+		<div class="col-2 js-col-2">
+			<aside class="js-article-aside"><div class="m-toc js-toc"></div></aside>
+		</div>
+		<div class="col-1">
+			<article itemscope itemtype="http://schema.org/BlogPosting">
+				<meta itemprop="mainEntityOfPage" itemscope itemType="https://schema.org/WebPage"/>
+				<header class="main-header"><h1 itemprop="headline" itemprop="name headline">React 组件的性能优化</h1><div class="m-article-data clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="weili"/></meta><ul class="tag-wrapper"><li>
+          <a class="pill-button" href="/all.html?tag=JS">JS</a>
+        </li><li>
+          <a class="pill-button" href="/all.html?tag=%E5%89%8D%E7%AB%AF">前端</a>
+        </li><li>
+          <a class="pill-button" href="/all.html?tag=%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAReact%E5%92%8CRedux%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0">深入浅出React和Redux读书笔记</a>
+        </li></ul><div class="other-wrapper"><div class="date-wrapper"><time class="article-meta" datetime="2018-06-02T00:00:00+08:00"
+          itemprop="datePublished">Jun 02, 2018
+        </time></div>
+  </div>
+</div>
+</header>
+				<div class="m-article-content js-article-content" itemprop="articleBody"><p>虽然react已经提供了很好的渲染性能，但要让程序发挥到极致，还需要进一步了解性能优化的方法，本章节主要从三个方面讲解：</p>
+
+<ul>
+  <li>单个react组件的性能优化</li>
+  <li>多个react组件的性能优化</li>
+  <li>用reselect提高数据获取性能</li>
+</ul>
+
+<h2 id="单个react组件的性能优化">单个react组件的性能优化</h2>
+
+<p>react渲染之所以快，是因为利用Virtual DOM来计算出DOM树的最少修改，只渲染修改的部分，而不是所有。</p>
+
+<p>如果能够在开始计算Virtual DOM之前就可以判断结果不会变化，那干脆不要再去计算和比较，速度就会更快。</p>
+
+<h3 id="借助react-perf工具发现浪费的渲染时间">借助react perf工具，发现浪费的渲染时间</h3>
+
+<p>react perf 这个工具的安装和使用这里不再讲述。</p>
+
+<p>这个工具记录在点击start和stop按钮之间的所有react的渲染，如果有组件计算Virtual DOM之后，和之前的Virtual DOM相同，就认为是一次浪费。</p>
+
+<p>这里所说的浪费是计算Virtual DOM的浪费，并不是访问DOM的浪费。</p>
+
+<p>可以借助这个工具清晰的知道哪个组件被无意义的渲染了，达到优化性能的目的。</p>
+
+<h3 id="性能优化的时机">性能优化的时机</h3>
+
+<blockquote>
+  <p>过早的优化是万恶之源—–高德纳</p>
+</blockquote>
+
+<p>很多人对这句话有个错误的认识，认为高前辈不让做过早的优化，很显然我们误会老高了，他的全句是这样的</p>
+
+<blockquote>
+  <p>“我们应该忘记忽略很小的性能优化，可以说97%的情况下，过早的优化是万恶之源，而我们应该关心对性能影响最关键的那另外3%的代码”—–高德纳</p>
+</blockquote>
+
+<p>前辈的这句话有三个重要的点：</p>
+
+<p>1、不要把精力放在对整体性能优化提高不大的代码上，而对于性能有关键影响的部分，优化并不嫌早。</p>
+
+<p>2、所谓过早的优化，是指在没有任何数据体现下开发者对性能优化的猜测，没有可测量的性能指标，完成优化后，也不知道是否达到了预期的结果。</p>
+
+<p>3、高德纳认为过早的优化是万恶之源，是因为这些优化往往让代码过于复杂和难于维护，但如果早期的优化能够让代码结构更加合理更加容易维护，为什么不呢？</p>
+
+<h2 id="多个react组件的性能优化">多个react组件的性能优化</h2>
+
+<p>多个组件和单个组件一样，都需要经历组件装载、更新、卸载三个步骤。</p>
+
+<p>其中装载这个部分没有什么可以性能优化的事情做，卸载部分是会出现组件加载后添加的事件监听等收尾工作，也没有太多的可优化空间。</p>
+
+<p>重要的放在更新过程。</p>
+
+<h3 id="react的调和过程">react的调和过程</h3>
+
+<p>什么叫调和？</p>
+
+<p>就是render后和更新后，生成的这个树，相互比较找不同，这个找不同的过程就叫调和。</p>
+
+<p>react怎么找不同呢？</p>
+
+<p>1、先检查两个节点的类型</p>
+
+<p>这个类型分为两类：一类是dom元素类型，就是div span； 另一类是react组件，也就是利用react库定制的类型。</p>
+
+<p>1.1  如果不同</p>
+
+<p>举个例子，组件包裹外层原来是div，更新为span，这个时候，react一看这完全不相同，那后面的子节点也别看了，直接重新构建一份吧，这就造成了性能上面的浪费。</p>
+
+<p>解决办法：作为开发者尽量不要改动做为包裹层的类型。</p>
+
+<p>1.2 如果相同</p>
+
+<p>上面说了类型有两种，如果是dom类型加同，就只对比这个节点的属性和内容，然后更新修改的部分，如下面的代码</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>原来的：
+
+&lt;div style=&gt;hello&lt;/div&gt;
+
+更改后的：
+
+&lt;div style=&gt;hello&lt;/div&gt;
+
+</code></pre></div></div>
+
+<p>DOM节点类型没变，只需要修改它的属性，变动少。</p>
+
+<p>另外一种类型是react组件类型，它更新时只能根据新节点的props去更新原来的组件，引发这个组件实例的更新过程，按照下面的顺序引发下面的函数：</p>
+
+<ul>
+  <li>shouldComponentUpdate</li>
+  <li>componentWillReceiveProps</li>
+  <li>componentWillUpdate</li>
+  <li>render</li>
+  <li>componentDidUpdate</li>
+</ul>
+
+<p>这个时候就需要合理的使用shouldComonentUpdate函数了，如果没有必要渲染，就返回false。</p>
+
+<p>好了，对比了根节点之后，会对这个根节点的每一个小节点重复相同的动作，该更新更新，该创建创建。</p>
+
+<p>2、key的作用</p>
+
+<p>key就相当于组件的身份证号，标识组件的位置，react可以根据根据key值的有无变化，从而决定是否更新它。</p>
+
+<p>这个时候注意个问题，在循环一个数组时，不能以数组的下标做为key值定义每个子组件，key值变来变去的无规则也会引起不必要的重新加载或者更新创建。</p>
+
+</div></article>
+		</div>
+	</div>
+</div><script src="//cdn.bootcss.com/toc/0.3.2/toc.min.js"></script>
+<script type="text/javascript">
+	window.throttle = function(func, wait) {
+	  var args, result, thisArg, timeoutId, lastCalled = 0;
+
+	  function trailingCall() {
+	    lastCalled = new Date;
+	    timeoutId = null;
+	    result = func.apply(thisArg, args);
+	  }
+	  return function() {
+	    var now = new Date,
+	      remaining = wait - (now - lastCalled);
+
+	    args = arguments;
+	    thisArg = this;
+
+	    if (remaining <= 0) {
+	      clearTimeout(timeoutId);
+	      timeoutId = null;
+	      lastCalled = now;
+	      result = func.apply(thisArg, args);
+	    } else if (!timeoutId) {
+	      timeoutId = setTimeout(trailingCall, remaining);
+	    }
+	    return result;
+	  };
+	}
+	$(function() {
+	  var $window = $(window);
+	  var $pageStage = $('.js-page-stage');
+	  var $pageMain = $('.js-main');
+	  var $pageFooter = $('.js-page-footer');
+	  var $articleContent = $('.js-article-content');
+	  var $articleAside = $('.js-article-aside');
+	  var $toc = $('.js-toc');
+		var $col2 = $('.js-col-2');
+	  var hasTitle = $articleContent.find('h1,h2,h3').length > 0;
+	  function asideSticky() {
+	    return $col2.css('display') !== 'none' && $pageStage.hasClass('has-toc');
+	  }
+
+	  function setTocClass() {
+	    if (hasTitle) {
+	      !$pageStage.hasClass('has-toc') && $pageStage.addClass('has-toc');
+	    }
+	  }
+
+	  setTocClass();
+
+	  function setAsideTOC() {
+	    var asideTop, asideLeft, scrollBottom, asideBottomTop, lastScrollTop;
+
+	    function init() {
+	      var asideOffset = $articleAside.offset();
+	      var footerOffset = $pageFooter.offset();
+	      var mainOffset = $pageMain.offset();
+	      asideTop = mainOffset.top;
+	      asideHeight = $toc.outerHeight() + parseInt($articleAside.css('padding-top'), 10) + parseInt($articleAside.css('padding-bottom'), 10);
+	      asideLeft = mainOffset.left + $pageMain.outerWidth() - $articleAside.outerWidth() - parseInt($pageMain.css('padding-right'), 10);
+	      scrollBottom = footerOffset.top - asideHeight;
+	      asideBottomTop = scrollBottom - mainOffset.top;
+	    }
+
+	    function setAside(force) {
+	      force !== true && (force = false);
+	      var scrollTop = $window.scrollTop();
+	      if (scrollTop >= asideTop && scrollTop <= scrollBottom) {
+	        (!force && lastScrollTop >= asideTop && lastScrollTop <= scrollBottom) ||
+	        $articleAside.addClass('fixed').css({
+	          left: asideLeft + 'px',
+	          top: 0
+	        });
+	      } else if (scrollTop < asideTop) {
+	        (!force && lastScrollTop < asideTop) ||
+	        $articleAside.removeClass('fixed').css({
+	          left: 0,
+	          top: 0
+	        });
+	      } else {
+	        (!force && lastScrollTop > scrollBottom) ||
+	        $articleAside.removeClass('fixed').css({
+	          left: 0,
+	          top: asideBottomTop + 'px'
+	        });
+	      }
+	      lastScrollTop = scrollTop;
+	    }
+	    asideSticky() && (init(), setAside());
+	    $window.on('scroll', function() {
+	      asideSticky() && setAside();
+	    });
+	    $window.on('resize', throttle(function() {
+	      setTocClass();
+	      asideSticky() && (init(), setAside(true));
+	    }, 100));
+	    setTimeout(init, 4000);
+	  }
+	  setTimeout(setAsideTOC, 1000);
+
+	  $toc.toc({
+	    'selectors': 'h1,h2,h3',
+	    'container': '.js-article-content',
+	  });
+	});
+</script></div>
+</div>
+</div><div class="m-page-footer js-page-footer">
+  <div class="main">
+    <aside><div class="follow-me"><ul itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="weili">
+    <link itemprop="url" href="http://localhost:4000/"></ul></div>
+</aside>
+    <footer class="site-info">
+      <p>© Weili's Blog 2018</p>
+      <p><a title="" href="https://github.com/lilywei739/lilywei739.github.io">VIEW IN GITHUB</a></p>
+      <p>Powered by <a title="Jekyll is a simple, blog-aware, static site generator." href="http://jekyllrb.com/">Jekyll</a> & <a
+        title="TeXt is a succinct theme for blogging." href="https://github.com/kitian616/jekyll-TeXt-theme">TeXt Theme</a>.</p>
+    </footer>
+  </div>
+</div>
+<script>
+      $(function() {
+        // display coding language
+        var $articleContent = $('.m-post, .m-page').find('.m-article-content'), $this;
+        $articleContent.children('.highlight').each(function() {
+          $this = $(this);
+          $this.attr('data-lang', $this.find('code').attr('data-lang'));
+        });
+        $articleContent.children('h1, h2, h3, h4, h5, h6').each(function() {
+          $this = $(this);
+          $this.append($('<a class="anchor" aria-hidden="true"></a>').text('#'));
+        });
+        $articleContent.on('click', '.anchor', function(e) {
+          var targetId = $(this).parent().attr('id');
+          scrollAnimateTo($('#' + targetId).offset().top, 400, function() {
+            console.log(666)
+            window.history.replaceState(null, '', window.location.href.split('#')[0] + '#' + targetId);
+          });
+        });
+        function scrollAnimateTo(destination, duration, callback) {
+          var $body = $('html, body'), bodyScrollTop = $body.scrollTop();
+          if(bodyScrollTop === destination) { return; }
+          $body.animate({ scrollTop: destination }, duration, callback);
+        }
+      });
+    </script></body>
+</html>

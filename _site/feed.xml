@@ -1,5 +1,285 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.7.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2018-06-01T19:31:36+08:00</updated><id>http://localhost:4000/</id><title type="html">Weili’s Blog</title><subtitle>Weili's blog
-</subtitle><author><name>weili</name></author><entry><title type="html">彻底理解浏览器的缓存机制</title><link href="http://localhost:4000/2018/05/11/browsers_caching.html" rel="alternate" type="text/html" title="彻底理解浏览器的缓存机制" /><published>2018-05-11T00:00:00+08:00</published><updated>2018-05-11T00:00:00+08:00</updated><id>http://localhost:4000/2018/05/11/browsers_caching</id><content type="html" xml:base="http://localhost:4000/2018/05/11/browsers_caching.html">&lt;h2 id=&quot;定义&quot;&gt;定义&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.7.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2018-06-08T19:03:58+08:00</updated><id>http://localhost:4000/</id><title type="html">Weili’s Blog</title><subtitle>Weili's blog
+</subtitle><author><name>weili</name></author><entry><title type="html">instanceof 和 typeof 的实现原理</title><link href="http://localhost:4000/2018/06/08/instanceof%E5%92%8Ctypeof%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86.html" rel="alternate" type="text/html" title="instanceof 和 typeof 的实现原理" /><published>2018-06-08T00:00:00+08:00</published><updated>2018-06-08T00:00:00+08:00</updated><id>http://localhost:4000/2018/06/08/instanceof%E5%92%8Ctypeof%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86</id><content type="html" xml:base="http://localhost:4000/2018/06/08/instanceof%E5%92%8Ctypeof%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86.html">&lt;p&gt;这周老大分享了有关原生JS的基础内容，这次我也跟风补一下相关知识。&lt;/p&gt;
+
+&lt;h2 id=&quot;typeof-实现原理&quot;&gt;typeof 实现原理&lt;/h2&gt;
+
+&lt;p&gt;typeof 一般被用于判断一个变量的类型，我们可以利用 typeof 来判断number, string, object, boolean, function, undefined,symbol 这七种类型，这种判断能帮助我们搞定一些问题，比如在判断不是 object 类型的数据的时候，typeof能比较清楚的告诉我们具体是哪一类的类型。但是，很遗憾的一点是，typeof 在判断一个 object的数据的时候只能告诉我们这个数据是 object, 而不能细致的具体到是哪一种 object, 比如&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;let s = new String('abc');
+typeof s === 'object'// true
+s instanceof String // true
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;要想判断一个数据具体是哪一种 object 的时候，我们需要利用 instanceof 这个操作符来判断，这个我们后面会说到。&lt;/p&gt;
+
+&lt;p&gt;来谈谈关于 typeof 的原理吧，我们可以先想一个很有意思的问题，js 在底层是怎么存储数据的类型信息呢？或者说，一个 js 的变量，在它的底层实现中，它的类型信息是怎么实现的呢？&lt;/p&gt;
+
+&lt;p&gt;其实，js 在底层存储变量的时候，会在变量的机器码的低位1-3位存储其类型信息&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;000：对象&lt;/li&gt;
+  &lt;li&gt;010：浮点数&lt;/li&gt;
+  &lt;li&gt;100：字符串&lt;/li&gt;
+  &lt;li&gt;110：布尔&lt;/li&gt;
+  &lt;li&gt;1：整数&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;对于 undefined 和 null 来说，这两个值的信息存储是有点特殊的。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;null：所有机器码均为0&lt;/li&gt;
+  &lt;li&gt;undefined：用 −2^30 整数来表示&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;所以，typeof 在判断 null 的时候就出现问题了，由于 null 的所有机器码均为0，因此直接被当做了对象来看待。&lt;/p&gt;
+
+&lt;p&gt;然而用 instanceof 来判断的话&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;null instanceof null // TypeError: Right-hand side of 'instanceof' is not an object
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;null 直接被判断为不是 object，这也是 JavaScript 的历史遗留bug，可以参考typeof。&lt;/p&gt;
+
+&lt;p&gt;因此在用 typeof 来判断变量类型的时候，我们需要注意，最好是用 typeof 来判断基本数据类型（包括symbol），避免对 null 的判断。&lt;/p&gt;
+
+&lt;p&gt;还有一个不错的判断类型的方法，就是Object.prototype.toString，我们可以利用这个方法来对一个变量的类型来进行比较准确的判断&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Object.prototype.toString.call(1) // &quot;[object Number]&quot;
+Object.prototype.toString.call('hi') // &quot;[object String]&quot;
+Object.prototype.toString.call({a:'hi'}) // &quot;[object Object]&quot;
+Object.prototype.toString.call([1,'a']) // &quot;[object Array]&quot;
+Object.prototype.toString.call(true) // &quot;[object Boolean]&quot;
+Object.prototype.toString.call(() =&amp;gt; {}) // &quot;[object Function]&quot;
+Object.prototype.toString.call(null) // &quot;[object Null]&quot;
+Object.prototype.toString.call(undefined) // &quot;[object Undefined]&quot;
+Object.prototype.toString.call(Symbol(1)) // &quot;[object Symbol]&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;instanceof-操作符的实现原理&quot;&gt;instanceof 操作符的实现原理&lt;/h2&gt;
+
+&lt;p&gt;之前我们提到了 instanceof 来判断对象的具体类型，其实 instanceof 主要的作用就是判断一个实例是否属于某种类型&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;let person = function () {
+}
+let nicole = new person()
+nicole instanceof person // true
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;当然，instanceof 也可以判断一个实例是否是其父类型或者祖先类型的实例。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;let person = function () { }
+let programmer = function () { }
+programmer.prototype = new person()
+let nicole = new programmer()
+nicole instanceof person // true
+nicole instanceof programmer // true
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;这是 instanceof 的用法，但是 instanceof 的原理是什么呢？根据 ECMAScript 语言规范，我梳理了一下大概的思路，然后整理了一段代码如下&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function new_instance_of(leftVaule, rightVaule) { 
+    let rightProto = rightVaule.prototype; // 取右表达式的 prototype 值
+    leftVaule = leftVaule.__proto__; // 取左表达式的__proto__值
+    while (true) {
+        if (leftVaule === null) {
+            return false;    
+        }
+        if (leftVaule === rightProto) {
+            return true;    
+        } 
+        leftVaule = leftVaule.__proto__ 
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;其实 instanceof 主要的实现原理就是只要右边变量的 prototype 在左边变量的原型链上即可。因此，instanceof 在查找的过程中会遍历左边变量的原型链，直到找到右边变量的 prototype，如果查找失败，则会返回 false，告诉我们左边变量并非是右边变量的实例。&lt;/p&gt;
+
+&lt;p&gt;看几个很有趣的例子&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function Foo() {
+}
+Object instanceof Object // true
+Function instanceof Function // true
+Function instanceof Object // true
+Foo instanceof Foo // false
+Foo instanceof Object // true
+Foo instanceof Function // true
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;要想全部理解 instanceof 的原理，除了我们刚刚提到的实现原理，我们还需要知道 JavaScript 的原型继承原理。&lt;/p&gt;
+
+&lt;p&gt;关于原型继承的原理，我简单用一张图来表示&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20180608/20180608-1.jpg&quot; alt=&quot;图&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;每个 JavaScript 对象均有一个隐式的 &lt;strong&gt;proto&lt;/strong&gt; 原型属性，而显式的原型属性是 prototype，只有 Object.prototype.&lt;strong&gt;proto&lt;/strong&gt; 属性在未修改的情况下为 null 值。根据图上的原理，我们来梳理上面提到的几个有趣的 instanceof 使用的例子。&lt;/p&gt;
+
+&lt;p&gt;Object instanceof Object&lt;/p&gt;
+
+&lt;p&gt;由图可知，Object 的 prototype 属性是 Object.prototype, 而由于 Object 本身是一个函数，由 Function 所创建，所以 Object.&lt;strong&gt;proto&lt;/strong&gt; 的值是 Function.prototype，而 Function.prototype 的 &lt;strong&gt;proto&lt;/strong&gt; 属性是 Object.prototype，所以我们可以判断出，Object instanceof Object 的结果是 true 。用代码简单的表示一下&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;leftValue = Object.__proto__ = Function.prototype;
+rightValue = Object.prototype;
+// 第一次判断
+leftValue != rightValue
+leftValue = Function.prototype.__proto__ = Object.prototype
+// 第二次判断
+leftValue === rightValue
+// 返回 true
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Function instanceof Function 和 Function instanceof Object 的运行过程与 Object instanceof Object 类似，故不再详说。&lt;/p&gt;
+
+&lt;p&gt;Foo instanceof Foo&lt;/p&gt;
+
+&lt;p&gt;Foo 函数的 prototype 属性是 Foo.prototype，而 Foo 的 &lt;strong&gt;proto&lt;/strong&gt; 属性是 Function.prototype，由图可知，Foo 的原型链上并没有 Foo.prototype ，因此 Foo instanceof Foo 也就返回 false 。&lt;/p&gt;
+
+&lt;p&gt;我们用代码简单的表示一下&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;leftValue = Foo, rightValue = Foo
+leftValue = Foo.__proto = Function.prototype
+rightValue = Foo.prototype
+// 第一次判断
+leftValue != rightValue
+leftValue = Function.prototype.__proto__ = Object.prototype
+// 第二次判断
+leftValue != rightValue
+leftValue = Object.prototype = null
+// 第三次判断
+leftValue === null
+// 返回 false
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Foo instanceof Object&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;leftValue = Foo, rightValue = Object
+leftValue = Foo.__proto__ = Function.prototype
+rightValue = Object.prototype
+// 第一次判断
+leftValue != rightValue
+leftValue = Function.prototype.__proto__ = Object.prototype
+// 第二次判断
+leftValue === rightValue
+// 返回 true 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Foo instanceof Function&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;leftValue = Foo, rightValue = Function
+leftValue = Foo.__proto__ = Function.prototype
+rightValue = Function.prototype
+// 第一次判断
+leftValue === rightValue
+// 返回 true 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;简单来说，使用 typeof 来判断基本数据类型是 ok 的，不过需要注意当用 typeof 来判断 null 类型时的问题，如果想要判断一个对象的具体类型可以考虑用 instanceof，但是 instanceof 也可能判断不准确，比如一个数组，他可以被 instanceof 判断为 Object。所以我们要想比较准确的判断对象实例的类型时，可以采取 Object.prototype.toString.call 方法。&lt;/p&gt;</content><author><name>weili</name></author><category term="JS" /><summary type="html">这周老大分享了有关原生JS的基础内容，这次我也跟风补一下相关知识。 typeof 实现原理 typeof 一般被用于判断一个变量的类型，我们可以利用 typeof 来判断number, string, object, boolean, function, undefined,symbol 这七种类型，这种判断能帮助我们搞定一些问题，比如在判断不是 object 类型的数据的时候，typeof能比较清楚的告诉我们具体是哪一类的类型。但是，很遗憾的一点是，typeof 在判断一个 object的数据的时候只能告诉我们这个数据是 object, 而不能细致的具体到是哪一种 object, 比如 let s = new String('abc'); typeof s === 'object'// true s instanceof String // true 要想判断一个数据具体是哪一种 object 的时候，我们需要利用 instanceof 这个操作符来判断，这个我们后面会说到。 来谈谈关于 typeof 的原理吧，我们可以先想一个很有意思的问题，js 在底层是怎么存储数据的类型信息呢？或者说，一个 js 的变量，在它的底层实现中，它的类型信息是怎么实现的呢？ 其实，js 在底层存储变量的时候，会在变量的机器码的低位1-3位存储其类型信息 000：对象 010：浮点数 100：字符串 110：布尔 1：整数 对于 undefined 和 null 来说，这两个值的信息存储是有点特殊的。 null：所有机器码均为0 undefined：用 −2^30 整数来表示 所以，typeof 在判断 null 的时候就出现问题了，由于 null 的所有机器码均为0，因此直接被当做了对象来看待。 然而用 instanceof 来判断的话 null instanceof null // TypeError: Right-hand side of 'instanceof' is not an object null 直接被判断为不是 object，这也是 JavaScript 的历史遗留bug，可以参考typeof。 因此在用 typeof 来判断变量类型的时候，我们需要注意，最好是用 typeof 来判断基本数据类型（包括symbol），避免对 null 的判断。 还有一个不错的判断类型的方法，就是Object.prototype.toString，我们可以利用这个方法来对一个变量的类型来进行比较准确的判断 Object.prototype.toString.call(1) // &quot;[object Number]&quot; Object.prototype.toString.call('hi') // &quot;[object String]&quot; Object.prototype.toString.call({a:'hi'}) // &quot;[object Object]&quot; Object.prototype.toString.call([1,'a']) // &quot;[object Array]&quot; Object.prototype.toString.call(true) // &quot;[object Boolean]&quot; Object.prototype.toString.call(() =&amp;gt; {}) // &quot;[object Function]&quot; Object.prototype.toString.call(null) // &quot;[object Null]&quot; Object.prototype.toString.call(undefined) // &quot;[object Undefined]&quot; Object.prototype.toString.call(Symbol(1)) // &quot;[object Symbol]&quot; instanceof 操作符的实现原理 之前我们提到了 instanceof 来判断对象的具体类型，其实 instanceof 主要的作用就是判断一个实例是否属于某种类型 let person = function () { } let nicole = new person() nicole instanceof person // true 当然，instanceof 也可以判断一个实例是否是其父类型或者祖先类型的实例。 let person = function () { } let programmer = function () { } programmer.prototype = new person() let nicole = new programmer() nicole instanceof person // true nicole instanceof programmer // true 这是 instanceof 的用法，但是 instanceof 的原理是什么呢？根据 ECMAScript 语言规范，我梳理了一下大概的思路，然后整理了一段代码如下 function new_instance_of(leftVaule, rightVaule) { let rightProto = rightVaule.prototype; // 取右表达式的 prototype 值 leftVaule = leftVaule.__proto__; // 取左表达式的__proto__值 while (true) { if (leftVaule === null) { return false; } if (leftVaule === rightProto) { return true; } leftVaule = leftVaule.__proto__ } } 其实 instanceof 主要的实现原理就是只要右边变量的 prototype 在左边变量的原型链上即可。因此，instanceof 在查找的过程中会遍历左边变量的原型链，直到找到右边变量的 prototype，如果查找失败，则会返回 false，告诉我们左边变量并非是右边变量的实例。 看几个很有趣的例子 function Foo() { } Object instanceof Object // true Function instanceof Function // true Function instanceof Object // true Foo instanceof Foo // false Foo instanceof Object // true Foo instanceof Function // true 要想全部理解 instanceof 的原理，除了我们刚刚提到的实现原理，我们还需要知道 JavaScript 的原型继承原理。 关于原型继承的原理，我简单用一张图来表示 每个 JavaScript 对象均有一个隐式的 proto 原型属性，而显式的原型属性是 prototype，只有 Object.prototype.proto 属性在未修改的情况下为 null 值。根据图上的原理，我们来梳理上面提到的几个有趣的 instanceof 使用的例子。 Object instanceof Object 由图可知，Object 的 prototype 属性是 Object.prototype, 而由于 Object 本身是一个函数，由 Function 所创建，所以 Object.proto 的值是 Function.prototype，而 Function.prototype 的 proto 属性是 Object.prototype，所以我们可以判断出，Object instanceof Object 的结果是 true 。用代码简单的表示一下 leftValue = Object.__proto__ = Function.prototype; rightValue = Object.prototype; // 第一次判断 leftValue != rightValue leftValue = Function.prototype.__proto__ = Object.prototype // 第二次判断 leftValue === rightValue // 返回 true Function instanceof Function 和 Function instanceof Object 的运行过程与 Object instanceof Object 类似，故不再详说。 Foo instanceof Foo Foo 函数的 prototype 属性是 Foo.prototype，而 Foo 的 proto 属性是 Function.prototype，由图可知，Foo 的原型链上并没有 Foo.prototype ，因此 Foo instanceof Foo 也就返回 false 。 我们用代码简单的表示一下 leftValue = Foo, rightValue = Foo leftValue = Foo.__proto = Function.prototype rightValue = Foo.prototype // 第一次判断 leftValue != rightValue leftValue = Function.prototype.__proto__ = Object.prototype // 第二次判断 leftValue != rightValue leftValue = Object.prototype = null // 第三次判断 leftValue === null // 返回 false Foo instanceof Object leftValue = Foo, rightValue = Object leftValue = Foo.__proto__ = Function.prototype rightValue = Object.prototype // 第一次判断 leftValue != rightValue leftValue = Function.prototype.__proto__ = Object.prototype // 第二次判断 leftValue === rightValue // 返回 true Foo instanceof Function leftValue = Foo, rightValue = Function leftValue = Foo.__proto__ = Function.prototype rightValue = Function.prototype // 第一次判断 leftValue === rightValue // 返回 true 简单来说，使用 typeof 来判断基本数据类型是 ok 的，不过需要注意当用 typeof 来判断 null 类型时的问题，如果想要判断一个对象的具体类型可以考虑用 instanceof，但是 instanceof 也可能判断不准确，比如一个数组，他可以被 instanceof 判断为 Object。所以我们要想比较准确的判断对象实例的类型时，可以采取 Object.prototype.toString.call 方法。</summary></entry><entry><title type="html">React 组件的性能优化</title><link href="http://localhost:4000/2018/06/02/react_performance.html" rel="alternate" type="text/html" title="React 组件的性能优化" /><published>2018-06-02T00:00:00+08:00</published><updated>2018-06-02T00:00:00+08:00</updated><id>http://localhost:4000/2018/06/02/react_performance</id><content type="html" xml:base="http://localhost:4000/2018/06/02/react_performance.html">&lt;p&gt;虽然react已经提供了很好的渲染性能，但要让程序发挥到极致，还需要进一步了解性能优化的方法，本章节主要从三个方面讲解：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;单个react组件的性能优化&lt;/li&gt;
+  &lt;li&gt;多个react组件的性能优化&lt;/li&gt;
+  &lt;li&gt;用reselect提高数据获取性能&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;单个react组件的性能优化&quot;&gt;单个react组件的性能优化&lt;/h2&gt;
+
+&lt;p&gt;react渲染之所以快，是因为利用Virtual DOM来计算出DOM树的最少修改，只渲染修改的部分，而不是所有。&lt;/p&gt;
+
+&lt;p&gt;如果能够在开始计算Virtual DOM之前就可以判断结果不会变化，那干脆不要再去计算和比较，速度就会更快。&lt;/p&gt;
+
+&lt;h3 id=&quot;借助react-perf工具发现浪费的渲染时间&quot;&gt;借助react perf工具，发现浪费的渲染时间&lt;/h3&gt;
+
+&lt;p&gt;react perf 这个工具的安装和使用这里不再讲述。&lt;/p&gt;
+
+&lt;p&gt;这个工具记录在点击start和stop按钮之间的所有react的渲染，如果有组件计算Virtual DOM之后，和之前的Virtual DOM相同，就认为是一次浪费。&lt;/p&gt;
+
+&lt;p&gt;这里所说的浪费是计算Virtual DOM的浪费，并不是访问DOM的浪费。&lt;/p&gt;
+
+&lt;p&gt;可以借助这个工具清晰的知道哪个组件被无意义的渲染了，达到优化性能的目的。&lt;/p&gt;
+
+&lt;h3 id=&quot;性能优化的时机&quot;&gt;性能优化的时机&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;过早的优化是万恶之源—–高德纳&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;很多人对这句话有个错误的认识，认为高前辈不让做过早的优化，很显然我们误会老高了，他的全句是这样的&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;“我们应该忘记忽略很小的性能优化，可以说97%的情况下，过早的优化是万恶之源，而我们应该关心对性能影响最关键的那另外3%的代码”—–高德纳&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;前辈的这句话有三个重要的点：&lt;/p&gt;
+
+&lt;p&gt;1、不要把精力放在对整体性能优化提高不大的代码上，而对于性能有关键影响的部分，优化并不嫌早。&lt;/p&gt;
+
+&lt;p&gt;2、所谓过早的优化，是指在没有任何数据体现下开发者对性能优化的猜测，没有可测量的性能指标，完成优化后，也不知道是否达到了预期的结果。&lt;/p&gt;
+
+&lt;p&gt;3、高德纳认为过早的优化是万恶之源，是因为这些优化往往让代码过于复杂和难于维护，但如果早期的优化能够让代码结构更加合理更加容易维护，为什么不呢？&lt;/p&gt;
+
+&lt;h2 id=&quot;多个react组件的性能优化&quot;&gt;多个react组件的性能优化&lt;/h2&gt;
+
+&lt;p&gt;多个组件和单个组件一样，都需要经历组件装载、更新、卸载三个步骤。&lt;/p&gt;
+
+&lt;p&gt;其中装载这个部分没有什么可以性能优化的事情做，卸载部分是会出现组件加载后添加的事件监听等收尾工作，也没有太多的可优化空间。&lt;/p&gt;
+
+&lt;p&gt;重要的放在更新过程。&lt;/p&gt;
+
+&lt;h3 id=&quot;react的调和过程&quot;&gt;react的调和过程&lt;/h3&gt;
+
+&lt;p&gt;什么叫调和？&lt;/p&gt;
+
+&lt;p&gt;就是render后和更新后，生成的这个树，相互比较找不同，这个找不同的过程就叫调和。&lt;/p&gt;
+
+&lt;p&gt;react怎么找不同呢？&lt;/p&gt;
+
+&lt;p&gt;1、先检查两个节点的类型&lt;/p&gt;
+
+&lt;p&gt;这个类型分为两类：一类是dom元素类型，就是div span； 另一类是react组件，也就是利用react库定制的类型。&lt;/p&gt;
+
+&lt;p&gt;1.1  如果不同&lt;/p&gt;
+
+&lt;p&gt;举个例子，组件包裹外层原来是div，更新为span，这个时候，react一看这完全不相同，那后面的子节点也别看了，直接重新构建一份吧，这就造成了性能上面的浪费。&lt;/p&gt;
+
+&lt;p&gt;解决办法：作为开发者尽量不要改动做为包裹层的类型。&lt;/p&gt;
+
+&lt;p&gt;1.2 如果相同&lt;/p&gt;
+
+&lt;p&gt;上面说了类型有两种，如果是dom类型加同，就只对比这个节点的属性和内容，然后更新修改的部分，如下面的代码&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;原来的：
+
+&amp;lt;div style=&amp;gt;hello&amp;lt;/div&amp;gt;
+
+更改后的：
+
+&amp;lt;div style=&amp;gt;hello&amp;lt;/div&amp;gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;DOM节点类型没变，只需要修改它的属性，变动少。&lt;/p&gt;
+
+&lt;p&gt;另外一种类型是react组件类型，它更新时只能根据新节点的props去更新原来的组件，引发这个组件实例的更新过程，按照下面的顺序引发下面的函数：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;shouldComponentUpdate&lt;/li&gt;
+  &lt;li&gt;componentWillReceiveProps&lt;/li&gt;
+  &lt;li&gt;componentWillUpdate&lt;/li&gt;
+  &lt;li&gt;render&lt;/li&gt;
+  &lt;li&gt;componentDidUpdate&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;这个时候就需要合理的使用shouldComonentUpdate函数了，如果没有必要渲染，就返回false。&lt;/p&gt;
+
+&lt;p&gt;好了，对比了根节点之后，会对这个根节点的每一个小节点重复相同的动作，该更新更新，该创建创建。&lt;/p&gt;
+
+&lt;p&gt;2、key的作用&lt;/p&gt;
+
+&lt;p&gt;key就相当于组件的身份证号，标识组件的位置，react可以根据根据key值的有无变化，从而决定是否更新它。&lt;/p&gt;
+
+&lt;p&gt;这个时候注意个问题，在循环一个数组时，不能以数组的下标做为key值定义每个子组件，key值变来变去的无规则也会引起不必要的重新加载或者更新创建。&lt;/p&gt;</content><author><name>weili</name></author><category term="JS" /><category term="前端" /><category term="深入浅出React和Redux读书笔记" /><summary type="html">虽然react已经提供了很好的渲染性能，但要让程序发挥到极致，还需要进一步了解性能优化的方法，本章节主要从三个方面讲解： 单个react组件的性能优化 多个react组件的性能优化 用reselect提高数据获取性能 单个react组件的性能优化 react渲染之所以快，是因为利用Virtual DOM来计算出DOM树的最少修改，只渲染修改的部分，而不是所有。 如果能够在开始计算Virtual DOM之前就可以判断结果不会变化，那干脆不要再去计算和比较，速度就会更快。 借助react perf工具，发现浪费的渲染时间 react perf 这个工具的安装和使用这里不再讲述。 这个工具记录在点击start和stop按钮之间的所有react的渲染，如果有组件计算Virtual DOM之后，和之前的Virtual DOM相同，就认为是一次浪费。 这里所说的浪费是计算Virtual DOM的浪费，并不是访问DOM的浪费。 可以借助这个工具清晰的知道哪个组件被无意义的渲染了，达到优化性能的目的。 性能优化的时机 过早的优化是万恶之源—–高德纳 很多人对这句话有个错误的认识，认为高前辈不让做过早的优化，很显然我们误会老高了，他的全句是这样的 “我们应该忘记忽略很小的性能优化，可以说97%的情况下，过早的优化是万恶之源，而我们应该关心对性能影响最关键的那另外3%的代码”—–高德纳 前辈的这句话有三个重要的点： 1、不要把精力放在对整体性能优化提高不大的代码上，而对于性能有关键影响的部分，优化并不嫌早。 2、所谓过早的优化，是指在没有任何数据体现下开发者对性能优化的猜测，没有可测量的性能指标，完成优化后，也不知道是否达到了预期的结果。 3、高德纳认为过早的优化是万恶之源，是因为这些优化往往让代码过于复杂和难于维护，但如果早期的优化能够让代码结构更加合理更加容易维护，为什么不呢？ 多个react组件的性能优化 多个组件和单个组件一样，都需要经历组件装载、更新、卸载三个步骤。 其中装载这个部分没有什么可以性能优化的事情做，卸载部分是会出现组件加载后添加的事件监听等收尾工作，也没有太多的可优化空间。 重要的放在更新过程。 react的调和过程 什么叫调和？ 就是render后和更新后，生成的这个树，相互比较找不同，这个找不同的过程就叫调和。 react怎么找不同呢？ 1、先检查两个节点的类型 这个类型分为两类：一类是dom元素类型，就是div span； 另一类是react组件，也就是利用react库定制的类型。 1.1 如果不同 举个例子，组件包裹外层原来是div，更新为span，这个时候，react一看这完全不相同，那后面的子节点也别看了，直接重新构建一份吧，这就造成了性能上面的浪费。 解决办法：作为开发者尽量不要改动做为包裹层的类型。 1.2 如果相同 上面说了类型有两种，如果是dom类型加同，就只对比这个节点的属性和内容，然后更新修改的部分，如下面的代码 原来的： &amp;lt;div style=&amp;gt;hello&amp;lt;/div&amp;gt; 更改后的： &amp;lt;div style=&amp;gt;hello&amp;lt;/div&amp;gt; DOM节点类型没变，只需要修改它的属性，变动少。 另外一种类型是react组件类型，它更新时只能根据新节点的props去更新原来的组件，引发这个组件实例的更新过程，按照下面的顺序引发下面的函数： shouldComponentUpdate componentWillReceiveProps componentWillUpdate render componentDidUpdate 这个时候就需要合理的使用shouldComonentUpdate函数了，如果没有必要渲染，就返回false。 好了，对比了根节点之后，会对这个根节点的每一个小节点重复相同的动作，该更新更新，该创建创建。 2、key的作用 key就相当于组件的身份证号，标识组件的位置，react可以根据根据key值的有无变化，从而决定是否更新它。 这个时候注意个问题，在循环一个数组时，不能以数组的下标做为key值定义每个子组件，key值变来变去的无规则也会引起不必要的重新加载或者更新创建。</summary></entry><entry><title type="html">彻底理解浏览器的缓存机制</title><link href="http://localhost:4000/2018/05/11/browsers_caching.html" rel="alternate" type="text/html" title="彻底理解浏览器的缓存机制" /><published>2018-05-11T00:00:00+08:00</published><updated>2018-05-11T00:00:00+08:00</updated><id>http://localhost:4000/2018/05/11/browsers_caching</id><content type="html" xml:base="http://localhost:4000/2018/05/11/browsers_caching.html">&lt;h2 id=&quot;定义&quot;&gt;定义&lt;/h2&gt;
 
 &lt;p&gt;浏览器的缓存机制也就是我们说的HTTP缓存机制，其机制是根据HTTP报文的缓存标识进行的，所以在分析浏览器缓存机制之前，我们先使用图文简单介绍一下HTTP报文，HTTP报文分为两种：&lt;/p&gt;
 
@@ -1489,288 +1769,4 @@ document.write(dKnapsack(capacity, size, value, n));
 0 0 0 4 5 5 5 10 11 11 14 15 16 16 19 21 21 
 0 0 0 4 5 5 5 10 11 13 14 15 17 18 19 21 23 
 23
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>weili</name></author><category term="[&quot;JS&quot;]" /><summary type="html">高级算法–动态规划 动态规则与递归的关系与区别 动态规划有时被认为是一种与递归相反的技术。 递归是从顶部开始将问题分解，通过解决掉所有分解出小问题的方式，来解决整 个问题。 动态规划解决方案从底部开始解决问题，将所有小问题解决掉，然后合并成一个 整体解决方案，从而解决掉整个大问题。 递归去解决问题虽然简洁，但效率不高,许多使用递归去解决的编程问题，可以重写为使用动态规划的技巧去解决 动态规划方案 动态规划方案通常会使用一个数组来建立一张表，用于存放被分解成众多子问题的解。当算法执行完 毕，最终的解将会在这个表中很明显的地方被找到 使用动态规划方案能做点什么？ 计算斐波那契数列 斐波那契数列可以定义为以下序列: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, … 该序列是由前两项数值相加而成的 递归的实现方式： function recurFib(n) { if (n &amp;lt; 2) { return n; } else { return recurFib(n-1) + recurFib(n-2); } } document.write(recurFib(10)); // 显示 55 在这个计算过程当中，有太多值在递归调用中被重新计算,这也是递归方法效率低下的原因。 再看下动态规则的实现方法： function dynFib(n) { var val = []; for (var i = 0; i &amp;lt;= n; ++i) { val[i] = 0; } if (n == 1 || n == 2) { return 1; } else { val[1] = 1; val[2] = 2; for (var i = 3; i &amp;lt;= n; ++i) { val[i] = val[i-1] + val[i-2]; } return val[n-1]; } } 在这个数组 val 中保存了中间结果。如果要计算的斐波那契数是 1 或者 2，那么 if 语 句会返回 1。否则，数值 1 和 2 将被保存在 val 数组中 1 和 2 的位置。循环将会从 3 到输 入的参数之间进行遍历，将数组的每个元素赋值为前两个元素之和，循环结束，数组的最 后一个元素值即为最终计算得到的斐波那契数值，这个数值也将作为函数的返回值。 斐波那契数列在数组 val 中的排列顺序如下: val[0] = 0 val[1] = 1 val[2] = 2 val[3] = 3 val[4] = 5 val[5] = 8 val[6] = 13 寻找最长公共子串 用动态规划去寻找两个字符串的最长公共子串。例如，在单词 “raven”和“havoc”中，最长的公共子串是“av”。 原理： 使用一个二维数组存储两个字符串相同 位置的字符比较结果。初始化时，该数组的每一个元素被设置为 0。每次在这两个数组的 相同位置发现了匹配，就将数组对应行和列的元素加 1，否则保持为 0。按照这种方式，一个变量会持续记录下找到了多少个匹配项。当算法执行完毕时，这个变 量会结合一个索引变量来获得最长公共子串。 function lcs(word1, word2) { var max = 0; var index = 0; var lcsarr = new Array(word1.length + 1); for (var i = 0; i &amp;lt;= word1.length + 1; ++i) { lcsarr[i] = new Array(word2.length + 1); for (var j = 0; j &amp;lt;= word2.length + 1; ++j) { lcsarr[i][j] = 0; } } //上面这一部分初始化了两个变量以及一个二维数组。多数语言对二维数组的声明都很 简单，但在 JavaScript 中需要很费劲地在一个数组中定义另一个数组，这样才能声明一个 二维数组。以下代码片段中的最后一个 for 循环会对这个数组进行初始化， for (var i = 0; i &amp;lt;= word1.length; ++i) { for (var j = 0; j &amp;lt;= word2.length; ++j) { if (i == 0 || j == 0) { lcsarr[i][j] = 0; } else { if (word1[i - 1] == word2[j - 1]) { lcsarr[i][j] = lcsarr[i - 1][j - 1] + 1; } else { lcsarr[i][j] = 0; } } if (max &amp;lt; lcsarr[i][j]) { max = lcsarr[i][j]; index = i; } } } //这一部分构建了用于保存字符匹配记录的表。数组的第一个元素总是被设置为 0。如果两 个字符串相应位置的字符进行了匹配，当前数组元素的值将被设置为前一次循环中数组元 素保存的值加 1。比如，如果两个字符串 &quot;back&quot; 和 &quot;cace&quot;，当算法运行到第二个字符处 时，那么数值 1 将被保存到当前元素中，因为前一个元素并不匹配，0 被保存在那个元素 中(0+1)。接下来算法移动到下一个位置，由于此时两个字符仍被匹配，当前数组元素将 被设置为 2(1+1)。由于两个字符串的最后一个字符不匹配，所以最长公共子串的长度是 2。最后，如果变量 max 的值比现在存储在数组中的当前元素要小，max 的值将被赋值给这 个元素，变量 index 的值将被设置为 i 的当前值。这两个变量将在函数的最后一部分用于 确定从哪里开始获取最长公共子串。 var str = &quot;&quot;; if (max == 0) { return &quot;&quot;; } else { for (var i = index - max; i &amp;lt;= max; ++i) { str += word2[i]; } return str; } //这一部分代码用于确认从哪里开始构建这个最长公共子串。以变量 index 减去变量 max 的差值作为起始点，以变量 max 的值作为终点: } 背包问题:递归解决方案 function max(a, b) { return (a &amp;gt; b) ? a : b; } function knapsack(capacity, size, value, n) { if (n == 0 || capacity == 0) { return 0; } if (size[n - 1] &amp;gt; capacity) { return knapsack(capacity, size, value, n - 1); } else { return max(value[n - 1] + knapsack(capacity - size[n - 1], size, value, n - 1), knapsack(capacity, size, value, n - 1)); } } var value = [4, 5, 10, 11, 13]; var size = [3, 4, 7, 8, 9]; var capacity = 16; var n = 5; document.write(knapsack(capacity, size, value, n)); //结果：23 背包问题:动态规划方案 function max(a, b) { return (a &amp;gt; b) ? a : b; } function dKnapsack(capacity, size, value, n) { var K = []; for (var i = 0; i &amp;lt;= capacity + 1; i++) { K[i] = []; } for (var i = 0; i &amp;lt;= n; i++) { for (var w = 0; w &amp;lt;= capacity; w++) { if (i == 0 || w == 0) { K[i][w] = 0; } else if (size[i - 1] &amp;lt;= w) { K[i][w] = max(value[i - 1] + K[i-1][w-size[i-1]], K[i-1][w]); } else { K[i][w] = K[i - 1][w]; } document.write(K[i][w] + &quot; &quot;); } } return K[n][capacity]; } var value = [4, 5, 10, 11, 13]; var size = [3, 4, 7, 8, 9]; var capacity = 16; var n = 5; document.write(dKnapsack(capacity, size, value, n)); 结果： 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 4 4 4 4 4 4 4 4 4 4 4 4 4 4 0 0 0 4 5 5 5 9 9 9 9 9 9 9 9 9 9 0 0 0 4 5 5 5 10 10 10 14 15 15 15 19 19 19 0 0 0 4 5 5 5 10 11 11 14 15 16 16 19 21 21 0 0 0 4 5 5 5 10 11 13 14 15 17 18 19 21 23 23</summary></entry><entry><title type="html">JS基础–检索算法</title><link href="http://localhost:4000/js/2018/03/02/jiansuo-1.html" rel="alternate" type="text/html" title="JS基础--检索算法" /><published>2018-03-02T00:00:00+08:00</published><updated>2018-03-02T00:00:00+08:00</updated><id>http://localhost:4000/js/2018/03/02/jiansuo-1</id><content type="html" xml:base="http://localhost:4000/js/2018/03/02/jiansuo-1.html">&lt;h1 id=&quot;检索算法&quot;&gt;检索算法&lt;/h1&gt;
-
-&lt;p&gt;本章介绍了数据检索的一个方面: 如何在列表中查找特定的值。&lt;/p&gt;
-
-&lt;p&gt;在列表中查找数据有两种方式: &lt;strong&gt;顺序查找&lt;/strong&gt;和&lt;strong&gt;二分查找&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;顺序查找适用于元素随机排列的列表;&lt;/li&gt;
-  &lt;li&gt;二分查找适用于元素已排序的列表。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;二分查找效率更高，但是你必须在进行查找之前 花费额外的时间将列表中的元素排序。&lt;/p&gt;
-
-&lt;h2 id=&quot;顺序查找&quot;&gt;顺序查找&lt;/h2&gt;
-
-&lt;p&gt;对于查找数据来说，最简单的方法就是从列表的第一个元素开始对列表元素逐个进行判 断，直到找到了想要的结果，或者直到列表结尾也没有找到。这种方法称为顺序查找，有 时也被称为线性查找。它属于暴力查找技巧的一种，在执行查找时可能会访问到数据结构 里的所有元素。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;顺序查找的实现：&lt;/strong&gt;
-只要从列表的第一个元素开始循环，然后逐个与要查找的数据进 行比较。如果匹配到了，则结束查找。如果到了列表的结尾也没有匹配到，那么这个数据 就不存在于这个列表中。&lt;/p&gt;
-
-&lt;p&gt;代码实现：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function seqSearch(arr, data) {
-    for (var i = 0; i &amp;lt; arr.length; ++i) {
-        if (arr[i] == data) {
-            return i;
-        }
-    }
-    return -1;
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;如果在数组中找到了参数 data，返回所在的位置，如果没有找到要查找的数据，函数返回-1。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;seqSearch() 函数的执行速度比内置的 Array.indexof() 方法慢，这里仅用来演示 顺序查找是如何运行的。&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;查找最小值和最大值&quot;&gt;查找最小值和最大值&lt;/h3&gt;
-
-&lt;h4 id=&quot;查找最小值&quot;&gt;查找最小值&lt;/h4&gt;
-
-&lt;p&gt;首先看看如何在数组中查找最小值，算法如下。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;将数组第一个元素赋值给一个变量，把这个变量作为最小值。&lt;/li&gt;
-  &lt;li&gt;开始遍历数组，从第二个元素开始依次同当前最小值进行比较。&lt;/li&gt;
-  &lt;li&gt;如果当前元素数值小于当前最小值，则将当前元素设为新的最小值。&lt;/li&gt;
-  &lt;li&gt;移动到下一个元素，并且重复步骤 3。&lt;/li&gt;
-  &lt;li&gt;当程序结束时，这个变量中存储的就是最小值。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;代码实现如下：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function findMin(arr) {
-  var min = arr[0];
-  for (var i = 1; i &amp;lt; arr.length; ++i) {
-     if (arr[i] &amp;lt; min) {
-        min = arr[i];
-     } 
-  }
-  return min; 
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;需要注意的关键部分，由于我们假设数组的第一个元素就是当前的最小值，所以这个函数 会从数组的第二个元素开始进行处理。&lt;/p&gt;
-
-&lt;h4 id=&quot;查找最大值&quot;&gt;查找最大值&lt;/h4&gt;
-
-&lt;p&gt;查找最大值和查找最小值的原理是一样的，只不过是先把数组的第一个元素设置为最大值。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function findMax(arr) {
-    var max = arr[0];
-    for (var i = 1; i &amp;lt; arr.length; ++i) {
-       if (arr[i] &amp;gt; max) {
-          max = arr[i];
-       } 
-    }
-    return max; 
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;实例化个例子：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var nums = [];
-for (var i = 0; i &amp;lt; 100; ++i) {
-  nums[i] = Math.floor(Math.random() * 101);
-}
-
-document.getElementById('box').innerHTML = nums;
-
-var minValue = this.findMin(nums); 
-var maxValue = this.findMax(nums); 
-
-document.write(&quot;最小值是:&quot; + minValue + '&amp;lt;br /&amp;gt;');
-document.write(&quot;最小值是:&quot; + maxValue);
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://127.0.0.1:4000/img/20180222/20180222-1.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;使用自组织数据&quot;&gt;使用自组织数据&lt;/h3&gt;
-
-&lt;p&gt;对于未排序的数据集来说，当被查找的数据位于数据集的起始位置时，查找是最快、最成功的。通过将成功找到的元素置于数据集的起始位置，可以保证在以后的操作中该元素能被更快地查找到。&lt;/p&gt;
-
-&lt;p&gt;通过将频繁查找到的元素置于数据集的起始位置来最小化查找次数，这就叫做自组织数据。&lt;/p&gt;
-
-&lt;p&gt;由于对数据的查找遵循“80-20 原则”，因此将你的数据转化为自组织的形式是很有意义 的。&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;“80-20 原则”是指对某一数据集执行的 80% 的查找操作都是对其中 20% 的数据元素 进行查找。自组织的方式最终会把这 20% 的数据置于数据集的起始位置，这样便可以通过 一个简单的顺序查找快速找到它们。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;举个例子，理解对 seqSearch() 函数进行改动以加入自组织方式&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var numbers = [5,1,7,4,2,10,9,3,6,8];
-
-//改动后的seqSearch() 函数
-function seqSearch(arr,data) {
-    for(var i = 0; i &amp;lt; arr.length; ++i) {
-        if(arr[i] === data) {
-            if( i &amp;gt; 0) {
-                swap(arr,i,i-1);
-            }
-            return true;
-        }
-    }
-    return false;
-}
- 
-//swap() 函数来对这次找到的数据与当前存储在上一个位置的数据进行互换。
-function swap(arr,index,index1) {
-    temp = arr[index];
-    arr[index] = arr[index1];
-    arr[index1] = temp;
-}
-
-for (var i = 0; i &amp;lt;= 5; i++) {
-  seqSearch(numbers, 4);
-  console.log(numbers);
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://127.0.0.1:4000/img/20180222/20180222-2.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;这种写法同时可以保证已经在数据集前面的元素不会被越移越远。&lt;/p&gt;
-
-&lt;h2 id=&quot;二分查找&quot;&gt;二分查找&lt;/h2&gt;
-
-&lt;p&gt;如果你要查找的数据是有序的，二分查找算法比顺序查找算法更高效。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var nums = [0,5,46,85,102,212,503];  //必须先排序好
- 
-function binSearch(arr,data) {
-    var upperBound = arr.length - 1;
-        lowerBound = 0;
-    while(lowerBound &amp;lt;= upperBound) {
-        var mid = Math.floor((upperBound + lowerBound) / 2);
-        console.log('此时的中点：' + mid);
-        if(arr[mid] &amp;lt; data) {
-            lowerBound = mid + 1;
-        } else if(arr[mid] &amp;gt; data) {
-            upperBound = mid - 1;
-        } else {
-            return mid;
-        }
-    }
-    return -1;
-}
-
-console.log(binSearch(nums,46));
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://127.0.0.1:4000/img/20180222/20180222-3.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;计算重复次数&quot;&gt;计算重复次数&lt;/h3&gt;
-
-&lt;p&gt;count函数一开始调用 binSearch() 函数来查找指定的值。如果在数据集中能找到这个值， 那么这个函数将开始通过两个循环来统计这个值出现的次数。第一个循环向下遍历数组， 统计找到的值出现的次数，当下一个值与要查找的值不匹配时则停止计数。第二个循环向 上遍历数组，统计找到的值出现的次数，当下一个值与要查找的值不匹配时则停止计数。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function count(arr,data) {
-    var count = 0,
-        position = binSearch(arr,data);
-        if(position &amp;gt; -1) {
-            ++count;
-            for(var i = position-1; i &amp;gt; 0; --i) {
-                if(arr[i] === data) {
-                    ++count;
-                } else {
-                    break;
-                }
-            }
-            for(var i = position + 1; i &amp;lt; arr.length; ++i) {
-                if(arr[i] === data) {
-                    ++count;
-                } else {
-                    break;
-                }
-            }
-        }
-        return count;
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>weili</name></author><category term="[&quot;JS&quot;]" /><summary type="html">检索算法 本章介绍了数据检索的一个方面: 如何在列表中查找特定的值。 在列表中查找数据有两种方式: 顺序查找和二分查找。 顺序查找适用于元素随机排列的列表; 二分查找适用于元素已排序的列表。 二分查找效率更高，但是你必须在进行查找之前 花费额外的时间将列表中的元素排序。 顺序查找 对于查找数据来说，最简单的方法就是从列表的第一个元素开始对列表元素逐个进行判 断，直到找到了想要的结果，或者直到列表结尾也没有找到。这种方法称为顺序查找，有 时也被称为线性查找。它属于暴力查找技巧的一种，在执行查找时可能会访问到数据结构 里的所有元素。 顺序查找的实现： 只要从列表的第一个元素开始循环，然后逐个与要查找的数据进 行比较。如果匹配到了，则结束查找。如果到了列表的结尾也没有匹配到，那么这个数据 就不存在于这个列表中。 代码实现： function seqSearch(arr, data) { for (var i = 0; i &amp;lt; arr.length; ++i) { if (arr[i] == data) { return i; } } return -1; } 如果在数组中找到了参数 data，返回所在的位置，如果没有找到要查找的数据，函数返回-1。 seqSearch() 函数的执行速度比内置的 Array.indexof() 方法慢，这里仅用来演示 顺序查找是如何运行的。 查找最小值和最大值 查找最小值 首先看看如何在数组中查找最小值，算法如下。 将数组第一个元素赋值给一个变量，把这个变量作为最小值。 开始遍历数组，从第二个元素开始依次同当前最小值进行比较。 如果当前元素数值小于当前最小值，则将当前元素设为新的最小值。 移动到下一个元素，并且重复步骤 3。 当程序结束时，这个变量中存储的就是最小值。 代码实现如下： function findMin(arr) { var min = arr[0]; for (var i = 1; i &amp;lt; arr.length; ++i) { if (arr[i] &amp;lt; min) { min = arr[i]; } } return min; } 需要注意的关键部分，由于我们假设数组的第一个元素就是当前的最小值，所以这个函数 会从数组的第二个元素开始进行处理。 查找最大值 查找最大值和查找最小值的原理是一样的，只不过是先把数组的第一个元素设置为最大值。 function findMax(arr) { var max = arr[0]; for (var i = 1; i &amp;lt; arr.length; ++i) { if (arr[i] &amp;gt; max) { max = arr[i]; } } return max; } 实例化个例子： var nums = []; for (var i = 0; i &amp;lt; 100; ++i) { nums[i] = Math.floor(Math.random() * 101); } document.getElementById('box').innerHTML = nums; var minValue = this.findMin(nums); var maxValue = this.findMax(nums); document.write(&quot;最小值是:&quot; + minValue + '&amp;lt;br /&amp;gt;'); document.write(&quot;最小值是:&quot; + maxValue); 使用自组织数据 对于未排序的数据集来说，当被查找的数据位于数据集的起始位置时，查找是最快、最成功的。通过将成功找到的元素置于数据集的起始位置，可以保证在以后的操作中该元素能被更快地查找到。 通过将频繁查找到的元素置于数据集的起始位置来最小化查找次数，这就叫做自组织数据。 由于对数据的查找遵循“80-20 原则”，因此将你的数据转化为自组织的形式是很有意义 的。 “80-20 原则”是指对某一数据集执行的 80% 的查找操作都是对其中 20% 的数据元素 进行查找。自组织的方式最终会把这 20% 的数据置于数据集的起始位置，这样便可以通过 一个简单的顺序查找快速找到它们。 举个例子，理解对 seqSearch() 函数进行改动以加入自组织方式 var numbers = [5,1,7,4,2,10,9,3,6,8]; //改动后的seqSearch() 函数 function seqSearch(arr,data) { for(var i = 0; i &amp;lt; arr.length; ++i) { if(arr[i] === data) { if( i &amp;gt; 0) { swap(arr,i,i-1); } return true; } } return false; } //swap() 函数来对这次找到的数据与当前存储在上一个位置的数据进行互换。 function swap(arr,index,index1) { temp = arr[index]; arr[index] = arr[index1]; arr[index1] = temp; } for (var i = 0; i &amp;lt;= 5; i++) { seqSearch(numbers, 4); console.log(numbers); } 这种写法同时可以保证已经在数据集前面的元素不会被越移越远。 二分查找 如果你要查找的数据是有序的，二分查找算法比顺序查找算法更高效。 var nums = [0,5,46,85,102,212,503]; //必须先排序好 function binSearch(arr,data) { var upperBound = arr.length - 1; lowerBound = 0; while(lowerBound &amp;lt;= upperBound) { var mid = Math.floor((upperBound + lowerBound) / 2); console.log('此时的中点：' + mid); if(arr[mid] &amp;lt; data) { lowerBound = mid + 1; } else if(arr[mid] &amp;gt; data) { upperBound = mid - 1; } else { return mid; } } return -1; } console.log(binSearch(nums,46)); 计算重复次数 count函数一开始调用 binSearch() 函数来查找指定的值。如果在数据集中能找到这个值， 那么这个函数将开始通过两个循环来统计这个值出现的次数。第一个循环向下遍历数组， 统计找到的值出现的次数，当下一个值与要查找的值不匹配时则停止计数。第二个循环向 上遍历数组，统计找到的值出现的次数，当下一个值与要查找的值不匹配时则停止计数。 function count(arr,data) { var count = 0, position = binSearch(arr,data); if(position &amp;gt; -1) { ++count; for(var i = position-1; i &amp;gt; 0; --i) { if(arr[i] === data) { ++count; } else { break; } } for(var i = position + 1; i &amp;lt; arr.length; ++i) { if(arr[i] === data) { ++count; } else { break; } } } return count; }</summary></entry><entry><title type="html">JS基础–高级排序(三)</title><link href="http://localhost:4000/js/2018/02/11/senior_Sort_3.html" rel="alternate" type="text/html" title="JS基础--高级排序(三)" /><published>2018-02-11T00:00:00+08:00</published><updated>2018-02-11T00:00:00+08:00</updated><id>http://localhost:4000/js/2018/02/11/senior_Sort_3</id><content type="html" xml:base="http://localhost:4000/js/2018/02/11/senior_Sort_3.html">&lt;h1 id=&quot;高级排序快速排序&quot;&gt;高级排序—快速排序&lt;/h1&gt;
-
-&lt;p&gt;快速排序是处理大数据集最快的排序算法之一。&lt;/p&gt;
-
-&lt;p&gt;它是一种分而治之的算法，通过递归的方式将数据依次分解为包含较小元素和较大元素的不同子序列。该算法不断重复这个步骤直到所有数据都是有序的。&lt;/p&gt;
-
-&lt;h3 id=&quot;快速排序&quot;&gt;快速排序&lt;/h3&gt;
-
-&lt;p&gt;这个算法首先要在列表中选择一个元素作为基准值(pivot)。数据排序围绕基准值进行， 将列表中小于基准值的元素移到数组的底部，将大于基准值的元素移到数组的顶部。&lt;/p&gt;
-
-&lt;h4 id=&quot;自底向上的归并排序&quot;&gt;自底向上的归并排序&lt;/h4&gt;
-
-&lt;p&gt;采用非递归或者迭代版本的归并排序是一个自底向上的过程。这个算法首先将数据集分解 为一组只有一个元素的数组。然后通过创建一组左右子数组将它们慢慢合并起来，每次合 并都保存一部分排好序的数据，直到最后剩下的这个数组所有的数据都已完美排序。&lt;/p&gt;
-
-&lt;p&gt;下图演示了自底向上的归并排序算法是如何运行的&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://0.0.0.0:4000/img/20180201/20180201-1.jpg&quot; alt=&quot;图&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;JavaScript 实现的自底向上归并排序算法:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function mergeSort() {
-    if (this.dataStore.length &amp;lt; 2) {
-        return; 
-    }
-    var step = 1;
-    var left, right;
-    while (step &amp;lt; this.dataStore.length) {
-       left = 0;
-       right = step;
-       while (right + step &amp;lt;= this.dataStore.length) {
-          mergeArrays(this.dataStore, left, left+step, right, right+step);
-          left = right + step;
-          right = left + step;
-       }
-       if (right &amp;lt; this.dataStore.length) {
-            mergeArrays(this.dataStore, left, left+step, right, this.dataStore.length); 
-        }
-        step *= 2;
-    }
-}
-
-function mergeArrays(arr,startLeft, stopLeft, startRight, stopRight) {
-   var rightArr = new Array(stopRight - startRight + 1);
-   var leftArr = new Array(stopLeft - startLeft + 1);
-   k = startRight;
-   for (var i = 0; i &amp;lt; (rightArr.length-1); ++i) {
-      rightArr[i] = arr[k];
-      ++k;
-   } 
-   k = startLeft;
-   for (var i = 0; i &amp;lt; (leftArr.length-1); ++i) {
-        leftArr[i] = arr[k];
-        ++k; 
-   }
-
-    rightArr[rightArr.length-1] = Infinity; // 哨兵值 
-    leftArr[leftArr.length-1] = Infinity; // 哨兵值 
-    var m = 0;
-    var n = 0;
-   for (var k = startLeft; k &amp;lt; stopRight; ++k) {
-        if (leftArr[m] &amp;lt;= rightArr[n]) {
-            arr[k] = leftArr[m];
-            m++; 
-        } else {
-            arr[k] = rightArr[n];
-            n++;
-        } 
-    }
-    document.write(&quot;left array - &quot;, leftArr + '&amp;lt;br /&amp;gt;');
-    document.write(&quot;right array - &quot;, rightArr + '&amp;lt;br /&amp;gt;');
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;mergeSort() 函数中的关键点就是 step 这个变量，它用来控制 mergeArrays() 函数生成的 leftArr 和 rightArr 这两个子序列的大小。通过控制子序列的大小，处理排序是比较高效 的，因为它在对小数组进行排序时不需要花费太多时间。合并之所以高效，还有一个原 因，由于未合并的数据已经是排好序的，将它们合并到一个有序数组的过程非常容易。&lt;/p&gt;
-
-&lt;p&gt;初始化10数的结果：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var nums = new CArray(10);
-nums.setData();
-document.write(nums.toString() + '&amp;lt;br /&amp;gt;');
-nums.mergeSort();
-document.write(nums.toString() + '&amp;lt;br /&amp;gt;');
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://0.0.0.0:4000/img/20180201/20180201-2.jpg&quot; alt=&quot;图&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;一开始每个元素都在左子序列或右子序列中。然后将左右子序列合并，首先每次合并成两 个元素的子序列，然后合并成四个元素的子序列，3 和 5 除外，它们会一直保留到最后一次 迭代，那时会把它们合并成右子序列，然后再与最后的左子序列合并成最终的有序数组。&lt;/p&gt;</content><author><name>weili</name></author><category term="[&quot;JS&quot;]" /><summary type="html">高级排序—快速排序 快速排序是处理大数据集最快的排序算法之一。 它是一种分而治之的算法，通过递归的方式将数据依次分解为包含较小元素和较大元素的不同子序列。该算法不断重复这个步骤直到所有数据都是有序的。 快速排序 这个算法首先要在列表中选择一个元素作为基准值(pivot)。数据排序围绕基准值进行， 将列表中小于基准值的元素移到数组的底部，将大于基准值的元素移到数组的顶部。 自底向上的归并排序 采用非递归或者迭代版本的归并排序是一个自底向上的过程。这个算法首先将数据集分解 为一组只有一个元素的数组。然后通过创建一组左右子数组将它们慢慢合并起来，每次合 并都保存一部分排好序的数据，直到最后剩下的这个数组所有的数据都已完美排序。 下图演示了自底向上的归并排序算法是如何运行的 JavaScript 实现的自底向上归并排序算法: function mergeSort() { if (this.dataStore.length &amp;lt; 2) { return; } var step = 1; var left, right; while (step &amp;lt; this.dataStore.length) { left = 0; right = step; while (right + step &amp;lt;= this.dataStore.length) { mergeArrays(this.dataStore, left, left+step, right, right+step); left = right + step; right = left + step; } if (right &amp;lt; this.dataStore.length) { mergeArrays(this.dataStore, left, left+step, right, this.dataStore.length); } step *= 2; } } function mergeArrays(arr,startLeft, stopLeft, startRight, stopRight) { var rightArr = new Array(stopRight - startRight + 1); var leftArr = new Array(stopLeft - startLeft + 1); k = startRight; for (var i = 0; i &amp;lt; (rightArr.length-1); ++i) { rightArr[i] = arr[k]; ++k; } k = startLeft; for (var i = 0; i &amp;lt; (leftArr.length-1); ++i) { leftArr[i] = arr[k]; ++k; } rightArr[rightArr.length-1] = Infinity; // 哨兵值 leftArr[leftArr.length-1] = Infinity; // 哨兵值 var m = 0; var n = 0; for (var k = startLeft; k &amp;lt; stopRight; ++k) { if (leftArr[m] &amp;lt;= rightArr[n]) { arr[k] = leftArr[m]; m++; } else { arr[k] = rightArr[n]; n++; } } document.write(&quot;left array - &quot;, leftArr + '&amp;lt;br /&amp;gt;'); document.write(&quot;right array - &quot;, rightArr + '&amp;lt;br /&amp;gt;'); } mergeSort() 函数中的关键点就是 step 这个变量，它用来控制 mergeArrays() 函数生成的 leftArr 和 rightArr 这两个子序列的大小。通过控制子序列的大小，处理排序是比较高效 的，因为它在对小数组进行排序时不需要花费太多时间。合并之所以高效，还有一个原 因，由于未合并的数据已经是排好序的，将它们合并到一个有序数组的过程非常容易。 初始化10数的结果： var nums = new CArray(10); nums.setData(); document.write(nums.toString() + '&amp;lt;br /&amp;gt;'); nums.mergeSort(); document.write(nums.toString() + '&amp;lt;br /&amp;gt;'); 一开始每个元素都在左子序列或右子序列中。然后将左右子序列合并，首先每次合并成两 个元素的子序列，然后合并成四个元素的子序列，3 和 5 除外，它们会一直保留到最后一次 迭代，那时会把它们合并成右子序列，然后再与最后的左子序列合并成最终的有序数组。</summary></entry></feed>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>weili</name></author><category term="[&quot;JS&quot;]" /><summary type="html">高级算法–动态规划 动态规则与递归的关系与区别 动态规划有时被认为是一种与递归相反的技术。 递归是从顶部开始将问题分解，通过解决掉所有分解出小问题的方式，来解决整 个问题。 动态规划解决方案从底部开始解决问题，将所有小问题解决掉，然后合并成一个 整体解决方案，从而解决掉整个大问题。 递归去解决问题虽然简洁，但效率不高,许多使用递归去解决的编程问题，可以重写为使用动态规划的技巧去解决 动态规划方案 动态规划方案通常会使用一个数组来建立一张表，用于存放被分解成众多子问题的解。当算法执行完 毕，最终的解将会在这个表中很明显的地方被找到 使用动态规划方案能做点什么？ 计算斐波那契数列 斐波那契数列可以定义为以下序列: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, … 该序列是由前两项数值相加而成的 递归的实现方式： function recurFib(n) { if (n &amp;lt; 2) { return n; } else { return recurFib(n-1) + recurFib(n-2); } } document.write(recurFib(10)); // 显示 55 在这个计算过程当中，有太多值在递归调用中被重新计算,这也是递归方法效率低下的原因。 再看下动态规则的实现方法： function dynFib(n) { var val = []; for (var i = 0; i &amp;lt;= n; ++i) { val[i] = 0; } if (n == 1 || n == 2) { return 1; } else { val[1] = 1; val[2] = 2; for (var i = 3; i &amp;lt;= n; ++i) { val[i] = val[i-1] + val[i-2]; } return val[n-1]; } } 在这个数组 val 中保存了中间结果。如果要计算的斐波那契数是 1 或者 2，那么 if 语 句会返回 1。否则，数值 1 和 2 将被保存在 val 数组中 1 和 2 的位置。循环将会从 3 到输 入的参数之间进行遍历，将数组的每个元素赋值为前两个元素之和，循环结束，数组的最 后一个元素值即为最终计算得到的斐波那契数值，这个数值也将作为函数的返回值。 斐波那契数列在数组 val 中的排列顺序如下: val[0] = 0 val[1] = 1 val[2] = 2 val[3] = 3 val[4] = 5 val[5] = 8 val[6] = 13 寻找最长公共子串 用动态规划去寻找两个字符串的最长公共子串。例如，在单词 “raven”和“havoc”中，最长的公共子串是“av”。 原理： 使用一个二维数组存储两个字符串相同 位置的字符比较结果。初始化时，该数组的每一个元素被设置为 0。每次在这两个数组的 相同位置发现了匹配，就将数组对应行和列的元素加 1，否则保持为 0。按照这种方式，一个变量会持续记录下找到了多少个匹配项。当算法执行完毕时，这个变 量会结合一个索引变量来获得最长公共子串。 function lcs(word1, word2) { var max = 0; var index = 0; var lcsarr = new Array(word1.length + 1); for (var i = 0; i &amp;lt;= word1.length + 1; ++i) { lcsarr[i] = new Array(word2.length + 1); for (var j = 0; j &amp;lt;= word2.length + 1; ++j) { lcsarr[i][j] = 0; } } //上面这一部分初始化了两个变量以及一个二维数组。多数语言对二维数组的声明都很 简单，但在 JavaScript 中需要很费劲地在一个数组中定义另一个数组，这样才能声明一个 二维数组。以下代码片段中的最后一个 for 循环会对这个数组进行初始化， for (var i = 0; i &amp;lt;= word1.length; ++i) { for (var j = 0; j &amp;lt;= word2.length; ++j) { if (i == 0 || j == 0) { lcsarr[i][j] = 0; } else { if (word1[i - 1] == word2[j - 1]) { lcsarr[i][j] = lcsarr[i - 1][j - 1] + 1; } else { lcsarr[i][j] = 0; } } if (max &amp;lt; lcsarr[i][j]) { max = lcsarr[i][j]; index = i; } } } //这一部分构建了用于保存字符匹配记录的表。数组的第一个元素总是被设置为 0。如果两 个字符串相应位置的字符进行了匹配，当前数组元素的值将被设置为前一次循环中数组元 素保存的值加 1。比如，如果两个字符串 &quot;back&quot; 和 &quot;cace&quot;，当算法运行到第二个字符处 时，那么数值 1 将被保存到当前元素中，因为前一个元素并不匹配，0 被保存在那个元素 中(0+1)。接下来算法移动到下一个位置，由于此时两个字符仍被匹配，当前数组元素将 被设置为 2(1+1)。由于两个字符串的最后一个字符不匹配，所以最长公共子串的长度是 2。最后，如果变量 max 的值比现在存储在数组中的当前元素要小，max 的值将被赋值给这 个元素，变量 index 的值将被设置为 i 的当前值。这两个变量将在函数的最后一部分用于 确定从哪里开始获取最长公共子串。 var str = &quot;&quot;; if (max == 0) { return &quot;&quot;; } else { for (var i = index - max; i &amp;lt;= max; ++i) { str += word2[i]; } return str; } //这一部分代码用于确认从哪里开始构建这个最长公共子串。以变量 index 减去变量 max 的差值作为起始点，以变量 max 的值作为终点: } 背包问题:递归解决方案 function max(a, b) { return (a &amp;gt; b) ? a : b; } function knapsack(capacity, size, value, n) { if (n == 0 || capacity == 0) { return 0; } if (size[n - 1] &amp;gt; capacity) { return knapsack(capacity, size, value, n - 1); } else { return max(value[n - 1] + knapsack(capacity - size[n - 1], size, value, n - 1), knapsack(capacity, size, value, n - 1)); } } var value = [4, 5, 10, 11, 13]; var size = [3, 4, 7, 8, 9]; var capacity = 16; var n = 5; document.write(knapsack(capacity, size, value, n)); //结果：23 背包问题:动态规划方案 function max(a, b) { return (a &amp;gt; b) ? a : b; } function dKnapsack(capacity, size, value, n) { var K = []; for (var i = 0; i &amp;lt;= capacity + 1; i++) { K[i] = []; } for (var i = 0; i &amp;lt;= n; i++) { for (var w = 0; w &amp;lt;= capacity; w++) { if (i == 0 || w == 0) { K[i][w] = 0; } else if (size[i - 1] &amp;lt;= w) { K[i][w] = max(value[i - 1] + K[i-1][w-size[i-1]], K[i-1][w]); } else { K[i][w] = K[i - 1][w]; } document.write(K[i][w] + &quot; &quot;); } } return K[n][capacity]; } var value = [4, 5, 10, 11, 13]; var size = [3, 4, 7, 8, 9]; var capacity = 16; var n = 5; document.write(dKnapsack(capacity, size, value, n)); 结果： 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 4 4 4 4 4 4 4 4 4 4 4 4 4 4 0 0 0 4 5 5 5 9 9 9 9 9 9 9 9 9 9 0 0 0 4 5 5 5 10 10 10 14 15 15 15 19 19 19 0 0 0 4 5 5 5 10 11 11 14 15 16 16 19 21 21 0 0 0 4 5 5 5 10 11 13 14 15 17 18 19 21 23 23</summary></entry></feed>

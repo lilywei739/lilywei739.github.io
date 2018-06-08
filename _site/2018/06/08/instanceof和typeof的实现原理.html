@@ -1,0 +1,374 @@
+<!DOCTYPE html><html lang="en">
+  <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>instanceof 和 typeof 的实现原理 - Weili's Blog</title>
+<meta name="description" content="这周老大分享了有关原生JS的基础内容，这次我也跟风补一下相关知识。typeof 实现原理typeof 一般被用于判断一个变量的类型，我们可以利用 typeof 来判断number, string, object, boolean, function, undefined,symbol 这七种类型，这种判断能帮助我...">
+<link rel="canonical" href="http://localhost:4000/2018/06/08/instanceof%E5%92%8Ctypeof%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86.html"><link rel="alternate" type="application/rss+xml" title="Weili's Blog" href="http://localhost:4000/feed.xml">
+<!-- for Safari on iOS https://developer.apple.com/ios/human-interface-guidelines/icons-and-images/app-icon/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/images/logo/icon-180x180.png"><link rel="apple-touch-icon" sizes="167x167" href="/assets/images/logo/icon-167x167.png"><link rel="apple-touch-icon" sizes="152x152" href="/assets/images/logo/icon-152x152.png"><link rel="apple-touch-icon" sizes="120x120" href="/assets/images/logo/icon-120x120.png"><link rel="shortcut icon" href="/assets/images/logo/icon-120x120.png">
+<!-- for Chrome on Android https://developer.chrome.com/multidevice/android/installtohomescreen -->
+<meta name="mobile-web-app-capable" content="yes"><link rel="icon" sizes="192x192" href="/assets/images/logo/icon-192x192.png">
+<!-- for Edge on Windows 10 https://msdn.microsoft.com/en-us/library/dn255024(v=vs.85).aspx --><meta name="msapplication-TileImage" content="/assets/images/logo/icon-144x144.png"><meta name="msapplication-square310x310logo" content="/assets/images/logo/icon-310x310.png"><meta name="msapplication-wide310x150logo" content="/assets/images/logo/icon-310x150.png"><meta name="msapplication-square150x150logo" content="/assets/images/logo/icon-150x150.png"><meta name="msapplication-square70x70logo" content="/assets/images/logo/icon-70x70.png">
+<meta name="msapplication-TileColor" content="#eeeeee"><link rel="stylesheet" href="/assets/css/blog.css">
+    <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="m-page-stage js-page-stage"><div class="m-page-content"><header class="m-page-header">
+  <div class="main clearfix">
+    <div class='site-logo'><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="24px" height="24px" viewBox="0 0 24 24">
+<style type="text/css">
+	.st0{fill:#666666;}
+</style>
+<path class="st0" d="M1.7,22.3c5.7-5.7,11.3-5.7,17,0c3.3-3.3,3.5-5.3,0.8-6c2.7,0.7,3.5-1.1,2.3-5.6s-3.3-5.2-6.3-2.1
+	c3-3,2.3-5.2-2.1-6.3S7,1.8,7.7,4.6C7,1.8,5,2.1,1.7,5.3C7.3,11,7.3,16.7,1.7,22.3"/>
+</svg><a title="Weili's blog
+" href="/">Weili's Blog</a></div>
+    <nav>
+      <ul><li><a href="/">Home</a></li><li><a href="/all.html">All</a></li><li><a href="/about.html">About</a></li></ul>
+    </nav>
+  </div>
+</header>
+<div class="m-page-main"><div class="m-post">
+	<div class="main js-main clearfix">
+		<div class="col-2 js-col-2">
+			<aside class="js-article-aside"><div class="m-toc js-toc"></div></aside>
+		</div>
+		<div class="col-1">
+			<article itemscope itemtype="http://schema.org/BlogPosting">
+				<meta itemprop="mainEntityOfPage" itemscope itemType="https://schema.org/WebPage"/>
+				<header class="main-header"><h1 itemprop="headline" itemprop="name headline">instanceof 和 typeof 的实现原理</h1><div class="m-article-data clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="weili"/></meta><ul class="tag-wrapper"><li>
+          <a class="pill-button" href="/all.html?tag=JS">JS</a>
+        </li></ul><div class="other-wrapper"><div class="date-wrapper"><time class="article-meta" datetime="2018-06-08T00:00:00+08:00"
+          itemprop="datePublished">Jun 08, 2018
+        </time></div>
+  </div>
+</div>
+</header>
+				<div class="m-article-content js-article-content" itemprop="articleBody"><p>这周老大分享了有关原生JS的基础内容，这次我也跟风补一下相关知识。</p>
+
+<h2 id="typeof-实现原理">typeof 实现原理</h2>
+
+<p>typeof 一般被用于判断一个变量的类型，我们可以利用 typeof 来判断number, string, object, boolean, function, undefined,symbol 这七种类型，这种判断能帮助我们搞定一些问题，比如在判断不是 object 类型的数据的时候，typeof能比较清楚的告诉我们具体是哪一类的类型。但是，很遗憾的一点是，typeof 在判断一个 object的数据的时候只能告诉我们这个数据是 object, 而不能细致的具体到是哪一种 object, 比如</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>let s = new String('abc');
+typeof s === 'object'// true
+s instanceof String // true
+</code></pre></div></div>
+
+<p>要想判断一个数据具体是哪一种 object 的时候，我们需要利用 instanceof 这个操作符来判断，这个我们后面会说到。</p>
+
+<p>来谈谈关于 typeof 的原理吧，我们可以先想一个很有意思的问题，js 在底层是怎么存储数据的类型信息呢？或者说，一个 js 的变量，在它的底层实现中，它的类型信息是怎么实现的呢？</p>
+
+<p>其实，js 在底层存储变量的时候，会在变量的机器码的低位1-3位存储其类型信息</p>
+
+<ul>
+  <li>000：对象</li>
+  <li>010：浮点数</li>
+  <li>100：字符串</li>
+  <li>110：布尔</li>
+  <li>1：整数</li>
+</ul>
+
+<p>对于 undefined 和 null 来说，这两个值的信息存储是有点特殊的。</p>
+
+<ul>
+  <li>null：所有机器码均为0</li>
+  <li>undefined：用 −2^30 整数来表示</li>
+</ul>
+
+<p>所以，typeof 在判断 null 的时候就出现问题了，由于 null 的所有机器码均为0，因此直接被当做了对象来看待。</p>
+
+<p>然而用 instanceof 来判断的话</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>null instanceof null // TypeError: Right-hand side of 'instanceof' is not an object
+
+</code></pre></div></div>
+
+<p>null 直接被判断为不是 object，这也是 JavaScript 的历史遗留bug，可以参考typeof。</p>
+
+<p>因此在用 typeof 来判断变量类型的时候，我们需要注意，最好是用 typeof 来判断基本数据类型（包括symbol），避免对 null 的判断。</p>
+
+<p>还有一个不错的判断类型的方法，就是Object.prototype.toString，我们可以利用这个方法来对一个变量的类型来进行比较准确的判断</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Object.prototype.toString.call(1) // "[object Number]"
+Object.prototype.toString.call('hi') // "[object String]"
+Object.prototype.toString.call({a:'hi'}) // "[object Object]"
+Object.prototype.toString.call([1,'a']) // "[object Array]"
+Object.prototype.toString.call(true) // "[object Boolean]"
+Object.prototype.toString.call(() =&gt; {}) // "[object Function]"
+Object.prototype.toString.call(null) // "[object Null]"
+Object.prototype.toString.call(undefined) // "[object Undefined]"
+Object.prototype.toString.call(Symbol(1)) // "[object Symbol]"
+</code></pre></div></div>
+
+<h2 id="instanceof-操作符的实现原理">instanceof 操作符的实现原理</h2>
+
+<p>之前我们提到了 instanceof 来判断对象的具体类型，其实 instanceof 主要的作用就是判断一个实例是否属于某种类型</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>let person = function () {
+}
+let nicole = new person()
+nicole instanceof person // true
+</code></pre></div></div>
+
+<p>当然，instanceof 也可以判断一个实例是否是其父类型或者祖先类型的实例。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>let person = function () { }
+let programmer = function () { }
+programmer.prototype = new person()
+let nicole = new programmer()
+nicole instanceof person // true
+nicole instanceof programmer // true
+
+</code></pre></div></div>
+
+<p>这是 instanceof 的用法，但是 instanceof 的原理是什么呢？根据 ECMAScript 语言规范，我梳理了一下大概的思路，然后整理了一段代码如下</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function new_instance_of(leftVaule, rightVaule) { 
+    let rightProto = rightVaule.prototype; // 取右表达式的 prototype 值
+    leftVaule = leftVaule.__proto__; // 取左表达式的__proto__值
+    while (true) {
+        if (leftVaule === null) {
+            return false;    
+        }
+        if (leftVaule === rightProto) {
+            return true;    
+        } 
+        leftVaule = leftVaule.__proto__ 
+    }
+}
+</code></pre></div></div>
+
+<p>其实 instanceof 主要的实现原理就是只要右边变量的 prototype 在左边变量的原型链上即可。因此，instanceof 在查找的过程中会遍历左边变量的原型链，直到找到右边变量的 prototype，如果查找失败，则会返回 false，告诉我们左边变量并非是右边变量的实例。</p>
+
+<p>看几个很有趣的例子</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function Foo() {
+}
+Object instanceof Object // true
+Function instanceof Function // true
+Function instanceof Object // true
+Foo instanceof Foo // false
+Foo instanceof Object // true
+Foo instanceof Function // true
+</code></pre></div></div>
+
+<p>要想全部理解 instanceof 的原理，除了我们刚刚提到的实现原理，我们还需要知道 JavaScript 的原型继承原理。</p>
+
+<p>关于原型继承的原理，我简单用一张图来表示</p>
+
+<p><img src="https://lilywei739.github.io/img/20180608/20180608-1.jpg" alt="图" /></p>
+
+<p>每个 JavaScript 对象均有一个隐式的 <strong>proto</strong> 原型属性，而显式的原型属性是 prototype，只有 Object.prototype.<strong>proto</strong> 属性在未修改的情况下为 null 值。根据图上的原理，我们来梳理上面提到的几个有趣的 instanceof 使用的例子。</p>
+
+<p>Object instanceof Object</p>
+
+<p>由图可知，Object 的 prototype 属性是 Object.prototype, 而由于 Object 本身是一个函数，由 Function 所创建，所以 Object.<strong>proto</strong> 的值是 Function.prototype，而 Function.prototype 的 <strong>proto</strong> 属性是 Object.prototype，所以我们可以判断出，Object instanceof Object 的结果是 true 。用代码简单的表示一下</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>leftValue = Object.__proto__ = Function.prototype;
+rightValue = Object.prototype;
+// 第一次判断
+leftValue != rightValue
+leftValue = Function.prototype.__proto__ = Object.prototype
+// 第二次判断
+leftValue === rightValue
+// 返回 true
+</code></pre></div></div>
+
+<p>Function instanceof Function 和 Function instanceof Object 的运行过程与 Object instanceof Object 类似，故不再详说。</p>
+
+<p>Foo instanceof Foo</p>
+
+<p>Foo 函数的 prototype 属性是 Foo.prototype，而 Foo 的 <strong>proto</strong> 属性是 Function.prototype，由图可知，Foo 的原型链上并没有 Foo.prototype ，因此 Foo instanceof Foo 也就返回 false 。</p>
+
+<p>我们用代码简单的表示一下</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>leftValue = Foo, rightValue = Foo
+leftValue = Foo.__proto = Function.prototype
+rightValue = Foo.prototype
+// 第一次判断
+leftValue != rightValue
+leftValue = Function.prototype.__proto__ = Object.prototype
+// 第二次判断
+leftValue != rightValue
+leftValue = Object.prototype = null
+// 第三次判断
+leftValue === null
+// 返回 false
+</code></pre></div></div>
+
+<p>Foo instanceof Object</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>leftValue = Foo, rightValue = Object
+leftValue = Foo.__proto__ = Function.prototype
+rightValue = Object.prototype
+// 第一次判断
+leftValue != rightValue
+leftValue = Function.prototype.__proto__ = Object.prototype
+// 第二次判断
+leftValue === rightValue
+// 返回 true 
+</code></pre></div></div>
+
+<p>Foo instanceof Function</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>leftValue = Foo, rightValue = Function
+leftValue = Foo.__proto__ = Function.prototype
+rightValue = Function.prototype
+// 第一次判断
+leftValue === rightValue
+// 返回 true 
+</code></pre></div></div>
+
+<p>简单来说，使用 typeof 来判断基本数据类型是 ok 的，不过需要注意当用 typeof 来判断 null 类型时的问题，如果想要判断一个对象的具体类型可以考虑用 instanceof，但是 instanceof 也可能判断不准确，比如一个数组，他可以被 instanceof 判断为 Object。所以我们要想比较准确的判断对象实例的类型时，可以采取 Object.prototype.toString.call 方法。</p>
+</div></article>
+		</div>
+	</div>
+</div><script src="//cdn.bootcss.com/toc/0.3.2/toc.min.js"></script>
+<script type="text/javascript">
+	window.throttle = function(func, wait) {
+	  var args, result, thisArg, timeoutId, lastCalled = 0;
+
+	  function trailingCall() {
+	    lastCalled = new Date;
+	    timeoutId = null;
+	    result = func.apply(thisArg, args);
+	  }
+	  return function() {
+	    var now = new Date,
+	      remaining = wait - (now - lastCalled);
+
+	    args = arguments;
+	    thisArg = this;
+
+	    if (remaining <= 0) {
+	      clearTimeout(timeoutId);
+	      timeoutId = null;
+	      lastCalled = now;
+	      result = func.apply(thisArg, args);
+	    } else if (!timeoutId) {
+	      timeoutId = setTimeout(trailingCall, remaining);
+	    }
+	    return result;
+	  };
+	}
+	$(function() {
+	  var $window = $(window);
+	  var $pageStage = $('.js-page-stage');
+	  var $pageMain = $('.js-main');
+	  var $pageFooter = $('.js-page-footer');
+	  var $articleContent = $('.js-article-content');
+	  var $articleAside = $('.js-article-aside');
+	  var $toc = $('.js-toc');
+		var $col2 = $('.js-col-2');
+	  var hasTitle = $articleContent.find('h1,h2,h3').length > 0;
+	  function asideSticky() {
+	    return $col2.css('display') !== 'none' && $pageStage.hasClass('has-toc');
+	  }
+
+	  function setTocClass() {
+	    if (hasTitle) {
+	      !$pageStage.hasClass('has-toc') && $pageStage.addClass('has-toc');
+	    }
+	  }
+
+	  setTocClass();
+
+	  function setAsideTOC() {
+	    var asideTop, asideLeft, scrollBottom, asideBottomTop, lastScrollTop;
+
+	    function init() {
+	      var asideOffset = $articleAside.offset();
+	      var footerOffset = $pageFooter.offset();
+	      var mainOffset = $pageMain.offset();
+	      asideTop = mainOffset.top;
+	      asideHeight = $toc.outerHeight() + parseInt($articleAside.css('padding-top'), 10) + parseInt($articleAside.css('padding-bottom'), 10);
+	      asideLeft = mainOffset.left + $pageMain.outerWidth() - $articleAside.outerWidth() - parseInt($pageMain.css('padding-right'), 10);
+	      scrollBottom = footerOffset.top - asideHeight;
+	      asideBottomTop = scrollBottom - mainOffset.top;
+	    }
+
+	    function setAside(force) {
+	      force !== true && (force = false);
+	      var scrollTop = $window.scrollTop();
+	      if (scrollTop >= asideTop && scrollTop <= scrollBottom) {
+	        (!force && lastScrollTop >= asideTop && lastScrollTop <= scrollBottom) ||
+	        $articleAside.addClass('fixed').css({
+	          left: asideLeft + 'px',
+	          top: 0
+	        });
+	      } else if (scrollTop < asideTop) {
+	        (!force && lastScrollTop < asideTop) ||
+	        $articleAside.removeClass('fixed').css({
+	          left: 0,
+	          top: 0
+	        });
+	      } else {
+	        (!force && lastScrollTop > scrollBottom) ||
+	        $articleAside.removeClass('fixed').css({
+	          left: 0,
+	          top: asideBottomTop + 'px'
+	        });
+	      }
+	      lastScrollTop = scrollTop;
+	    }
+	    asideSticky() && (init(), setAside());
+	    $window.on('scroll', function() {
+	      asideSticky() && setAside();
+	    });
+	    $window.on('resize', throttle(function() {
+	      setTocClass();
+	      asideSticky() && (init(), setAside(true));
+	    }, 100));
+	    setTimeout(init, 4000);
+	  }
+	  setTimeout(setAsideTOC, 1000);
+
+	  $toc.toc({
+	    'selectors': 'h1,h2,h3',
+	    'container': '.js-article-content',
+	  });
+	});
+</script></div>
+</div>
+</div><div class="m-page-footer js-page-footer">
+  <div class="main">
+    <aside><div class="follow-me"><ul itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="weili">
+    <link itemprop="url" href="http://localhost:4000/"></ul></div>
+</aside>
+    <footer class="site-info">
+      <p>© Weili's Blog 2018</p>
+      <p><a title="" href="https://github.com/lilywei739/lilywei739.github.io">VIEW IN GITHUB</a></p>
+      <p>Powered by <a title="Jekyll is a simple, blog-aware, static site generator." href="http://jekyllrb.com/">Jekyll</a> & <a
+        title="TeXt is a succinct theme for blogging." href="https://github.com/kitian616/jekyll-TeXt-theme">TeXt Theme</a>.</p>
+    </footer>
+  </div>
+</div>
+<script>
+      $(function() {
+        // display coding language
+        var $articleContent = $('.m-post, .m-page').find('.m-article-content'), $this;
+        $articleContent.children('.highlight').each(function() {
+          $this = $(this);
+          $this.attr('data-lang', $this.find('code').attr('data-lang'));
+        });
+        $articleContent.children('h1, h2, h3, h4, h5, h6').each(function() {
+          $this = $(this);
+          $this.append($('<a class="anchor" aria-hidden="true"></a>').text('#'));
+        });
+        $articleContent.on('click', '.anchor', function(e) {
+          var targetId = $(this).parent().attr('id');
+          scrollAnimateTo($('#' + targetId).offset().top, 400, function() {
+            console.log(666)
+            window.history.replaceState(null, '', window.location.href.split('#')[0] + '#' + targetId);
+          });
+        });
+        function scrollAnimateTo(destination, duration, callback) {
+          var $body = $('html, body'), bodyScrollTop = $body.scrollTop();
+          if(bodyScrollTop === destination) { return; }
+          $body.animate({ scrollTop: destination }, duration, callback);
+        }
+      });
+    </script></body>
+</html>
