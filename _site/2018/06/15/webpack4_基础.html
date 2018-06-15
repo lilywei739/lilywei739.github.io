@@ -1,0 +1,516 @@
+<!DOCTYPE html><html lang="en">
+  <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>webpack4---基础篇 - Weili's Blog</title>
+<meta name="description" content="核心概念  Entry：入口，Webpack 执行构建的第一步将从 Entry 开始，可抽象成输入。  Module：模块，在 Webpack 里一切皆模块，一个模块对应着一个文件。Webpack 会从配置的 Entry 开始递归找出所有依赖的模块。  Chunk：代码块，一个 Chunk 由多个模块组合而成，用...">
+<link rel="canonical" href="http://localhost:4000/2018/06/15/webpack4_%E5%9F%BA%E7%A1%80.html"><link rel="alternate" type="application/rss+xml" title="Weili's Blog" href="http://localhost:4000/feed.xml">
+<!-- for Safari on iOS https://developer.apple.com/ios/human-interface-guidelines/icons-and-images/app-icon/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/images/logo/icon-180x180.png"><link rel="apple-touch-icon" sizes="167x167" href="/assets/images/logo/icon-167x167.png"><link rel="apple-touch-icon" sizes="152x152" href="/assets/images/logo/icon-152x152.png"><link rel="apple-touch-icon" sizes="120x120" href="/assets/images/logo/icon-120x120.png"><link rel="shortcut icon" href="/assets/images/logo/icon-120x120.png">
+<!-- for Chrome on Android https://developer.chrome.com/multidevice/android/installtohomescreen -->
+<meta name="mobile-web-app-capable" content="yes"><link rel="icon" sizes="192x192" href="/assets/images/logo/icon-192x192.png">
+<!-- for Edge on Windows 10 https://msdn.microsoft.com/en-us/library/dn255024(v=vs.85).aspx --><meta name="msapplication-TileImage" content="/assets/images/logo/icon-144x144.png"><meta name="msapplication-square310x310logo" content="/assets/images/logo/icon-310x310.png"><meta name="msapplication-wide310x150logo" content="/assets/images/logo/icon-310x150.png"><meta name="msapplication-square150x150logo" content="/assets/images/logo/icon-150x150.png"><meta name="msapplication-square70x70logo" content="/assets/images/logo/icon-70x70.png">
+<meta name="msapplication-TileColor" content="#eeeeee"><link rel="stylesheet" href="/assets/css/blog.css">
+    <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="m-page-stage js-page-stage"><div class="m-page-content"><header class="m-page-header">
+  <div class="main clearfix">
+    <div class='site-logo'><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="24px" height="24px" viewBox="0 0 24 24">
+<style type="text/css">
+	.st0{fill:#666666;}
+</style>
+<path class="st0" d="M1.7,22.3c5.7-5.7,11.3-5.7,17,0c3.3-3.3,3.5-5.3,0.8-6c2.7,0.7,3.5-1.1,2.3-5.6s-3.3-5.2-6.3-2.1
+	c3-3,2.3-5.2-2.1-6.3S7,1.8,7.7,4.6C7,1.8,5,2.1,1.7,5.3C7.3,11,7.3,16.7,1.7,22.3"/>
+</svg><a title="Weili's blog
+" href="/">Weili's Blog</a></div>
+    <nav>
+      <ul><li><a href="/">Home</a></li><li><a href="/all.html">All</a></li><li><a href="/about.html">About</a></li></ul>
+    </nav>
+  </div>
+</header>
+<div class="m-page-main"><div class="m-post">
+	<div class="main js-main clearfix">
+		<div class="col-2 js-col-2">
+			<aside class="js-article-aside"><div class="m-toc js-toc"></div></aside>
+		</div>
+		<div class="col-1">
+			<article itemscope itemtype="http://schema.org/BlogPosting">
+				<meta itemprop="mainEntityOfPage" itemscope itemType="https://schema.org/WebPage"/>
+				<header class="main-header"><h1 itemprop="headline" itemprop="name headline">webpack4---基础篇</h1><div class="m-article-data clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="weili"/></meta><ul class="tag-wrapper"><li>
+          <a class="pill-button" href="/all.html?tag=JS">JS</a>
+        </li><li>
+          <a class="pill-button" href="/all.html?tag=%E5%89%8D%E7%AB%AF">前端</a>
+        </li></ul><div class="other-wrapper"><div class="date-wrapper"><time class="article-meta" datetime="2018-06-15T00:00:00+08:00"
+          itemprop="datePublished">Jun 15, 2018
+        </time></div>
+  </div>
+</div>
+</header>
+				<div class="m-article-content js-article-content" itemprop="articleBody"><h2 id="核心概念">核心概念</h2>
+
+<ul>
+  <li>Entry：入口，Webpack 执行构建的第一步将从 Entry 开始，可抽象成输入。</li>
+  <li>Module：模块，在 Webpack 里一切皆模块，一个模块对应着一个文件。Webpack 会从配置的 Entry 开始递归找出所有依赖的模块。</li>
+  <li>Chunk：代码块，一个 Chunk 由多个模块组合而成，用于代码合并与分割。</li>
+  <li>Loader：模块转换器，用于把模块原内容按照需求转换成新内容。</li>
+  <li>Plugin：扩展插件，在 Webpack 构建流程中的特定时机注入扩展逻辑来改变构建结果或做你想要的事情。</li>
+  <li>Output：输出结果，在 Webpack 经过一系列处理并得出最终想要的代码后输出结果。</li>
+</ul>
+
+<h2 id="webpackgruntgulp">WebPack、Grunt、Gulp？</h2>
+
+<p>Webpack和另外两个并没有太多的可比性，Gulp/Grunt是一种能够优化前端的开发流程的工具，而WebPack是一种模块化的解决方案，不过Webpack的优点使得Webpack可以替代Gulp/Grunt类的工具。</p>
+
+<ul>
+  <li>
+    <p>Grunt和Gulp的工作方式是：在一个配置文件中，指明对某些文件进行类似编译，组合，压缩等任务的具体步骤，这个工具之后可以自动替你完成这些任务。</p>
+  </li>
+  <li>
+    <p>Webpack的工作方式是：把你的项目当做一个整体，通过一个给定的主文件（如：index.js），Webpack将从这个文件开始找到你的项目的所有依赖文件，使用loaders处理它们，最后打包为一个浏览器可识别的JavaScript文件。</p>
+  </li>
+  <li>
+    <p>如果实在要把二者进行比较，Webpack的处理速度更快更直接，能打包更多不同类型的文件。</p>
+  </li>
+</ul>
+
+<h2 id="执行流程">执行流程</h2>
+
+<p>webpack启动后会在entry里配置的module开始递归解析entry所依赖的所有module，没找到一个module, 就会根据配置的loader去找相应的转换规则，对module进行转换后在解析当前module所依赖的module，这些模块会以entry为分组，一个entry和所有相依赖的module也就是一个chunk，最后webpack会把所有chunk转换成文件输出，在整个流程中webpack会在恰当的时机执行plugin的逻辑</p>
+
+<h2 id="从零配置webpack">从零配置webpack</h2>
+
+<ul>
+  <li>初始化配置</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir webpack-start
+cd webpack-start
+npm init
+</code></pre></div></div>
+
+<ul>
+  <li>配置webpack</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yarn add webpack webpack-cli -D //webpack4把webpack拆分了
+mkdir src
+cd src 并且创建index.html, index.js
+mkdir dist
+touch webpack.config.js
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>webpack.config.js
+
+module.exports = {
+    entry: './src/index.js', //入口文件，src下的index.js
+    output: {
+        path: path.join(__dirname, 'dist'), // 出口目录，dist文件
+        filename: '[name].[hash].js' //这里name就是打包出来的文件名，因为是单入口，就是main，多入口下回分解
+    },
+    module: {},
+    plugin: {},
+    devServer: {}
+}
+</code></pre></div></div>
+
+<ul>
+  <li>配置开发服务器</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yarn add webpack-dev-server -D
+修改webpack.config.js
+devServer: {
+    contentBase: path.join(__dirname, "dist"), //静态文件根目录
+    port: 9090, // 端口
+    host: 'localhost',
+    overlay: true,
+    compress: true // 服务器返回浏览器的时候是否启动gzip压缩
+}
+修改package.json
+"script": {
+    "build": "webpack --mode development", //这里为了不压缩代码，用开发环境
+    "dev": "webpack-dev-server --open --mode development"
+}
+</code></pre></div></div>
+
+<ul>
+  <li>支持css文件</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yarn add style-loader css-loader -D
+// css-loader用来处理css中url的路径
+// style-loader可以把css文件变成style标签插入head中
+// 多个loader是有顺序要求的，从右往左写，因为转换的时候是从右往左转换的
+module: {
+    rules: {
+        test: /\.css$/,
+        use: ['style-laoder', 'css-loader'],
+        include: path.join(__dirname, 'src'), //限制范围，提高打包速度
+        exclude: /node_modules/
+    }
+}
+
+</code></pre></div></div>
+
+<ul>
+  <li>支持es6，react.js等</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yarn add babel-loader babel-core babel-preset-env babel-preset-stage-0 babel-preset -react -D
+  {
+    test: /\.js$/,
+    use: {
+      loader: 'babel-loader',
+      query: {
+        presets: ['env', 'stage-0', 'react'] // env转换es6 stage-0转es7 react转react
+      }
+    }
+  }
+  同时可以把babel配置写到.babelrc中
+
+</code></pre></div></div>
+
+<ul>
+  <li>从js中分离css</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yarn add extract-text-webpack-plugin -D
+{
+    test: /\.css$/, // 转换文件的匹配正则
+    use: ExtractTextWebpackPlugin.extract({
+      fallback: 'style-loader',
+      //如果需要，可以在 sass-loader 之前将 resolve-url-loader 链接进来
+      use: ['css-loader']
+    })
+},
+//加上plugin
+plugins: [
+    new ExtractTextWebpackPlugin({
+      filename: 'css/[name].[hash].css' //放到dist/css/下
+    })
+]
+</code></pre></div></div>
+
+<ul>
+  <li>支持图片</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yarn add file-loader url-loader -D
+file-loader 解决css等文件中引入图片路径的问题
+url-loader 当图片较小的时候会把图片BASE64编码，大于limit参数的时候还是使用file-loader 进行拷贝
+{
+// file-loader是解析图片地址，把图片从源文件拷贝到目标文件并且修改源文件名字
+// 可以处理任意二进制，bootstrap里的字体
+// url-loader可以在文件比较小的时候，直接变成base64字符串内嵌到页面中
+{
+    test: /\.(png|jpg|jpeg|gif|svg)/,
+    use: {
+      loader: 'url-loader',
+      options: {
+        outputPath: 'images/', // 图片输出的路径
+        limit: 5 * 1024
+      }
+    }
+},
+// 同时要处理打包图片路径问题，
+output: {
+    publicPath: '/'
+}
+</code></pre></div></div>
+
+<ul>
+  <li>处理css3属性前缀</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yarn add postcss-loader -D
+{
+    test: /\.css$/, // 转换文件的匹配正则
+    // css-loader用来处理css中url的路径
+    // style-loader可以把css文件变成style标签插入head中
+    // 多个loader是有顺序要求的，从右往左写，因为转换的时候是从右往左转换的
+    // 此插件先用css-loader处理一下css文件
+    use: ExtractTextWebpackPlugin.extract({
+      fallback: 'style-loader',
+      //如果需要，可以在 sass-loader 之前将 resolve-url-loader 链接进来
+      use: ['css-loader', 'postcss-loader']
+    })
+},
+建立.postcssrc.js文件
+module.exports = {
+  "plugins": {
+    // to edit target browsers: use "browserslist" field in package.json
+    "autoprefixer": {
+      "browsers": [
+        "ie &gt;= 9",
+        "ff &gt;= 30",
+        "chrome &gt;= 34",
+        "safari &gt;= 7",
+        "opera &gt;= 23"
+      ]
+    }
+  }
+}
+
+</code></pre></div></div>
+
+<ul>
+  <li>调试打包的代码 webapck通过配置可以自动给我们source maps文件，map文件是一种对应编译文件和源文件的方法</li>
+</ul>
+
+<p>devtool: ‘eval-source-map’</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1. source-map 把映射文件生成到单独的文件，最完整最慢
+2. cheap-module-source-map 在一个单独的文件中产生一个不带列映射的Map
+3. eval-source-map 使用eval打包源文件模块,在同一个文件中生成完整sourcemap
+4. cheap-module-eval-source-map sourcemap和打包后的JS同行显示，没有映射列
+</code></pre></div></div>
+
+<ul>
+  <li>压缩js</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>webpack --mode production 会压缩，可以忽略下面
+yarn add uglifyjs-webpack-plugin -D
+const UglifyjsWebpackPlugin = require('uglifyjs-webpack-plugin')
+new UglifyjsWebpackPlugin(),
+</code></pre></div></div>
+
+<ul>
+  <li>压缩css</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>webpack --mode production 会压缩，可以忽略下面
+{
+    test: /\.css$/, // 转换文件的匹配正则
+    use: ExtractTextWebpackPlugin.extract({
+      fallback: 'style-loader',
+      use: [
+          {
+             loader: 'css-laoder',
+             options: {minimize: true}
+          },
+          'postcss-loader'
+      ]
+    })
+},
+
+</code></pre></div></div>
+
+<ul>
+  <li>清空打包输出目录</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yarn add clean-webpack-plugin -D
+const CleanWebpackPlugin = require('clean-webpack-plugin')
+new CleanWebpackPlugin([path.join(__dirname, 'dist')]),
+</code></pre></div></div>
+
+<ul>
+  <li>区分环境变量 许多 library 将通过与 process.env.NODE_ENV 环境变量关联，以决定 library 中应该引用哪些内容。我们可以使用 webpack 内置的 DefinePlugin 为所有的依赖定义这个变量：</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"scripts": {
+    "build": "cross-env NODE_ENV=production webpack --mode development", // 设置NODE_ENV为production
+    "dev": "webpack-dev-server --open --mode development "
+},
+new webpack.DefinePlugin({
+    NODE_ENV:JSON.stringify(process.env.NODE_ENV)
+})
+在全局都有NODE_ENV这个变量,当yarn run build,时，NODE_ENV = 'production'
+</code></pre></div></div>
+
+<ul>
+  <li>暴露全局变量</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>new Webpack.ProvidePlugin({
+  '$': 'jquery'
+}),
+
+</code></pre></div></div>
+
+<ul>
+  <li>resolve解析</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>xtension: 指定extension之后可以不用在require或是import的时候加文件扩展名,会依次尝试添加扩展名进行匹配
+resolve: {
+    //自动补全后缀，注意第一个必须是空字符串,后缀一定以点开头
+    extension: ['', '.js', '.json', '.css']
+}
+alias: 配置别名可以加快webpack查找模块的速度
+resolve: {
+    alias: {
+        'bootstrap': 'bootstrap/dist/css/bootstrap.css'
+    }
+}
+
+</code></pre></div></div>
+
+<ul>
+  <li>复制静态资源</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yarn add copy-webpack-plugin
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+new CopyWebpackPlugin([
+  {
+    from: path.resolve(__dirname, 'static'),
+    to: path.resolve(__dirname, 'pages/static'),
+    ignore: ['.*']
+  }
+])
+
+</code></pre></div></div>
+
+</div></article>
+		</div>
+	</div>
+</div><script src="//cdn.bootcss.com/toc/0.3.2/toc.min.js"></script>
+<script type="text/javascript">
+	window.throttle = function(func, wait) {
+	  var args, result, thisArg, timeoutId, lastCalled = 0;
+
+	  function trailingCall() {
+	    lastCalled = new Date;
+	    timeoutId = null;
+	    result = func.apply(thisArg, args);
+	  }
+	  return function() {
+	    var now = new Date,
+	      remaining = wait - (now - lastCalled);
+
+	    args = arguments;
+	    thisArg = this;
+
+	    if (remaining <= 0) {
+	      clearTimeout(timeoutId);
+	      timeoutId = null;
+	      lastCalled = now;
+	      result = func.apply(thisArg, args);
+	    } else if (!timeoutId) {
+	      timeoutId = setTimeout(trailingCall, remaining);
+	    }
+	    return result;
+	  };
+	}
+	$(function() {
+	  var $window = $(window);
+	  var $pageStage = $('.js-page-stage');
+	  var $pageMain = $('.js-main');
+	  var $pageFooter = $('.js-page-footer');
+	  var $articleContent = $('.js-article-content');
+	  var $articleAside = $('.js-article-aside');
+	  var $toc = $('.js-toc');
+		var $col2 = $('.js-col-2');
+	  var hasTitle = $articleContent.find('h1,h2,h3').length > 0;
+	  function asideSticky() {
+	    return $col2.css('display') !== 'none' && $pageStage.hasClass('has-toc');
+	  }
+
+	  function setTocClass() {
+	    if (hasTitle) {
+	      !$pageStage.hasClass('has-toc') && $pageStage.addClass('has-toc');
+	    }
+	  }
+
+	  setTocClass();
+
+	  function setAsideTOC() {
+	    var asideTop, asideLeft, scrollBottom, asideBottomTop, lastScrollTop;
+
+	    function init() {
+	      var asideOffset = $articleAside.offset();
+	      var footerOffset = $pageFooter.offset();
+	      var mainOffset = $pageMain.offset();
+	      asideTop = mainOffset.top;
+	      asideHeight = $toc.outerHeight() + parseInt($articleAside.css('padding-top'), 10) + parseInt($articleAside.css('padding-bottom'), 10);
+	      asideLeft = mainOffset.left + $pageMain.outerWidth() - $articleAside.outerWidth() - parseInt($pageMain.css('padding-right'), 10);
+	      scrollBottom = footerOffset.top - asideHeight;
+	      asideBottomTop = scrollBottom - mainOffset.top;
+	    }
+
+	    function setAside(force) {
+	      force !== true && (force = false);
+	      var scrollTop = $window.scrollTop();
+	      if (scrollTop >= asideTop && scrollTop <= scrollBottom) {
+	        (!force && lastScrollTop >= asideTop && lastScrollTop <= scrollBottom) ||
+	        $articleAside.addClass('fixed').css({
+	          left: asideLeft + 'px',
+	          top: 0
+	        });
+	      } else if (scrollTop < asideTop) {
+	        (!force && lastScrollTop < asideTop) ||
+	        $articleAside.removeClass('fixed').css({
+	          left: 0,
+	          top: 0
+	        });
+	      } else {
+	        (!force && lastScrollTop > scrollBottom) ||
+	        $articleAside.removeClass('fixed').css({
+	          left: 0,
+	          top: asideBottomTop + 'px'
+	        });
+	      }
+	      lastScrollTop = scrollTop;
+	    }
+	    asideSticky() && (init(), setAside());
+	    $window.on('scroll', function() {
+	      asideSticky() && setAside();
+	    });
+	    $window.on('resize', throttle(function() {
+	      setTocClass();
+	      asideSticky() && (init(), setAside(true));
+	    }, 100));
+	    setTimeout(init, 4000);
+	  }
+	  setTimeout(setAsideTOC, 1000);
+
+	  $toc.toc({
+	    'selectors': 'h1,h2,h3',
+	    'container': '.js-article-content',
+	  });
+	});
+</script></div>
+</div>
+</div><div class="m-page-footer js-page-footer">
+  <div class="main">
+    <aside><div class="follow-me"><ul itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="weili">
+    <link itemprop="url" href="http://localhost:4000/"></ul></div>
+</aside>
+    <footer class="site-info">
+      <p>© Weili's Blog 2018</p>
+      <p><a title="" href="https://github.com/lilywei739/lilywei739.github.io">VIEW IN GITHUB</a></p>
+      <p>Powered by <a title="Jekyll is a simple, blog-aware, static site generator." href="http://jekyllrb.com/">Jekyll</a> & <a
+        title="TeXt is a succinct theme for blogging." href="https://github.com/kitian616/jekyll-TeXt-theme">TeXt Theme</a>.</p>
+    </footer>
+  </div>
+</div>
+<script>
+      $(function() {
+        // display coding language
+        var $articleContent = $('.m-post, .m-page').find('.m-article-content'), $this;
+        $articleContent.children('.highlight').each(function() {
+          $this = $(this);
+          $this.attr('data-lang', $this.find('code').attr('data-lang'));
+        });
+        $articleContent.children('h1, h2, h3, h4, h5, h6').each(function() {
+          $this = $(this);
+          $this.append($('<a class="anchor" aria-hidden="true"></a>').text('#'));
+        });
+        $articleContent.on('click', '.anchor', function(e) {
+          var targetId = $(this).parent().attr('id');
+          scrollAnimateTo($('#' + targetId).offset().top, 400, function() {
+            console.log(666)
+            window.history.replaceState(null, '', window.location.href.split('#')[0] + '#' + targetId);
+          });
+        });
+        function scrollAnimateTo(destination, duration, callback) {
+          var $body = $('html, body'), bodyScrollTop = $body.scrollTop();
+          if(bodyScrollTop === destination) { return; }
+          $body.animate({ scrollTop: destination }, duration, callback);
+        }
+      });
+    </script></body>
+</html>

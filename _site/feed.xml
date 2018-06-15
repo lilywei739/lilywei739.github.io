@@ -1,5 +1,320 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.7.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2018-06-08T19:03:58+08:00</updated><id>http://localhost:4000/</id><title type="html">Weili’s Blog</title><subtitle>Weili's blog
-</subtitle><author><name>weili</name></author><entry><title type="html">instanceof 和 typeof 的实现原理</title><link href="http://localhost:4000/2018/06/08/instanceof%E5%92%8Ctypeof%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86.html" rel="alternate" type="text/html" title="instanceof 和 typeof 的实现原理" /><published>2018-06-08T00:00:00+08:00</published><updated>2018-06-08T00:00:00+08:00</updated><id>http://localhost:4000/2018/06/08/instanceof%E5%92%8Ctypeof%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86</id><content type="html" xml:base="http://localhost:4000/2018/06/08/instanceof%E5%92%8Ctypeof%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86.html">&lt;p&gt;这周老大分享了有关原生JS的基础内容，这次我也跟风补一下相关知识。&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.7.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2018-06-15T16:38:43+08:00</updated><id>http://localhost:4000/</id><title type="html">Weili’s Blog</title><subtitle>Weili's blog
+</subtitle><author><name>weili</name></author><entry><title type="html">webpack4—基础篇</title><link href="http://localhost:4000/2018/06/15/webpack4_%E5%9F%BA%E7%A1%80.html" rel="alternate" type="text/html" title="webpack4---基础篇" /><published>2018-06-15T00:00:00+08:00</published><updated>2018-06-15T00:00:00+08:00</updated><id>http://localhost:4000/2018/06/15/webpack4_%E5%9F%BA%E7%A1%80</id><content type="html" xml:base="http://localhost:4000/2018/06/15/webpack4_%E5%9F%BA%E7%A1%80.html">&lt;h2 id=&quot;核心概念&quot;&gt;核心概念&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Entry：入口，Webpack 执行构建的第一步将从 Entry 开始，可抽象成输入。&lt;/li&gt;
+  &lt;li&gt;Module：模块，在 Webpack 里一切皆模块，一个模块对应着一个文件。Webpack 会从配置的 Entry 开始递归找出所有依赖的模块。&lt;/li&gt;
+  &lt;li&gt;Chunk：代码块，一个 Chunk 由多个模块组合而成，用于代码合并与分割。&lt;/li&gt;
+  &lt;li&gt;Loader：模块转换器，用于把模块原内容按照需求转换成新内容。&lt;/li&gt;
+  &lt;li&gt;Plugin：扩展插件，在 Webpack 构建流程中的特定时机注入扩展逻辑来改变构建结果或做你想要的事情。&lt;/li&gt;
+  &lt;li&gt;Output：输出结果，在 Webpack 经过一系列处理并得出最终想要的代码后输出结果。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;webpackgruntgulp&quot;&gt;WebPack、Grunt、Gulp？&lt;/h2&gt;
+
+&lt;p&gt;Webpack和另外两个并没有太多的可比性，Gulp/Grunt是一种能够优化前端的开发流程的工具，而WebPack是一种模块化的解决方案，不过Webpack的优点使得Webpack可以替代Gulp/Grunt类的工具。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Grunt和Gulp的工作方式是：在一个配置文件中，指明对某些文件进行类似编译，组合，压缩等任务的具体步骤，这个工具之后可以自动替你完成这些任务。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Webpack的工作方式是：把你的项目当做一个整体，通过一个给定的主文件（如：index.js），Webpack将从这个文件开始找到你的项目的所有依赖文件，使用loaders处理它们，最后打包为一个浏览器可识别的JavaScript文件。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;如果实在要把二者进行比较，Webpack的处理速度更快更直接，能打包更多不同类型的文件。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;执行流程&quot;&gt;执行流程&lt;/h2&gt;
+
+&lt;p&gt;webpack启动后会在entry里配置的module开始递归解析entry所依赖的所有module，没找到一个module, 就会根据配置的loader去找相应的转换规则，对module进行转换后在解析当前module所依赖的module，这些模块会以entry为分组，一个entry和所有相依赖的module也就是一个chunk，最后webpack会把所有chunk转换成文件输出，在整个流程中webpack会在恰当的时机执行plugin的逻辑&lt;/p&gt;
+
+&lt;h2 id=&quot;从零配置webpack&quot;&gt;从零配置webpack&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;初始化配置&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mkdir webpack-start
+cd webpack-start
+npm init
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;配置webpack&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;yarn add webpack webpack-cli -D //webpack4把webpack拆分了
+mkdir src
+cd src 并且创建index.html, index.js
+mkdir dist
+touch webpack.config.js
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;webpack.config.js
+
+module.exports = {
+    entry: './src/index.js', //入口文件，src下的index.js
+    output: {
+        path: path.join(__dirname, 'dist'), // 出口目录，dist文件
+        filename: '[name].[hash].js' //这里name就是打包出来的文件名，因为是单入口，就是main，多入口下回分解
+    },
+    module: {},
+    plugin: {},
+    devServer: {}
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;配置开发服务器&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;yarn add webpack-dev-server -D
+修改webpack.config.js
+devServer: {
+    contentBase: path.join(__dirname, &quot;dist&quot;), //静态文件根目录
+    port: 9090, // 端口
+    host: 'localhost',
+    overlay: true,
+    compress: true // 服务器返回浏览器的时候是否启动gzip压缩
+}
+修改package.json
+&quot;script&quot;: {
+    &quot;build&quot;: &quot;webpack --mode development&quot;, //这里为了不压缩代码，用开发环境
+    &quot;dev&quot;: &quot;webpack-dev-server --open --mode development&quot;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;支持css文件&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;yarn add style-loader css-loader -D
+// css-loader用来处理css中url的路径
+// style-loader可以把css文件变成style标签插入head中
+// 多个loader是有顺序要求的，从右往左写，因为转换的时候是从右往左转换的
+module: {
+    rules: {
+        test: /\.css$/,
+        use: ['style-laoder', 'css-loader'],
+        include: path.join(__dirname, 'src'), //限制范围，提高打包速度
+        exclude: /node_modules/
+    }
+}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;支持es6，react.js等&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;yarn add babel-loader babel-core babel-preset-env babel-preset-stage-0 babel-preset -react -D
+  {
+    test: /\.js$/,
+    use: {
+      loader: 'babel-loader',
+      query: {
+        presets: ['env', 'stage-0', 'react'] // env转换es6 stage-0转es7 react转react
+      }
+    }
+  }
+  同时可以把babel配置写到.babelrc中
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;从js中分离css&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;yarn add extract-text-webpack-plugin -D
+{
+    test: /\.css$/, // 转换文件的匹配正则
+    use: ExtractTextWebpackPlugin.extract({
+      fallback: 'style-loader',
+      //如果需要，可以在 sass-loader 之前将 resolve-url-loader 链接进来
+      use: ['css-loader']
+    })
+},
+//加上plugin
+plugins: [
+    new ExtractTextWebpackPlugin({
+      filename: 'css/[name].[hash].css' //放到dist/css/下
+    })
+]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;支持图片&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;yarn add file-loader url-loader -D
+file-loader 解决css等文件中引入图片路径的问题
+url-loader 当图片较小的时候会把图片BASE64编码，大于limit参数的时候还是使用file-loader 进行拷贝
+{
+// file-loader是解析图片地址，把图片从源文件拷贝到目标文件并且修改源文件名字
+// 可以处理任意二进制，bootstrap里的字体
+// url-loader可以在文件比较小的时候，直接变成base64字符串内嵌到页面中
+{
+    test: /\.(png|jpg|jpeg|gif|svg)/,
+    use: {
+      loader: 'url-loader',
+      options: {
+        outputPath: 'images/', // 图片输出的路径
+        limit: 5 * 1024
+      }
+    }
+},
+// 同时要处理打包图片路径问题，
+output: {
+    publicPath: '/'
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;处理css3属性前缀&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;yarn add postcss-loader -D
+{
+    test: /\.css$/, // 转换文件的匹配正则
+    // css-loader用来处理css中url的路径
+    // style-loader可以把css文件变成style标签插入head中
+    // 多个loader是有顺序要求的，从右往左写，因为转换的时候是从右往左转换的
+    // 此插件先用css-loader处理一下css文件
+    use: ExtractTextWebpackPlugin.extract({
+      fallback: 'style-loader',
+      //如果需要，可以在 sass-loader 之前将 resolve-url-loader 链接进来
+      use: ['css-loader', 'postcss-loader']
+    })
+},
+建立.postcssrc.js文件
+module.exports = {
+  &quot;plugins&quot;: {
+    // to edit target browsers: use &quot;browserslist&quot; field in package.json
+    &quot;autoprefixer&quot;: {
+      &quot;browsers&quot;: [
+        &quot;ie &amp;gt;= 9&quot;,
+        &quot;ff &amp;gt;= 30&quot;,
+        &quot;chrome &amp;gt;= 34&quot;,
+        &quot;safari &amp;gt;= 7&quot;,
+        &quot;opera &amp;gt;= 23&quot;
+      ]
+    }
+  }
+}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;调试打包的代码 webapck通过配置可以自动给我们source maps文件，map文件是一种对应编译文件和源文件的方法&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;devtool: ‘eval-source-map’&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1. source-map 把映射文件生成到单独的文件，最完整最慢
+2. cheap-module-source-map 在一个单独的文件中产生一个不带列映射的Map
+3. eval-source-map 使用eval打包源文件模块,在同一个文件中生成完整sourcemap
+4. cheap-module-eval-source-map sourcemap和打包后的JS同行显示，没有映射列
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;压缩js&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;webpack --mode production 会压缩，可以忽略下面
+yarn add uglifyjs-webpack-plugin -D
+const UglifyjsWebpackPlugin = require('uglifyjs-webpack-plugin')
+new UglifyjsWebpackPlugin(),
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;压缩css&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;webpack --mode production 会压缩，可以忽略下面
+{
+    test: /\.css$/, // 转换文件的匹配正则
+    use: ExtractTextWebpackPlugin.extract({
+      fallback: 'style-loader',
+      use: [
+          {
+             loader: 'css-laoder',
+             options: {minimize: true}
+          },
+          'postcss-loader'
+      ]
+    })
+},
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;清空打包输出目录&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;yarn add clean-webpack-plugin -D
+const CleanWebpackPlugin = require('clean-webpack-plugin')
+new CleanWebpackPlugin([path.join(__dirname, 'dist')]),
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;区分环境变量 许多 library 将通过与 process.env.NODE_ENV 环境变量关联，以决定 library 中应该引用哪些内容。我们可以使用 webpack 内置的 DefinePlugin 为所有的依赖定义这个变量：&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&quot;scripts&quot;: {
+    &quot;build&quot;: &quot;cross-env NODE_ENV=production webpack --mode development&quot;, // 设置NODE_ENV为production
+    &quot;dev&quot;: &quot;webpack-dev-server --open --mode development &quot;
+},
+new webpack.DefinePlugin({
+    NODE_ENV:JSON.stringify(process.env.NODE_ENV)
+})
+在全局都有NODE_ENV这个变量,当yarn run build,时，NODE_ENV = 'production'
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;暴露全局变量&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;new Webpack.ProvidePlugin({
+  '$': 'jquery'
+}),
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;resolve解析&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;xtension: 指定extension之后可以不用在require或是import的时候加文件扩展名,会依次尝试添加扩展名进行匹配
+resolve: {
+    //自动补全后缀，注意第一个必须是空字符串,后缀一定以点开头
+    extension: ['', '.js', '.json', '.css']
+}
+alias: 配置别名可以加快webpack查找模块的速度
+resolve: {
+    alias: {
+        'bootstrap': 'bootstrap/dist/css/bootstrap.css'
+    }
+}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;复制静态资源&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;yarn add copy-webpack-plugin
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+new CopyWebpackPlugin([
+  {
+    from: path.resolve(__dirname, 'static'),
+    to: path.resolve(__dirname, 'pages/static'),
+    ignore: ['.*']
+  }
+])
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>weili</name></author><category term="JS" /><category term="前端" /><summary type="html">核心概念 Entry：入口，Webpack 执行构建的第一步将从 Entry 开始，可抽象成输入。 Module：模块，在 Webpack 里一切皆模块，一个模块对应着一个文件。Webpack 会从配置的 Entry 开始递归找出所有依赖的模块。 Chunk：代码块，一个 Chunk 由多个模块组合而成，用于代码合并与分割。 Loader：模块转换器，用于把模块原内容按照需求转换成新内容。 Plugin：扩展插件，在 Webpack 构建流程中的特定时机注入扩展逻辑来改变构建结果或做你想要的事情。 Output：输出结果，在 Webpack 经过一系列处理并得出最终想要的代码后输出结果。 WebPack、Grunt、Gulp？ Webpack和另外两个并没有太多的可比性，Gulp/Grunt是一种能够优化前端的开发流程的工具，而WebPack是一种模块化的解决方案，不过Webpack的优点使得Webpack可以替代Gulp/Grunt类的工具。 Grunt和Gulp的工作方式是：在一个配置文件中，指明对某些文件进行类似编译，组合，压缩等任务的具体步骤，这个工具之后可以自动替你完成这些任务。 Webpack的工作方式是：把你的项目当做一个整体，通过一个给定的主文件（如：index.js），Webpack将从这个文件开始找到你的项目的所有依赖文件，使用loaders处理它们，最后打包为一个浏览器可识别的JavaScript文件。 如果实在要把二者进行比较，Webpack的处理速度更快更直接，能打包更多不同类型的文件。 执行流程 webpack启动后会在entry里配置的module开始递归解析entry所依赖的所有module，没找到一个module, 就会根据配置的loader去找相应的转换规则，对module进行转换后在解析当前module所依赖的module，这些模块会以entry为分组，一个entry和所有相依赖的module也就是一个chunk，最后webpack会把所有chunk转换成文件输出，在整个流程中webpack会在恰当的时机执行plugin的逻辑 从零配置webpack 初始化配置 mkdir webpack-start cd webpack-start npm init 配置webpack yarn add webpack webpack-cli -D //webpack4把webpack拆分了 mkdir src cd src 并且创建index.html, index.js mkdir dist touch webpack.config.js webpack.config.js module.exports = { entry: './src/index.js', //入口文件，src下的index.js output: { path: path.join(__dirname, 'dist'), // 出口目录，dist文件 filename: '[name].[hash].js' //这里name就是打包出来的文件名，因为是单入口，就是main，多入口下回分解 }, module: {}, plugin: {}, devServer: {} } 配置开发服务器 yarn add webpack-dev-server -D 修改webpack.config.js devServer: { contentBase: path.join(__dirname, &quot;dist&quot;), //静态文件根目录 port: 9090, // 端口 host: 'localhost', overlay: true, compress: true // 服务器返回浏览器的时候是否启动gzip压缩 } 修改package.json &quot;script&quot;: { &quot;build&quot;: &quot;webpack --mode development&quot;, //这里为了不压缩代码，用开发环境 &quot;dev&quot;: &quot;webpack-dev-server --open --mode development&quot; } 支持css文件 yarn add style-loader css-loader -D // css-loader用来处理css中url的路径 // style-loader可以把css文件变成style标签插入head中 // 多个loader是有顺序要求的，从右往左写，因为转换的时候是从右往左转换的 module: { rules: { test: /\.css$/, use: ['style-laoder', 'css-loader'], include: path.join(__dirname, 'src'), //限制范围，提高打包速度 exclude: /node_modules/ } } 支持es6，react.js等 yarn add babel-loader babel-core babel-preset-env babel-preset-stage-0 babel-preset -react -D { test: /\.js$/, use: { loader: 'babel-loader', query: { presets: ['env', 'stage-0', 'react'] // env转换es6 stage-0转es7 react转react } } } 同时可以把babel配置写到.babelrc中 从js中分离css yarn add extract-text-webpack-plugin -D { test: /\.css$/, // 转换文件的匹配正则 use: ExtractTextWebpackPlugin.extract({ fallback: 'style-loader', //如果需要，可以在 sass-loader 之前将 resolve-url-loader 链接进来 use: ['css-loader'] }) }, //加上plugin plugins: [ new ExtractTextWebpackPlugin({ filename: 'css/[name].[hash].css' //放到dist/css/下 }) ] 支持图片 yarn add file-loader url-loader -D file-loader 解决css等文件中引入图片路径的问题 url-loader 当图片较小的时候会把图片BASE64编码，大于limit参数的时候还是使用file-loader 进行拷贝 { // file-loader是解析图片地址，把图片从源文件拷贝到目标文件并且修改源文件名字 // 可以处理任意二进制，bootstrap里的字体 // url-loader可以在文件比较小的时候，直接变成base64字符串内嵌到页面中 { test: /\.(png|jpg|jpeg|gif|svg)/, use: { loader: 'url-loader', options: { outputPath: 'images/', // 图片输出的路径 limit: 5 * 1024 } } }, // 同时要处理打包图片路径问题， output: { publicPath: '/' } 处理css3属性前缀 yarn add postcss-loader -D { test: /\.css$/, // 转换文件的匹配正则 // css-loader用来处理css中url的路径 // style-loader可以把css文件变成style标签插入head中 // 多个loader是有顺序要求的，从右往左写，因为转换的时候是从右往左转换的 // 此插件先用css-loader处理一下css文件 use: ExtractTextWebpackPlugin.extract({ fallback: 'style-loader', //如果需要，可以在 sass-loader 之前将 resolve-url-loader 链接进来 use: ['css-loader', 'postcss-loader'] }) }, 建立.postcssrc.js文件 module.exports = { &quot;plugins&quot;: { // to edit target browsers: use &quot;browserslist&quot; field in package.json &quot;autoprefixer&quot;: { &quot;browsers&quot;: [ &quot;ie &amp;gt;= 9&quot;, &quot;ff &amp;gt;= 30&quot;, &quot;chrome &amp;gt;= 34&quot;, &quot;safari &amp;gt;= 7&quot;, &quot;opera &amp;gt;= 23&quot; ] } } } 调试打包的代码 webapck通过配置可以自动给我们source maps文件，map文件是一种对应编译文件和源文件的方法 devtool: ‘eval-source-map’ 1. source-map 把映射文件生成到单独的文件，最完整最慢 2. cheap-module-source-map 在一个单独的文件中产生一个不带列映射的Map 3. eval-source-map 使用eval打包源文件模块,在同一个文件中生成完整sourcemap 4. cheap-module-eval-source-map sourcemap和打包后的JS同行显示，没有映射列 压缩js webpack --mode production 会压缩，可以忽略下面 yarn add uglifyjs-webpack-plugin -D const UglifyjsWebpackPlugin = require('uglifyjs-webpack-plugin') new UglifyjsWebpackPlugin(), 压缩css webpack --mode production 会压缩，可以忽略下面 { test: /\.css$/, // 转换文件的匹配正则 use: ExtractTextWebpackPlugin.extract({ fallback: 'style-loader', use: [ { loader: 'css-laoder', options: {minimize: true} }, 'postcss-loader' ] }) }, 清空打包输出目录 yarn add clean-webpack-plugin -D const CleanWebpackPlugin = require('clean-webpack-plugin') new CleanWebpackPlugin([path.join(__dirname, 'dist')]), 区分环境变量 许多 library 将通过与 process.env.NODE_ENV 环境变量关联，以决定 library 中应该引用哪些内容。我们可以使用 webpack 内置的 DefinePlugin 为所有的依赖定义这个变量： &quot;scripts&quot;: { &quot;build&quot;: &quot;cross-env NODE_ENV=production webpack --mode development&quot;, // 设置NODE_ENV为production &quot;dev&quot;: &quot;webpack-dev-server --open --mode development &quot; }, new webpack.DefinePlugin({ NODE_ENV:JSON.stringify(process.env.NODE_ENV) }) 在全局都有NODE_ENV这个变量,当yarn run build,时，NODE_ENV = 'production' 暴露全局变量 new Webpack.ProvidePlugin({ '$': 'jquery' }), resolve解析 xtension: 指定extension之后可以不用在require或是import的时候加文件扩展名,会依次尝试添加扩展名进行匹配 resolve: { //自动补全后缀，注意第一个必须是空字符串,后缀一定以点开头 extension: ['', '.js', '.json', '.css'] } alias: 配置别名可以加快webpack查找模块的速度 resolve: { alias: { 'bootstrap': 'bootstrap/dist/css/bootstrap.css' } } 复制静态资源 yarn add copy-webpack-plugin const CopyWebpackPlugin = require('copy-webpack-plugin') new CopyWebpackPlugin([ { from: path.resolve(__dirname, 'static'), to: path.resolve(__dirname, 'pages/static'), ignore: ['.*'] } ])</summary></entry><entry><title type="html">instanceof 和 typeof 的实现原理</title><link href="http://localhost:4000/2018/06/08/instanceof%E5%92%8Ctypeof%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86.html" rel="alternate" type="text/html" title="instanceof 和 typeof 的实现原理" /><published>2018-06-08T00:00:00+08:00</published><updated>2018-06-08T00:00:00+08:00</updated><id>http://localhost:4000/2018/06/08/instanceof%E5%92%8Ctypeof%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86</id><content type="html" xml:base="http://localhost:4000/2018/06/08/instanceof%E5%92%8Ctypeof%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86.html">&lt;p&gt;这周老大分享了有关原生JS的基础内容，这次我也跟风补一下相关知识。&lt;/p&gt;
 
 &lt;h2 id=&quot;typeof-实现原理&quot;&gt;typeof 实现原理&lt;/h2&gt;
 
@@ -1571,202 +1886,4 @@ var weights = [5, 20, 10, 12];
 var capacity = 30;
 
 document.write(ksack(values, weights, capacity)); // 显示 220
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>weili</name></author><category term="[&quot;JS&quot;]" /><summary type="html">高级算法–贪心算法 贪心算法总是会选择当下的最优解，而不去考虑这一次的选择会不会对未来的选择造成影响，目的是得到当前最优解。 使用贪心算法的经典案例 找零问题 从商店购买了一些商品，找零 63 美分，店员要 怎样给你这些零钱呢?如果店员根据贪心算法来找零的话，他会给你两个 25 美分、一个 10 美分和三个 1 美分。在没有使用 50 美分的情况下这是最少的硬币数量。 function makeChange(origAmt, coins) { var remainAmt = 0; if (origAmt % .25 &amp;lt; origAmt) { coins[3] = parseInt(origAmt / .25); remainAmt = origAmt % .25; origAmt = remainAmt; } if (origAmt % .1 &amp;lt; origAmt) { coins[2] = parseInt(origAmt / .1); remainAmt = origAmt % .1; origAmt = remainAmt; } if (origAmt % .05 &amp;lt; origAmt) { coins[1] = parseInt(origAmt / .05); remainAmt = origAmt % .05; origAmt = remainAmt; } coins[0] = parseInt(origAmt / .01); } function showChange(coins) { if (coins[3] &amp;gt; 0) { document.write(&quot;25 美分的数量 - &quot; + coins[3] + &quot; - &quot; + coins[3] * .25); } if (coins[2] &amp;gt; 0) { document.write(&quot;10 美分的数量 - &quot; + coins[2] + &quot; - &quot; + coins[2] * .10); } if (coins[1] &amp;gt; 0) { document.write(&quot;5 美分的数量 - &quot; + coins[1] + &quot; - &quot; + coins[1] * .05); } if (coins[0] &amp;gt; 0) { document.write(&quot;1 美分的数量 - &quot; + coins[0] + &quot; - &quot; + coins[0] * .01); } } var origAmt = .63; var coins = []; makeChange(origAmt, coins); showChange(coins); ======================== 结果如下： 25美分的数量 - 2 - 0.5 10美分的数量 - 1 - 0.1 1美分的数量 - 3 - 0.03 makeChange() 函数从面值最高的 25 美分硬币开始，一直尝试使用这个面值去找零。总共 用到的 25 美分硬币数量会存储在 coins 数组中。如果剩余金额不到 25 美分，算法将会尝 试使用 10 美分硬币去找零，用到的 10 美分硬币总总数也会存储在 coins 数组里。接下来 算法会以相同的方式使用 5 美分和 1 美分来找零。 在所有面额都可用且数量不限的情况下，这种方案总能找到最优解。如果某种面额不可用，比如 5 美分，则会得到一个次优解。 背包问题之贪心算法解决方案 如果用贪心算法处理背包问题，它有一个前提放入背包的物品从本质上说是连续的，那 么可以简单地通过物品的单价除以单位体积来确定物品的价值，先装价值最高的物品直到该物品装完或者将背包装满，接着装价值次高的物品，直到 这种物品也装完或将背包装满，以此类推。 思路是 (1) 背包的容量为 W，物品的价格为 v，重量为 w。 (2) 根据 v/w 的比率对物品排序。 (3) 按比率的降序方式来考虑物品。 (4) 尽可能多地放入每个物品。 如给出了四个物品的重量、价格和比率 物品 A B C D 价格 50 140 60 60 尺寸 5 20 10 12 比率 10 7 6 5 function ksack(values, weights, capacity) { var load = 0; var i = 0; var w = 0; while (load &amp;lt; capacity &amp;amp;&amp;amp; i &amp;lt; 4) { if (weights[i] &amp;lt;= (capacity-load)) { w += values[i]; load += weights[i]; } else { var r = (capacity-load)/weights[i]; w += r * values[i]; load += weights[i]; } ++i; } return w; } var items = [&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;]; var values = [50, 140, 60, 60]; var weights = [5, 20, 10, 12]; var capacity = 30; document.write(ksack(values, weights, capacity)); // 显示 220</summary></entry><entry><title type="html">JS基础–高级算法–动态规划</title><link href="http://localhost:4000/js/2018/03/09/AdvancedAlgorithms-1.html" rel="alternate" type="text/html" title="JS基础--高级算法--动态规划" /><published>2018-03-09T00:00:00+08:00</published><updated>2018-03-09T00:00:00+08:00</updated><id>http://localhost:4000/js/2018/03/09/AdvancedAlgorithms-1</id><content type="html" xml:base="http://localhost:4000/js/2018/03/09/AdvancedAlgorithms-1.html">&lt;h1 id=&quot;高级算法动态规划&quot;&gt;高级算法–动态规划&lt;/h1&gt;
-
-&lt;h2 id=&quot;动态规则与递归的关系与区别&quot;&gt;动态规则与递归的关系与区别&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;动态规划有时被认为是一种与递归相反的技术。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;递归是从顶部开始将问题分解，通过解决掉所有分解出小问题的方式，来解决整 个问题。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;动态规划解决方案从底部开始解决问题，将所有小问题解决掉，然后合并成一个 整体解决方案，从而解决掉整个大问题。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;递归去解决问题虽然简洁，但效率不高,许多使用递归去解决的编程问题，可以重写为使用动态规划的技巧去解决&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;动态规划方案&quot;&gt;动态规划方案&lt;/h2&gt;
-
-&lt;p&gt;动态规划方案通常会使用一个数组来建立一张表，用于存放被分解成众多子问题的解。当算法执行完 毕，最终的解将会在这个表中很明显的地方被找到&lt;/p&gt;
-
-&lt;h2 id=&quot;使用动态规划方案能做点什么&quot;&gt;使用动态规划方案能做点什么？&lt;/h2&gt;
-
-&lt;h3 id=&quot;计算斐波那契数列&quot;&gt;计算斐波那契数列&lt;/h3&gt;
-
-&lt;p&gt;斐波那契数列可以定义为以下序列:&lt;/p&gt;
-
-&lt;p&gt;0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, …&lt;/p&gt;
-
-&lt;p&gt;该序列是由前两项数值相加而成的&lt;/p&gt;
-
-&lt;p&gt;递归的实现方式：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function recurFib(n) {
-    if (n &amp;lt; 2) {
-        return n; 
-    } else {
-        
-        return recurFib(n-1) + recurFib(n-2);
-    } 
-}
-document.write(recurFib(10)); // 显示 55
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;在这个计算过程当中，有太多值在递归调用中被重新计算,这也是递归方法效率低下的原因。&lt;/p&gt;
-
-&lt;p&gt;再看下动态规则的实现方法：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function dynFib(n) {
-    var val = [];
-    for (var i = 0; i &amp;lt;= n; ++i) {
-        val[i] = 0; 
-    }
-    if (n == 1 || n == 2) {
-        return 1;
-    } else {
-        val[1] = 1;
-        val[2] = 2;
-        for (var i = 3; i &amp;lt;= n; ++i) {
-            val[i] = val[i-1] + val[i-2];
-        }
-        return val[n-1];
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;在这个数组 val 中保存了中间结果。如果要计算的斐波那契数是 1 或者 2，那么 if 语 句会返回 1。否则，数值 1 和 2 将被保存在 val 数组中 1 和 2 的位置。循环将会从 3 到输 入的参数之间进行遍历，将数组的每个元素赋值为前两个元素之和，循环结束，数组的最 后一个元素值即为最终计算得到的斐波那契数值，这个数值也将作为函数的返回值。&lt;/p&gt;
-
-&lt;p&gt;斐波那契数列在数组 val 中的排列顺序如下:&lt;/p&gt;
-
-&lt;p&gt;val[0] = 0 val[1] = 1 val[2] = 2 val[3] = 3 val[4] = 5 val[5] = 8 val[6] = 13&lt;/p&gt;
-
-&lt;h3 id=&quot;寻找最长公共子串&quot;&gt;寻找最长公共子串&lt;/h3&gt;
-
-&lt;p&gt;用动态规划去寻找两个字符串的最长公共子串。例如，在单词 “raven”和“havoc”中，最长的公共子串是“av”。&lt;/p&gt;
-
-&lt;p&gt;原理：&lt;/p&gt;
-
-&lt;p&gt;使用一个二维数组存储两个字符串相同 位置的字符比较结果。初始化时，该数组的每一个元素被设置为 0。每次在这两个数组的 相同位置发现了匹配，就将数组对应行和列的元素加 1，否则保持为 0。按照这种方式，一个变量会持续记录下找到了多少个匹配项。当算法执行完毕时，这个变 量会结合一个索引变量来获得最长公共子串。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function lcs(word1, word2) {
-     var max = 0;
-     var index = 0;
-     var lcsarr = new Array(word1.length + 1);
-     for (var i = 0; i &amp;lt;= word1.length + 1; ++i) {
-         lcsarr[i] = new Array(word2.length + 1);
-         for (var j = 0; j &amp;lt;= word2.length + 1; ++j) {
-            lcsarr[i][j] = 0;
-        }
-    }
-
-    //上面这一部分初始化了两个变量以及一个二维数组。多数语言对二维数组的声明都很 简单，但在 JavaScript 中需要很费劲地在一个数组中定义另一个数组，这样才能声明一个 二维数组。以下代码片段中的最后一个 for 循环会对这个数组进行初始化，
-
-
-    for (var i = 0; i &amp;lt;= word1.length; ++i) {
-       for (var j = 0; j &amp;lt;= word2.length; ++j) {
-          if (i == 0 || j == 0) {
-             lcsarr[i][j] = 0;
-          } else {
-              if (word1[i - 1] == word2[j - 1]) {
-                lcsarr[i][j] = lcsarr[i - 1][j - 1] + 1;
-              } else {
-                lcsarr[i][j] = 0;
-              } 
-          }
-          if (max &amp;lt; lcsarr[i][j]) {
-             max = lcsarr[i][j];
-             index = i;
-          } 
-        }
-    }
-
-    //这一部分构建了用于保存字符匹配记录的表。数组的第一个元素总是被设置为 0。如果两 个字符串相应位置的字符进行了匹配，当前数组元素的值将被设置为前一次循环中数组元 素保存的值加 1。比如，如果两个字符串 &quot;back&quot; 和 &quot;cace&quot;，当算法运行到第二个字符处 时，那么数值 1 将被保存到当前元素中，因为前一个元素并不匹配，0 被保存在那个元素 中(0+1)。接下来算法移动到下一个位置，由于此时两个字符仍被匹配，当前数组元素将 被设置为 2(1+1)。由于两个字符串的最后一个字符不匹配，所以最长公共子串的长度是 2。最后，如果变量 max 的值比现在存储在数组中的当前元素要小，max 的值将被赋值给这 个元素，变量 index 的值将被设置为 i 的当前值。这两个变量将在函数的最后一部分用于 确定从哪里开始获取最长公共子串。
-
-    var str = &quot;&quot;;
-    if (max == 0) {
-       return &quot;&quot;;
-    } else {
-        for (var i = index - max; i &amp;lt;= max; ++i) {
-          str += word2[i];
-        }
-        return str; 
-    }
-
-    //这一部分代码用于确认从哪里开始构建这个最长公共子串。以变量 index 减去变量 max 的差值作为起始点，以变量 max 的值作为终点:
-}
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;背包问题递归解决方案&quot;&gt;背包问题:递归解决方案&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function max(a, b) {
-    return (a &amp;gt; b) ? a : b;
-}
-
-function knapsack(capacity, size, value, n) {
-    if (n == 0 || capacity == 0) {
-        return 0; 
-    }
-    if (size[n - 1] &amp;gt; capacity) {
-       return knapsack(capacity, size, value, n - 1);
-    } else {
-       return max(value[n - 1] +
-          knapsack(capacity - size[n - 1], size, value, n - 1),
-          knapsack(capacity, size, value, n - 1));
-    } 
-}
-
-var value = [4, 5, 10, 11, 13];
-var size = [3, 4, 7, 8, 9];
-var capacity = 16;
-var n = 5;
-document.write(knapsack(capacity, size, value, n));
-
-//结果：23
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;背包问题动态规划方案&quot;&gt;背包问题:动态规划方案&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function max(a, b) {
-    return (a &amp;gt; b) ? a : b;
-}
-function dKnapsack(capacity, size, value, n) {
-  var K = [];
-  for (var i = 0; i &amp;lt;= capacity + 1; i++) {
-      K[i] = [];
-  }
-  for (var i = 0; i &amp;lt;= n; i++) {
-     for (var w = 0; w &amp;lt;= capacity; w++) {
-        if (i == 0 || w == 0) {
-            K[i][w] = 0; 
-        } else if (size[i - 1] &amp;lt;= w) {
-           K[i][w] = max(value[i - 1] + K[i-1][w-size[i-1]], K[i-1][w]);
-        } else {
-           K[i][w] = K[i - 1][w];
-        }
-        document.write(K[i][w] + &quot; &quot;);
-     }
-  }
-  return K[n][capacity];
-}
-var value = [4, 5, 10, 11, 13];
-var size = [3, 4, 7, 8, 9];
-var capacity = 16;
-var n = 5;
-document.write(dKnapsack(capacity, size, value, n));
-
-结果：
-
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 4 4 4 4 4 4 4 4 4 4 4 4 4 4 
-0 0 0 4 5 5 5 9 9 9 9 9 9 9 9 9 9
-0 0 0 4 5 5 5 10 10 10 14 15 15 15 19 19 19 
-0 0 0 4 5 5 5 10 11 11 14 15 16 16 19 21 21 
-0 0 0 4 5 5 5 10 11 13 14 15 17 18 19 21 23 
-23
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>weili</name></author><category term="[&quot;JS&quot;]" /><summary type="html">高级算法–动态规划 动态规则与递归的关系与区别 动态规划有时被认为是一种与递归相反的技术。 递归是从顶部开始将问题分解，通过解决掉所有分解出小问题的方式，来解决整 个问题。 动态规划解决方案从底部开始解决问题，将所有小问题解决掉，然后合并成一个 整体解决方案，从而解决掉整个大问题。 递归去解决问题虽然简洁，但效率不高,许多使用递归去解决的编程问题，可以重写为使用动态规划的技巧去解决 动态规划方案 动态规划方案通常会使用一个数组来建立一张表，用于存放被分解成众多子问题的解。当算法执行完 毕，最终的解将会在这个表中很明显的地方被找到 使用动态规划方案能做点什么？ 计算斐波那契数列 斐波那契数列可以定义为以下序列: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, … 该序列是由前两项数值相加而成的 递归的实现方式： function recurFib(n) { if (n &amp;lt; 2) { return n; } else { return recurFib(n-1) + recurFib(n-2); } } document.write(recurFib(10)); // 显示 55 在这个计算过程当中，有太多值在递归调用中被重新计算,这也是递归方法效率低下的原因。 再看下动态规则的实现方法： function dynFib(n) { var val = []; for (var i = 0; i &amp;lt;= n; ++i) { val[i] = 0; } if (n == 1 || n == 2) { return 1; } else { val[1] = 1; val[2] = 2; for (var i = 3; i &amp;lt;= n; ++i) { val[i] = val[i-1] + val[i-2]; } return val[n-1]; } } 在这个数组 val 中保存了中间结果。如果要计算的斐波那契数是 1 或者 2，那么 if 语 句会返回 1。否则，数值 1 和 2 将被保存在 val 数组中 1 和 2 的位置。循环将会从 3 到输 入的参数之间进行遍历，将数组的每个元素赋值为前两个元素之和，循环结束，数组的最 后一个元素值即为最终计算得到的斐波那契数值，这个数值也将作为函数的返回值。 斐波那契数列在数组 val 中的排列顺序如下: val[0] = 0 val[1] = 1 val[2] = 2 val[3] = 3 val[4] = 5 val[5] = 8 val[6] = 13 寻找最长公共子串 用动态规划去寻找两个字符串的最长公共子串。例如，在单词 “raven”和“havoc”中，最长的公共子串是“av”。 原理： 使用一个二维数组存储两个字符串相同 位置的字符比较结果。初始化时，该数组的每一个元素被设置为 0。每次在这两个数组的 相同位置发现了匹配，就将数组对应行和列的元素加 1，否则保持为 0。按照这种方式，一个变量会持续记录下找到了多少个匹配项。当算法执行完毕时，这个变 量会结合一个索引变量来获得最长公共子串。 function lcs(word1, word2) { var max = 0; var index = 0; var lcsarr = new Array(word1.length + 1); for (var i = 0; i &amp;lt;= word1.length + 1; ++i) { lcsarr[i] = new Array(word2.length + 1); for (var j = 0; j &amp;lt;= word2.length + 1; ++j) { lcsarr[i][j] = 0; } } //上面这一部分初始化了两个变量以及一个二维数组。多数语言对二维数组的声明都很 简单，但在 JavaScript 中需要很费劲地在一个数组中定义另一个数组，这样才能声明一个 二维数组。以下代码片段中的最后一个 for 循环会对这个数组进行初始化， for (var i = 0; i &amp;lt;= word1.length; ++i) { for (var j = 0; j &amp;lt;= word2.length; ++j) { if (i == 0 || j == 0) { lcsarr[i][j] = 0; } else { if (word1[i - 1] == word2[j - 1]) { lcsarr[i][j] = lcsarr[i - 1][j - 1] + 1; } else { lcsarr[i][j] = 0; } } if (max &amp;lt; lcsarr[i][j]) { max = lcsarr[i][j]; index = i; } } } //这一部分构建了用于保存字符匹配记录的表。数组的第一个元素总是被设置为 0。如果两 个字符串相应位置的字符进行了匹配，当前数组元素的值将被设置为前一次循环中数组元 素保存的值加 1。比如，如果两个字符串 &quot;back&quot; 和 &quot;cace&quot;，当算法运行到第二个字符处 时，那么数值 1 将被保存到当前元素中，因为前一个元素并不匹配，0 被保存在那个元素 中(0+1)。接下来算法移动到下一个位置，由于此时两个字符仍被匹配，当前数组元素将 被设置为 2(1+1)。由于两个字符串的最后一个字符不匹配，所以最长公共子串的长度是 2。最后，如果变量 max 的值比现在存储在数组中的当前元素要小，max 的值将被赋值给这 个元素，变量 index 的值将被设置为 i 的当前值。这两个变量将在函数的最后一部分用于 确定从哪里开始获取最长公共子串。 var str = &quot;&quot;; if (max == 0) { return &quot;&quot;; } else { for (var i = index - max; i &amp;lt;= max; ++i) { str += word2[i]; } return str; } //这一部分代码用于确认从哪里开始构建这个最长公共子串。以变量 index 减去变量 max 的差值作为起始点，以变量 max 的值作为终点: } 背包问题:递归解决方案 function max(a, b) { return (a &amp;gt; b) ? a : b; } function knapsack(capacity, size, value, n) { if (n == 0 || capacity == 0) { return 0; } if (size[n - 1] &amp;gt; capacity) { return knapsack(capacity, size, value, n - 1); } else { return max(value[n - 1] + knapsack(capacity - size[n - 1], size, value, n - 1), knapsack(capacity, size, value, n - 1)); } } var value = [4, 5, 10, 11, 13]; var size = [3, 4, 7, 8, 9]; var capacity = 16; var n = 5; document.write(knapsack(capacity, size, value, n)); //结果：23 背包问题:动态规划方案 function max(a, b) { return (a &amp;gt; b) ? a : b; } function dKnapsack(capacity, size, value, n) { var K = []; for (var i = 0; i &amp;lt;= capacity + 1; i++) { K[i] = []; } for (var i = 0; i &amp;lt;= n; i++) { for (var w = 0; w &amp;lt;= capacity; w++) { if (i == 0 || w == 0) { K[i][w] = 0; } else if (size[i - 1] &amp;lt;= w) { K[i][w] = max(value[i - 1] + K[i-1][w-size[i-1]], K[i-1][w]); } else { K[i][w] = K[i - 1][w]; } document.write(K[i][w] + &quot; &quot;); } } return K[n][capacity]; } var value = [4, 5, 10, 11, 13]; var size = [3, 4, 7, 8, 9]; var capacity = 16; var n = 5; document.write(dKnapsack(capacity, size, value, n)); 结果： 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 4 4 4 4 4 4 4 4 4 4 4 4 4 4 0 0 0 4 5 5 5 9 9 9 9 9 9 9 9 9 9 0 0 0 4 5 5 5 10 10 10 14 15 15 15 19 19 19 0 0 0 4 5 5 5 10 11 11 14 15 16 16 19 21 21 0 0 0 4 5 5 5 10 11 13 14 15 17 18 19 21 23 23</summary></entry></feed>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>weili</name></author><category term="[&quot;JS&quot;]" /><summary type="html">高级算法–贪心算法 贪心算法总是会选择当下的最优解，而不去考虑这一次的选择会不会对未来的选择造成影响，目的是得到当前最优解。 使用贪心算法的经典案例 找零问题 从商店购买了一些商品，找零 63 美分，店员要 怎样给你这些零钱呢?如果店员根据贪心算法来找零的话，他会给你两个 25 美分、一个 10 美分和三个 1 美分。在没有使用 50 美分的情况下这是最少的硬币数量。 function makeChange(origAmt, coins) { var remainAmt = 0; if (origAmt % .25 &amp;lt; origAmt) { coins[3] = parseInt(origAmt / .25); remainAmt = origAmt % .25; origAmt = remainAmt; } if (origAmt % .1 &amp;lt; origAmt) { coins[2] = parseInt(origAmt / .1); remainAmt = origAmt % .1; origAmt = remainAmt; } if (origAmt % .05 &amp;lt; origAmt) { coins[1] = parseInt(origAmt / .05); remainAmt = origAmt % .05; origAmt = remainAmt; } coins[0] = parseInt(origAmt / .01); } function showChange(coins) { if (coins[3] &amp;gt; 0) { document.write(&quot;25 美分的数量 - &quot; + coins[3] + &quot; - &quot; + coins[3] * .25); } if (coins[2] &amp;gt; 0) { document.write(&quot;10 美分的数量 - &quot; + coins[2] + &quot; - &quot; + coins[2] * .10); } if (coins[1] &amp;gt; 0) { document.write(&quot;5 美分的数量 - &quot; + coins[1] + &quot; - &quot; + coins[1] * .05); } if (coins[0] &amp;gt; 0) { document.write(&quot;1 美分的数量 - &quot; + coins[0] + &quot; - &quot; + coins[0] * .01); } } var origAmt = .63; var coins = []; makeChange(origAmt, coins); showChange(coins); ======================== 结果如下： 25美分的数量 - 2 - 0.5 10美分的数量 - 1 - 0.1 1美分的数量 - 3 - 0.03 makeChange() 函数从面值最高的 25 美分硬币开始，一直尝试使用这个面值去找零。总共 用到的 25 美分硬币数量会存储在 coins 数组中。如果剩余金额不到 25 美分，算法将会尝 试使用 10 美分硬币去找零，用到的 10 美分硬币总总数也会存储在 coins 数组里。接下来 算法会以相同的方式使用 5 美分和 1 美分来找零。 在所有面额都可用且数量不限的情况下，这种方案总能找到最优解。如果某种面额不可用，比如 5 美分，则会得到一个次优解。 背包问题之贪心算法解决方案 如果用贪心算法处理背包问题，它有一个前提放入背包的物品从本质上说是连续的，那 么可以简单地通过物品的单价除以单位体积来确定物品的价值，先装价值最高的物品直到该物品装完或者将背包装满，接着装价值次高的物品，直到 这种物品也装完或将背包装满，以此类推。 思路是 (1) 背包的容量为 W，物品的价格为 v，重量为 w。 (2) 根据 v/w 的比率对物品排序。 (3) 按比率的降序方式来考虑物品。 (4) 尽可能多地放入每个物品。 如给出了四个物品的重量、价格和比率 物品 A B C D 价格 50 140 60 60 尺寸 5 20 10 12 比率 10 7 6 5 function ksack(values, weights, capacity) { var load = 0; var i = 0; var w = 0; while (load &amp;lt; capacity &amp;amp;&amp;amp; i &amp;lt; 4) { if (weights[i] &amp;lt;= (capacity-load)) { w += values[i]; load += weights[i]; } else { var r = (capacity-load)/weights[i]; w += r * values[i]; load += weights[i]; } ++i; } return w; } var items = [&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;]; var values = [50, 140, 60, 60]; var weights = [5, 20, 10, 12]; var capacity = 30; document.write(ksack(values, weights, capacity)); // 显示 220</summary></entry></feed>
