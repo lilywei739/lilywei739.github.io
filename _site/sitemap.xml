@@ -197,6 +197,10 @@
 <lastmod>2018-06-15T00:00:00+08:00</lastmod>
 </url>
 <url>
+<loc>http://localhost:4000/2018/06/22/webpack4_%E9%AB%98%E7%BA%A7.html</loc>
+<lastmod>2018-06-22T00:00:00+08:00</lastmod>
+</url>
+<url>
 <loc>http://localhost:4000/about.html</loc>
 </url>
 <url>
@@ -222,5 +226,8 @@
 </url>
 <url>
 <loc>http://localhost:4000/blog/page7/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/blog/page8/</loc>
 </url>
 </urlset>
