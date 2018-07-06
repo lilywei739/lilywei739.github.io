@@ -1,5 +1,237 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.7.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2018-06-28T15:23:49+08:00</updated><id>http://localhost:4000/</id><title type="html">Weili’s Blog</title><subtitle>Weili's blog
-</subtitle><author><name>weili</name></author><entry><title type="html">webpack4—高级篇</title><link href="http://localhost:4000/2018/06/22/webpack4_%E9%AB%98%E7%BA%A7.html" rel="alternate" type="text/html" title="webpack4---高级篇" /><published>2018-06-22T00:00:00+08:00</published><updated>2018-06-22T00:00:00+08:00</updated><id>http://localhost:4000/2018/06/22/webpack4_%E9%AB%98%E7%BA%A7</id><content type="html" xml:base="http://localhost:4000/2018/06/22/webpack4_%E9%AB%98%E7%BA%A7.html">&lt;h2 id=&quot;tree-shaking&quot;&gt;Tree Shaking&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.7.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2018-07-06T16:17:34+08:00</updated><id>http://localhost:4000/</id><title type="html">Weili’s Blog</title><subtitle>Weili's blog
+</subtitle><author><name>weili</name></author><entry><title type="html">TypeScript (二)</title><link href="http://localhost:4000/2018/07/06/TypeScript_2.html" rel="alternate" type="text/html" title="TypeScript (二)" /><published>2018-07-06T00:00:00+08:00</published><updated>2018-07-06T00:00:00+08:00</updated><id>http://localhost:4000/2018/07/06/TypeScript_2</id><content type="html" xml:base="http://localhost:4000/2018/07/06/TypeScript_2.html">&lt;p&gt;TypeScript支持与JavaScript几乎相同的数据类型，此外还提供了实用的枚举类型方便我们使用。&lt;/p&gt;
+
+&lt;h2 id=&quot;基础类型&quot;&gt;基础类型&lt;/h2&gt;
+
+&lt;h3 id=&quot;布尔值&quot;&gt;布尔值&lt;/h3&gt;
+
+&lt;p&gt;最基本的数据类型就是简单的true/false值，在JavaScript和TypeScript里叫做boolean&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;let isDone: boolean = false;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;数值&quot;&gt;数值&lt;/h3&gt;
+
+&lt;p&gt;和JavaScript一样，TypeScript里的所有数字都是浮点数。 这些浮点数的类型是 number。 除了支持十进制和十六进制字面量，TypeScript还支持ECMAScript 2015中引入的二进制和八进制字面量。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;let decLiteral: number = 6;
+let hexLiteral: number = 0xf00d;
+let binaryLiteral: number = 0b1010;
+let octalLiteral: number = 0o744;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;字符串&quot;&gt;字符串&lt;/h3&gt;
+
+&lt;p&gt;和JavaScript一样，可以使用双引号（ “）或单引号（’）表示字符串&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;let name: string = &quot;bob&quot;;
+name = &quot;smith&quot;;
+
+
+//模版字符串
+
+let name: string = `Gene`;
+let age: number = 37;
+let sentence: string = `Hello, my name is ${ name }.
+
+I'll be ${ age + 1 } years old next month.`;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;数组&quot;&gt;数组&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// array
+let list_a: number[] = [1, 2, 3]
+let list_b: Array&amp;lt;number&amp;gt; = [1, 2, 3] // number 类型的数组
+let list_c: [string, number] = ['linkFly', 0] //元组
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;枚举&quot;&gt;枚举&lt;/h3&gt;
+
+&lt;p&gt;enum类型是对JavaScript标准数据类型的一个补充。 像C#等其它语言一样，使用枚举类型可以为一组数值赋予友好的名字。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;enum Color {Red, Green, Blue}
+let c: Color = Color.Green;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;any&quot;&gt;Any&lt;/h3&gt;
+
+&lt;p&gt;有时候，我们会想要为那些在编程阶段还不清楚类型的变量指定一个类型。 这些值可能来自于动态的内容，比如来自用户输入或第三方代码库。 这种情况下，我们不希望类型检查器对这些值进行检查而是直接让它们通过编译阶段的检查。 那么我们可以使用 any类型来标记这些变量：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;let notSure: any = 4;
+notSure = &quot;maybe a string instead&quot;;
+notSure = false; // okay, definitely a boolean
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;在对现有代码进行改写的时候，any类型是十分有用的，它允许你在编译时可选择地包含或移除类型检查。 你可能认为 Object有相似的作用，就像它在其它语言中那样。 但是 Object类型的变量只是允许你给它赋任意值 - 但是却不能够在它上面调用任意的方法，即便它真的有这些方法：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;let notSure: any = 4;
+notSure.ifItExists(); // okay, ifItExists might exist at runtime
+notSure.toFixed(); // okay, toFixed exists (but the compiler doesn't check)
+
+let prettySure: Object = 4;
+prettySure.toFixed(); // Error: Property 'toFixed' doesn't exist on type 'Object'.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;当只知道一部分数据的类型时，any类型也是有用的。 比如，你有一个数组，它包含了不同的类型的数据：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;let list: any[] = [1, true, &quot;free&quot;];
+
+list[1] = 100;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;void&quot;&gt;Void&lt;/h3&gt;
+
+&lt;p&gt;void类型像是与any类型相反，它表示没有任何类型。 当一个函数没有返回值时，你通常会见到其返回值类型是 void&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function warnUser(): void {
+    alert(&quot;This is my warning message&quot;);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;声明一个void类型的变量没有什么大用，因为你只能为它赋予undefined和null：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;let unusable: void = undefined;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;null-和-undefined&quot;&gt;Null 和 Undefined&lt;/h3&gt;
+
+&lt;p&gt;TypeScript里，undefined和null两者各自有自己的类型分别叫做undefined和null。 和 void相似，它们的本身的类型用处不是很大：&lt;/p&gt;
+
+&lt;p&gt;默认情况下null和undefined是所有类型的子类型。 就是说你可以把 null和undefined赋值给number类型的变量。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// Not much else we can assign to these variables!
+let u: undefined = undefined;
+let n: null = null;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;never&quot;&gt;Never&lt;/h3&gt;
+
+&lt;p&gt;never类型表示的是那些永不存在的值的类型。 例如， never类型是那些总是会抛出异常或根本就不会有返回值的函数表达式或箭头函数表达式的返回值类型； 变量也可能是 never类型，当它们被永不为真的类型保护所约束时。&lt;/p&gt;
+
+&lt;p&gt;never类型是任何类型的子类型，也可以赋值给任何类型；然而，没有类型是never的子类型或可以赋值给never类型（除了never本身之外）。 即使 any也不可以赋值给never。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// 返回never的函数必须存在无法达到的终点
+function error(message: string): never {
+    throw new Error(message);
+}
+
+// 推断的返回值类型为never
+function fail() {
+    return error(&quot;Something failed&quot;);
+}
+
+// 返回never的函数必须存在无法达到的终点
+function infiniteLoop(): never {
+    while (true) {
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;类型断言&quot;&gt;类型断言&lt;/h2&gt;
+
+&lt;p&gt;通过类型断言这种方式可以告诉编译器，“相信我，我知道自己在干什么”。 类型断言好比其它语言里的类型转换，但是不进行特殊的数据检查和解构。 它没有运行时的影响，只是在编译阶段起作用。 TypeScript会假设你，程序员，已经进行了必须的检查。&lt;/p&gt;
+
+&lt;p&gt;类型断言有两种形式。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;“尖括号”&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;let someValue: any = &quot;this is a string&quot;;
+
+let strLength: number = (&amp;lt;string&amp;gt;someValue).length;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;as&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;let someValue: any = &quot;this is a string&quot;;
+
+let strLength: number = (someValue as string).length;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>weili</name></author><category term="JS" /><category term="前端" /><summary type="html">TypeScript支持与JavaScript几乎相同的数据类型，此外还提供了实用的枚举类型方便我们使用。 基础类型 布尔值 最基本的数据类型就是简单的true/false值，在JavaScript和TypeScript里叫做boolean let isDone: boolean = false; 数值 和JavaScript一样，TypeScript里的所有数字都是浮点数。 这些浮点数的类型是 number。 除了支持十进制和十六进制字面量，TypeScript还支持ECMAScript 2015中引入的二进制和八进制字面量。 let decLiteral: number = 6; let hexLiteral: number = 0xf00d; let binaryLiteral: number = 0b1010; let octalLiteral: number = 0o744; 字符串 和JavaScript一样，可以使用双引号（ “）或单引号（’）表示字符串 let name: string = &quot;bob&quot;; name = &quot;smith&quot;; //模版字符串 let name: string = `Gene`; let age: number = 37; let sentence: string = `Hello, my name is ${ name }. I'll be ${ age + 1 } years old next month.`; 数组 // array let list_a: number[] = [1, 2, 3] let list_b: Array&amp;lt;number&amp;gt; = [1, 2, 3] // number 类型的数组 let list_c: [string, number] = ['linkFly', 0] //元组 枚举 enum类型是对JavaScript标准数据类型的一个补充。 像C#等其它语言一样，使用枚举类型可以为一组数值赋予友好的名字。 enum Color {Red, Green, Blue} let c: Color = Color.Green; Any 有时候，我们会想要为那些在编程阶段还不清楚类型的变量指定一个类型。 这些值可能来自于动态的内容，比如来自用户输入或第三方代码库。 这种情况下，我们不希望类型检查器对这些值进行检查而是直接让它们通过编译阶段的检查。 那么我们可以使用 any类型来标记这些变量： let notSure: any = 4; notSure = &quot;maybe a string instead&quot;; notSure = false; // okay, definitely a boolean 在对现有代码进行改写的时候，any类型是十分有用的，它允许你在编译时可选择地包含或移除类型检查。 你可能认为 Object有相似的作用，就像它在其它语言中那样。 但是 Object类型的变量只是允许你给它赋任意值 - 但是却不能够在它上面调用任意的方法，即便它真的有这些方法： let notSure: any = 4; notSure.ifItExists(); // okay, ifItExists might exist at runtime notSure.toFixed(); // okay, toFixed exists (but the compiler doesn't check) let prettySure: Object = 4; prettySure.toFixed(); // Error: Property 'toFixed' doesn't exist on type 'Object'. 当只知道一部分数据的类型时，any类型也是有用的。 比如，你有一个数组，它包含了不同的类型的数据： let list: any[] = [1, true, &quot;free&quot;]; list[1] = 100; Void void类型像是与any类型相反，它表示没有任何类型。 当一个函数没有返回值时，你通常会见到其返回值类型是 void function warnUser(): void { alert(&quot;This is my warning message&quot;); } 声明一个void类型的变量没有什么大用，因为你只能为它赋予undefined和null： let unusable: void = undefined; Null 和 Undefined TypeScript里，undefined和null两者各自有自己的类型分别叫做undefined和null。 和 void相似，它们的本身的类型用处不是很大： 默认情况下null和undefined是所有类型的子类型。 就是说你可以把 null和undefined赋值给number类型的变量。 // Not much else we can assign to these variables! let u: undefined = undefined; let n: null = null; Never never类型表示的是那些永不存在的值的类型。 例如， never类型是那些总是会抛出异常或根本就不会有返回值的函数表达式或箭头函数表达式的返回值类型； 变量也可能是 never类型，当它们被永不为真的类型保护所约束时。 never类型是任何类型的子类型，也可以赋值给任何类型；然而，没有类型是never的子类型或可以赋值给never类型（除了never本身之外）。 即使 any也不可以赋值给never。 // 返回never的函数必须存在无法达到的终点 function error(message: string): never { throw new Error(message); } // 推断的返回值类型为never function fail() { return error(&quot;Something failed&quot;); } // 返回never的函数必须存在无法达到的终点 function infiniteLoop(): never { while (true) { } } 类型断言 通过类型断言这种方式可以告诉编译器，“相信我，我知道自己在干什么”。 类型断言好比其它语言里的类型转换，但是不进行特殊的数据检查和解构。 它没有运行时的影响，只是在编译阶段起作用。 TypeScript会假设你，程序员，已经进行了必须的检查。 类型断言有两种形式。 “尖括号” let someValue: any = &quot;this is a string&quot;; let strLength: number = (&amp;lt;string&amp;gt;someValue).length; as let someValue: any = &quot;this is a string&quot;; let strLength: number = (someValue as string).length;</summary></entry><entry><title type="html">TypeScript (一)</title><link href="http://localhost:4000/2018/06/30/TypeScript_1.html" rel="alternate" type="text/html" title="TypeScript (一)" /><published>2018-06-30T00:00:00+08:00</published><updated>2018-06-30T00:00:00+08:00</updated><id>http://localhost:4000/2018/06/30/TypeScript_1</id><content type="html" xml:base="http://localhost:4000/2018/06/30/TypeScript_1.html">&lt;h2 id=&quot;什么是-typescript&quot;&gt;什么是 TypeScript&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;TypeScript 是 JavaScript 的类型的超集，它可以编译成纯 JavaScript。编译出来的 JavaScript 可以运行在任何浏览器上。TypeScript 编译工具可以运行在任何服务器和任何系统上。TypeScript 是开源的。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;TypeScript 是 JavaScript 的一个超集，主要提供了类型系统和对 ES6 的支持，它由 Microsoft 开发，代码开源于 GitHub 上。&lt;/p&gt;
+
+&lt;h2 id=&quot;typescript-优势&quot;&gt;TypeScript 优势&lt;/h2&gt;
+
+&lt;p&gt;TypeScript 增加了代码的可读性和可维护性&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;类型系统实际上是最好的文档，大部分的函数看看类型的定义就可以知道如何使用了&lt;/li&gt;
+  &lt;li&gt;可以在编译阶段就发现大部分错误，这总比在运行时候出错好&lt;/li&gt;
+  &lt;li&gt;增强了编辑器和 IDE 的功能，包括代码补全、接口提示、跳转到定义、重构等&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;typescript-包容性强&quot;&gt;TypeScript 包容性强&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;TypeScript 是 JavaScript 的超集，.js 文件可以直接重命名为 .ts 即可&lt;/li&gt;
+  &lt;li&gt;即使不显式的定义类型，也能够自动做出类型推论&lt;/li&gt;
+  &lt;li&gt;可以定义从简单到复杂的一切类型&lt;/li&gt;
+  &lt;li&gt;即使 TypeScript 编译报错，也可以生成 JavaScript 文件&lt;/li&gt;
+  &lt;li&gt;兼容第三方库，即使第三方库不是用 TypeScript 写的，也可以编写单独的类型文件供 TypeScript 读取&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;typescript-的缺点&quot;&gt;TypeScript 的缺点&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;有一定的学习成本，需要理解接口（Interfaces）、泛型（Generics）、类（Classes）、枚举类型（Enums）等前端工程师可能不是很熟悉的东西。而且它的中文资料也不多&lt;/li&gt;
+  &lt;li&gt;短期可能会增加一些开发成本，毕竟要多写一些类型的定义，不过对于一个需要长期维护的项目，TypeScript 能够减少其维护成本&lt;/li&gt;
+  &lt;li&gt;集成到构建流程需要一些工作量&lt;/li&gt;
+  &lt;li&gt;可能和一些库结合的不是很完美&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;安装-typescript&quot;&gt;安装 TypeScript&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;TypeScript 的命令行工具安装方法如下：&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm install -g typescript
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;以上命令会在全局环境下安装 tsc 命令，安装完成之后，我们就可以在任何地方执行 tsc 命令了。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;编译一个 TypeScript 文件：&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;tsc hello.ts
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;使用 TypeScript 编写的文件以 .ts 为后缀&lt;/p&gt;
+
+&lt;h2 id=&quot;一个完整的例子&quot;&gt;一个完整的例子&lt;/h2&gt;
+
+&lt;p&gt;一个hello.ts命名的TypeScript文件，代码如下&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function sayHello(person: string) {
+    return 'Hello, ' + person;
+}
+
+let user = 'Tom';
+console.log(sayHello(user));
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;然后执行&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;tsc hello.ts
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;会生成一个编译好的文件 hello.js&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function sayHello(person) {
+    return 'Hello, ' + person;
+}
+var user = 'Tom';
+console.log(sayHello(user));
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>weili</name></author><category term="JS" /><category term="前端" /><summary type="html">什么是 TypeScript TypeScript 是 JavaScript 的类型的超集，它可以编译成纯 JavaScript。编译出来的 JavaScript 可以运行在任何浏览器上。TypeScript 编译工具可以运行在任何服务器和任何系统上。TypeScript 是开源的。 TypeScript 是 JavaScript 的一个超集，主要提供了类型系统和对 ES6 的支持，它由 Microsoft 开发，代码开源于 GitHub 上。 TypeScript 优势 TypeScript 增加了代码的可读性和可维护性 类型系统实际上是最好的文档，大部分的函数看看类型的定义就可以知道如何使用了 可以在编译阶段就发现大部分错误，这总比在运行时候出错好 增强了编辑器和 IDE 的功能，包括代码补全、接口提示、跳转到定义、重构等 TypeScript 包容性强 TypeScript 是 JavaScript 的超集，.js 文件可以直接重命名为 .ts 即可 即使不显式的定义类型，也能够自动做出类型推论 可以定义从简单到复杂的一切类型 即使 TypeScript 编译报错，也可以生成 JavaScript 文件 兼容第三方库，即使第三方库不是用 TypeScript 写的，也可以编写单独的类型文件供 TypeScript 读取 TypeScript 的缺点 有一定的学习成本，需要理解接口（Interfaces）、泛型（Generics）、类（Classes）、枚举类型（Enums）等前端工程师可能不是很熟悉的东西。而且它的中文资料也不多 短期可能会增加一些开发成本，毕竟要多写一些类型的定义，不过对于一个需要长期维护的项目，TypeScript 能够减少其维护成本 集成到构建流程需要一些工作量 可能和一些库结合的不是很完美 安装 TypeScript TypeScript 的命令行工具安装方法如下： npm install -g typescript 以上命令会在全局环境下安装 tsc 命令，安装完成之后，我们就可以在任何地方执行 tsc 命令了。 编译一个 TypeScript 文件： tsc hello.ts 使用 TypeScript 编写的文件以 .ts 为后缀 一个完整的例子 一个hello.ts命名的TypeScript文件，代码如下 function sayHello(person: string) { return 'Hello, ' + person; } let user = 'Tom'; console.log(sayHello(user)); 然后执行 tsc hello.ts 会生成一个编译好的文件 hello.js function sayHello(person) { return 'Hello, ' + person; } var user = 'Tom'; console.log(sayHello(user));</summary></entry><entry><title type="html">webpack4—高级篇</title><link href="http://localhost:4000/2018/06/22/webpack4_%E9%AB%98%E7%BA%A7.html" rel="alternate" type="text/html" title="webpack4---高级篇" /><published>2018-06-22T00:00:00+08:00</published><updated>2018-06-22T00:00:00+08:00</updated><id>http://localhost:4000/2018/06/22/webpack4_%E9%AB%98%E7%BA%A7</id><content type="html" xml:base="http://localhost:4000/2018/06/22/webpack4_%E9%AB%98%E7%BA%A7.html">&lt;h2 id=&quot;tree-shaking&quot;&gt;Tree Shaking&lt;/h2&gt;
 
 &lt;ul&gt;
   &lt;li&gt;css Tree Shaking&lt;/li&gt;
@@ -1316,576 +1548,4 @@ finally方法指定，不管Promise对象最后状态如何，都会执行的操
         })
         return temp
     }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>weili</name></author><category term="[&quot;JS&quot;]" /><summary type="html">项目小知识点 项目中用到的一些小知识点，用于记录一下： 1、 数组去重 var arr = [1,10,4,6,10,9,8,6,10] // 从前向后逐个比较，相同的删除 Array.prototype.distinct1 = function () { var arr = this; for(var i=0; i&amp;lt;arr.length; i++) { for(var j=i+1; j&amp;lt;arr.length; j++) { if(arr[i] === arr[j]) { arr.splice(j,1) j = ++i; } } } return arr } // 从前向后比较，不相同的push到新数组 Array.prototype.distinct2 = function () { var arr = this; var temp = []; for(var i=0; i&amp;lt;arr.length; i++) { for(var j=i+1; j&amp;lt;arr.length; j++) { if(arr[i] === arr[j]) { j = ++i; } } temp.push(arr[i]) } return temp } // 利用对象属性名不能重复的特性 Array.prototype.distinct3 = function () { var obj = {}; var arr =this; var temp = []; for(var i=0; i&amp;lt;arr.length; i++) { if(!obj[arr[i]]) { temp.push(arr[i]) obj[arr[i]] = 1; } } return temp } // 利用indexOf 如果无法匹配到相同的，push进新数组 Array.prototype.distinct4 = function () { var arr = this; var temp = []; arr.forEach(function (item, i) { var num = arr.indexOf(item, i+1) if(num === -1) { temp.push(item) } }) return temp }</summary></entry><entry><title type="html">HTML5_Video视频WebVTT字幕</title><link href="http://localhost:4000/video/2018/03/26/HTML5_Video%E8%A7%86%E9%A2%91WebVTT%E5%AD%97%E5%B9%95.html" rel="alternate" type="text/html" title="HTML5_Video视频WebVTT字幕" /><published>2018-03-26T00:00:00+08:00</published><updated>2018-03-26T00:00:00+08:00</updated><id>http://localhost:4000/video/2018/03/26/HTML5_Video%E8%A7%86%E9%A2%91WebVTT%E5%AD%97%E5%B9%95</id><content type="html" xml:base="http://localhost:4000/video/2018/03/26/HTML5_Video%E8%A7%86%E9%A2%91WebVTT%E5%AD%97%E5%B9%95.html">&lt;h2 id=&quot;html5-video视频与webvtt字幕&quot;&gt;HTML5 Video视频与WebVTT字幕&lt;/h2&gt;
-
-&lt;p&gt;HTML5 Videov字幕通用是WebVTT（后缀.vtt），这个各个浏览器厂商都支持的比较好。&lt;/p&gt;
-
-&lt;h3 id=&quot;track&quot;&gt;track??&lt;/h3&gt;
-
-&lt;p&gt;完整写法:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;video controls width=&quot;400&quot; height=&quot;300&quot;&amp;gt;
-    &amp;lt;source src=&quot;../test.mp4&quot; type=&quot;video/mp4&quot;&amp;gt;
-    &amp;lt;track src=&quot;test.vtt&quot; srclang=&quot;zh&quot; kind=&quot;subtitles&quot; label=&quot;中文&quot; default&amp;gt;
-    &amp;lt;track src=&quot;test_en.vtt&quot; srclang=&quot;en&quot; kind=&quot;subtitles&quot; label=&quot;English&quot;&amp;gt;
-&amp;lt;/video&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;如果有多个语言字幕可以添加多条&lt;track /&gt;，供用户切换选择&lt;/li&gt;
-  &lt;li&gt;标注为default的&lt;track /&gt;表示默认使用的字幕。&lt;/li&gt;
-  &lt;li&gt;只要src属性地址OK，同时有default属性，字幕就会生效。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;track /&gt;
-&lt;p&gt;元素的属性如下:&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;名称&lt;/th&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;值&lt;/th&gt;
-      &lt;th style=&quot;text-align: right&quot;&gt;说明&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;kind&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;subtitles&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt;字幕，详见表格后&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;captions&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt;字幕，详见表格后&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;descriptions&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt;描述，视频的文本描述&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;chapters&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt;章节导航&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;metadata&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt;元数据&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;src&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;URL&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt;指定资源URL&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;srclang&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;Language code&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt;在 src 资源的语言,VTT文本信息使用的语言。例如，中文zh，英文en&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;label&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;Free text&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt;点击CC按钮选择字幕时候出现的文字&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;default&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;n/a&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt;default指的是默认会显示的字幕。例如两个&lt;track /&gt;元素，如果都没有default属性，那都不显示，需要用户手动调出。另外，default只能出现在一个&lt;track /&gt;元素上&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;table&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1) kind:   可选值 subtitles&lt;/td&gt;
-      &lt;td&gt;captions&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;subtitles: 平常看电影看动漫时候下面出现的字幕，一般是翻译，或者采访时候口音不清的字幕显示。有时候还会标注一些说明，例如，显示人物姓名身份，当前场景地或者标注之前语言的梗在哪里等&lt;/li&gt;
-  &lt;li&gt;这里captions专指隐藏式字幕（Closed Captions），简称CC
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;隐藏字幕（Closed Captioning，简称CC)是电视节目或影碟中为有特殊情况或者需要的观众而准备的宇幕，例如观众在听力上有障碍，或者需要无音条件下观赏节目。此时字幕中可使用一些解释性的语言来描述节目内容。
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;subtitles主要就是对人说话进行翻译或确认；而captions不仅需要人对话的内容提示，紧张的背景音乐，或者汽车吱吱作响的刹车声都需要在字幕中描述出来。这样，即使用户静音也能知道视频里到底在玩些什么。我想，如果是经常看国外影视作品的小伙伴肯定会有类似的字幕体验，有的就对话字幕，有的事无巨细，就是subtitles和captions的区别&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;vtt文件&quot;&gt;.vtt文件&lt;/h3&gt;
-
-&lt;p&gt;格式如下：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;WEBVTT
-
-00:11.000 --&amp;gt; 00:13.000
-&amp;lt;v Roger Bingham&amp;gt;We are in New York City
-
-00:13.000 --&amp;gt; 00:16.000
-&amp;lt;v Roger Bingham&amp;gt;We’re actually at the Lucern Hotel, just down the street
-
-00:16.000 --&amp;gt; 00:18.000
-&amp;lt;v Roger Bingham&amp;gt;from the American Museum of Natural History
-
-00:18.000 --&amp;gt; 00:20.000
-&amp;lt;v Roger Bingham&amp;gt;And with me is Neil deGrasse Tyson
-
-00:20.000 --&amp;gt; 00:22.000
-&amp;lt;v Roger Bingham&amp;gt;Astrophysicist, Director of the Hayden Planetarium
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;就是个文本文件，格式很简单，一开始声明下WebVTT，然后下面就是视频时间范围，下一行就是字幕内容，时间可以精确到毫秒，但通常0.5秒足矣。&lt;/p&gt;
-
-&lt;p&gt;更多规则解释详见&lt;a href=&quot;https://w3c.github.io/webvtt/&quot;&gt;官网文档&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;html5-video视频字幕的样式控制&quot;&gt;HTML5 Video视频字幕的样式控制&lt;/h2&gt;
-
-&lt;p&gt;CSS中有专门的伪元素::cue可以控制字幕的样式。&lt;/p&gt;
-
-&lt;p&gt;可以控制的CSS属性包括：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;color
-opacity
-visibility
-text-decoration及相关属性
-text-shadow
-background及相关属性
-outline及相关属性
-font及相关属性，包括line-height
-white-space
-text-combine-upright
-ruby-position
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;WebVTT还支持一些内联样式控制，常见的&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;值&lt;/th&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;说明&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;c&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;用 c 定义 （CSS）类, 例如， &lt;c.className&gt;Cue text&amp;lt;/c&amp;gt;&lt;/c.className&gt;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;i&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;斜体字&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;b&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;粗体字&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;u&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;添加下划线&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;ruby&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;详见表格后&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;v&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;如有提供，则用来指定声音标签。例如， &lt;v Ian=&quot;&quot;&gt;This is useful for adding subtitles&lt;/v&gt;。注意此声音标签不会显示，它只是作为一个样式标记。&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ruby : 定义类似于 HTML5 的 &amp;lt;ruby&amp;gt; 元素。在这样的内联样式中，允许出现一个或多个 &amp;lt;rt&amp;gt; 元素。（&amp;lt;ruby&amp;gt; 元素用于标注汉字等东亚字符的发音）
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;使用方法如下所示：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;00:00:52.000 --&amp;gt; 00:00:54.000 align:start size:15%
-&amp;lt;v Emo&amp;gt;I don’t think so. &amp;lt;c.question&amp;gt;You?&amp;lt;/c&amp;gt;&amp;lt;/v&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;给 Cue 文本添加两种不同的声音标签： Emo 和 Proog（自定义的） 。另外，一个 question（自定义的） 的 CSS 类被指定，可以按惯常方法在 CSS 链接文件 或 HTML 页面里为其指定样式。&lt;/p&gt;
-
-&lt;p&gt;注意要给 Cue 文本添加 CSS 样式，你需要用一个特定的伪选择元素，例子如下:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;video::cue(v[voice=&quot;Emo&quot;]) { color:lime }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;更全面的样式控制&quot;&gt;更全面的样式控制&lt;/h3&gt;
-
-&lt;p&gt;原生的字幕样式控制，有CSS属性和字幕HTML标签双重限制，不是很灵活&lt;/p&gt;
-
-&lt;p&gt;可以使用开源的HTML5视频项目：&lt;a href=&quot;https://github.com/paypal/accessible-html5-video-player&quot;&gt;accessible-html5-video-player&lt;/a&gt;，paypal的开源项目，可以对原生的video进行UI重定值，JS很小，未压缩版本就几十K，其会把VTT文件中HTML片段直接完整输出到页面中，于是乎，所有的CSS属性我们都可以使用了，例如可以把字幕在视频上方直接一个绝对定位上去就好了。&lt;/p&gt;</content><author><name>weili</name></author><category term="[&quot;video&quot;]" /><summary type="html">HTML5 Video视频与WebVTT字幕 HTML5 Videov字幕通用是WebVTT（后缀.vtt），这个各个浏览器厂商都支持的比较好。 track?? 完整写法: &amp;lt;video controls width=&quot;400&quot; height=&quot;300&quot;&amp;gt; &amp;lt;source src=&quot;../test.mp4&quot; type=&quot;video/mp4&quot;&amp;gt; &amp;lt;track src=&quot;test.vtt&quot; srclang=&quot;zh&quot; kind=&quot;subtitles&quot; label=&quot;中文&quot; default&amp;gt; &amp;lt;track src=&quot;test_en.vtt&quot; srclang=&quot;en&quot; kind=&quot;subtitles&quot; label=&quot;English&quot;&amp;gt; &amp;lt;/video&amp;gt; 如果有多个语言字幕可以添加多条，供用户切换选择 标注为default的表示默认使用的字幕。 只要src属性地址OK，同时有default属性，字幕就会生效。 元素的属性如下: 名称 值 说明 kind subtitles 字幕，详见表格后   captions 字幕，详见表格后   descriptions 描述，视频的文本描述   chapters 章节导航   metadata 元数据 src URL 指定资源URL srclang Language code 在 src 资源的语言,VTT文本信息使用的语言。例如，中文zh，英文en label Free text 点击CC按钮选择字幕时候出现的文字 default n/a default指的是默认会显示的字幕。例如两个元素，如果都没有default属性，那都不显示，需要用户手动调出。另外，default只能出现在一个元素上 1) kind: 可选值 subtitles captions subtitles: 平常看电影看动漫时候下面出现的字幕，一般是翻译，或者采访时候口音不清的字幕显示。有时候还会标注一些说明，例如，显示人物姓名身份，当前场景地或者标注之前语言的梗在哪里等 这里captions专指隐藏式字幕（Closed Captions），简称CC 隐藏字幕（Closed Captioning，简称CC)是电视节目或影碟中为有特殊情况或者需要的观众而准备的宇幕，例如观众在听力上有障碍，或者需要无音条件下观赏节目。此时字幕中可使用一些解释性的语言来描述节目内容。 subtitles主要就是对人说话进行翻译或确认；而captions不仅需要人对话的内容提示，紧张的背景音乐，或者汽车吱吱作响的刹车声都需要在字幕中描述出来。这样，即使用户静音也能知道视频里到底在玩些什么。我想，如果是经常看国外影视作品的小伙伴肯定会有类似的字幕体验，有的就对话字幕，有的事无巨细，就是subtitles和captions的区别 .vtt文件 格式如下： WEBVTT 00:11.000 --&amp;gt; 00:13.000 &amp;lt;v Roger Bingham&amp;gt;We are in New York City 00:13.000 --&amp;gt; 00:16.000 &amp;lt;v Roger Bingham&amp;gt;We’re actually at the Lucern Hotel, just down the street 00:16.000 --&amp;gt; 00:18.000 &amp;lt;v Roger Bingham&amp;gt;from the American Museum of Natural History 00:18.000 --&amp;gt; 00:20.000 &amp;lt;v Roger Bingham&amp;gt;And with me is Neil deGrasse Tyson 00:20.000 --&amp;gt; 00:22.000 &amp;lt;v Roger Bingham&amp;gt;Astrophysicist, Director of the Hayden Planetarium 就是个文本文件，格式很简单，一开始声明下WebVTT，然后下面就是视频时间范围，下一行就是字幕内容，时间可以精确到毫秒，但通常0.5秒足矣。 更多规则解释详见官网文档 HTML5 Video视频字幕的样式控制 CSS中有专门的伪元素::cue可以控制字幕的样式。 可以控制的CSS属性包括： color opacity visibility text-decoration及相关属性 text-shadow background及相关属性 outline及相关属性 font及相关属性，包括line-height white-space text-combine-upright ruby-position WebVTT还支持一些内联样式控制，常见的 值 说明 c 用 c 定义 （CSS）类, 例如， Cue text&amp;lt;/c&amp;gt; i 斜体字 b 粗体字 u 添加下划线 ruby 详见表格后 v 如有提供，则用来指定声音标签。例如， This is useful for adding subtitles。注意此声音标签不会显示，它只是作为一个样式标记。 ruby : 定义类似于 HTML5 的 &amp;lt;ruby&amp;gt; 元素。在这样的内联样式中，允许出现一个或多个 &amp;lt;rt&amp;gt; 元素。（&amp;lt;ruby&amp;gt; 元素用于标注汉字等东亚字符的发音） 使用方法如下所示： 00:00:52.000 --&amp;gt; 00:00:54.000 align:start size:15% &amp;lt;v Emo&amp;gt;I don’t think so. &amp;lt;c.question&amp;gt;You?&amp;lt;/c&amp;gt;&amp;lt;/v&amp;gt; 给 Cue 文本添加两种不同的声音标签： Emo 和 Proog（自定义的） 。另外，一个 question（自定义的） 的 CSS 类被指定，可以按惯常方法在 CSS 链接文件 或 HTML 页面里为其指定样式。 注意要给 Cue 文本添加 CSS 样式，你需要用一个特定的伪选择元素，例子如下: video::cue(v[voice=&quot;Emo&quot;]) { color:lime } 更全面的样式控制 原生的字幕样式控制，有CSS属性和字幕HTML标签双重限制，不是很灵活 可以使用开源的HTML5视频项目：accessible-html5-video-player，paypal的开源项目，可以对原生的video进行UI重定值，JS很小，未压缩版本就几十K，其会把VTT文件中HTML片段直接完整输出到页面中，于是乎，所有的CSS属性我们都可以使用了，例如可以把字幕在视频上方直接一个绝对定位上去就好了。</summary></entry><entry><title type="html">什么是G2</title><link href="http://localhost:4000/2018/03/23/anvt_G2.html" rel="alternate" type="text/html" title="什么是G2" /><published>2018-03-23T00:00:00+08:00</published><updated>2018-03-23T00:00:00+08:00</updated><id>http://localhost:4000/2018/03/23/anvt_G2</id><content type="html" xml:base="http://localhost:4000/2018/03/23/anvt_G2.html">&lt;h2 id=&quot;什么是g2&quot;&gt;什么是G2?&lt;/h2&gt;
-
-&lt;p&gt;G2 是一套基于可视化编码的图形语法，以数据驱动，具有高度的易用性和扩展性，用户无需关注各种繁琐的实现细节，一条语句即可构建出各种各样的可交互的统计图表。&lt;/p&gt;
-
-&lt;p&gt;就是这个样子：&lt;/p&gt;
-
-&lt;h3 id=&quot;引入方法&quot;&gt;引入方法&lt;/h3&gt;
-
-&lt;p&gt;1、直接引入&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;script src=&quot;https://gw.alipayobjects.com/os/antv/assets/g2/3.0.5-beta.5/g2.min.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;2、npm功安装完成之后，import 或 require 引用&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm install @antv/g2 --save
-
-import G2 from '@antv/g2';
-
-const chart = new G2.Chart({
-  container: 'c1',
-  width: 600,
-  height: 300
-});
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;如何使用&quot;&gt;如何使用？&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;创建 div 图表容器&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;div id=&quot;c1&quot;&amp;gt;&amp;lt;/div&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;定制图表进行绘制
-    &lt;ul&gt;
-      &lt;li&gt;创建 Chart 图表对象，指定图表所在的容器 ID；&lt;/li&gt;
-      &lt;li&gt;载入图表数据源；&lt;/li&gt;
-      &lt;li&gt;使用图形语法进行图表的绘制；&lt;/li&gt;
-      &lt;li&gt;渲染图表。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;数据源
-const data = [
-  { genre: 'Sports', sold: 275 },
-  { genre: 'Strategy', sold: 115 },
-  { genre: 'Action', sold: 120 },
-  { genre: 'Shooter', sold: 350 },
-  { genre: 'Other', sold: 150 }
-]; // G2 对数据源格式的要求，仅仅是 JSON 数组，数组的每个元素是一个标准 JSON 对象
-
-// Step 1: 创建 Chart 对象
-const chart = new G2.Chart({
-  container: 'c1', // 指定图表容器 ID
-  width : 600, // 指定图表宽度
-  height : 300 // 指定图表高度
-});
-
-// Step 2: 载入数据源
-chart.source(data);
-
-// Step 3：创建图形语法，绘制柱状图，由 genre 和 sold 两个属性决定图形位置，genre 映射至 x 轴，sold 映射至 y 轴
-chart.interval().position('genre*sold').color('genre')
-
-// Step 4: 渲染图表
-chart.render();
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;可视化框架的构成&quot;&gt;可视化框架的构成&lt;/h3&gt;
-
-&lt;p&gt;一个可视化框架需要四部分：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;数据处理模块，对数据进行加工的模块，包括一些数据处理方法。例如：合并、分组、排序、过滤、计算统计信息等&lt;/li&gt;
-  &lt;li&gt;图形映射模块，将数据映射到图形视觉通道的过程。例如：将数据映射成颜色、位置、大小等&lt;/li&gt;
-  &lt;li&gt;图形展示模块，决定使用何种图形来展示数据，点、线、面等图形标记&lt;/li&gt;
-  &lt;li&gt;辅助信息模块，用于说明视觉通道跟数据的映射关系，例如：坐标轴、图例、辅助文本等&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;数据处理模块&quot;&gt;数据处理模块&lt;/h3&gt;
-
-&lt;p&gt;数据处理模块已经从 G2 中独立出来，作为 DataSet 模块单独提供，主要包含下面几个模块：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;DataSet 包含多个 DataView, 管理多个数据源&lt;/li&gt;
-  &lt;li&gt;DataView 每个 DataView 对应一个数据源，可以理解为一个图表，可以进行布局（Layout)、数据加工（Transform)&lt;/li&gt;
-  &lt;li&gt;Layout 对数据进行布局&lt;/li&gt;
-  &lt;li&gt;Transform 对数据进行加工、统计等处理，包括对地图数据的处理，这个很强大&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;图形映射模块&quot;&gt;图形映射模块&lt;/h3&gt;
-
-&lt;p&gt;图形映射模块完成了将数据映射到数学空间
-[0-1]，再从数学空间映射到画布空间的整个过程，主要包括三个模块：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Scale 将数据映射到 0-1 之间，方便映射到画布上&lt;/li&gt;
-  &lt;li&gt;Attr 图形属性，数据映射到图形的属性（视觉通道），包括位置、颜色、大小、形状等&lt;/li&gt;
-  &lt;li&gt;Coord 展示图形需用到的坐标系，将数据映射到位置的属性（视觉通道）&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;辅助信息&quot;&gt;辅助信息&lt;/h3&gt;
-
-&lt;p&gt;辅助信息用于标示数据在各种图形属性上的映射，使得用户更容易的理解数据，主要包括下面几个模块：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Axis 坐标轴，辅助用户识别图形所在的位置，判断数据大小的辅助元素&lt;/li&gt;
-  &lt;li&gt;Tooltip 提示信息，用户鼠标在画布上移动时，实时出现的鼠标附近的数据信息&lt;/li&gt;
-  &lt;li&gt;Guide 其他辅助元素，可以在图上添加辅助的文本、辅助图片、辅助线等，增强用户对图形的认知。&lt;/li&gt;
-  &lt;li&gt;Legend 图例，辅助用户识别图形的大小、颜色、形状，通常用于判断数据对应图形的分类&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;图形展示&quot;&gt;图形展示&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Chart 图表，展示图形的入口，会生成一个画布，同时管理数据到图形映射的所有周期&lt;/li&gt;
-  &lt;li&gt;View 视图，一个画布上可以显示多张图表，每个图表有各自的绘图区域、数据源、坐标系等信息&lt;/li&gt;
-  &lt;li&gt;Geom 数据映射到的图形标识，G2 中的图形标识有：点、线、路径、面积、多边形等&lt;/li&gt;
-  &lt;li&gt;Shape 更加细分的图形标识，例如，点可以分为圆点、正方形、十字等，线可以分为点线、折线、曲线等&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;数据处理模块之&quot;&gt;数据处理模块之&lt;/h3&gt;
-
-&lt;p&gt;数据处理分为两个大的步骤：数据连接（Connector）和数据转换（Transform）。&lt;/p&gt;
-
-&lt;p&gt;Connector 负责导入和归一化数据（譬如导入 CSV 数据，导入 GeoJSON 数据等），
-Transform 负责进行各种数据转换操作（譬如图布局、数据统计、数据补全等）。&lt;/p&gt;
-
-&lt;p&gt;通过这样的分层，支持了前端社区非常全面的数据处理相关的算法和模块；其次，在单个数据视图（DataView）的基础上增加了数据集（DataSet）的概念，通过统一的 DataSet 管理，实现了各个数据视图之间的状态同步和交互。&lt;/p&gt;
-
-&lt;p&gt;一、DataSet&lt;/p&gt;
-
-&lt;p&gt;dataSet主要通过state状态管理多个dataview视图，实现多图联动，或者关联视图。
-dataView则是对应的是每一个数据源，通过connector来接入不同类型的数据，通过tranform进行数据的转换或者过滤。最后输出我们理想的数据，dataSet是与g2分离的，需要用到的时候可以加载
-在图形映射模块上，&lt;/p&gt;
-
-&lt;p&gt;DataSet的使用语法&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// step1 创建 dataset 指定状态量
-const ds = new DataSet({
-  state: {
-    year: '2010'
-  }
-});
-
-// step2 创建 DataView
-const dv = ds.createView().source(data);
-
-dv.transform({
-  type: 'filter',
-  callback(row) {
-    return row.year === ds.state.year;
-  }
-});
-
-
-// step3 引用 DataView
-chart.source(dv);
-
-// step4 更新状态量
-ds.setState('year', '2012');
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;DataSet 主要完成了以下功能：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;源数据的解析，将csv, dsv,geojson 转成标准的JSON，查看Connector&lt;/li&gt;
-  &lt;li&gt;加工数据，包括 filter,map,fold(补数据) 等操作，查看 Transform&lt;/li&gt;
-  &lt;li&gt;统计函数，汇总统计、百分比、封箱 等统计函数，查看 Transform&lt;/li&gt;
-  &lt;li&gt;特殊数据处理，包括 地理数据、矩形树图、桑基图、文字云 的数据处理，查看 Transform&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;（一）Connector&lt;/p&gt;
-
-&lt;p&gt;接入语法：&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dv.source(data, {
-  type: connectorName,   connectorName//就是下面几种数据类型
-  ...otherOptions
-});
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;可接入的数据类型：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;default 默认 //普通二维数据&lt;/li&gt;
-  &lt;li&gt;dsv&lt;/li&gt;
-  &lt;li&gt;csv&lt;/li&gt;
-  &lt;li&gt;tsv&lt;/li&gt;
-  &lt;li&gt;GeoJSON  //地理数据&lt;/li&gt;
-  &lt;li&gt;TopoJSON //树结构数据&lt;/li&gt;
-  &lt;li&gt;hierarchy&lt;/li&gt;
-  &lt;li&gt;graph    //图数据&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;可以这样理解，以上几种类型，分别对应着几种实例，可以使用该种实例提供的方法，比如GeoJSON这种类型，在制作地图时需要用到的类型，以中国地图为例，传入中国的省市名称，这个类型能根据这些地名提供对应的地理位置区域，从而画出地图中对应的区域。&lt;/p&gt;
-
-&lt;p&gt;（二）Transform&lt;/p&gt;
-
-&lt;p&gt;功能很强大，只概括几种常见的：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;过滤&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dv.transform({
-  type: 'filter',
-  callback(row) { // 判断某一行是否保留，默认返回true
-    return row.year &amp;gt; 1998;
-  }
-});
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;数据加工&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dv.transform({
-  type: 'map',
-  callback(row) { // 加工数据后返回新的一行，默认返回行数据本身
-    row.newCol = row.xxx + row.yyy;
-    return row;
-  }
-});
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;字段重命名&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dv.transform({
-  type: 'rename',
-  map: {
-    xxx: 'yyy' // row.xxx 会被替换成 row.yyy
-  }
-});
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;数据排序&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dv.transform({
-  type: 'sort',
-  callback(a, b) { // 排序依据，和原生js的排序callback一致
-    return a.year - b.year;
-  }
-});
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;percent 总和百分比&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dv.transform({
-  type: 'percent',
-  field: 'sold',           // 统计销量
-  dimension: 'year',       // 每年的占比
-  groupBy: [ 'category' ], // 以不同产品类别为分组
-  as: 'percent'            // 结果存储在 percent 字段
-});
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;几个字段的意思：&lt;/p&gt;
-
-&lt;p&gt;field 是统计发生的字段（求和，求百分比），
-dimension 是统计的维度字段，也就是”每个不同的 dimension 下，
-field 值占总和的百分比”，
-groupBy 则是分组字段，每一个分组内部独立求百分比（每一个分组内，最后的 percent 字段相加之和为 1）。&lt;/p&gt;
-
-&lt;p&gt;再看一下其它几个非常重要的属性：&lt;/p&gt;
-
-&lt;h2 id=&quot;scale-度量&quot;&gt;Scale 度量&lt;/h2&gt;
-
-&lt;p&gt;定义：度量 Scale，是数据空间到图形空间的转换桥梁，负责原始数据到 [0, 1] 区间数值的相互转换工作，从原始数据到 [0, 1] 区间的转换我们称之为归一化操作。不同的数据类型对应不同的度量，如&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;连续数据类型，如 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 一组数据，在其原始数值范围 [0, 10] 内通过度量转换至 [0, 1] 范围的数据，变成 0, 0.1, 0.2, …, 0.9, 1，同时通过 invert 反转，还需要度量后的数值恢复至原始值；&lt;/li&gt;
-  &lt;li&gt;分类数据类型，如 [‘男’, ‘女’] 这一组数据，通过度量转换后变成 [0, 1]，同样时通过 invert 反转可恢复至原始值。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;在 G2 中度量用于完成以下功能：&lt;/strong&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;将数据转换到 [0, 1] 范围内，方便将数据映射到位置、颜色、大小等图形属性；&lt;/li&gt;
-  &lt;li&gt;将归一化后的数据反转回原始值。例如 分类a 转换成 0.2，那么对应 0.2 需要反转回 分类a；&lt;/li&gt;
-  &lt;li&gt;划分数据，用于在坐标轴、图例显示数值的范围、分类等信息。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Scale 的功能非常简单易理解，但是在 G2 的数据处理流程中起着非常重要的承接作用，&lt;/p&gt;
-
-&lt;p&gt;根据数据分类方式，G2 提供了不同的度量类型：&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;数据类型&lt;/td&gt;
-      &lt;td&gt;度量类型&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;连续&lt;/td&gt;
-      &lt;td&gt;linear、log、pow、time&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;分类（非连续）&lt;/td&gt;
-      &lt;td&gt;cat、timeCat&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;对于 G2 生成的所有度量对象，均拥有以下属性，这些属性均可以由用户进行配置。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{
-  type: {string}, // 度量的类型
-  range: {array}, // 数值范围区间，即度量转换的范围，默认为 [0, 1]
-  alias: {string}, // 为数据属性定义别名，用于图例、坐标轴、tooltip 的个性化显示
-  ticks: {array}, // 存储坐标轴上的刻度点文本信息
-  tickCount: {number}, // 坐标轴上刻度点的个数，不同的度量类型对应不同的默认值
-  formatter: {function}, // 回调函数，用于格式化坐标轴刻度点的文本显示，会影响数据在坐标轴、图例、tooltip 上的显示
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;默认生成度量的机制如下：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;查看用户是否制定了对应字段的数据类型，查看列定义&lt;/li&gt;
-  &lt;li&gt;如果没有，判断字段的第一条数据的字段类型&lt;/li&gt;
-  &lt;li&gt;如果数据中不存在对应的字段，则为 ‘identity’&lt;/li&gt;
-  &lt;li&gt;如果是数字则为 ‘linear’；&lt;/li&gt;
-  &lt;li&gt;如果是字符串，判定是否是时间格式，如果是时间格式则为时间类型 ‘time’,&lt;/li&gt;
-  &lt;li&gt;否则是分类类型 ‘cat’&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;度量中的每个类型的定义，这里只说个大概，具体看官网上的解释吧。&lt;/p&gt;
-
-&lt;h2 id=&quot;图表的组成&quot;&gt;图表的组成&lt;/h2&gt;
-
-&lt;h3 id=&quot;坐标轴-axis&quot;&gt;坐标轴 axis&lt;/h3&gt;
-
-&lt;p&gt;通常包含两个坐标轴，在笛卡尔坐标系下，分别为 x 轴和 y 轴，在极坐标轴下，则分别由角度和半径2个维度构成。 每个坐标轴由坐标轴线、刻度线、刻度文本、标题以及网格线组成。&lt;/p&gt;
-
-&lt;h3 id=&quot;图例-legend&quot;&gt;图例 legend&lt;/h3&gt;
-
-&lt;p&gt;图例作为图表的辅助元素，用于标定不同的数据类型以及数据的范围，用于辅助阅读图表，帮助用户在图表中进行数据的筛选过滤。&lt;/p&gt;
-
-&lt;h3 id=&quot;几何标记-geom&quot;&gt;几何标记 geom&lt;/h3&gt;
-
-&lt;p&gt;几何标记，即我们所说的点、线、面这些几何图形，在 G2 中几何标记的类型决定了生成图表的类型。也就是数据被可视化后的实际表现，不同的几何标都对应自己能识别的图形属性。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;G2 的核心既是将数据从数据空间转换到图形空间。&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;提示信息-tooltip&quot;&gt;提示信息 tooltip&lt;/h3&gt;
-
-&lt;p&gt;当鼠标悬停在某个点上时，会以框的形式显示当前点对应的数据的信息，比如该点的值，数据单位等。数据提示框内提示的信息还可以通过格式化函数动态指定。&lt;/p&gt;
-
-&lt;h3 id=&quot;辅助标记-guide&quot;&gt;辅助标记 guide&lt;/h3&gt;
-
-&lt;p&gt;当需要在图表上绘制一些辅助线、辅助框或者图片时，比如增加平均值线、最高值线或者标示明显的范围区域时，可以使用辅助标记 guide。&lt;/p&gt;
-
-&lt;h2 id=&quot;g2的dom结构也是canvas&quot;&gt;G2的dom结构也是canvas&lt;/h2&gt;
-
-&lt;p&gt;它是由三层 canvas 构成的，这三层 canvas 分别对应 chart 对象的如下三个属性：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;frontCanvas 最上层 canvas，图例 legend、提示信息 tooltip、和 text tag html 这三种类型的辅助标记 guide 在这一层绘制；&lt;/li&gt;
-  &lt;li&gt;canvas 中间层，绘制图表的主体内容几何标记 geom；&lt;/li&gt;
-  &lt;li&gt;backCanvas 最下层 canvas，坐标轴 axis 和 line image rect arc 这四种类型的辅助标记 guide 在这一层绘制。&lt;/li&gt;
-&lt;/ul&gt;</content><author><name>weili</name></author><category term="JS" /><summary type="html">什么是G2? G2 是一套基于可视化编码的图形语法，以数据驱动，具有高度的易用性和扩展性，用户无需关注各种繁琐的实现细节，一条语句即可构建出各种各样的可交互的统计图表。 就是这个样子： 引入方法 1、直接引入 &amp;lt;script src=&quot;https://gw.alipayobjects.com/os/antv/assets/g2/3.0.5-beta.5/g2.min.js&quot;&amp;gt;&amp;lt;/script&amp;gt; 2、npm功安装完成之后，import 或 require 引用 npm install @antv/g2 --save import G2 from '@antv/g2'; const chart = new G2.Chart({ container: 'c1', width: 600, height: 300 }); 如何使用？ 创建 div 图表容器 &amp;lt;div id=&quot;c1&quot;&amp;gt;&amp;lt;/div&amp;gt; 定制图表进行绘制 创建 Chart 图表对象，指定图表所在的容器 ID； 载入图表数据源； 使用图形语法进行图表的绘制； 渲染图表。 数据源 const data = [ { genre: 'Sports', sold: 275 }, { genre: 'Strategy', sold: 115 }, { genre: 'Action', sold: 120 }, { genre: 'Shooter', sold: 350 }, { genre: 'Other', sold: 150 } ]; // G2 对数据源格式的要求，仅仅是 JSON 数组，数组的每个元素是一个标准 JSON 对象 // Step 1: 创建 Chart 对象 const chart = new G2.Chart({ container: 'c1', // 指定图表容器 ID width : 600, // 指定图表宽度 height : 300 // 指定图表高度 }); // Step 2: 载入数据源 chart.source(data); // Step 3：创建图形语法，绘制柱状图，由 genre 和 sold 两个属性决定图形位置，genre 映射至 x 轴，sold 映射至 y 轴 chart.interval().position('genre*sold').color('genre') // Step 4: 渲染图表 chart.render(); 可视化框架的构成 一个可视化框架需要四部分： 数据处理模块，对数据进行加工的模块，包括一些数据处理方法。例如：合并、分组、排序、过滤、计算统计信息等 图形映射模块，将数据映射到图形视觉通道的过程。例如：将数据映射成颜色、位置、大小等 图形展示模块，决定使用何种图形来展示数据，点、线、面等图形标记 辅助信息模块，用于说明视觉通道跟数据的映射关系，例如：坐标轴、图例、辅助文本等 数据处理模块 数据处理模块已经从 G2 中独立出来，作为 DataSet 模块单独提供，主要包含下面几个模块： DataSet 包含多个 DataView, 管理多个数据源 DataView 每个 DataView 对应一个数据源，可以理解为一个图表，可以进行布局（Layout)、数据加工（Transform) Layout 对数据进行布局 Transform 对数据进行加工、统计等处理，包括对地图数据的处理，这个很强大 图形映射模块 图形映射模块完成了将数据映射到数学空间 [0-1]，再从数学空间映射到画布空间的整个过程，主要包括三个模块： Scale 将数据映射到 0-1 之间，方便映射到画布上 Attr 图形属性，数据映射到图形的属性（视觉通道），包括位置、颜色、大小、形状等 Coord 展示图形需用到的坐标系，将数据映射到位置的属性（视觉通道） 辅助信息 辅助信息用于标示数据在各种图形属性上的映射，使得用户更容易的理解数据，主要包括下面几个模块： Axis 坐标轴，辅助用户识别图形所在的位置，判断数据大小的辅助元素 Tooltip 提示信息，用户鼠标在画布上移动时，实时出现的鼠标附近的数据信息 Guide 其他辅助元素，可以在图上添加辅助的文本、辅助图片、辅助线等，增强用户对图形的认知。 Legend 图例，辅助用户识别图形的大小、颜色、形状，通常用于判断数据对应图形的分类 图形展示 Chart 图表，展示图形的入口，会生成一个画布，同时管理数据到图形映射的所有周期 View 视图，一个画布上可以显示多张图表，每个图表有各自的绘图区域、数据源、坐标系等信息 Geom 数据映射到的图形标识，G2 中的图形标识有：点、线、路径、面积、多边形等 Shape 更加细分的图形标识，例如，点可以分为圆点、正方形、十字等，线可以分为点线、折线、曲线等 数据处理模块之 数据处理分为两个大的步骤：数据连接（Connector）和数据转换（Transform）。 Connector 负责导入和归一化数据（譬如导入 CSV 数据，导入 GeoJSON 数据等）， Transform 负责进行各种数据转换操作（譬如图布局、数据统计、数据补全等）。 通过这样的分层，支持了前端社区非常全面的数据处理相关的算法和模块；其次，在单个数据视图（DataView）的基础上增加了数据集（DataSet）的概念，通过统一的 DataSet 管理，实现了各个数据视图之间的状态同步和交互。 一、DataSet dataSet主要通过state状态管理多个dataview视图，实现多图联动，或者关联视图。 dataView则是对应的是每一个数据源，通过connector来接入不同类型的数据，通过tranform进行数据的转换或者过滤。最后输出我们理想的数据，dataSet是与g2分离的，需要用到的时候可以加载 在图形映射模块上， DataSet的使用语法 // step1 创建 dataset 指定状态量 const ds = new DataSet({ state: { year: '2010' } }); // step2 创建 DataView const dv = ds.createView().source(data); dv.transform({ type: 'filter', callback(row) { return row.year === ds.state.year; } }); // step3 引用 DataView chart.source(dv); // step4 更新状态量 ds.setState('year', '2012'); DataSet 主要完成了以下功能： 源数据的解析，将csv, dsv,geojson 转成标准的JSON，查看Connector 加工数据，包括 filter,map,fold(补数据) 等操作，查看 Transform 统计函数，汇总统计、百分比、封箱 等统计函数，查看 Transform 特殊数据处理，包括 地理数据、矩形树图、桑基图、文字云 的数据处理，查看 Transform （一）Connector 接入语法： dv.source(data, { type: connectorName, connectorName//就是下面几种数据类型 ...otherOptions }); 可接入的数据类型： default 默认 //普通二维数据 dsv csv tsv GeoJSON //地理数据 TopoJSON //树结构数据 hierarchy graph //图数据 可以这样理解，以上几种类型，分别对应着几种实例，可以使用该种实例提供的方法，比如GeoJSON这种类型，在制作地图时需要用到的类型，以中国地图为例，传入中国的省市名称，这个类型能根据这些地名提供对应的地理位置区域，从而画出地图中对应的区域。 （二）Transform 功能很强大，只概括几种常见的： 过滤 dv.transform({ type: 'filter', callback(row) { // 判断某一行是否保留，默认返回true return row.year &amp;gt; 1998; } }); 数据加工 dv.transform({ type: 'map', callback(row) { // 加工数据后返回新的一行，默认返回行数据本身 row.newCol = row.xxx + row.yyy; return row; } }); 字段重命名 dv.transform({ type: 'rename', map: { xxx: 'yyy' // row.xxx 会被替换成 row.yyy } }); 数据排序 dv.transform({ type: 'sort', callback(a, b) { // 排序依据，和原生js的排序callback一致 return a.year - b.year; } }); percent 总和百分比 dv.transform({ type: 'percent', field: 'sold', // 统计销量 dimension: 'year', // 每年的占比 groupBy: [ 'category' ], // 以不同产品类别为分组 as: 'percent' // 结果存储在 percent 字段 }); 几个字段的意思： field 是统计发生的字段（求和，求百分比）， dimension 是统计的维度字段，也就是”每个不同的 dimension 下， field 值占总和的百分比”， groupBy 则是分组字段，每一个分组内部独立求百分比（每一个分组内，最后的 percent 字段相加之和为 1）。 再看一下其它几个非常重要的属性： Scale 度量 定义：度量 Scale，是数据空间到图形空间的转换桥梁，负责原始数据到 [0, 1] 区间数值的相互转换工作，从原始数据到 [0, 1] 区间的转换我们称之为归一化操作。不同的数据类型对应不同的度量，如 连续数据类型，如 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 一组数据，在其原始数值范围 [0, 10] 内通过度量转换至 [0, 1] 范围的数据，变成 0, 0.1, 0.2, …, 0.9, 1，同时通过 invert 反转，还需要度量后的数值恢复至原始值； 分类数据类型，如 [‘男’, ‘女’] 这一组数据，通过度量转换后变成 [0, 1]，同样时通过 invert 反转可恢复至原始值。 在 G2 中度量用于完成以下功能： 将数据转换到 [0, 1] 范围内，方便将数据映射到位置、颜色、大小等图形属性； 将归一化后的数据反转回原始值。例如 分类a 转换成 0.2，那么对应 0.2 需要反转回 分类a； 划分数据，用于在坐标轴、图例显示数值的范围、分类等信息。 Scale 的功能非常简单易理解，但是在 G2 的数据处理流程中起着非常重要的承接作用， 根据数据分类方式，G2 提供了不同的度量类型： 数据类型 度量类型 连续 linear、log、pow、time 分类（非连续） cat、timeCat 对于 G2 生成的所有度量对象，均拥有以下属性，这些属性均可以由用户进行配置。 { type: {string}, // 度量的类型 range: {array}, // 数值范围区间，即度量转换的范围，默认为 [0, 1] alias: {string}, // 为数据属性定义别名，用于图例、坐标轴、tooltip 的个性化显示 ticks: {array}, // 存储坐标轴上的刻度点文本信息 tickCount: {number}, // 坐标轴上刻度点的个数，不同的度量类型对应不同的默认值 formatter: {function}, // 回调函数，用于格式化坐标轴刻度点的文本显示，会影响数据在坐标轴、图例、tooltip 上的显示 } 默认生成度量的机制如下： 查看用户是否制定了对应字段的数据类型，查看列定义 如果没有，判断字段的第一条数据的字段类型 如果数据中不存在对应的字段，则为 ‘identity’ 如果是数字则为 ‘linear’； 如果是字符串，判定是否是时间格式，如果是时间格式则为时间类型 ‘time’, 否则是分类类型 ‘cat’ 度量中的每个类型的定义，这里只说个大概，具体看官网上的解释吧。 图表的组成 坐标轴 axis 通常包含两个坐标轴，在笛卡尔坐标系下，分别为 x 轴和 y 轴，在极坐标轴下，则分别由角度和半径2个维度构成。 每个坐标轴由坐标轴线、刻度线、刻度文本、标题以及网格线组成。 图例 legend 图例作为图表的辅助元素，用于标定不同的数据类型以及数据的范围，用于辅助阅读图表，帮助用户在图表中进行数据的筛选过滤。 几何标记 geom 几何标记，即我们所说的点、线、面这些几何图形，在 G2 中几何标记的类型决定了生成图表的类型。也就是数据被可视化后的实际表现，不同的几何标都对应自己能识别的图形属性。 G2 的核心既是将数据从数据空间转换到图形空间。 提示信息 tooltip 当鼠标悬停在某个点上时，会以框的形式显示当前点对应的数据的信息，比如该点的值，数据单位等。数据提示框内提示的信息还可以通过格式化函数动态指定。 辅助标记 guide 当需要在图表上绘制一些辅助线、辅助框或者图片时，比如增加平均值线、最高值线或者标示明显的范围区域时，可以使用辅助标记 guide。 G2的dom结构也是canvas 它是由三层 canvas 构成的，这三层 canvas 分别对应 chart 对象的如下三个属性： frontCanvas 最上层 canvas，图例 legend、提示信息 tooltip、和 text tag html 这三种类型的辅助标记 guide 在这一层绘制； canvas 中间层，绘制图表的主体内容几何标记 geom； backCanvas 最下层 canvas，坐标轴 axis 和 line image rect arc 这四种类型的辅助标记 guide 在这一层绘制。</summary></entry></feed>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>weili</name></author><category term="[&quot;JS&quot;]" /><summary type="html">项目小知识点 项目中用到的一些小知识点，用于记录一下： 1、 数组去重 var arr = [1,10,4,6,10,9,8,6,10] // 从前向后逐个比较，相同的删除 Array.prototype.distinct1 = function () { var arr = this; for(var i=0; i&amp;lt;arr.length; i++) { for(var j=i+1; j&amp;lt;arr.length; j++) { if(arr[i] === arr[j]) { arr.splice(j,1) j = ++i; } } } return arr } // 从前向后比较，不相同的push到新数组 Array.prototype.distinct2 = function () { var arr = this; var temp = []; for(var i=0; i&amp;lt;arr.length; i++) { for(var j=i+1; j&amp;lt;arr.length; j++) { if(arr[i] === arr[j]) { j = ++i; } } temp.push(arr[i]) } return temp } // 利用对象属性名不能重复的特性 Array.prototype.distinct3 = function () { var obj = {}; var arr =this; var temp = []; for(var i=0; i&amp;lt;arr.length; i++) { if(!obj[arr[i]]) { temp.push(arr[i]) obj[arr[i]] = 1; } } return temp } // 利用indexOf 如果无法匹配到相同的，push进新数组 Array.prototype.distinct4 = function () { var arr = this; var temp = []; arr.forEach(function (item, i) { var num = arr.indexOf(item, i+1) if(num === -1) { temp.push(item) } }) return temp }</summary></entry></feed>
