@@ -1,0 +1,485 @@
+<!DOCTYPE html><html lang="en">
+  <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>TypeScript (四) - Weili's Blog</title>
+<meta name="description" content="接口(二)函数类型  接口能够描述JavaScript中对象拥有的各种各样的外形。  接口也可以描述函数类型。为了使用接口表示函数类型，需要给接口定义一个调用签名。 它就像是一个只有参数列表和返回值类型的函数定义。参数列表里的每个参数都需要名字和类型。interface SearchFunc {  (source...">
+<link rel="canonical" href="http://localhost:4000/2018/07/20/TypeScript_4.html"><link rel="alternate" type="application/rss+xml" title="Weili's Blog" href="http://localhost:4000/feed.xml">
+<!-- for Safari on iOS https://developer.apple.com/ios/human-interface-guidelines/icons-and-images/app-icon/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/images/logo/icon-180x180.png"><link rel="apple-touch-icon" sizes="167x167" href="/assets/images/logo/icon-167x167.png"><link rel="apple-touch-icon" sizes="152x152" href="/assets/images/logo/icon-152x152.png"><link rel="apple-touch-icon" sizes="120x120" href="/assets/images/logo/icon-120x120.png"><link rel="shortcut icon" href="/assets/images/logo/icon-120x120.png">
+<!-- for Chrome on Android https://developer.chrome.com/multidevice/android/installtohomescreen -->
+<meta name="mobile-web-app-capable" content="yes"><link rel="icon" sizes="192x192" href="/assets/images/logo/icon-192x192.png">
+<!-- for Edge on Windows 10 https://msdn.microsoft.com/en-us/library/dn255024(v=vs.85).aspx --><meta name="msapplication-TileImage" content="/assets/images/logo/icon-144x144.png"><meta name="msapplication-square310x310logo" content="/assets/images/logo/icon-310x310.png"><meta name="msapplication-wide310x150logo" content="/assets/images/logo/icon-310x150.png"><meta name="msapplication-square150x150logo" content="/assets/images/logo/icon-150x150.png"><meta name="msapplication-square70x70logo" content="/assets/images/logo/icon-70x70.png">
+<meta name="msapplication-TileColor" content="#eeeeee"><link rel="stylesheet" href="/assets/css/blog.css">
+    <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="m-page-stage js-page-stage"><div class="m-page-content"><header class="m-page-header">
+  <div class="main clearfix">
+    <div class='site-logo'><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="24px" height="24px" viewBox="0 0 24 24">
+<style type="text/css">
+	.st0{fill:#666666;}
+</style>
+<path class="st0" d="M1.7,22.3c5.7-5.7,11.3-5.7,17,0c3.3-3.3,3.5-5.3,0.8-6c2.7,0.7,3.5-1.1,2.3-5.6s-3.3-5.2-6.3-2.1
+	c3-3,2.3-5.2-2.1-6.3S7,1.8,7.7,4.6C7,1.8,5,2.1,1.7,5.3C7.3,11,7.3,16.7,1.7,22.3"/>
+</svg><a title="Weili's blog
+" href="/">Weili's Blog</a></div>
+    <nav>
+      <ul><li><a href="/">Home</a></li><li><a href="/all.html">All</a></li><li><a href="/about.html">About</a></li></ul>
+    </nav>
+  </div>
+</header>
+<div class="m-page-main"><div class="m-post">
+	<div class="main js-main clearfix">
+		<div class="col-2 js-col-2">
+			<aside class="js-article-aside"><div class="m-toc js-toc"></div></aside>
+		</div>
+		<div class="col-1">
+			<article itemscope itemtype="http://schema.org/BlogPosting">
+				<meta itemprop="mainEntityOfPage" itemscope itemType="https://schema.org/WebPage"/>
+				<header class="main-header"><h1 itemprop="headline" itemprop="name headline">TypeScript (四)</h1><div class="m-article-data clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="weili"/></meta><ul class="tag-wrapper"><li>
+          <a class="pill-button" href="/all.html?tag=JS">JS</a>
+        </li><li>
+          <a class="pill-button" href="/all.html?tag=%E5%89%8D%E7%AB%AF">前端</a>
+        </li></ul><div class="other-wrapper"><div class="date-wrapper"><time class="article-meta" datetime="2018-07-20T00:00:00+08:00"
+          itemprop="datePublished">Jul 20, 2018
+        </time></div>
+  </div>
+</div>
+</header>
+				<div class="m-article-content js-article-content" itemprop="articleBody"><h2 id="接口二">接口(二)</h2>
+
+<h3 id="函数类型">函数类型</h3>
+
+<ul>
+  <li>接口能够描述JavaScript中对象拥有的各种各样的外形。</li>
+  <li>接口也可以描述函数类型。</li>
+</ul>
+
+<p>为了使用接口表示函数类型，需要给接口定义一个调用签名。 它就像是一个只有参数列表和返回值类型的函数定义。参数列表里的每个参数都需要名字和类型。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>interface SearchFunc {
+  (source: string, subString: string): boolean;
+}
+</code></pre></div></div>
+
+<p>这样定义后，就可以像使用其它接口一样使用这个函数类型的接口。</p>
+
+<p>下例展示了如何创建一个函数类型的变量，并将一个同类型的函数赋值给这个变量。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>let mySearch: SearchFunc;
+mySearch = function(source: string, subString: string) {
+  let result = source.search(subString);
+  return result &gt; -1;
+}
+</code></pre></div></div>
+
+<p>对于函数类型的类型检查来说，<strong>函数的参数名不需要与接口里定义的名字相匹配</strong>。</p>
+
+<p>比如，我们使用下面的代码重写上面的例子：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>let mySearch: SearchFunc;
+mySearch = function(src: string, sub: string): boolean {
+  let result = src.search(sub);
+  return result &gt; -1;
+}
+</code></pre></div></div>
+
+<h3 id="可索引的类型">可索引的类型</h3>
+
+<p>与使用接口描述函数类型差不多，可以描述那些能够“通过索引得到”的类型，比如a[10]或ageMap[“daniel”]。</p>
+
+<p>可索引类型具有一个索引签名，它描述了对象索引的类型，还有相应的索引返回值类型。</p>
+
+<p>看一个例子：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>interface StringArray {
+  [index: number]: string;
+}
+
+let myArray: StringArray;
+myArray = ["Bob", "Fred"];
+
+let myStr: string = myArray[0];
+</code></pre></div></div>
+
+<p>上面定义了StringArray接口，它具有索引签名。 这个索引签名表示了当用 number去索引StringArray时会得到string类型的返回值。</p>
+
+<ul>
+  <li>共有支持两种索引签名：字符串和数字。</li>
+</ul>
+
+<p>可以同时使用两种类型的索引，但是数字索引的返回值必须是字符串索引返回值类型的子类型。 这是因为当使用 number来索引时，JavaScript会将它转换成string然后再去索引对象。 也就是说用 100（一个number）去索引等同于使用”100”（一个string）去索引，因此两者需要保持一致。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class Animal {
+    name: string;
+}
+class Dog extends Animal {
+    breed: string;
+}
+
+// 错误：使用数值型的字符串索引，有时会得到完全不同的Animal!
+interface NotOkay {
+    [x: number]: Animal;
+    [x: string]: Dog;
+}
+</code></pre></div></div>
+
+<p>字符串索引签名能够很好的描述dictionary模式，并且它们也会确保所有属性与其返回值类型相匹配。 因为字符串索引声明了 obj.property和obj[“property”]两种形式都可以。</p>
+
+<p>下面的例子里， name的类型与字符串索引类型不匹配，所以类型检查器给出一个错误提示：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>interface NumberDictionary {
+  [index: string]: number;
+  length: number;    // 可以，length是number类型
+  name: string       // 错误，`name`的类型与索引类型返回值的类型不匹配
+}
+</code></pre></div></div>
+
+<p>最后，可以将索引签名设置为只读，这样就防止了给索引赋值：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>interface ReadonlyStringArray {
+    readonly [index: number]: string;
+}
+let myArray: ReadonlyStringArray = ["Alice", "Bob"];
+myArray[2] = "Mallory"; // error!
+</code></pre></div></div>
+
+<p>上面的代码不能设置myArray[2]，因为索引签名是只读的。</p>
+
+<h3 id="类类型">类类型</h3>
+
+<h4 id="实现接口">实现接口</h4>
+
+<p>TypeScript也能够用它来明确的强制一个类去符合某种契约</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>interface ClockInterface {
+    currentTime: Date;
+}
+
+class Clock implements ClockInterface {
+    currentTime: Date;
+    constructor(h: number, m: number) { }
+}
+</code></pre></div></div>
+
+<p>可以在接口中描述一个方法，在类里实现它，如同下面的setTime方法一样</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>interface ClockInterface {
+    currentTime: Date;
+    setTime(d: Date);
+}
+
+class Clock implements ClockInterface {
+    currentTime: Date;
+    setTime(d: Date) {
+        this.currentTime = d;
+    }
+    constructor(h: number, m: number) { }
+}
+</code></pre></div></div>
+
+<p>接口描述了类的公共部分，而不是公共和私有两部分。 它不会帮你检查类是否具有某些私有成员。</p>
+
+<p><strong>类静态部分与实例部分的区别</strong></p>
+
+<p>当操作类和接口的时候，要知道类是具有两个类型的：<strong>静态部分的类型和实例的类型</strong>。 当用构造器签名去定义一个接口并试图定义一个类去实现这个接口时会得到一个错误：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>interface ClockConstructor {
+    new (hour: number, minute: number);
+}
+
+class Clock implements ClockConstructor {
+    currentTime: Date;
+    constructor(h: number, m: number) { }
+}
+</code></pre></div></div>
+
+<p>因为当一个类实现了一个接口时，只对其实例部分进行类型检查。 constructor存在于类的静态部分，所以不在检查的范围内。</p>
+
+<p>因此，应该直接操作类的静态部分。 看下面的例子，定义了两个接口， ClockConstructor为构造函数所用和ClockInterface为实例方法所用。</p>
+
+<p>为了方便定义一个构造函数 createClock，它用传入的类型创建实例。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>interface ClockConstructor {
+    new (hour: number, minute: number): ClockInterface;
+}
+interface ClockInterface {
+    tick();
+}
+
+function createClock(ctor: ClockConstructor, hour: number, minute: number): ClockInterface {
+    return new ctor(hour, minute);
+}
+
+class DigitalClock implements ClockInterface {
+    constructor(h: number, m: number) { }
+    tick() {
+        console.log("beep beep");
+    }
+}
+class AnalogClock implements ClockInterface {
+    constructor(h: number, m: number) { }
+    tick() {
+        console.log("tick tock");
+    }
+}
+
+let digital = createClock(DigitalClock, 12, 17);
+let analog = createClock(AnalogClock, 7, 32);
+</code></pre></div></div>
+
+<p>因为createClock的第一个参数是ClockConstructor类型，在createClock(AnalogClock, 7, 32)里，会检查AnalogClock是否符合构造函数签名。</p>
+
+<h3 id="继承接口">继承接口</h3>
+
+<p>和类一样，接口也可以相互继承。</p>
+
+<p>这能够从一个接口里复制成员到另一个接口里，可以更灵活地将接口分割到可重用的模块里。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>interface Shape {
+    color: string;
+}
+
+interface Square extends Shape {
+    sideLength: number;
+}
+
+let square = &lt;Square&gt;{};
+square.color = "blue";
+square.sideLength = 10;
+</code></pre></div></div>
+
+<p>一个接口可以继承多个接口，创建出多个接口的合成接口。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>interface Shape {
+    color: string;
+}
+
+interface PenStroke {
+    penWidth: number;
+}
+
+interface Square extends Shape, PenStroke {
+    sideLength: number;
+}
+
+let square = &lt;Square&gt;{};
+square.color = "blue";
+square.sideLength = 10;
+square.penWidth = 5.0;
+</code></pre></div></div>
+
+<h3 id="混合类型">混合类型</h3>
+
+<p>接口能够描述JavaScript里丰富的类型。 因为JavaScript其动态灵活的特点，有时你会希望一个对象可以同时具有上面提到的多种类型。</p>
+
+<p>一个例子就是，一个对象可以同时做为函数和对象使用，并带有额外的属性。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>interface Counter {
+    (start: number): string;
+    interval: number;
+    reset(): void;
+}
+
+function getCounter(): Counter {
+    let counter = &lt;Counter&gt;function (start: number) { };
+    counter.interval = 123;
+    counter.reset = function () { };
+    return counter;
+}
+
+let c = getCounter();
+c(10);
+c.reset();
+c.interval = 5.0;
+</code></pre></div></div>
+
+<p>在使用JavaScript第三方库的时候，就可能需要像上面那样去完整地定义类型。</p>
+
+<h3 id="接口继承类">接口继承类</h3>
+
+<p>当接口继承了一个类类型时，它会继承类的成员但不包括其实现。 就好像接口声明了所有类中存在的成员，但并没有提供具体实现一样。 接口同样会继承到类的private和protected成员。 这意味着当你创建了一个接口继承了一个拥有私有或受保护的成员的类时，这个接口类型只能被这个类或其子类所实现（implement）。</p>
+
+<p>当你有一个庞大的继承结构时这很有用，但要指出的是你的代码只在子类拥有特定属性时起作用。 这个子类除了继承至基类外与基类没有任何关系。 例：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class Control {
+    private state: any;
+}
+
+interface SelectableControl extends Control {
+    select(): void;
+}
+
+class Button extends Control implements SelectableControl {
+    select() { }
+}
+
+class TextBox extends Control {
+    select() { }
+}
+
+// 错误：“Image”类型缺少“state”属性。
+class Image implements SelectableControl {
+    select() { }
+}
+
+class Location {
+
+}
+</code></pre></div></div>
+
+<p>在上面的例子里，SelectableControl包含了Control的所有成员，包括私有成员state。 因为 state是私有成员，所以只能够是Control的子类们才能实现SelectableControl接口。 因为只有 Control的子类才能够拥有一个声明于Control的私有成员state，这对私有成员的兼容性是必需的。</p>
+
+<p>在Control类内部，是允许通过SelectableControl的实例来访问私有成员state的。 实际上， SelectableControl接口和拥有select方法的Control类是一样的。 Button和TextBox类是SelectableControl的子类（因为它们都继承自Control并有select方法），但Image和Location类并不是这样的。</p>
+
+</div></article>
+		</div>
+	</div>
+</div><script src="//cdn.bootcss.com/toc/0.3.2/toc.min.js"></script>
+<script type="text/javascript">
+	window.throttle = function(func, wait) {
+	  var args, result, thisArg, timeoutId, lastCalled = 0;
+
+	  function trailingCall() {
+	    lastCalled = new Date;
+	    timeoutId = null;
+	    result = func.apply(thisArg, args);
+	  }
+	  return function() {
+	    var now = new Date,
+	      remaining = wait - (now - lastCalled);
+
+	    args = arguments;
+	    thisArg = this;
+
+	    if (remaining <= 0) {
+	      clearTimeout(timeoutId);
+	      timeoutId = null;
+	      lastCalled = now;
+	      result = func.apply(thisArg, args);
+	    } else if (!timeoutId) {
+	      timeoutId = setTimeout(trailingCall, remaining);
+	    }
+	    return result;
+	  };
+	}
+	$(function() {
+	  var $window = $(window);
+	  var $pageStage = $('.js-page-stage');
+	  var $pageMain = $('.js-main');
+	  var $pageFooter = $('.js-page-footer');
+	  var $articleContent = $('.js-article-content');
+	  var $articleAside = $('.js-article-aside');
+	  var $toc = $('.js-toc');
+		var $col2 = $('.js-col-2');
+	  var hasTitle = $articleContent.find('h1,h2,h3').length > 0;
+	  function asideSticky() {
+	    return $col2.css('display') !== 'none' && $pageStage.hasClass('has-toc');
+	  }
+
+	  function setTocClass() {
+	    if (hasTitle) {
+	      !$pageStage.hasClass('has-toc') && $pageStage.addClass('has-toc');
+	    }
+	  }
+
+	  setTocClass();
+
+	  function setAsideTOC() {
+	    var asideTop, asideLeft, scrollBottom, asideBottomTop, lastScrollTop;
+
+	    function init() {
+	      var asideOffset = $articleAside.offset();
+	      var footerOffset = $pageFooter.offset();
+	      var mainOffset = $pageMain.offset();
+	      asideTop = mainOffset.top;
+	      asideHeight = $toc.outerHeight() + parseInt($articleAside.css('padding-top'), 10) + parseInt($articleAside.css('padding-bottom'), 10);
+	      asideLeft = mainOffset.left + $pageMain.outerWidth() - $articleAside.outerWidth() - parseInt($pageMain.css('padding-right'), 10);
+	      scrollBottom = footerOffset.top - asideHeight;
+	      asideBottomTop = scrollBottom - mainOffset.top;
+	    }
+
+	    function setAside(force) {
+	      force !== true && (force = false);
+	      var scrollTop = $window.scrollTop();
+	      if (scrollTop >= asideTop && scrollTop <= scrollBottom) {
+	        (!force && lastScrollTop >= asideTop && lastScrollTop <= scrollBottom) ||
+	        $articleAside.addClass('fixed').css({
+	          left: asideLeft + 'px',
+	          top: 0
+	        });
+	      } else if (scrollTop < asideTop) {
+	        (!force && lastScrollTop < asideTop) ||
+	        $articleAside.removeClass('fixed').css({
+	          left: 0,
+	          top: 0
+	        });
+	      } else {
+	        (!force && lastScrollTop > scrollBottom) ||
+	        $articleAside.removeClass('fixed').css({
+	          left: 0,
+	          top: asideBottomTop + 'px'
+	        });
+	      }
+	      lastScrollTop = scrollTop;
+	    }
+	    asideSticky() && (init(), setAside());
+	    $window.on('scroll', function() {
+	      asideSticky() && setAside();
+	    });
+	    $window.on('resize', throttle(function() {
+	      setTocClass();
+	      asideSticky() && (init(), setAside(true));
+	    }, 100));
+	    setTimeout(init, 4000);
+	  }
+	  setTimeout(setAsideTOC, 1000);
+
+	  $toc.toc({
+	    'selectors': 'h1,h2,h3',
+	    'container': '.js-article-content',
+	  });
+	});
+</script></div>
+</div>
+</div><div class="m-page-footer js-page-footer">
+  <div class="main">
+    <aside><div class="follow-me"><ul itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="weili">
+    <link itemprop="url" href="http://localhost:4000/"></ul></div>
+</aside>
+    <footer class="site-info">
+      <p>© Weili's Blog 2018</p>
+      <p><a title="" href="https://github.com/lilywei739/lilywei739.github.io">VIEW IN GITHUB</a></p>
+      <p>Powered by <a title="Jekyll is a simple, blog-aware, static site generator." href="http://jekyllrb.com/">Jekyll</a> & <a
+        title="TeXt is a succinct theme for blogging." href="https://github.com/kitian616/jekyll-TeXt-theme">TeXt Theme</a>.</p>
+    </footer>
+  </div>
+</div>
+<script>
+      $(function() {
+        // display coding language
+        var $articleContent = $('.m-post, .m-page').find('.m-article-content'), $this;
+        $articleContent.children('.highlight').each(function() {
+          $this = $(this);
+          $this.attr('data-lang', $this.find('code').attr('data-lang'));
+        });
+        $articleContent.children('h1, h2, h3, h4, h5, h6').each(function() {
+          $this = $(this);
+          $this.append($('<a class="anchor" aria-hidden="true"></a>').text('#'));
+        });
+        $articleContent.on('click', '.anchor', function(e) {
+          var targetId = $(this).parent().attr('id');
+          scrollAnimateTo($('#' + targetId).offset().top, 400, function() {
+            console.log(666)
+            window.history.replaceState(null, '', window.location.href.split('#')[0] + '#' + targetId);
+          });
+        });
+        function scrollAnimateTo(destination, duration, callback) {
+          var $body = $('html, body'), bodyScrollTop = $body.scrollTop();
+          if(bodyScrollTop === destination) { return; }
+          $body.animate({ scrollTop: destination }, duration, callback);
+        }
+      });
+    </script></body>
+</html>

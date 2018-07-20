@@ -1,5 +1,445 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.7.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2018-07-12T21:52:47+08:00</updated><id>http://localhost:4000/</id><title type="html">Weili’s Blog</title><subtitle>Weili's blog
-</subtitle><author><name>weili</name></author><entry><title type="html">TypeScript (二)</title><link href="http://localhost:4000/2018/07/06/TypeScript_2.html" rel="alternate" type="text/html" title="TypeScript (二)" /><published>2018-07-06T00:00:00+08:00</published><updated>2018-07-06T00:00:00+08:00</updated><id>http://localhost:4000/2018/07/06/TypeScript_2</id><content type="html" xml:base="http://localhost:4000/2018/07/06/TypeScript_2.html">&lt;p&gt;TypeScript支持与JavaScript几乎相同的数据类型，此外还提供了实用的枚举类型方便我们使用。&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.7.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2018-07-20T16:45:23+08:00</updated><id>http://localhost:4000/</id><title type="html">Weili’s Blog</title><subtitle>Weili's blog
+</subtitle><author><name>weili</name></author><entry><title type="html">TypeScript (四)</title><link href="http://localhost:4000/2018/07/20/TypeScript_4.html" rel="alternate" type="text/html" title="TypeScript (四)" /><published>2018-07-20T00:00:00+08:00</published><updated>2018-07-20T00:00:00+08:00</updated><id>http://localhost:4000/2018/07/20/TypeScript_4</id><content type="html" xml:base="http://localhost:4000/2018/07/20/TypeScript_4.html">&lt;h2 id=&quot;接口二&quot;&gt;接口(二)&lt;/h2&gt;
+
+&lt;h3 id=&quot;函数类型&quot;&gt;函数类型&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;接口能够描述JavaScript中对象拥有的各种各样的外形。&lt;/li&gt;
+  &lt;li&gt;接口也可以描述函数类型。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;为了使用接口表示函数类型，需要给接口定义一个调用签名。 它就像是一个只有参数列表和返回值类型的函数定义。参数列表里的每个参数都需要名字和类型。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;interface SearchFunc {
+  (source: string, subString: string): boolean;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;这样定义后，就可以像使用其它接口一样使用这个函数类型的接口。&lt;/p&gt;
+
+&lt;p&gt;下例展示了如何创建一个函数类型的变量，并将一个同类型的函数赋值给这个变量。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;let mySearch: SearchFunc;
+mySearch = function(source: string, subString: string) {
+  let result = source.search(subString);
+  return result &amp;gt; -1;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;对于函数类型的类型检查来说，&lt;strong&gt;函数的参数名不需要与接口里定义的名字相匹配&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;比如，我们使用下面的代码重写上面的例子：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;let mySearch: SearchFunc;
+mySearch = function(src: string, sub: string): boolean {
+  let result = src.search(sub);
+  return result &amp;gt; -1;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;可索引的类型&quot;&gt;可索引的类型&lt;/h3&gt;
+
+&lt;p&gt;与使用接口描述函数类型差不多，可以描述那些能够“通过索引得到”的类型，比如a[10]或ageMap[“daniel”]。&lt;/p&gt;
+
+&lt;p&gt;可索引类型具有一个索引签名，它描述了对象索引的类型，还有相应的索引返回值类型。&lt;/p&gt;
+
+&lt;p&gt;看一个例子：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;interface StringArray {
+  [index: number]: string;
+}
+
+let myArray: StringArray;
+myArray = [&quot;Bob&quot;, &quot;Fred&quot;];
+
+let myStr: string = myArray[0];
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;上面定义了StringArray接口，它具有索引签名。 这个索引签名表示了当用 number去索引StringArray时会得到string类型的返回值。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;共有支持两种索引签名：字符串和数字。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;可以同时使用两种类型的索引，但是数字索引的返回值必须是字符串索引返回值类型的子类型。 这是因为当使用 number来索引时，JavaScript会将它转换成string然后再去索引对象。 也就是说用 100（一个number）去索引等同于使用”100”（一个string）去索引，因此两者需要保持一致。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;class Animal {
+    name: string;
+}
+class Dog extends Animal {
+    breed: string;
+}
+
+// 错误：使用数值型的字符串索引，有时会得到完全不同的Animal!
+interface NotOkay {
+    [x: number]: Animal;
+    [x: string]: Dog;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;字符串索引签名能够很好的描述dictionary模式，并且它们也会确保所有属性与其返回值类型相匹配。 因为字符串索引声明了 obj.property和obj[“property”]两种形式都可以。&lt;/p&gt;
+
+&lt;p&gt;下面的例子里， name的类型与字符串索引类型不匹配，所以类型检查器给出一个错误提示：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;interface NumberDictionary {
+  [index: string]: number;
+  length: number;    // 可以，length是number类型
+  name: string       // 错误，`name`的类型与索引类型返回值的类型不匹配
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;最后，可以将索引签名设置为只读，这样就防止了给索引赋值：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;interface ReadonlyStringArray {
+    readonly [index: number]: string;
+}
+let myArray: ReadonlyStringArray = [&quot;Alice&quot;, &quot;Bob&quot;];
+myArray[2] = &quot;Mallory&quot;; // error!
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;上面的代码不能设置myArray[2]，因为索引签名是只读的。&lt;/p&gt;
+
+&lt;h3 id=&quot;类类型&quot;&gt;类类型&lt;/h3&gt;
+
+&lt;h4 id=&quot;实现接口&quot;&gt;实现接口&lt;/h4&gt;
+
+&lt;p&gt;TypeScript也能够用它来明确的强制一个类去符合某种契约&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;interface ClockInterface {
+    currentTime: Date;
+}
+
+class Clock implements ClockInterface {
+    currentTime: Date;
+    constructor(h: number, m: number) { }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;可以在接口中描述一个方法，在类里实现它，如同下面的setTime方法一样&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;interface ClockInterface {
+    currentTime: Date;
+    setTime(d: Date);
+}
+
+class Clock implements ClockInterface {
+    currentTime: Date;
+    setTime(d: Date) {
+        this.currentTime = d;
+    }
+    constructor(h: number, m: number) { }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;接口描述了类的公共部分，而不是公共和私有两部分。 它不会帮你检查类是否具有某些私有成员。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;类静态部分与实例部分的区别&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;当操作类和接口的时候，要知道类是具有两个类型的：&lt;strong&gt;静态部分的类型和实例的类型&lt;/strong&gt;。 当用构造器签名去定义一个接口并试图定义一个类去实现这个接口时会得到一个错误：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;interface ClockConstructor {
+    new (hour: number, minute: number);
+}
+
+class Clock implements ClockConstructor {
+    currentTime: Date;
+    constructor(h: number, m: number) { }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;因为当一个类实现了一个接口时，只对其实例部分进行类型检查。 constructor存在于类的静态部分，所以不在检查的范围内。&lt;/p&gt;
+
+&lt;p&gt;因此，应该直接操作类的静态部分。 看下面的例子，定义了两个接口， ClockConstructor为构造函数所用和ClockInterface为实例方法所用。&lt;/p&gt;
+
+&lt;p&gt;为了方便定义一个构造函数 createClock，它用传入的类型创建实例。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;interface ClockConstructor {
+    new (hour: number, minute: number): ClockInterface;
+}
+interface ClockInterface {
+    tick();
+}
+
+function createClock(ctor: ClockConstructor, hour: number, minute: number): ClockInterface {
+    return new ctor(hour, minute);
+}
+
+class DigitalClock implements ClockInterface {
+    constructor(h: number, m: number) { }
+    tick() {
+        console.log(&quot;beep beep&quot;);
+    }
+}
+class AnalogClock implements ClockInterface {
+    constructor(h: number, m: number) { }
+    tick() {
+        console.log(&quot;tick tock&quot;);
+    }
+}
+
+let digital = createClock(DigitalClock, 12, 17);
+let analog = createClock(AnalogClock, 7, 32);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;因为createClock的第一个参数是ClockConstructor类型，在createClock(AnalogClock, 7, 32)里，会检查AnalogClock是否符合构造函数签名。&lt;/p&gt;
+
+&lt;h3 id=&quot;继承接口&quot;&gt;继承接口&lt;/h3&gt;
+
+&lt;p&gt;和类一样，接口也可以相互继承。&lt;/p&gt;
+
+&lt;p&gt;这能够从一个接口里复制成员到另一个接口里，可以更灵活地将接口分割到可重用的模块里。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;interface Shape {
+    color: string;
+}
+
+interface Square extends Shape {
+    sideLength: number;
+}
+
+let square = &amp;lt;Square&amp;gt;{};
+square.color = &quot;blue&quot;;
+square.sideLength = 10;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;一个接口可以继承多个接口，创建出多个接口的合成接口。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;interface Shape {
+    color: string;
+}
+
+interface PenStroke {
+    penWidth: number;
+}
+
+interface Square extends Shape, PenStroke {
+    sideLength: number;
+}
+
+let square = &amp;lt;Square&amp;gt;{};
+square.color = &quot;blue&quot;;
+square.sideLength = 10;
+square.penWidth = 5.0;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;混合类型&quot;&gt;混合类型&lt;/h3&gt;
+
+&lt;p&gt;接口能够描述JavaScript里丰富的类型。 因为JavaScript其动态灵活的特点，有时你会希望一个对象可以同时具有上面提到的多种类型。&lt;/p&gt;
+
+&lt;p&gt;一个例子就是，一个对象可以同时做为函数和对象使用，并带有额外的属性。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;interface Counter {
+    (start: number): string;
+    interval: number;
+    reset(): void;
+}
+
+function getCounter(): Counter {
+    let counter = &amp;lt;Counter&amp;gt;function (start: number) { };
+    counter.interval = 123;
+    counter.reset = function () { };
+    return counter;
+}
+
+let c = getCounter();
+c(10);
+c.reset();
+c.interval = 5.0;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;在使用JavaScript第三方库的时候，就可能需要像上面那样去完整地定义类型。&lt;/p&gt;
+
+&lt;h3 id=&quot;接口继承类&quot;&gt;接口继承类&lt;/h3&gt;
+
+&lt;p&gt;当接口继承了一个类类型时，它会继承类的成员但不包括其实现。 就好像接口声明了所有类中存在的成员，但并没有提供具体实现一样。 接口同样会继承到类的private和protected成员。 这意味着当你创建了一个接口继承了一个拥有私有或受保护的成员的类时，这个接口类型只能被这个类或其子类所实现（implement）。&lt;/p&gt;
+
+&lt;p&gt;当你有一个庞大的继承结构时这很有用，但要指出的是你的代码只在子类拥有特定属性时起作用。 这个子类除了继承至基类外与基类没有任何关系。 例：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;class Control {
+    private state: any;
+}
+
+interface SelectableControl extends Control {
+    select(): void;
+}
+
+class Button extends Control implements SelectableControl {
+    select() { }
+}
+
+class TextBox extends Control {
+    select() { }
+}
+
+// 错误：“Image”类型缺少“state”属性。
+class Image implements SelectableControl {
+    select() { }
+}
+
+class Location {
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;在上面的例子里，SelectableControl包含了Control的所有成员，包括私有成员state。 因为 state是私有成员，所以只能够是Control的子类们才能实现SelectableControl接口。 因为只有 Control的子类才能够拥有一个声明于Control的私有成员state，这对私有成员的兼容性是必需的。&lt;/p&gt;
+
+&lt;p&gt;在Control类内部，是允许通过SelectableControl的实例来访问私有成员state的。 实际上， SelectableControl接口和拥有select方法的Control类是一样的。 Button和TextBox类是SelectableControl的子类（因为它们都继承自Control并有select方法），但Image和Location类并不是这样的。&lt;/p&gt;</content><author><name>weili</name></author><category term="JS" /><category term="前端" /><summary type="html">接口(二) 函数类型 接口能够描述JavaScript中对象拥有的各种各样的外形。 接口也可以描述函数类型。 为了使用接口表示函数类型，需要给接口定义一个调用签名。 它就像是一个只有参数列表和返回值类型的函数定义。参数列表里的每个参数都需要名字和类型。 interface SearchFunc { (source: string, subString: string): boolean; } 这样定义后，就可以像使用其它接口一样使用这个函数类型的接口。 下例展示了如何创建一个函数类型的变量，并将一个同类型的函数赋值给这个变量。 let mySearch: SearchFunc; mySearch = function(source: string, subString: string) { let result = source.search(subString); return result &amp;gt; -1; } 对于函数类型的类型检查来说，函数的参数名不需要与接口里定义的名字相匹配。 比如，我们使用下面的代码重写上面的例子： let mySearch: SearchFunc; mySearch = function(src: string, sub: string): boolean { let result = src.search(sub); return result &amp;gt; -1; } 可索引的类型 与使用接口描述函数类型差不多，可以描述那些能够“通过索引得到”的类型，比如a[10]或ageMap[“daniel”]。 可索引类型具有一个索引签名，它描述了对象索引的类型，还有相应的索引返回值类型。 看一个例子： interface StringArray { [index: number]: string; } let myArray: StringArray; myArray = [&quot;Bob&quot;, &quot;Fred&quot;]; let myStr: string = myArray[0]; 上面定义了StringArray接口，它具有索引签名。 这个索引签名表示了当用 number去索引StringArray时会得到string类型的返回值。 共有支持两种索引签名：字符串和数字。 可以同时使用两种类型的索引，但是数字索引的返回值必须是字符串索引返回值类型的子类型。 这是因为当使用 number来索引时，JavaScript会将它转换成string然后再去索引对象。 也就是说用 100（一个number）去索引等同于使用”100”（一个string）去索引，因此两者需要保持一致。 class Animal { name: string; } class Dog extends Animal { breed: string; } // 错误：使用数值型的字符串索引，有时会得到完全不同的Animal! interface NotOkay { [x: number]: Animal; [x: string]: Dog; } 字符串索引签名能够很好的描述dictionary模式，并且它们也会确保所有属性与其返回值类型相匹配。 因为字符串索引声明了 obj.property和obj[“property”]两种形式都可以。 下面的例子里， name的类型与字符串索引类型不匹配，所以类型检查器给出一个错误提示： interface NumberDictionary { [index: string]: number; length: number; // 可以，length是number类型 name: string // 错误，`name`的类型与索引类型返回值的类型不匹配 } 最后，可以将索引签名设置为只读，这样就防止了给索引赋值： interface ReadonlyStringArray { readonly [index: number]: string; } let myArray: ReadonlyStringArray = [&quot;Alice&quot;, &quot;Bob&quot;]; myArray[2] = &quot;Mallory&quot;; // error! 上面的代码不能设置myArray[2]，因为索引签名是只读的。 类类型 实现接口 TypeScript也能够用它来明确的强制一个类去符合某种契约 interface ClockInterface { currentTime: Date; } class Clock implements ClockInterface { currentTime: Date; constructor(h: number, m: number) { } } 可以在接口中描述一个方法，在类里实现它，如同下面的setTime方法一样 interface ClockInterface { currentTime: Date; setTime(d: Date); } class Clock implements ClockInterface { currentTime: Date; setTime(d: Date) { this.currentTime = d; } constructor(h: number, m: number) { } } 接口描述了类的公共部分，而不是公共和私有两部分。 它不会帮你检查类是否具有某些私有成员。 类静态部分与实例部分的区别 当操作类和接口的时候，要知道类是具有两个类型的：静态部分的类型和实例的类型。 当用构造器签名去定义一个接口并试图定义一个类去实现这个接口时会得到一个错误： interface ClockConstructor { new (hour: number, minute: number); } class Clock implements ClockConstructor { currentTime: Date; constructor(h: number, m: number) { } } 因为当一个类实现了一个接口时，只对其实例部分进行类型检查。 constructor存在于类的静态部分，所以不在检查的范围内。 因此，应该直接操作类的静态部分。 看下面的例子，定义了两个接口， ClockConstructor为构造函数所用和ClockInterface为实例方法所用。 为了方便定义一个构造函数 createClock，它用传入的类型创建实例。 interface ClockConstructor { new (hour: number, minute: number): ClockInterface; } interface ClockInterface { tick(); } function createClock(ctor: ClockConstructor, hour: number, minute: number): ClockInterface { return new ctor(hour, minute); } class DigitalClock implements ClockInterface { constructor(h: number, m: number) { } tick() { console.log(&quot;beep beep&quot;); } } class AnalogClock implements ClockInterface { constructor(h: number, m: number) { } tick() { console.log(&quot;tick tock&quot;); } } let digital = createClock(DigitalClock, 12, 17); let analog = createClock(AnalogClock, 7, 32); 因为createClock的第一个参数是ClockConstructor类型，在createClock(AnalogClock, 7, 32)里，会检查AnalogClock是否符合构造函数签名。 继承接口 和类一样，接口也可以相互继承。 这能够从一个接口里复制成员到另一个接口里，可以更灵活地将接口分割到可重用的模块里。 interface Shape { color: string; } interface Square extends Shape { sideLength: number; } let square = &amp;lt;Square&amp;gt;{}; square.color = &quot;blue&quot;; square.sideLength = 10; 一个接口可以继承多个接口，创建出多个接口的合成接口。 interface Shape { color: string; } interface PenStroke { penWidth: number; } interface Square extends Shape, PenStroke { sideLength: number; } let square = &amp;lt;Square&amp;gt;{}; square.color = &quot;blue&quot;; square.sideLength = 10; square.penWidth = 5.0; 混合类型 接口能够描述JavaScript里丰富的类型。 因为JavaScript其动态灵活的特点，有时你会希望一个对象可以同时具有上面提到的多种类型。 一个例子就是，一个对象可以同时做为函数和对象使用，并带有额外的属性。 interface Counter { (start: number): string; interval: number; reset(): void; } function getCounter(): Counter { let counter = &amp;lt;Counter&amp;gt;function (start: number) { }; counter.interval = 123; counter.reset = function () { }; return counter; } let c = getCounter(); c(10); c.reset(); c.interval = 5.0; 在使用JavaScript第三方库的时候，就可能需要像上面那样去完整地定义类型。 接口继承类 当接口继承了一个类类型时，它会继承类的成员但不包括其实现。 就好像接口声明了所有类中存在的成员，但并没有提供具体实现一样。 接口同样会继承到类的private和protected成员。 这意味着当你创建了一个接口继承了一个拥有私有或受保护的成员的类时，这个接口类型只能被这个类或其子类所实现（implement）。 当你有一个庞大的继承结构时这很有用，但要指出的是你的代码只在子类拥有特定属性时起作用。 这个子类除了继承至基类外与基类没有任何关系。 例： class Control { private state: any; } interface SelectableControl extends Control { select(): void; } class Button extends Control implements SelectableControl { select() { } } class TextBox extends Control { select() { } } // 错误：“Image”类型缺少“state”属性。 class Image implements SelectableControl { select() { } } class Location { } 在上面的例子里，SelectableControl包含了Control的所有成员，包括私有成员state。 因为 state是私有成员，所以只能够是Control的子类们才能实现SelectableControl接口。 因为只有 Control的子类才能够拥有一个声明于Control的私有成员state，这对私有成员的兼容性是必需的。 在Control类内部，是允许通过SelectableControl的实例来访问私有成员state的。 实际上， SelectableControl接口和拥有select方法的Control类是一样的。 Button和TextBox类是SelectableControl的子类（因为它们都继承自Control并有select方法），但Image和Location类并不是这样的。</summary></entry><entry><title type="html">TypeScript (三)</title><link href="http://localhost:4000/2018/07/13/TypeScript_3.html" rel="alternate" type="text/html" title="TypeScript (三)" /><published>2018-07-13T00:00:00+08:00</published><updated>2018-07-13T00:00:00+08:00</updated><id>http://localhost:4000/2018/07/13/TypeScript_3</id><content type="html" xml:base="http://localhost:4000/2018/07/13/TypeScript_3.html">&lt;h2 id=&quot;接口一&quot;&gt;接口(一)&lt;/h2&gt;
+
+&lt;p&gt;TypeScript的核心原则之一是对值所具有的结构进行类型检查。接口的作用就是为这些类型命名和为你的代码或第三方代码定义契约。&lt;/p&gt;
+
+&lt;h3 id=&quot;接口定义&quot;&gt;接口定义&lt;/h3&gt;
+
+&lt;p&gt;通过一个简单示例来观察接口是如何工作的：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function printLabel(labelledObj: { label: string }) {
+  console.log(labelledObj.label);
+}
+
+let myObj = { size: 10, label: &quot;Size 10 Object&quot; };
+printLabel(myObj);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;类型检查器会查看printLabel的调用。 printLabel有一个参数，并要求这个对象参数有一个名为label类型为string的属性。&lt;/p&gt;
+
+&lt;p&gt;需要注意的是，传入的对象参数实际上会包含很多属性，但是编译器只会检查那些必需的属性是否存在，并且其类型是否匹配。&lt;/p&gt;
+
+&lt;p&gt;重写上面的例子，这次使用接口来描述：必须包含一个label属性且类型为string：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;interface LabelledValue {
+  label: string;
+}
+
+function printLabel(labelledObj: LabelledValue) {
+  console.log(labelledObj.label);
+}
+
+let myObj = {size: 10, label: &quot;Size 10 Object&quot;};
+printLabel(myObj);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;LabelledValue接口就好比一个名字，用来描述上面例子里的要求。&lt;/li&gt;
+  &lt;li&gt;LabelledValue代表了有一个 label属性且类型为string的对象。&lt;/li&gt;
+  &lt;li&gt;需要注意的是，只要传入的对象满足LabelledValue提到的必要条件，那么它就是被允许的。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;还有一点值得提的是，类型检查器不会去检查属性的顺序，只要相应的属性存在并且类型也是对的就可以。&lt;/p&gt;
+
+&lt;h3 id=&quot;可选属性--&quot;&gt;可选属性 – ‘?’&lt;/h3&gt;
+
+&lt;p&gt;接口里的属性不全都是必需的。 有些是只在某些条件下存在，或者根本不存在。 可选属性在应用“option bags”模式时很常用，即给函数传入的参数对象中只有部分属性赋值了。&lt;/p&gt;
+
+&lt;p&gt;下面是应用了“option bags”的例子：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;interface SquareConfig {
+  color?: string;
+  width?: number;
+}
+
+function createSquare(config: SquareConfig): {color: string; area: number} {
+  let newSquare = {color: &quot;white&quot;, area: 100};
+  if (config.color) {
+    newSquare.color = config.color;
+  }
+  if (config.width) {
+    newSquare.area = config.width * config.width;
+  }
+  return newSquare;
+}
+
+let mySquare = createSquare({color: &quot;black&quot;});
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;可选属性的好处：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;可以对可能存在的属性进行预定义;&lt;/li&gt;
+  &lt;li&gt;是可以捕获引用了不存在的属性时的错误。 比如，将属性名拼错就会得到一个错误提示;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;只读属性readonly&quot;&gt;只读属性—‘readonly’&lt;/h3&gt;
+
+&lt;p&gt;一些对象属性只能在对象刚刚创建的时候修改其值。 你可以在属性名前用 readonly来指定只读属性:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;interface Point {
+    readonly x: number;
+    readonly y: number;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;可以通过赋值一个对象字面量来构造一个Point。 赋值后， x和y再也不能被改变了。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;let p1: Point = { x: 10, y: 20 };
+p1.x = 5; // error!
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;TypeScript具有ReadonlyArray&lt;T&gt;类型，它与Array&lt;T&gt;相似，只是把所有可变方法去掉了，因此可以确保数组创建后再也不能被修改：&lt;/T&gt;&lt;/T&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;let a: number[] = [1, 2, 3, 4];
+let ro: ReadonlyArray&amp;lt;number&amp;gt; = a;
+ro[0] = 12; // error!
+ro.push(5); // error!
+ro.length = 100; // error!
+a = ro; // error!
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;上面代码的最后一行，可以看到就算把整个ReadonlyArray赋值到一个普通数组也是不可以的。 但是你可以用类型断言重写：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;a = ro as number[];
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;readonly vs const&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;最简单判断该用readonly还是const的方法是看要把它做为变量使用还是做为一个属性。 做为变量使用的话用 const，若做为属性则使用readonly。&lt;/p&gt;
+
+&lt;h3 id=&quot;额外的属性检查&quot;&gt;额外的属性检查&lt;/h3&gt;
+
+&lt;p&gt;先看个例子&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;interface SquareConfig {
+    color?: string;
+    width?: number;
+}
+
+function createSquare(config: SquareConfig): { color: string; area: number } {
+    // ...
+}
+
+let mySquare = createSquare({ colour: &quot;red&quot;, width: 100 });
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;注意传入createSquare的参数拼写为colour而不是color。 在JavaScript里，这会默默地失败。&lt;/p&gt;
+
+&lt;p&gt;你可能会争辩这个程序已经正确地类型化了，因为width属性是兼容的，不存在color属性，而且额外的colour属性是无意义的。&lt;/p&gt;
+
+&lt;p&gt;然而，TypeScript会认为这段代码可能存在bug。 对象字面量会被特殊对待而且会经过 额外属性检查，当将它们赋值给变量或作为参数传递的时候。 如果一个对象字面量存在任何“目标类型”不包含的属性时，你会得到一个错误。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// error: 'colour' not expected in type 'SquareConfig'
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;绕开这些检查非常简单。 最简便的方法是使用类型断言：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;let mySquare = createSquare({ width: 100, opacity: 0.5 } as SquareConfig);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;然而，最佳的方式是能够添加一个字符串索引签名，前提是你能够确定这个对象可能具有某些做为特殊用途使用的额外属性。 如果 SquareConfig带有上面定义的类型的color和width属性，并且还会带有任意数量的其它属性，那么我们可以这样定义它：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;interface SquareConfig {
+    color?: string;
+    width?: number;
+    [propName: string]: any;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;上面的代码表示的是SquareConfig可以有任意数量的属性，并且只要它们不是color和width，那么就无所谓它们的类型是什么。&lt;/p&gt;
+
+&lt;p&gt;还有最后一种跳过这些检查的方式，这可能会让你感到惊讶，它就是将这个对象赋值给一个另一个变量： 因为 squareOptions不会经过额外属性检查，所以编译器不会报错。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;let squareOptions = { colour: &quot;red&quot;, width: 100 };
+let mySquare = createSquare(squareOptions);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;要留意，在像上面一样的简单代码里，你可能不应该去绕开这些检查。 对于包含方法和内部状态的复杂对象字面量来讲，你可能需要使用这些技巧，但是大部额外属性检查错误是真正的bug。 就是说你遇到了额外类型检查出的错误，比如“option bags”，你应该去审查一下你的类型声明。 在这里，如果支持传入 color或colour属性到createSquare，你应该修改SquareConfig定义来体现出这一点。&lt;/p&gt;</content><author><name>weili</name></author><category term="JS" /><category term="前端" /><summary type="html">接口(一) TypeScript的核心原则之一是对值所具有的结构进行类型检查。接口的作用就是为这些类型命名和为你的代码或第三方代码定义契约。 接口定义 通过一个简单示例来观察接口是如何工作的： function printLabel(labelledObj: { label: string }) { console.log(labelledObj.label); } let myObj = { size: 10, label: &quot;Size 10 Object&quot; }; printLabel(myObj); 类型检查器会查看printLabel的调用。 printLabel有一个参数，并要求这个对象参数有一个名为label类型为string的属性。 需要注意的是，传入的对象参数实际上会包含很多属性，但是编译器只会检查那些必需的属性是否存在，并且其类型是否匹配。 重写上面的例子，这次使用接口来描述：必须包含一个label属性且类型为string： interface LabelledValue { label: string; } function printLabel(labelledObj: LabelledValue) { console.log(labelledObj.label); } let myObj = {size: 10, label: &quot;Size 10 Object&quot;}; printLabel(myObj); LabelledValue接口就好比一个名字，用来描述上面例子里的要求。 LabelledValue代表了有一个 label属性且类型为string的对象。 需要注意的是，只要传入的对象满足LabelledValue提到的必要条件，那么它就是被允许的。 还有一点值得提的是，类型检查器不会去检查属性的顺序，只要相应的属性存在并且类型也是对的就可以。 可选属性 – ‘?’ 接口里的属性不全都是必需的。 有些是只在某些条件下存在，或者根本不存在。 可选属性在应用“option bags”模式时很常用，即给函数传入的参数对象中只有部分属性赋值了。 下面是应用了“option bags”的例子： interface SquareConfig { color?: string; width?: number; } function createSquare(config: SquareConfig): {color: string; area: number} { let newSquare = {color: &quot;white&quot;, area: 100}; if (config.color) { newSquare.color = config.color; } if (config.width) { newSquare.area = config.width * config.width; } return newSquare; } let mySquare = createSquare({color: &quot;black&quot;}); 可选属性的好处： 可以对可能存在的属性进行预定义; 是可以捕获引用了不存在的属性时的错误。 比如，将属性名拼错就会得到一个错误提示; 只读属性—‘readonly’ 一些对象属性只能在对象刚刚创建的时候修改其值。 你可以在属性名前用 readonly来指定只读属性: interface Point { readonly x: number; readonly y: number; } 可以通过赋值一个对象字面量来构造一个Point。 赋值后， x和y再也不能被改变了。 let p1: Point = { x: 10, y: 20 }; p1.x = 5; // error! TypeScript具有ReadonlyArray类型，它与Array相似，只是把所有可变方法去掉了，因此可以确保数组创建后再也不能被修改： let a: number[] = [1, 2, 3, 4]; let ro: ReadonlyArray&amp;lt;number&amp;gt; = a; ro[0] = 12; // error! ro.push(5); // error! ro.length = 100; // error! a = ro; // error! 上面代码的最后一行，可以看到就算把整个ReadonlyArray赋值到一个普通数组也是不可以的。 但是你可以用类型断言重写： a = ro as number[]; readonly vs const 最简单判断该用readonly还是const的方法是看要把它做为变量使用还是做为一个属性。 做为变量使用的话用 const，若做为属性则使用readonly。 额外的属性检查 先看个例子 interface SquareConfig { color?: string; width?: number; } function createSquare(config: SquareConfig): { color: string; area: number } { // ... } let mySquare = createSquare({ colour: &quot;red&quot;, width: 100 }); 注意传入createSquare的参数拼写为colour而不是color。 在JavaScript里，这会默默地失败。 你可能会争辩这个程序已经正确地类型化了，因为width属性是兼容的，不存在color属性，而且额外的colour属性是无意义的。 然而，TypeScript会认为这段代码可能存在bug。 对象字面量会被特殊对待而且会经过 额外属性检查，当将它们赋值给变量或作为参数传递的时候。 如果一个对象字面量存在任何“目标类型”不包含的属性时，你会得到一个错误。 // error: 'colour' not expected in type 'SquareConfig' 绕开这些检查非常简单。 最简便的方法是使用类型断言： let mySquare = createSquare({ width: 100, opacity: 0.5 } as SquareConfig); 然而，最佳的方式是能够添加一个字符串索引签名，前提是你能够确定这个对象可能具有某些做为特殊用途使用的额外属性。 如果 SquareConfig带有上面定义的类型的color和width属性，并且还会带有任意数量的其它属性，那么我们可以这样定义它： interface SquareConfig { color?: string; width?: number; [propName: string]: any; } 上面的代码表示的是SquareConfig可以有任意数量的属性，并且只要它们不是color和width，那么就无所谓它们的类型是什么。 还有最后一种跳过这些检查的方式，这可能会让你感到惊讶，它就是将这个对象赋值给一个另一个变量： 因为 squareOptions不会经过额外属性检查，所以编译器不会报错。 let squareOptions = { colour: &quot;red&quot;, width: 100 }; let mySquare = createSquare(squareOptions); 要留意，在像上面一样的简单代码里，你可能不应该去绕开这些检查。 对于包含方法和内部状态的复杂对象字面量来讲，你可能需要使用这些技巧，但是大部额外属性检查错误是真正的bug。 就是说你遇到了额外类型检查出的错误，比如“option bags”，你应该去审查一下你的类型声明。 在这里，如果支持传入 color或colour属性到createSquare，你应该修改SquareConfig定义来体现出这一点。</summary></entry><entry><title type="html">TypeScript (二)</title><link href="http://localhost:4000/2018/07/06/TypeScript_2.html" rel="alternate" type="text/html" title="TypeScript (二)" /><published>2018-07-06T00:00:00+08:00</published><updated>2018-07-06T00:00:00+08:00</updated><id>http://localhost:4000/2018/07/06/TypeScript_2</id><content type="html" xml:base="http://localhost:4000/2018/07/06/TypeScript_2.html">&lt;p&gt;TypeScript支持与JavaScript几乎相同的数据类型，此外还提供了实用的枚举类型方便我们使用。&lt;/p&gt;
 
 &lt;h2 id=&quot;基础类型&quot;&gt;基础类型&lt;/h2&gt;
 
@@ -1333,219 +1773,4 @@ menu 与 menuitem：曾经用于创建导航与内容菜单
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.01//EN&quot; &quot;http://www.w3.org/TR/html4/strict.dtd&quot;&amp;gt;&lt;/span&gt; 
 
 &lt;span class=&quot;cp&quot;&gt;&amp;lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&amp;gt;&lt;/span&gt; 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>weili</name></author><category term="JS" /><category term="HTML" /><summary type="html">一个月前，HTML 5.2 正式成为了 W3C 的推荐标准（REC）。当一个规范到达 REC 阶段，就意味着它已经正式得到了 W3C 成员和理事长的认可。并且 W3C 将正式推荐浏览器厂商部署、web 开发者实现此规范。 在 HTML 5.2 中有一些添加和删除,更多详细参考–HTML 5.2 变动内容 增加的新特性 dialog 原生对话框 在 web 中，对话框比比皆是，但是它们的实现方式都各有不同。对话框很难实现可访问性，这导致大多数的对话框对那些不方便以视觉方式访问网页的用户来说都是不可用的。 新的 dialog 元素旨在改变这种状况，它提供了一种简单的方式来实现模态对话框。之后我会单独写一篇文章专门介绍这个元素的工作方式，在此先简单介绍一下。 由一个 &amp;lt;dialog&amp;gt; 元素创建对话框： &amp;lt;dialog&amp;gt; &amp;lt;h2&amp;gt;Dialog Title&amp;lt;/h2&amp;gt; &amp;lt;p&amp;gt;Dialog content and other stuff will go here&amp;lt;/p&amp;gt; &amp;lt;/dialog&amp;gt; 默认情况下，对话框会在视图中（以及 DOM 访问中）隐藏，只有设置 open 属性后，对话框才会显示。 &amp;lt;dialog open&amp;gt; open 属性可以通过调用 show() 与 close() 方法开启或关闭，任何 HTMLDialogElement 都可以调用这两个方法。 &amp;lt;button id=&quot;open&quot;&amp;gt;Open Dialog&amp;lt;/button&amp;gt; &amp;lt;button id=&quot;close&quot;&amp;gt;Close Dialog&amp;lt;/button&amp;gt; &amp;lt;dialog id=&quot;dialog&quot;&amp;gt; &amp;lt;h2&amp;gt;Dialog Title&amp;lt;/h2&amp;gt; &amp;lt;p&amp;gt;Dialog content and other stuff will go here&amp;lt;/p&amp;gt; &amp;lt;/dialog&amp;gt; &amp;lt;script&amp;gt; const dialog = document.getElementById(&quot;dialog&quot;); document.getElementById(&quot;open&quot;).addEventListener(&quot;click&quot;, () =&amp;gt; { dialog.show(); }); document.getElementById(&quot;close&quot;).addEventListener(&quot;click&quot;, () =&amp;gt; { dialog.close(); }); &amp;lt;/script&amp;gt; Chrome 浏览器已经支持 元素，Firefox 也即将支持（behind a flag） 主流浏览器兼容情况的数据 在 iFrame 中使用 Payment Request API（支付请求 API） Payment Request API 是支付结算表单的原生替代方案。它将支付信息置于浏览器处理，用来代替之前各个网站各不相同的结算表单，旨在为用户提供一种标准、一致的支付方式。 在 HTML 5.2 之前，这种支付请求无法在文档嵌入的 iframe 中使用，导致第三方嵌入式支付解决方案（如 Stripe, Paystack）基本不可能使用这个 API，因为它们通常是在 iframe 中处理支付接口。 为此，HTML 5.2 引入了用于 iframe 的 allowpaymentrequest 属性，允许用户在宿主网页中访问 iframe 的 Payment Request API。 &amp;lt;iframe allowpaymentrequest&amp;gt; 苹果的图标尺寸 如要定义网页图标，我们可以在文档的 head 中使用 link rel 元素。如果要定义不同尺寸的图标，我们可以使用 sizes 属性。 &amp;lt;link rel=&quot;icon&quot; sizes=&quot;16x16&quot; href=&quot;path/to/icon16.png&quot;&amp;gt; &amp;lt;link rel=&quot;icon&quot; sizes=&quot;32x32&quot; href=&quot;path/to/icon32.png&quot;&amp;gt; 这个属性虽然纯粹是个建议，但如果提供了多种尺寸的图标，可以让用户代理（UA）决定使用哪种尺寸的图标。在大多数设备有着不同的“最佳”图标尺寸时尤为重要。 在 HTML 5.2 之前，sizes 属性仅能用于 rel 为 icon 的 link 元素中。然而，苹果的 iOS 设备不支持 sizes 属性。为了解决这个问题，苹果自己引入了一个他们设备专用的 rel appple-touch-icon 用于定义他们设备上使用的图标。 在 HTML 5.2 中，规范定义了 sizes 属性不再仅仅可用于 rel 为 icon 的元素，也能用于 rel 为 apple-touch-icon 的元素。这样可以让我们为不同的苹果设备提供不同尺寸的图标。不过直到现在为止，据我所知苹果的设备还是不支持 sizes 属性。在将来苹果最终支持此规范时，它将派上用场。 新的有效实践 除了新特性之外，HTML 5.2 还将一些之前无效的 HTML 写法认定为有效。 多个 main 元素 main 元素代表网页的主要内容。虽然不同网页的重复内容可以放在 header、section 或者其它元素中，但 main 元素是为页面上的特定内容保留的。因此在 HTML 5.2 之前，main 元素在 DOM 中必须唯一才能令页面有效。 随着单页面应用（SPA）的普及，要坚持这个原则变得困难起来。在同一个网页的 DOM 中可能会有多个 main 元素，但在任意时刻只能给用户展示其中的一个。 使用 HTML 5.2，我们只要保证同一时刻只有一个 main 元素可见，就能在我们的标签中使用多个 main 元素。与此同时其它的 main 元素必须使用 hidden 属性进行隐藏。 &amp;lt;main&amp;gt;...&amp;lt;/main&amp;gt; &amp;lt;main hidden&amp;gt;...&amp;lt;/main&amp;gt; &amp;lt;main hidden&amp;gt;...&amp;lt;/main&amp;gt; 我们都知道，通过 CSS 来隐藏元素的方法有很多，但多余的 main 元素必须使用 hidden 属性进行隐藏。任何其它隐藏此元素的方法（如 display: none; 和 visibility: hidden;）都将无效。 legend 中的标题元素 在表单中，legend 元素表示 fieldset 表单域中的标题。在 HTML 5.2 前，legend 元素的内容必须为纯文本。而现在，它可以包含标题元素（h1等）了。 &amp;lt;fieldset&amp;gt; &amp;lt;legend&amp;gt;&amp;lt;h2&amp;gt;Basic Information&amp;lt;/h2&amp;gt;&amp;lt;/legend&amp;gt; &amp;lt;!-- Form fields for basic information --&amp;gt; &amp;lt;/fieldset&amp;gt; &amp;lt;fieldset&amp;gt; &amp;lt;legend&amp;gt;&amp;lt;h2&amp;gt;Contact Information&amp;lt;/h2&amp;gt;&amp;lt;/legend&amp;gt; &amp;lt;!-- Form fields for contact information --&amp;gt; &amp;lt;/fieldset&amp;gt; 当我们想用 fieldset 对表单中不同部分进行分组时，这个特性非常有用。在这种情况下使用标题元素是有意义的，因为这能让那些依赖于文档大纲的用户可以轻松导航至表单的对应部分。 移除的特性 在 HTML 5.2 中移除了一些元素，具体为： keygen：曾经用于帮助表单生成公钥 menu 与 menuitem：曾经用于创建导航与内容菜单 新的无效实践 最后，一些开发实践方式被规定不再有效。 在 p 中不再能包含行内、浮动、块类型的子元素 在 HTML 5.2 中，p 元素中唯一合法的子元素只能是文字内容。这也意味着以下类型的元素不再能嵌套于段落标签 p 内： 行内块（Inline blocks） 行内表格（Inline tables） 浮动块与固定位置块 不再支持严格文档类型（Strict Doctypes） &amp;lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.01//EN&quot; &quot;http://www.w3.org/TR/html4/strict.dtd&quot;&amp;gt; &amp;lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&amp;gt;</summary></entry><entry><title type="html">Promise 对象</title><link href="http://localhost:4000/2018/04/03/Promise.html" rel="alternate" type="text/html" title="Promise 对象" /><published>2018-04-03T00:00:00+08:00</published><updated>2018-04-03T00:00:00+08:00</updated><id>http://localhost:4000/2018/04/03/Promise</id><content type="html" xml:base="http://localhost:4000/2018/04/03/Promise.html">&lt;h1 id=&quot;promise-对象&quot;&gt;Promise 对象&lt;/h1&gt;
-
-&lt;p&gt;ES6中，新增了Promise对象，它主要用于处理异步回调代码，让代码不至于陷入回调嵌套的死路中。&lt;/p&gt;
-
-&lt;h2 id=&quot;promise本质&quot;&gt;Promise本质&lt;/h2&gt;
-
-&lt;p&gt;Promise本质上是一个构造器 ，专门用来构造对象的。自己身上有all、reject、resolve等方法，原型上有then、catch等的方法，它接受一个函数作为参数&lt;/p&gt;
-
-&lt;h2 id=&quot;promise的几个重要方法&quot;&gt;Promise的几个重要方法&lt;/h2&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;promise Promise.prototype.then( resolveFn, [rejectFn] )
-
-  @param resolveFn( ...args )  
-    函数，当Promise实例状态变为“完成”状态时会被执行，  
-    用于将从当前promise中取出reresolve( ...args )中得到的参数（...args），  
-    并进行相应的操作，比如将（args）传入另一个封装了promise构造器的函数，  
-    并将该函数执行完成后返回的promise实例返回  
-    @param ...args  
-      参数列表，当前promise实例处于“完成”状态时，通过resolve(...args)得到的值。  
-  @param [rejectFn( ...args )]  
-    函数，可选，当Promise实例状态变为“失败”状态时会被执行，  
-    用于将从当前promise中取出reject( ...args )中得到的参数（...args），  
-    并进行相应的操作，比如将（args）传入另一个封装了promise构造器的函数，  
-    并将该函数执行完成后返回的promise实例返回  
-    @param ...args  
-      参数列表，当前promise处于“完成”状态时，通过resolve(...args)得到的值。  
-  @return promise  
-    promise对象，resolveFn或rejectFn执行后的返回值，  
-    我们一般会在fn中调用另一个封装了promise构造器的函数，  
-    然后将其返回给then()方法，then()方法再将其作为then的返回值返回给当前链式调用处，  
-    如果fn()返回的不是一个promise对象，then()会帮我们将fn()返回值封装成promise对象，  
-    这样，我们就可以确保能够链式调用then()方法，并取得当前promise中获得的函数运行结果。  
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;then()方法定义在Promise.prototype上，用于为Promise实例添加状态更改时的回调函数，相当于监听一样。
-当当前promise实例状态变为“完成”状态时，resolveFn函数自动执行。
-当当前promise实例状态变为“失败”状态时，rejectFn函数自动执行。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;promise Promise.prototype.catch( rejectFn )
-
-  @param rejectFn( ...args )  
-    函数，当Promise实例状态变为“失败”状态时会被执行，  
-    用于将从当前promise中取出reject( ...args )中得到的参数（...args），  
-    并进行相应的操作，比如将（args）传入另一个封装了promise构造器的函数，  
-    并将该函数执行完成后返回的promise实例返回  
-    @param ...args  
-      参数列表，当前promise处于“完成”状态时，通过resolve(...args)得到的值。  
-  @return promise  
-    promise对象，rejectFn执行后的返回值，  
-    如果fn()返回的不是一个promise对象，catch()会帮我们将fn()返回值封装成promise对象，  
-    并将其返回，以确保promise能够被继续链式调用下去。  
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;该方法其实是“.then(null, rejectFn)”的别名，用于指定状态转为“失败”时的回调函数。
-建议不要在then()方法中定义第二个参数，而应该使用catch()，结构层次会更好一些。
-如果没有使用catch()方法指定错误错误处理的回调函数，promise实例抛出的错误不会传递到外层代码。
-如果promise状态已经变为了resolved（“失败”状态），再抛出任何错误，都是无效的。
-promise实例中抛出的错误具有冒泡的特性，它会一直向后传递，直到被捕获为止。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Promise.all( [promise1, promise2, …, promisen] )
-
-  @param [promise1, promise2, ..., promisen]
-    可遍历对象，一个由promise对象构成的可遍历对象，常用数组表示
-  @return promise
-    promise对象
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Promise.all()用于将多个Promise实例包装成一个新的Promise实例，并返回。
-Promise.all()方法接受一个由Promise实例组成的可遍历对象。如果可遍历对象中存在有不是Promise实例的元素，就会调用Promise.resolve()方法，将其转为Promise实例。
-本文的可遍历对象，指的是那些具有Iterator接口的对象，如Array、WeakSet、Map、Set、WeakMap等函数的实例。&lt;/p&gt;
-
-&lt;p&gt;Promise.all()方法返回的Promise实例的状态分成两种情况：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;可遍历对象中的Promise实例状态全变为 完成 状态时，该实例的状态才会转变为 完成 状态，此时，可遍历对象中的Promise实例的返回值会组成一个数组，传给该实例的回调。&lt;/li&gt;
-  &lt;li&gt;可遍历对象只要存在Promise实例状态转为 失败 状态时，该实例的状态就会转变为 失败 状态，此时，第一个转为 失败 状态的Promise实例的返回值会传给该实例的回调。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Promise.race( [promise1, promise2, …, promisen] )
-  @param [promise1, promise2, ..., promisen]
-    可遍历对象，一个由promise对象构成的可遍历对象，常用数组表示
-  @return promise
-    promise对象
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Promise.race()与Promise.all()用法基本上一致，功能上也几乎相同，唯一的差异就是： 
-Promise.race()方法返回的Promise实例的状态分成两种情况：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;可遍历对象只要存在Promise实例状态转为 完成 状态时，该实例的状态才会转变为 完成 状态，此时，第一个转为 完成 状态的Promise实例的返回值，会作为该实例的then()方法的回调函数的参数。&lt;/li&gt;
-  &lt;li&gt;可遍历对象只要存在Promise实例状态转为 失败 状态时，该实例的状态就会转变为 失败 状态，此时，第一个转为 失败 状态的Promise实例的返回值，会作为该实例的then()方法的回调函数的参数。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;promise Promise.resolve( notHaveThenMethodObject )
-  @param notHaveThenMethodObject
-    对象，一个原型链上不具有then()方法的对象
-  @return promise
-    promise对象
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;如果Promise.resolve()的参数的原型链上不具有then方法，则返回一个新的Promise实例，且其状态为 完成 状态，并且会将它的参数作为该实例的then()方法的回调函数的参数。&lt;/p&gt;
-
-&lt;p&gt;如果Promise.resolve()的参数是一个Promise实例（原型链上具有then方法），则将其原封不动地返回。&lt;/p&gt;
-
-&lt;p&gt;Promise.resolve()方法允许调用时不使用任何参数。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;promise Promise.reject( something )
-  @param something
-    任意值，用于传递给返回值的then()方法的回调函数参数的值
-  @return promise
-    promise对象
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Promise.reject方法的用法和resolve方法基本一样，只是它返回的Promise实例，状态都是 失败 状态。
-Promise.reject方法的参数会被作为该实例的then()方法的回调函数的参数。
-Promise.resolve()方法允许调用时不使用任何参数。&lt;/p&gt;
-
-&lt;p&gt;Promise构造器回调函数参数中的 resolve 和 reject 和Promise构造器方法中的 reject() 和 resolve() 效果是不一样的。
-Promise构造器回调函数参数中的 resolve 和 reject 用于更改当前Promise的状态，并将其值返回给当前Promise的then()方法的参数。 Promise构造器方法中的 reject() 和 resolve() 可以直接返回一个已经改变状态的新的Promise对象。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Promise.reject() Promise.resolve()&lt;/li&gt;
-  &lt;li&gt;new Promise((resolve, reject)=&amp;gt;{ resolve(…) 或 reject(…) })&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Promise.prototype.done( [resolveFn], [rejectFn] )
-  @param [resolveFn( ...args )]  
-    函数，可选，当Promise实例状态变为“完成”状态时会被执行，  
-    用于将从当前promise中取出reresolve( ...args )中得到的参数（...args），  
-    并进行相应的操作，比如将（args）传入另一个封装了promise构造器的函数，  
-    并将该函数执行完成后返回的promise实例返回  
-    @param ...args  
-      参数列表，当前promise实例处于“完成”状态时，通过resolve(...args)得到的值。  
-  @param [rejectFn( ...args )]  
-    函数，可选，当Promise实例状态变为“失败”状态时会被执行，  
-    用于将从当前promise中取出reject( ...args )中得到的参数（...args），  
-    并进行相应的操作，比如将（args）传入另一个封装了promise构造器的函数，  
-    并将该函数执行完成后返回的promise实例返回  
-    @param ...args  
-      参数列表，当前promise处于“完成”状态时，通过resolve(...args)得到的值。
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;不管以then()或catch()方法结尾，若最后一个方法抛出错误，则在内部可能无法捕捉到该错误，外界也无法获得，为了避免这种情况发生，Promise构造器的原型链上提供了done()方法。&lt;/p&gt;
-
-&lt;p&gt;promise.done()方法总是处于会调链的低端，它可以捕捉到任何在回调链上抛出的错误，并将其抛出。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Promise.prototype.finally( simpleFn )
-  @param simpleFn  
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;一个普通函数，这个普通函数无论如何都会被执行。&lt;br /&gt;
-finally方法指定，不管Promise对象最后状态如何，都会执行的操作。&lt;/p&gt;</content><author><name>weili</name></author><category term="JS" /><category term="Promise" /><category term="前端" /><summary type="html">Promise 对象 ES6中，新增了Promise对象，它主要用于处理异步回调代码，让代码不至于陷入回调嵌套的死路中。 Promise本质 Promise本质上是一个构造器 ，专门用来构造对象的。自己身上有all、reject、resolve等方法，原型上有then、catch等的方法，它接受一个函数作为参数 Promise的几个重要方法 promise Promise.prototype.then( resolveFn, [rejectFn] ) @param resolveFn( ...args ) 函数，当Promise实例状态变为“完成”状态时会被执行， 用于将从当前promise中取出reresolve( ...args )中得到的参数（...args）， 并进行相应的操作，比如将（args）传入另一个封装了promise构造器的函数， 并将该函数执行完成后返回的promise实例返回 @param ...args 参数列表，当前promise实例处于“完成”状态时，通过resolve(...args)得到的值。 @param [rejectFn( ...args )] 函数，可选，当Promise实例状态变为“失败”状态时会被执行， 用于将从当前promise中取出reject( ...args )中得到的参数（...args）， 并进行相应的操作，比如将（args）传入另一个封装了promise构造器的函数， 并将该函数执行完成后返回的promise实例返回 @param ...args 参数列表，当前promise处于“完成”状态时，通过resolve(...args)得到的值。 @return promise promise对象，resolveFn或rejectFn执行后的返回值， 我们一般会在fn中调用另一个封装了promise构造器的函数， 然后将其返回给then()方法，then()方法再将其作为then的返回值返回给当前链式调用处， 如果fn()返回的不是一个promise对象，then()会帮我们将fn()返回值封装成promise对象， 这样，我们就可以确保能够链式调用then()方法，并取得当前promise中获得的函数运行结果。 then()方法定义在Promise.prototype上，用于为Promise实例添加状态更改时的回调函数，相当于监听一样。 当当前promise实例状态变为“完成”状态时，resolveFn函数自动执行。 当当前promise实例状态变为“失败”状态时，rejectFn函数自动执行。 promise Promise.prototype.catch( rejectFn ) @param rejectFn( ...args ) 函数，当Promise实例状态变为“失败”状态时会被执行， 用于将从当前promise中取出reject( ...args )中得到的参数（...args）， 并进行相应的操作，比如将（args）传入另一个封装了promise构造器的函数， 并将该函数执行完成后返回的promise实例返回 @param ...args 参数列表，当前promise处于“完成”状态时，通过resolve(...args)得到的值。 @return promise promise对象，rejectFn执行后的返回值， 如果fn()返回的不是一个promise对象，catch()会帮我们将fn()返回值封装成promise对象， 并将其返回，以确保promise能够被继续链式调用下去。 该方法其实是“.then(null, rejectFn)”的别名，用于指定状态转为“失败”时的回调函数。 建议不要在then()方法中定义第二个参数，而应该使用catch()，结构层次会更好一些。 如果没有使用catch()方法指定错误错误处理的回调函数，promise实例抛出的错误不会传递到外层代码。 如果promise状态已经变为了resolved（“失败”状态），再抛出任何错误，都是无效的。 promise实例中抛出的错误具有冒泡的特性，它会一直向后传递，直到被捕获为止。 Promise.all( [promise1, promise2, …, promisen] ) @param [promise1, promise2, ..., promisen] 可遍历对象，一个由promise对象构成的可遍历对象，常用数组表示 @return promise promise对象 Promise.all()用于将多个Promise实例包装成一个新的Promise实例，并返回。 Promise.all()方法接受一个由Promise实例组成的可遍历对象。如果可遍历对象中存在有不是Promise实例的元素，就会调用Promise.resolve()方法，将其转为Promise实例。 本文的可遍历对象，指的是那些具有Iterator接口的对象，如Array、WeakSet、Map、Set、WeakMap等函数的实例。 Promise.all()方法返回的Promise实例的状态分成两种情况： 可遍历对象中的Promise实例状态全变为 完成 状态时，该实例的状态才会转变为 完成 状态，此时，可遍历对象中的Promise实例的返回值会组成一个数组，传给该实例的回调。 可遍历对象只要存在Promise实例状态转为 失败 状态时，该实例的状态就会转变为 失败 状态，此时，第一个转为 失败 状态的Promise实例的返回值会传给该实例的回调。 Promise.race( [promise1, promise2, …, promisen] ) @param [promise1, promise2, ..., promisen] 可遍历对象，一个由promise对象构成的可遍历对象，常用数组表示 @return promise promise对象 Promise.race()与Promise.all()用法基本上一致，功能上也几乎相同，唯一的差异就是： Promise.race()方法返回的Promise实例的状态分成两种情况： 可遍历对象只要存在Promise实例状态转为 完成 状态时，该实例的状态才会转变为 完成 状态，此时，第一个转为 完成 状态的Promise实例的返回值，会作为该实例的then()方法的回调函数的参数。 可遍历对象只要存在Promise实例状态转为 失败 状态时，该实例的状态就会转变为 失败 状态，此时，第一个转为 失败 状态的Promise实例的返回值，会作为该实例的then()方法的回调函数的参数。 promise Promise.resolve( notHaveThenMethodObject ) @param notHaveThenMethodObject 对象，一个原型链上不具有then()方法的对象 @return promise promise对象 如果Promise.resolve()的参数的原型链上不具有then方法，则返回一个新的Promise实例，且其状态为 完成 状态，并且会将它的参数作为该实例的then()方法的回调函数的参数。 如果Promise.resolve()的参数是一个Promise实例（原型链上具有then方法），则将其原封不动地返回。 Promise.resolve()方法允许调用时不使用任何参数。 promise Promise.reject( something ) @param something 任意值，用于传递给返回值的then()方法的回调函数参数的值 @return promise promise对象 Promise.reject方法的用法和resolve方法基本一样，只是它返回的Promise实例，状态都是 失败 状态。 Promise.reject方法的参数会被作为该实例的then()方法的回调函数的参数。 Promise.resolve()方法允许调用时不使用任何参数。 Promise构造器回调函数参数中的 resolve 和 reject 和Promise构造器方法中的 reject() 和 resolve() 效果是不一样的。 Promise构造器回调函数参数中的 resolve 和 reject 用于更改当前Promise的状态，并将其值返回给当前Promise的then()方法的参数。 Promise构造器方法中的 reject() 和 resolve() 可以直接返回一个已经改变状态的新的Promise对象。 Promise.reject() Promise.resolve() new Promise((resolve, reject)=&amp;gt;{ resolve(…) 或 reject(…) }) Promise.prototype.done( [resolveFn], [rejectFn] ) @param [resolveFn( ...args )] 函数，可选，当Promise实例状态变为“完成”状态时会被执行， 用于将从当前promise中取出reresolve( ...args )中得到的参数（...args）， 并进行相应的操作，比如将（args）传入另一个封装了promise构造器的函数， 并将该函数执行完成后返回的promise实例返回 @param ...args 参数列表，当前promise实例处于“完成”状态时，通过resolve(...args)得到的值。 @param [rejectFn( ...args )] 函数，可选，当Promise实例状态变为“失败”状态时会被执行， 用于将从当前promise中取出reject( ...args )中得到的参数（...args）， 并进行相应的操作，比如将（args）传入另一个封装了promise构造器的函数， 并将该函数执行完成后返回的promise实例返回 @param ...args 参数列表，当前promise处于“完成”状态时，通过resolve(...args)得到的值。 不管以then()或catch()方法结尾，若最后一个方法抛出错误，则在内部可能无法捕捉到该错误，外界也无法获得，为了避免这种情况发生，Promise构造器的原型链上提供了done()方法。 promise.done()方法总是处于会调链的低端，它可以捕捉到任何在回调链上抛出的错误，并将其抛出。 Promise.prototype.finally( simpleFn ) @param simpleFn 一个普通函数，这个普通函数无论如何都会被执行。 finally方法指定，不管Promise对象最后状态如何，都会执行的操作。</summary></entry><entry><title type="html">basic-knowledge(一).md</title><link href="http://localhost:4000/js/2018/03/31/basic-knowledge-1.html" rel="alternate" type="text/html" title="basic-knowledge(一).md" /><published>2018-03-31T00:00:00+08:00</published><updated>2018-03-31T00:00:00+08:00</updated><id>http://localhost:4000/js/2018/03/31/basic-knowledge-1</id><content type="html" xml:base="http://localhost:4000/js/2018/03/31/basic-knowledge-1.html">&lt;h1 id=&quot;项目小知识点&quot;&gt;项目小知识点&lt;/h1&gt;
-
-&lt;p&gt;项目中用到的一些小知识点，用于记录一下：&lt;/p&gt;
-
-&lt;p&gt;1、 数组去重&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var arr = [1,10,4,6,10,9,8,6,10]
-
-    // 从前向后逐个比较，相同的删除
-    Array.prototype.distinct1 = function () {
-        var arr = this;
-        for(var i=0; i&amp;lt;arr.length; i++) {
-            for(var j=i+1; j&amp;lt;arr.length; j++) {
-                if(arr[i] === arr[j]) {
-                    arr.splice(j,1)
-                    j = ++i;
-                }
-            }
-        }
-        return arr
-    }
-
-    // 从前向后比较，不相同的push到新数组
-    Array.prototype.distinct2 = function () {
-        var arr = this;
-        var temp = [];
-        for(var i=0; i&amp;lt;arr.length; i++) {
-            for(var j=i+1; j&amp;lt;arr.length; j++) {
-                if(arr[i] === arr[j]) {
-                    j = ++i;
-                }
-            }
-            temp.push(arr[i])
-        }
-        return temp
-    }
-
-    // 利用对象属性名不能重复的特性
-    Array.prototype.distinct3 = function () {
-        var obj = {};
-        var arr =this;
-        var temp = [];
-        for(var i=0; i&amp;lt;arr.length; i++) {
-            if(!obj[arr[i]]) {
-                temp.push(arr[i])
-                obj[arr[i]] = 1;
-            }
-        }
-        return temp
-    }
-
-    // 利用indexOf 如果无法匹配到相同的，push进新数组
-    Array.prototype.distinct4 = function () {
-        var arr = this;
-        var temp = [];
-        arr.forEach(function (item, i) {
-            var num = arr.indexOf(item, i+1)
-            if(num === -1) {
-                temp.push(item)
-            }
-        })
-        return temp
-    }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>weili</name></author><category term="[&quot;JS&quot;]" /><summary type="html">项目小知识点 项目中用到的一些小知识点，用于记录一下： 1、 数组去重 var arr = [1,10,4,6,10,9,8,6,10] // 从前向后逐个比较，相同的删除 Array.prototype.distinct1 = function () { var arr = this; for(var i=0; i&amp;lt;arr.length; i++) { for(var j=i+1; j&amp;lt;arr.length; j++) { if(arr[i] === arr[j]) { arr.splice(j,1) j = ++i; } } } return arr } // 从前向后比较，不相同的push到新数组 Array.prototype.distinct2 = function () { var arr = this; var temp = []; for(var i=0; i&amp;lt;arr.length; i++) { for(var j=i+1; j&amp;lt;arr.length; j++) { if(arr[i] === arr[j]) { j = ++i; } } temp.push(arr[i]) } return temp } // 利用对象属性名不能重复的特性 Array.prototype.distinct3 = function () { var obj = {}; var arr =this; var temp = []; for(var i=0; i&amp;lt;arr.length; i++) { if(!obj[arr[i]]) { temp.push(arr[i]) obj[arr[i]] = 1; } } return temp } // 利用indexOf 如果无法匹配到相同的，push进新数组 Array.prototype.distinct4 = function () { var arr = this; var temp = []; arr.forEach(function (item, i) { var num = arr.indexOf(item, i+1) if(num === -1) { temp.push(item) } }) return temp }</summary></entry></feed>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>weili</name></author><category term="JS" /><category term="HTML" /><summary type="html">一个月前，HTML 5.2 正式成为了 W3C 的推荐标准（REC）。当一个规范到达 REC 阶段，就意味着它已经正式得到了 W3C 成员和理事长的认可。并且 W3C 将正式推荐浏览器厂商部署、web 开发者实现此规范。 在 HTML 5.2 中有一些添加和删除,更多详细参考–HTML 5.2 变动内容 增加的新特性 dialog 原生对话框 在 web 中，对话框比比皆是，但是它们的实现方式都各有不同。对话框很难实现可访问性，这导致大多数的对话框对那些不方便以视觉方式访问网页的用户来说都是不可用的。 新的 dialog 元素旨在改变这种状况，它提供了一种简单的方式来实现模态对话框。之后我会单独写一篇文章专门介绍这个元素的工作方式，在此先简单介绍一下。 由一个 &amp;lt;dialog&amp;gt; 元素创建对话框： &amp;lt;dialog&amp;gt; &amp;lt;h2&amp;gt;Dialog Title&amp;lt;/h2&amp;gt; &amp;lt;p&amp;gt;Dialog content and other stuff will go here&amp;lt;/p&amp;gt; &amp;lt;/dialog&amp;gt; 默认情况下，对话框会在视图中（以及 DOM 访问中）隐藏，只有设置 open 属性后，对话框才会显示。 &amp;lt;dialog open&amp;gt; open 属性可以通过调用 show() 与 close() 方法开启或关闭，任何 HTMLDialogElement 都可以调用这两个方法。 &amp;lt;button id=&quot;open&quot;&amp;gt;Open Dialog&amp;lt;/button&amp;gt; &amp;lt;button id=&quot;close&quot;&amp;gt;Close Dialog&amp;lt;/button&amp;gt; &amp;lt;dialog id=&quot;dialog&quot;&amp;gt; &amp;lt;h2&amp;gt;Dialog Title&amp;lt;/h2&amp;gt; &amp;lt;p&amp;gt;Dialog content and other stuff will go here&amp;lt;/p&amp;gt; &amp;lt;/dialog&amp;gt; &amp;lt;script&amp;gt; const dialog = document.getElementById(&quot;dialog&quot;); document.getElementById(&quot;open&quot;).addEventListener(&quot;click&quot;, () =&amp;gt; { dialog.show(); }); document.getElementById(&quot;close&quot;).addEventListener(&quot;click&quot;, () =&amp;gt; { dialog.close(); }); &amp;lt;/script&amp;gt; Chrome 浏览器已经支持 元素，Firefox 也即将支持（behind a flag） 主流浏览器兼容情况的数据 在 iFrame 中使用 Payment Request API（支付请求 API） Payment Request API 是支付结算表单的原生替代方案。它将支付信息置于浏览器处理，用来代替之前各个网站各不相同的结算表单，旨在为用户提供一种标准、一致的支付方式。 在 HTML 5.2 之前，这种支付请求无法在文档嵌入的 iframe 中使用，导致第三方嵌入式支付解决方案（如 Stripe, Paystack）基本不可能使用这个 API，因为它们通常是在 iframe 中处理支付接口。 为此，HTML 5.2 引入了用于 iframe 的 allowpaymentrequest 属性，允许用户在宿主网页中访问 iframe 的 Payment Request API。 &amp;lt;iframe allowpaymentrequest&amp;gt; 苹果的图标尺寸 如要定义网页图标，我们可以在文档的 head 中使用 link rel 元素。如果要定义不同尺寸的图标，我们可以使用 sizes 属性。 &amp;lt;link rel=&quot;icon&quot; sizes=&quot;16x16&quot; href=&quot;path/to/icon16.png&quot;&amp;gt; &amp;lt;link rel=&quot;icon&quot; sizes=&quot;32x32&quot; href=&quot;path/to/icon32.png&quot;&amp;gt; 这个属性虽然纯粹是个建议，但如果提供了多种尺寸的图标，可以让用户代理（UA）决定使用哪种尺寸的图标。在大多数设备有着不同的“最佳”图标尺寸时尤为重要。 在 HTML 5.2 之前，sizes 属性仅能用于 rel 为 icon 的 link 元素中。然而，苹果的 iOS 设备不支持 sizes 属性。为了解决这个问题，苹果自己引入了一个他们设备专用的 rel appple-touch-icon 用于定义他们设备上使用的图标。 在 HTML 5.2 中，规范定义了 sizes 属性不再仅仅可用于 rel 为 icon 的元素，也能用于 rel 为 apple-touch-icon 的元素。这样可以让我们为不同的苹果设备提供不同尺寸的图标。不过直到现在为止，据我所知苹果的设备还是不支持 sizes 属性。在将来苹果最终支持此规范时，它将派上用场。 新的有效实践 除了新特性之外，HTML 5.2 还将一些之前无效的 HTML 写法认定为有效。 多个 main 元素 main 元素代表网页的主要内容。虽然不同网页的重复内容可以放在 header、section 或者其它元素中，但 main 元素是为页面上的特定内容保留的。因此在 HTML 5.2 之前，main 元素在 DOM 中必须唯一才能令页面有效。 随着单页面应用（SPA）的普及，要坚持这个原则变得困难起来。在同一个网页的 DOM 中可能会有多个 main 元素，但在任意时刻只能给用户展示其中的一个。 使用 HTML 5.2，我们只要保证同一时刻只有一个 main 元素可见，就能在我们的标签中使用多个 main 元素。与此同时其它的 main 元素必须使用 hidden 属性进行隐藏。 &amp;lt;main&amp;gt;...&amp;lt;/main&amp;gt; &amp;lt;main hidden&amp;gt;...&amp;lt;/main&amp;gt; &amp;lt;main hidden&amp;gt;...&amp;lt;/main&amp;gt; 我们都知道，通过 CSS 来隐藏元素的方法有很多，但多余的 main 元素必须使用 hidden 属性进行隐藏。任何其它隐藏此元素的方法（如 display: none; 和 visibility: hidden;）都将无效。 legend 中的标题元素 在表单中，legend 元素表示 fieldset 表单域中的标题。在 HTML 5.2 前，legend 元素的内容必须为纯文本。而现在，它可以包含标题元素（h1等）了。 &amp;lt;fieldset&amp;gt; &amp;lt;legend&amp;gt;&amp;lt;h2&amp;gt;Basic Information&amp;lt;/h2&amp;gt;&amp;lt;/legend&amp;gt; &amp;lt;!-- Form fields for basic information --&amp;gt; &amp;lt;/fieldset&amp;gt; &amp;lt;fieldset&amp;gt; &amp;lt;legend&amp;gt;&amp;lt;h2&amp;gt;Contact Information&amp;lt;/h2&amp;gt;&amp;lt;/legend&amp;gt; &amp;lt;!-- Form fields for contact information --&amp;gt; &amp;lt;/fieldset&amp;gt; 当我们想用 fieldset 对表单中不同部分进行分组时，这个特性非常有用。在这种情况下使用标题元素是有意义的，因为这能让那些依赖于文档大纲的用户可以轻松导航至表单的对应部分。 移除的特性 在 HTML 5.2 中移除了一些元素，具体为： keygen：曾经用于帮助表单生成公钥 menu 与 menuitem：曾经用于创建导航与内容菜单 新的无效实践 最后，一些开发实践方式被规定不再有效。 在 p 中不再能包含行内、浮动、块类型的子元素 在 HTML 5.2 中，p 元素中唯一合法的子元素只能是文字内容。这也意味着以下类型的元素不再能嵌套于段落标签 p 内： 行内块（Inline blocks） 行内表格（Inline tables） 浮动块与固定位置块 不再支持严格文档类型（Strict Doctypes） &amp;lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.01//EN&quot; &quot;http://www.w3.org/TR/html4/strict.dtd&quot;&amp;gt; &amp;lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&amp;gt;</summary></entry></feed>

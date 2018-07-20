@@ -1,0 +1,357 @@
+<!DOCTYPE html><html lang="en">
+  <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>TypeScript (三) - Weili's Blog</title>
+<meta name="description" content="接口(一)TypeScript的核心原则之一是对值所具有的结构进行类型检查。接口的作用就是为这些类型命名和为你的代码或第三方代码定义契约。接口定义通过一个简单示例来观察接口是如何工作的：function printLabel(labelledObj: { label: string }) {  console.l...">
+<link rel="canonical" href="http://localhost:4000/2018/07/13/TypeScript_3.html"><link rel="alternate" type="application/rss+xml" title="Weili's Blog" href="http://localhost:4000/feed.xml">
+<!-- for Safari on iOS https://developer.apple.com/ios/human-interface-guidelines/icons-and-images/app-icon/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/images/logo/icon-180x180.png"><link rel="apple-touch-icon" sizes="167x167" href="/assets/images/logo/icon-167x167.png"><link rel="apple-touch-icon" sizes="152x152" href="/assets/images/logo/icon-152x152.png"><link rel="apple-touch-icon" sizes="120x120" href="/assets/images/logo/icon-120x120.png"><link rel="shortcut icon" href="/assets/images/logo/icon-120x120.png">
+<!-- for Chrome on Android https://developer.chrome.com/multidevice/android/installtohomescreen -->
+<meta name="mobile-web-app-capable" content="yes"><link rel="icon" sizes="192x192" href="/assets/images/logo/icon-192x192.png">
+<!-- for Edge on Windows 10 https://msdn.microsoft.com/en-us/library/dn255024(v=vs.85).aspx --><meta name="msapplication-TileImage" content="/assets/images/logo/icon-144x144.png"><meta name="msapplication-square310x310logo" content="/assets/images/logo/icon-310x310.png"><meta name="msapplication-wide310x150logo" content="/assets/images/logo/icon-310x150.png"><meta name="msapplication-square150x150logo" content="/assets/images/logo/icon-150x150.png"><meta name="msapplication-square70x70logo" content="/assets/images/logo/icon-70x70.png">
+<meta name="msapplication-TileColor" content="#eeeeee"><link rel="stylesheet" href="/assets/css/blog.css">
+    <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="m-page-stage js-page-stage"><div class="m-page-content"><header class="m-page-header">
+  <div class="main clearfix">
+    <div class='site-logo'><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="24px" height="24px" viewBox="0 0 24 24">
+<style type="text/css">
+	.st0{fill:#666666;}
+</style>
+<path class="st0" d="M1.7,22.3c5.7-5.7,11.3-5.7,17,0c3.3-3.3,3.5-5.3,0.8-6c2.7,0.7,3.5-1.1,2.3-5.6s-3.3-5.2-6.3-2.1
+	c3-3,2.3-5.2-2.1-6.3S7,1.8,7.7,4.6C7,1.8,5,2.1,1.7,5.3C7.3,11,7.3,16.7,1.7,22.3"/>
+</svg><a title="Weili's blog
+" href="/">Weili's Blog</a></div>
+    <nav>
+      <ul><li><a href="/">Home</a></li><li><a href="/all.html">All</a></li><li><a href="/about.html">About</a></li></ul>
+    </nav>
+  </div>
+</header>
+<div class="m-page-main"><div class="m-post">
+	<div class="main js-main clearfix">
+		<div class="col-2 js-col-2">
+			<aside class="js-article-aside"><div class="m-toc js-toc"></div></aside>
+		</div>
+		<div class="col-1">
+			<article itemscope itemtype="http://schema.org/BlogPosting">
+				<meta itemprop="mainEntityOfPage" itemscope itemType="https://schema.org/WebPage"/>
+				<header class="main-header"><h1 itemprop="headline" itemprop="name headline">TypeScript (三)</h1><div class="m-article-data clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="weili"/></meta><ul class="tag-wrapper"><li>
+          <a class="pill-button" href="/all.html?tag=JS">JS</a>
+        </li><li>
+          <a class="pill-button" href="/all.html?tag=%E5%89%8D%E7%AB%AF">前端</a>
+        </li></ul><div class="other-wrapper"><div class="date-wrapper"><time class="article-meta" datetime="2018-07-13T00:00:00+08:00"
+          itemprop="datePublished">Jul 13, 2018
+        </time></div>
+  </div>
+</div>
+</header>
+				<div class="m-article-content js-article-content" itemprop="articleBody"><h2 id="接口一">接口(一)</h2>
+
+<p>TypeScript的核心原则之一是对值所具有的结构进行类型检查。接口的作用就是为这些类型命名和为你的代码或第三方代码定义契约。</p>
+
+<h3 id="接口定义">接口定义</h3>
+
+<p>通过一个简单示例来观察接口是如何工作的：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function printLabel(labelledObj: { label: string }) {
+  console.log(labelledObj.label);
+}
+
+let myObj = { size: 10, label: "Size 10 Object" };
+printLabel(myObj);
+</code></pre></div></div>
+
+<p>类型检查器会查看printLabel的调用。 printLabel有一个参数，并要求这个对象参数有一个名为label类型为string的属性。</p>
+
+<p>需要注意的是，传入的对象参数实际上会包含很多属性，但是编译器只会检查那些必需的属性是否存在，并且其类型是否匹配。</p>
+
+<p>重写上面的例子，这次使用接口来描述：必须包含一个label属性且类型为string：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>interface LabelledValue {
+  label: string;
+}
+
+function printLabel(labelledObj: LabelledValue) {
+  console.log(labelledObj.label);
+}
+
+let myObj = {size: 10, label: "Size 10 Object"};
+printLabel(myObj);
+</code></pre></div></div>
+
+<ul>
+  <li>LabelledValue接口就好比一个名字，用来描述上面例子里的要求。</li>
+  <li>LabelledValue代表了有一个 label属性且类型为string的对象。</li>
+  <li>需要注意的是，只要传入的对象满足LabelledValue提到的必要条件，那么它就是被允许的。</li>
+</ul>
+
+<p>还有一点值得提的是，类型检查器不会去检查属性的顺序，只要相应的属性存在并且类型也是对的就可以。</p>
+
+<h3 id="可选属性--">可选属性 – ‘?’</h3>
+
+<p>接口里的属性不全都是必需的。 有些是只在某些条件下存在，或者根本不存在。 可选属性在应用“option bags”模式时很常用，即给函数传入的参数对象中只有部分属性赋值了。</p>
+
+<p>下面是应用了“option bags”的例子：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>interface SquareConfig {
+  color?: string;
+  width?: number;
+}
+
+function createSquare(config: SquareConfig): {color: string; area: number} {
+  let newSquare = {color: "white", area: 100};
+  if (config.color) {
+    newSquare.color = config.color;
+  }
+  if (config.width) {
+    newSquare.area = config.width * config.width;
+  }
+  return newSquare;
+}
+
+let mySquare = createSquare({color: "black"});
+</code></pre></div></div>
+
+<p>可选属性的好处：</p>
+
+<ul>
+  <li>可以对可能存在的属性进行预定义;</li>
+  <li>是可以捕获引用了不存在的属性时的错误。 比如，将属性名拼错就会得到一个错误提示;</li>
+</ul>
+
+<h3 id="只读属性readonly">只读属性—‘readonly’</h3>
+
+<p>一些对象属性只能在对象刚刚创建的时候修改其值。 你可以在属性名前用 readonly来指定只读属性:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>interface Point {
+    readonly x: number;
+    readonly y: number;
+}
+</code></pre></div></div>
+
+<p>可以通过赋值一个对象字面量来构造一个Point。 赋值后， x和y再也不能被改变了。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>let p1: Point = { x: 10, y: 20 };
+p1.x = 5; // error!
+</code></pre></div></div>
+
+<p>TypeScript具有ReadonlyArray<T>类型，它与Array<T>相似，只是把所有可变方法去掉了，因此可以确保数组创建后再也不能被修改：</T></T></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>let a: number[] = [1, 2, 3, 4];
+let ro: ReadonlyArray&lt;number&gt; = a;
+ro[0] = 12; // error!
+ro.push(5); // error!
+ro.length = 100; // error!
+a = ro; // error!
+</code></pre></div></div>
+
+<p>上面代码的最后一行，可以看到就算把整个ReadonlyArray赋值到一个普通数组也是不可以的。 但是你可以用类型断言重写：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>a = ro as number[];
+</code></pre></div></div>
+
+<p><strong>readonly vs const</strong></p>
+
+<p>最简单判断该用readonly还是const的方法是看要把它做为变量使用还是做为一个属性。 做为变量使用的话用 const，若做为属性则使用readonly。</p>
+
+<h3 id="额外的属性检查">额外的属性检查</h3>
+
+<p>先看个例子</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>interface SquareConfig {
+    color?: string;
+    width?: number;
+}
+
+function createSquare(config: SquareConfig): { color: string; area: number } {
+    // ...
+}
+
+let mySquare = createSquare({ colour: "red", width: 100 });
+</code></pre></div></div>
+
+<p>注意传入createSquare的参数拼写为colour而不是color。 在JavaScript里，这会默默地失败。</p>
+
+<p>你可能会争辩这个程序已经正确地类型化了，因为width属性是兼容的，不存在color属性，而且额外的colour属性是无意义的。</p>
+
+<p>然而，TypeScript会认为这段代码可能存在bug。 对象字面量会被特殊对待而且会经过 额外属性检查，当将它们赋值给变量或作为参数传递的时候。 如果一个对象字面量存在任何“目标类型”不包含的属性时，你会得到一个错误。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// error: 'colour' not expected in type 'SquareConfig'
+</code></pre></div></div>
+
+<p>绕开这些检查非常简单。 最简便的方法是使用类型断言：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>let mySquare = createSquare({ width: 100, opacity: 0.5 } as SquareConfig);
+</code></pre></div></div>
+
+<p>然而，最佳的方式是能够添加一个字符串索引签名，前提是你能够确定这个对象可能具有某些做为特殊用途使用的额外属性。 如果 SquareConfig带有上面定义的类型的color和width属性，并且还会带有任意数量的其它属性，那么我们可以这样定义它：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>interface SquareConfig {
+    color?: string;
+    width?: number;
+    [propName: string]: any;
+}
+</code></pre></div></div>
+
+<p>上面的代码表示的是SquareConfig可以有任意数量的属性，并且只要它们不是color和width，那么就无所谓它们的类型是什么。</p>
+
+<p>还有最后一种跳过这些检查的方式，这可能会让你感到惊讶，它就是将这个对象赋值给一个另一个变量： 因为 squareOptions不会经过额外属性检查，所以编译器不会报错。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>let squareOptions = { colour: "red", width: 100 };
+let mySquare = createSquare(squareOptions);
+</code></pre></div></div>
+
+<p>要留意，在像上面一样的简单代码里，你可能不应该去绕开这些检查。 对于包含方法和内部状态的复杂对象字面量来讲，你可能需要使用这些技巧，但是大部额外属性检查错误是真正的bug。 就是说你遇到了额外类型检查出的错误，比如“option bags”，你应该去审查一下你的类型声明。 在这里，如果支持传入 color或colour属性到createSquare，你应该修改SquareConfig定义来体现出这一点。</p>
+
+</div></article>
+		</div>
+	</div>
+</div><script src="//cdn.bootcss.com/toc/0.3.2/toc.min.js"></script>
+<script type="text/javascript">
+	window.throttle = function(func, wait) {
+	  var args, result, thisArg, timeoutId, lastCalled = 0;
+
+	  function trailingCall() {
+	    lastCalled = new Date;
+	    timeoutId = null;
+	    result = func.apply(thisArg, args);
+	  }
+	  return function() {
+	    var now = new Date,
+	      remaining = wait - (now - lastCalled);
+
+	    args = arguments;
+	    thisArg = this;
+
+	    if (remaining <= 0) {
+	      clearTimeout(timeoutId);
+	      timeoutId = null;
+	      lastCalled = now;
+	      result = func.apply(thisArg, args);
+	    } else if (!timeoutId) {
+	      timeoutId = setTimeout(trailingCall, remaining);
+	    }
+	    return result;
+	  };
+	}
+	$(function() {
+	  var $window = $(window);
+	  var $pageStage = $('.js-page-stage');
+	  var $pageMain = $('.js-main');
+	  var $pageFooter = $('.js-page-footer');
+	  var $articleContent = $('.js-article-content');
+	  var $articleAside = $('.js-article-aside');
+	  var $toc = $('.js-toc');
+		var $col2 = $('.js-col-2');
+	  var hasTitle = $articleContent.find('h1,h2,h3').length > 0;
+	  function asideSticky() {
+	    return $col2.css('display') !== 'none' && $pageStage.hasClass('has-toc');
+	  }
+
+	  function setTocClass() {
+	    if (hasTitle) {
+	      !$pageStage.hasClass('has-toc') && $pageStage.addClass('has-toc');
+	    }
+	  }
+
+	  setTocClass();
+
+	  function setAsideTOC() {
+	    var asideTop, asideLeft, scrollBottom, asideBottomTop, lastScrollTop;
+
+	    function init() {
+	      var asideOffset = $articleAside.offset();
+	      var footerOffset = $pageFooter.offset();
+	      var mainOffset = $pageMain.offset();
+	      asideTop = mainOffset.top;
+	      asideHeight = $toc.outerHeight() + parseInt($articleAside.css('padding-top'), 10) + parseInt($articleAside.css('padding-bottom'), 10);
+	      asideLeft = mainOffset.left + $pageMain.outerWidth() - $articleAside.outerWidth() - parseInt($pageMain.css('padding-right'), 10);
+	      scrollBottom = footerOffset.top - asideHeight;
+	      asideBottomTop = scrollBottom - mainOffset.top;
+	    }
+
+	    function setAside(force) {
+	      force !== true && (force = false);
+	      var scrollTop = $window.scrollTop();
+	      if (scrollTop >= asideTop && scrollTop <= scrollBottom) {
+	        (!force && lastScrollTop >= asideTop && lastScrollTop <= scrollBottom) ||
+	        $articleAside.addClass('fixed').css({
+	          left: asideLeft + 'px',
+	          top: 0
+	        });
+	      } else if (scrollTop < asideTop) {
+	        (!force && lastScrollTop < asideTop) ||
+	        $articleAside.removeClass('fixed').css({
+	          left: 0,
+	          top: 0
+	        });
+	      } else {
+	        (!force && lastScrollTop > scrollBottom) ||
+	        $articleAside.removeClass('fixed').css({
+	          left: 0,
+	          top: asideBottomTop + 'px'
+	        });
+	      }
+	      lastScrollTop = scrollTop;
+	    }
+	    asideSticky() && (init(), setAside());
+	    $window.on('scroll', function() {
+	      asideSticky() && setAside();
+	    });
+	    $window.on('resize', throttle(function() {
+	      setTocClass();
+	      asideSticky() && (init(), setAside(true));
+	    }, 100));
+	    setTimeout(init, 4000);
+	  }
+	  setTimeout(setAsideTOC, 1000);
+
+	  $toc.toc({
+	    'selectors': 'h1,h2,h3',
+	    'container': '.js-article-content',
+	  });
+	});
+</script></div>
+</div>
+</div><div class="m-page-footer js-page-footer">
+  <div class="main">
+    <aside><div class="follow-me"><ul itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="weili">
+    <link itemprop="url" href="http://localhost:4000/"></ul></div>
+</aside>
+    <footer class="site-info">
+      <p>© Weili's Blog 2018</p>
+      <p><a title="" href="https://github.com/lilywei739/lilywei739.github.io">VIEW IN GITHUB</a></p>
+      <p>Powered by <a title="Jekyll is a simple, blog-aware, static site generator." href="http://jekyllrb.com/">Jekyll</a> & <a
+        title="TeXt is a succinct theme for blogging." href="https://github.com/kitian616/jekyll-TeXt-theme">TeXt Theme</a>.</p>
+    </footer>
+  </div>
+</div>
+<script>
+      $(function() {
+        // display coding language
+        var $articleContent = $('.m-post, .m-page').find('.m-article-content'), $this;
+        $articleContent.children('.highlight').each(function() {
+          $this = $(this);
+          $this.attr('data-lang', $this.find('code').attr('data-lang'));
+        });
+        $articleContent.children('h1, h2, h3, h4, h5, h6').each(function() {
+          $this = $(this);
+          $this.append($('<a class="anchor" aria-hidden="true"></a>').text('#'));
+        });
+        $articleContent.on('click', '.anchor', function(e) {
+          var targetId = $(this).parent().attr('id');
+          scrollAnimateTo($('#' + targetId).offset().top, 400, function() {
+            console.log(666)
+            window.history.replaceState(null, '', window.location.href.split('#')[0] + '#' + targetId);
+          });
+        });
+        function scrollAnimateTo(destination, duration, callback) {
+          var $body = $('html, body'), bodyScrollTop = $body.scrollTop();
+          if(bodyScrollTop === destination) { return; }
+          $body.animate({ scrollTop: destination }, duration, callback);
+        }
+      });
+    </script></body>
+</html>
