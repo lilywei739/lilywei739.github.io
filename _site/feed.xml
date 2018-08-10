@@ -1,5 +1,262 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.7.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2018-07-27T17:48:51+08:00</updated><id>http://localhost:4000/</id><title type="html">Weili’s Blog</title><subtitle>Weili's blog
-</subtitle><author><name>weili</name></author><entry><title type="html">TypeScript (五)</title><link href="http://localhost:4000/2018/07/27/TypeScript_5.html" rel="alternate" type="text/html" title="TypeScript (五)" /><published>2018-07-27T00:00:00+08:00</published><updated>2018-07-27T00:00:00+08:00</updated><id>http://localhost:4000/2018/07/27/TypeScript_5</id><content type="html" xml:base="http://localhost:4000/2018/07/27/TypeScript_5.html">&lt;h2 id=&quot;类一&quot;&gt;类(一)&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="3.7.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2018-08-10T18:34:19+08:00</updated><id>http://localhost:4000/</id><title type="html">Weili’s Blog</title><subtitle>Weili's blog
+</subtitle><author><name>weili</name></author><entry><title type="html">TypeScript (六)</title><link href="http://localhost:4000/2018/08/10/TypeScript_6.html" rel="alternate" type="text/html" title="TypeScript (六)" /><published>2018-08-10T00:00:00+08:00</published><updated>2018-08-10T00:00:00+08:00</updated><id>http://localhost:4000/2018/08/10/TypeScript_6</id><content type="html" xml:base="http://localhost:4000/2018/08/10/TypeScript_6.html">&lt;h2 id=&quot;类二&quot;&gt;类(二)&lt;/h2&gt;
+
+&lt;h3 id=&quot;readonly修饰符&quot;&gt;readonly修饰符&lt;/h3&gt;
+
+&lt;p&gt;可以使用 readonly关键字将属性设置为只读的。 只读属性必须在声明时或构造函数里被初始化。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;class Octopus {
+    readonly name: string;
+    readonly numberOfLegs: number = 8;
+    constructor (theName: string) {
+        this.name = theName;
+    }
+}
+let dad = new Octopus(&quot;Man with the 8 strong legs&quot;);
+dad.name = &quot;Man with the 3-piece suit&quot;; // 错误! name 是只读的.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;参数属性&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;在上面的例子中，不得不定义一个受保护的成员 name和一个构造函数参数 theName在 Person类里，并且立刻给 name和 theName赋值。 这种情况经常会遇到。&lt;/p&gt;
+
+&lt;p&gt;参数属性可以方便地在一个地方定义并初始化一个成员。&lt;/p&gt;
+
+&lt;p&gt;下面的例子是对之前 Animal类的修改版，使用了参数属性：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;class Animal {
+    constructor(private name: string) { }
+    move(distanceInMeters: number) {
+        console.log(`${this.name} moved ${distanceInMeters}m.`);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;注意看是如何舍弃了 theName，仅在构造函数里使用 private name: string参数来创建和初始化 name成员。 把声明和赋值合并至一处。&lt;/p&gt;
+
+&lt;p&gt;参数属性通过给构造函数参数添加一个访问限定符来声明。 使用 private限定一个参数属性会声明并初始化一个私有成员；对于 public和 protected来说也是一样。&lt;/p&gt;
+
+&lt;h3 id=&quot;存取器&quot;&gt;存取器&lt;/h3&gt;
+
+&lt;p&gt;TypeScript支持通过getters/setters来截取对对象成员的访问。 它能帮助你有效的控制对对象成员的访问。&lt;/p&gt;
+
+&lt;p&gt;下面来看如何把一个简单的类改写成使用 get和 set。 首先，我们从一个没有使用存取器的例子开始。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;class Employee {
+    fullName: string;
+}
+
+let employee = new Employee();
+employee.fullName = &quot;Bob Smith&quot;;
+if (employee.fullName) {
+    console.log(employee.fullName);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;可以随意的设置 fullName，这是非常方便的，但是这也可能会带来麻烦。&lt;/p&gt;
+
+&lt;p&gt;下面这个代码里，先检查用户密码是否正确，然后再允许其修改员工信息。 把对 fullName的直接访问改成了可以检查密码的 set方法。 加了一个 get方法，让上面的例子仍然可以工作。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;let passcode = &quot;secret passcode&quot;;
+
+class Employee {
+    private _fullName: string;
+
+    get fullName(): string {
+        return this._fullName;
+    }
+
+    set fullName(newName: string) {
+        if (passcode &amp;amp;&amp;amp; passcode == &quot;secret passcode&quot;) {
+            this._fullName = newName;
+        }
+        else {
+            console.log(&quot;Error: Unauthorized update of employee!&quot;);
+        }
+    }
+}
+
+let employee = new Employee();
+employee.fullName = &quot;Bob Smith&quot;;
+if (employee.fullName) {
+    alert(employee.fullName);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;可以修改一下密码，来验证一下存取器是否是工作的。当密码不对时，会提示我们没有权限去修改员工。&lt;/p&gt;
+
+&lt;p&gt;对于存取器有下面几点需要注意的：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;取器要求你将编译器设置为输出ECMAScript 5或更高。 不支持降级到ECMAScript 3。&lt;/li&gt;
+  &lt;li&gt;只带有get不带有set的存取器自动被推断为 readonly。 这在从代码生成.d.ts文件时是有帮助的，因为利用这个属性的用户会看到不允许够改变它的值。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;静态属性&quot;&gt;静态属性&lt;/h3&gt;
+
+&lt;p&gt;到目前为止，只讨论了类的实例成员，那些仅当类被实例化的时候才会被初始化的属性。&lt;/p&gt;
+
+&lt;p&gt;也可以创建类的静态成员，这些属性存在于类本身上面而不是类的实例上。&lt;/p&gt;
+
+&lt;p&gt;在这个例子里，我们使用 static定义 origin，因为它是所有网格都会用到的属性。 每个实例想要访问这个属性的时候，都要在 origin前面加上类名。 如同在实例属性上使用 this.前缀来访问属性一样，这里我们使用 Grid.来访问静态属性。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;class Grid {
+    static origin = {x: 0, y: 0};
+    calculateDistanceFromOrigin(point: {x: number; y: number;}) {
+        let xDist = (point.x - Grid.origin.x);
+        let yDist = (point.y - Grid.origin.y);
+        return Math.sqrt(xDist * xDist + yDist * yDist) / this.scale;
+    }
+    constructor (public scale: number) { }
+}
+
+let grid1 = new Grid(1.0);  // 1x scale
+let grid2 = new Grid(5.0);  // 5x scale
+
+console.log(grid1.calculateDistanceFromOrigin({x: 10, y: 10}));
+console.log(grid2.calculateDistanceFromOrigin({x: 10, y: 10}));
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;抽象类&quot;&gt;抽象类&lt;/h3&gt;
+
+&lt;p&gt;抽象类做为其它派生类的基类使用。 它们一般不会直接被实例化。 不同于接口，抽象类可以包含成员的实现细节。 abstract关键字是用于定义抽象类和在抽象类内部定义抽象方法。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;abstract class Animal {
+    abstract makeSound(): void;
+    move(): void {
+        console.log('roaming the earch...');
+    }
+}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;抽象类中的抽象方法不包含具体实现并且必须在派生类中实现。 抽象方法的语法与接口方法相似。 两者都是定义方法签名但不包含方法体。 然而，抽象方法必须包含 abstract关键字并且可以包含访问修饰符。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;abstract class Department {
+
+    constructor(public name: string) {
+    }
+
+    printName(): void {
+        console.log('Department name: ' + this.name);
+    }
+
+    abstract printMeeting(): void; // 必须在派生类中实现
+}
+
+class AccountingDepartment extends Department {
+
+    constructor() {
+        super('Accounting and Auditing'); // 在派生类的构造函数中必须调用 super()
+    }
+
+    printMeeting(): void {
+        console.log('The Accounting Department meets each Monday at 10am.');
+    }
+
+    generateReports(): void {
+        console.log('Generating accounting reports...');
+    }
+}
+
+let department: Department; // 允许创建一个对抽象类型的引用
+department = new Department(); // 错误: 不能创建一个抽象类的实例
+department = new AccountingDepartment(); // 允许对一个抽象子类进行实例化和赋值
+department.printName();
+department.printMeeting();
+department.generateReports(); // 错误: 方法在声明的抽象类中不存在
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;高级技巧&quot;&gt;高级技巧&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;构造函数&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;当你在TypeScript里声明了一个类的时候，实际上同时声明了很多东西。 首先就是类的 实例的类型。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;class Greeter {
+    greeting: string;
+    constructor(message: string) {
+        this.greeting = message;
+    }
+    greet() {
+        return &quot;Hello, &quot; + this.greeting;
+    }
+}
+
+let greeter: Greeter;
+greeter = new Greeter(&quot;world&quot;);
+console.log(greeter.greet());
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;这里写了 let greeter: Greeter，意思是 Greeter类的实例的类型是 Greeter。 这对于用过其它面向对象语言的程序员来讲已经是老习惯了。&lt;/p&gt;
+
+&lt;p&gt;也创建了一个叫做构造函数的值。 这个函数会在使用 new创建类实例的时候被调用。&lt;/p&gt;
+
+&lt;p&gt;下面来看看，上面的代码被编译成JavaScript后是什么样子的：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;let Greeter = (function () {
+    function Greeter(message) {
+        this.greeting = message;
+    }
+    Greeter.prototype.greet = function () {
+        return &quot;Hello, &quot; + this.greeting;
+    };
+    return Greeter;
+})();
+
+let greeter;
+greeter = new Greeter(&quot;world&quot;);
+console.log(greeter.greet());
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;上面的代码里， let Greeter将被赋值为构造函数。 当调用 new并执行了这个函数后，便会得到一个类的实例。 这个构造函数也包含了类的所有静态属性。 换个角度说，可以认为类具有实例部分与静态部分这两个部分。&lt;/p&gt;
+
+&lt;p&gt;稍微改写一下这个例子，看看它们之间的区别：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;class Greeter {
+    static standardGreeting = &quot;Hello, there&quot;;
+    greeting: string;
+    greet() {
+        if (this.greeting) {
+            return &quot;Hello, &quot; + this.greeting;
+        }
+        else {
+            return Greeter.standardGreeting;
+        }
+    }
+}
+
+let greeter1: Greeter;
+greeter1 = new Greeter();
+console.log(greeter1.greet());
+
+let greeterMaker: typeof Greeter = Greeter;
+greeterMaker.standardGreeting = &quot;Hey there!&quot;;
+
+let greeter2: Greeter = new greeterMaker();
+console.log(greeter2.greet());
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;这个例子里， greeter1与之前看到的一样。 实例化 Greeter类，并使用这个对象。 与我们之前看到的一样。&lt;/p&gt;
+
+&lt;p&gt;再之后直接使用类。 创建了一个叫做 greeterMaker的变量。 这个变量保存了这个类或者说保存了类构造函数。 然后使用 typeof Greeter，意思是取Greeter类的类型，而不是实例的类型。 或者更确切的说，”告诉我 Greeter标识符的类型”，也就是构造函数的类型。 这个类型包含了类的所有静态成员和构造函数。 之后，就和前面一样，我们在 greeterMaker上使用 new，创建 Greeter的实例。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;把类当做接口使用&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;如上一节里所讲的，类定义会创建两个东西：类的实例类型和一个构造函数。 因为类可以创建出类型，所以你能够在允许使用接口的地方使用类。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;class Point {
+    x: number;
+    y: number;
+}
+
+interface Point3d extends Point {
+    z: number;
+}
+
+let point3d: Point3d = {x: 1, y: 2, z: 3};
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>weili</name></author><category term="JS" /><category term="前端" /><summary type="html">类(二) readonly修饰符 可以使用 readonly关键字将属性设置为只读的。 只读属性必须在声明时或构造函数里被初始化。 class Octopus { readonly name: string; readonly numberOfLegs: number = 8; constructor (theName: string) { this.name = theName; } } let dad = new Octopus(&quot;Man with the 8 strong legs&quot;); dad.name = &quot;Man with the 3-piece suit&quot;; // 错误! name 是只读的. 参数属性 在上面的例子中，不得不定义一个受保护的成员 name和一个构造函数参数 theName在 Person类里，并且立刻给 name和 theName赋值。 这种情况经常会遇到。 参数属性可以方便地在一个地方定义并初始化一个成员。 下面的例子是对之前 Animal类的修改版，使用了参数属性： class Animal { constructor(private name: string) { } move(distanceInMeters: number) { console.log(`${this.name} moved ${distanceInMeters}m.`); } } 注意看是如何舍弃了 theName，仅在构造函数里使用 private name: string参数来创建和初始化 name成员。 把声明和赋值合并至一处。 参数属性通过给构造函数参数添加一个访问限定符来声明。 使用 private限定一个参数属性会声明并初始化一个私有成员；对于 public和 protected来说也是一样。 存取器 TypeScript支持通过getters/setters来截取对对象成员的访问。 它能帮助你有效的控制对对象成员的访问。 下面来看如何把一个简单的类改写成使用 get和 set。 首先，我们从一个没有使用存取器的例子开始。 class Employee { fullName: string; } let employee = new Employee(); employee.fullName = &quot;Bob Smith&quot;; if (employee.fullName) { console.log(employee.fullName); } 可以随意的设置 fullName，这是非常方便的，但是这也可能会带来麻烦。 下面这个代码里，先检查用户密码是否正确，然后再允许其修改员工信息。 把对 fullName的直接访问改成了可以检查密码的 set方法。 加了一个 get方法，让上面的例子仍然可以工作。 let passcode = &quot;secret passcode&quot;; class Employee { private _fullName: string; get fullName(): string { return this._fullName; } set fullName(newName: string) { if (passcode &amp;amp;&amp;amp; passcode == &quot;secret passcode&quot;) { this._fullName = newName; } else { console.log(&quot;Error: Unauthorized update of employee!&quot;); } } } let employee = new Employee(); employee.fullName = &quot;Bob Smith&quot;; if (employee.fullName) { alert(employee.fullName); } 可以修改一下密码，来验证一下存取器是否是工作的。当密码不对时，会提示我们没有权限去修改员工。 对于存取器有下面几点需要注意的： 取器要求你将编译器设置为输出ECMAScript 5或更高。 不支持降级到ECMAScript 3。 只带有get不带有set的存取器自动被推断为 readonly。 这在从代码生成.d.ts文件时是有帮助的，因为利用这个属性的用户会看到不允许够改变它的值。 静态属性 到目前为止，只讨论了类的实例成员，那些仅当类被实例化的时候才会被初始化的属性。 也可以创建类的静态成员，这些属性存在于类本身上面而不是类的实例上。 在这个例子里，我们使用 static定义 origin，因为它是所有网格都会用到的属性。 每个实例想要访问这个属性的时候，都要在 origin前面加上类名。 如同在实例属性上使用 this.前缀来访问属性一样，这里我们使用 Grid.来访问静态属性。 class Grid { static origin = {x: 0, y: 0}; calculateDistanceFromOrigin(point: {x: number; y: number;}) { let xDist = (point.x - Grid.origin.x); let yDist = (point.y - Grid.origin.y); return Math.sqrt(xDist * xDist + yDist * yDist) / this.scale; } constructor (public scale: number) { } } let grid1 = new Grid(1.0); // 1x scale let grid2 = new Grid(5.0); // 5x scale console.log(grid1.calculateDistanceFromOrigin({x: 10, y: 10})); console.log(grid2.calculateDistanceFromOrigin({x: 10, y: 10})); 抽象类 抽象类做为其它派生类的基类使用。 它们一般不会直接被实例化。 不同于接口，抽象类可以包含成员的实现细节。 abstract关键字是用于定义抽象类和在抽象类内部定义抽象方法。 abstract class Animal { abstract makeSound(): void; move(): void { console.log('roaming the earch...'); } } 抽象类中的抽象方法不包含具体实现并且必须在派生类中实现。 抽象方法的语法与接口方法相似。 两者都是定义方法签名但不包含方法体。 然而，抽象方法必须包含 abstract关键字并且可以包含访问修饰符。 abstract class Department { constructor(public name: string) { } printName(): void { console.log('Department name: ' + this.name); } abstract printMeeting(): void; // 必须在派生类中实现 } class AccountingDepartment extends Department { constructor() { super('Accounting and Auditing'); // 在派生类的构造函数中必须调用 super() } printMeeting(): void { console.log('The Accounting Department meets each Monday at 10am.'); } generateReports(): void { console.log('Generating accounting reports...'); } } let department: Department; // 允许创建一个对抽象类型的引用 department = new Department(); // 错误: 不能创建一个抽象类的实例 department = new AccountingDepartment(); // 允许对一个抽象子类进行实例化和赋值 department.printName(); department.printMeeting(); department.generateReports(); // 错误: 方法在声明的抽象类中不存在 高级技巧 构造函数 当你在TypeScript里声明了一个类的时候，实际上同时声明了很多东西。 首先就是类的 实例的类型。 class Greeter { greeting: string; constructor(message: string) { this.greeting = message; } greet() { return &quot;Hello, &quot; + this.greeting; } } let greeter: Greeter; greeter = new Greeter(&quot;world&quot;); console.log(greeter.greet()); 这里写了 let greeter: Greeter，意思是 Greeter类的实例的类型是 Greeter。 这对于用过其它面向对象语言的程序员来讲已经是老习惯了。 也创建了一个叫做构造函数的值。 这个函数会在使用 new创建类实例的时候被调用。 下面来看看，上面的代码被编译成JavaScript后是什么样子的： let Greeter = (function () { function Greeter(message) { this.greeting = message; } Greeter.prototype.greet = function () { return &quot;Hello, &quot; + this.greeting; }; return Greeter; })(); let greeter; greeter = new Greeter(&quot;world&quot;); console.log(greeter.greet()); 上面的代码里， let Greeter将被赋值为构造函数。 当调用 new并执行了这个函数后，便会得到一个类的实例。 这个构造函数也包含了类的所有静态属性。 换个角度说，可以认为类具有实例部分与静态部分这两个部分。 稍微改写一下这个例子，看看它们之间的区别： class Greeter { static standardGreeting = &quot;Hello, there&quot;; greeting: string; greet() { if (this.greeting) { return &quot;Hello, &quot; + this.greeting; } else { return Greeter.standardGreeting; } } } let greeter1: Greeter; greeter1 = new Greeter(); console.log(greeter1.greet()); let greeterMaker: typeof Greeter = Greeter; greeterMaker.standardGreeting = &quot;Hey there!&quot;; let greeter2: Greeter = new greeterMaker(); console.log(greeter2.greet()); 这个例子里， greeter1与之前看到的一样。 实例化 Greeter类，并使用这个对象。 与我们之前看到的一样。 再之后直接使用类。 创建了一个叫做 greeterMaker的变量。 这个变量保存了这个类或者说保存了类构造函数。 然后使用 typeof Greeter，意思是取Greeter类的类型，而不是实例的类型。 或者更确切的说，”告诉我 Greeter标识符的类型”，也就是构造函数的类型。 这个类型包含了类的所有静态成员和构造函数。 之后，就和前面一样，我们在 greeterMaker上使用 new，创建 Greeter的实例。 把类当做接口使用 如上一节里所讲的，类定义会创建两个东西：类的实例类型和一个构造函数。 因为类可以创建出类型，所以你能够在允许使用接口的地方使用类。 class Point { x: number; y: number; } interface Point3d extends Point { z: number; } let point3d: Point3d = {x: 1, y: 2, z: 3};</summary></entry><entry><title type="html">TypeScript (五)</title><link href="http://localhost:4000/2018/07/27/TypeScript_5.html" rel="alternate" type="text/html" title="TypeScript (五)" /><published>2018-07-27T00:00:00+08:00</published><updated>2018-07-27T00:00:00+08:00</updated><id>http://localhost:4000/2018/07/27/TypeScript_5</id><content type="html" xml:base="http://localhost:4000/2018/07/27/TypeScript_5.html">&lt;h2 id=&quot;类一&quot;&gt;类(一)&lt;/h2&gt;
 
 &lt;p&gt;从ECMAScript 6开始，JavaScript能够使用基于类的面向对象的方式。 TypeScript同样支持这种特性.&lt;/p&gt;
 
@@ -1627,224 +1884,4 @@ leftValue === rightValue
 
 &lt;p&gt;key就相当于组件的身份证号，标识组件的位置，react可以根据根据key值的有无变化，从而决定是否更新它。&lt;/p&gt;
 
-&lt;p&gt;这个时候注意个问题，在循环一个数组时，不能以数组的下标做为key值定义每个子组件，key值变来变去的无规则也会引起不必要的重新加载或者更新创建。&lt;/p&gt;</content><author><name>weili</name></author><category term="JS" /><category term="前端" /><category term="深入浅出React和Redux读书笔记" /><summary type="html">虽然react已经提供了很好的渲染性能，但要让程序发挥到极致，还需要进一步了解性能优化的方法，本章节主要从三个方面讲解： 单个react组件的性能优化 多个react组件的性能优化 用reselect提高数据获取性能 单个react组件的性能优化 react渲染之所以快，是因为利用Virtual DOM来计算出DOM树的最少修改，只渲染修改的部分，而不是所有。 如果能够在开始计算Virtual DOM之前就可以判断结果不会变化，那干脆不要再去计算和比较，速度就会更快。 借助react perf工具，发现浪费的渲染时间 react perf 这个工具的安装和使用这里不再讲述。 这个工具记录在点击start和stop按钮之间的所有react的渲染，如果有组件计算Virtual DOM之后，和之前的Virtual DOM相同，就认为是一次浪费。 这里所说的浪费是计算Virtual DOM的浪费，并不是访问DOM的浪费。 可以借助这个工具清晰的知道哪个组件被无意义的渲染了，达到优化性能的目的。 性能优化的时机 过早的优化是万恶之源—–高德纳 很多人对这句话有个错误的认识，认为高前辈不让做过早的优化，很显然我们误会老高了，他的全句是这样的 “我们应该忘记忽略很小的性能优化，可以说97%的情况下，过早的优化是万恶之源，而我们应该关心对性能影响最关键的那另外3%的代码”—–高德纳 前辈的这句话有三个重要的点： 1、不要把精力放在对整体性能优化提高不大的代码上，而对于性能有关键影响的部分，优化并不嫌早。 2、所谓过早的优化，是指在没有任何数据体现下开发者对性能优化的猜测，没有可测量的性能指标，完成优化后，也不知道是否达到了预期的结果。 3、高德纳认为过早的优化是万恶之源，是因为这些优化往往让代码过于复杂和难于维护，但如果早期的优化能够让代码结构更加合理更加容易维护，为什么不呢？ 多个react组件的性能优化 多个组件和单个组件一样，都需要经历组件装载、更新、卸载三个步骤。 其中装载这个部分没有什么可以性能优化的事情做，卸载部分是会出现组件加载后添加的事件监听等收尾工作，也没有太多的可优化空间。 重要的放在更新过程。 react的调和过程 什么叫调和？ 就是render后和更新后，生成的这个树，相互比较找不同，这个找不同的过程就叫调和。 react怎么找不同呢？ 1、先检查两个节点的类型 这个类型分为两类：一类是dom元素类型，就是div span； 另一类是react组件，也就是利用react库定制的类型。 1.1 如果不同 举个例子，组件包裹外层原来是div，更新为span，这个时候，react一看这完全不相同，那后面的子节点也别看了，直接重新构建一份吧，这就造成了性能上面的浪费。 解决办法：作为开发者尽量不要改动做为包裹层的类型。 1.2 如果相同 上面说了类型有两种，如果是dom类型加同，就只对比这个节点的属性和内容，然后更新修改的部分，如下面的代码 原来的： &amp;lt;div style=&amp;gt;hello&amp;lt;/div&amp;gt; 更改后的： &amp;lt;div style=&amp;gt;hello&amp;lt;/div&amp;gt; DOM节点类型没变，只需要修改它的属性，变动少。 另外一种类型是react组件类型，它更新时只能根据新节点的props去更新原来的组件，引发这个组件实例的更新过程，按照下面的顺序引发下面的函数： shouldComponentUpdate componentWillReceiveProps componentWillUpdate render componentDidUpdate 这个时候就需要合理的使用shouldComonentUpdate函数了，如果没有必要渲染，就返回false。 好了，对比了根节点之后，会对这个根节点的每一个小节点重复相同的动作，该更新更新，该创建创建。 2、key的作用 key就相当于组件的身份证号，标识组件的位置，react可以根据根据key值的有无变化，从而决定是否更新它。 这个时候注意个问题，在循环一个数组时，不能以数组的下标做为key值定义每个子组件，key值变来变去的无规则也会引起不必要的重新加载或者更新创建。</summary></entry><entry><title type="html">彻底理解浏览器的缓存机制</title><link href="http://localhost:4000/2018/05/11/browsers_caching.html" rel="alternate" type="text/html" title="彻底理解浏览器的缓存机制" /><published>2018-05-11T00:00:00+08:00</published><updated>2018-05-11T00:00:00+08:00</updated><id>http://localhost:4000/2018/05/11/browsers_caching</id><content type="html" xml:base="http://localhost:4000/2018/05/11/browsers_caching.html">&lt;h2 id=&quot;定义&quot;&gt;定义&lt;/h2&gt;
-
-&lt;p&gt;浏览器的缓存机制也就是我们说的HTTP缓存机制，其机制是根据HTTP报文的缓存标识进行的，所以在分析浏览器缓存机制之前，我们先使用图文简单介绍一下HTTP报文，HTTP报文分为两种：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;HTTP请求(Request)报文，报文格式为：请求行 – HTTP头(通用信息头，请求头，实体头) – 请求报文主体(只有POST才有报文主体)，如下图&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20180511/20180511-1.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;HTTP响应(Response)报文，报文格式为：状态行 – HTTP头(通用信息头，响应头，实体头) – 响应报文主体，如下图&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20180511/20180511-2.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;注：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;通用信息头指的是请求和响应报文都支持的头域，分别为Cache-Control、Connection、Date、Pragma、Transfer-Encoding、Upgrade、Via；&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;实体头则是实体信息的实体头域，分别为Allow、Content-Base、Content-Encoding、Content-Language、Content-Length、Content-Location、Content-MD5、Content-Range、Content-Type、Etag、Expires、Last-Modified、extension-header。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;这里只是为了方便理解，将通用信息头，响应头/请求头，实体头都归为了HTTP头。&lt;/p&gt;
-
-&lt;h2 id=&quot;缓存过程分析&quot;&gt;缓存过程分析&lt;/h2&gt;
-
-&lt;p&gt;浏览器与服务器通信的方式为应答模式，即是：浏览器发起HTTP请求 – 服务器响应该请求。那么浏览器第一次向服务器发起该请求后拿到请求结果，会根据响应报文中HTTP头的缓存标识，决定是否缓存结果，是则将请求结果和缓存标识存入浏览器缓存中，简单的过程如下图：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20180511/20180511-3.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;由上图我们可以知道：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;浏览器每次发起请求，都会先在浏览器缓存中查找该请求的结果以及缓存标识&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;浏览器每次拿到返回的请求结果都会将该结果和缓存标识存入浏览器缓存中&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;以上两点结论就是浏览器缓存机制的关键，他确保了每个请求的缓存存入与读取，只要我们再理解浏览器缓存的使用规则，那么所有的问题就迎刃而解了，本文也将围绕着这点进行详细分析。为了方便理解，这里根据是否需要向服务器重新发起HTTP请求将缓存过程分为两个部分，分别是&lt;strong&gt;强制缓存和协商缓存&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;h3 id=&quot;强制缓存&quot;&gt;强制缓存&lt;/h3&gt;
-
-&lt;p&gt;强制缓存就是向浏览器缓存查找该请求结果，并根据该结果的缓存规则来决定是否使用该缓存结果的过程，强制缓存的情况主要有三种(暂不分析协商缓存过程)，如下：&lt;/p&gt;
-
-&lt;p&gt;不存在该缓存结果和缓存标识，强制缓存失效，则直接向服务器发起请求（跟第一次发起请求一致），如下图：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20180511/20180511-4.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;存在该缓存结果和缓存标识，但该结果已失效，强制缓存失效，则使用协商缓存(暂不分析)，如下图&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20180511/20180511-5.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;存在该缓存结果和缓存标识，且该结果尚未失效，强制缓存生效，直接返回该结果，如下图&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20180511/20180511-6.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;强制缓存的缓存规则&quot;&gt;强制缓存的缓存规则&lt;/h4&gt;
-
-&lt;p&gt;当浏览器向服务器发起请求时，服务器会将缓存规则放入HTTP响应报文的HTTP头中和请求结果一起返回给浏览器，控制强制缓存的字段分别是Expires和Cache-Control，其中Cache-Control优先级比Expires高。&lt;/p&gt;
-
-&lt;h5 id=&quot;expires&quot;&gt;Expires&lt;/h5&gt;
-
-&lt;p&gt;Expires是HTTP/1.0控制网页缓存的字段，其值为服务器返回该请求结果缓存的到期时间，即再次发起该请求时，如果客户端的时间小于Expires的值时，直接使用缓存结果。&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Expires是HTTP/1.0的字段，但是现在浏览器默认使用的是HTTP/1.1，那么在HTTP/1.1中网页缓存还是否由Expires控制？&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;到了HTTP/1.1，Expire已经被Cache-Control替代，原因在于Expires控制缓存的原理是使用客户端的时间与服务端返回的时间做对比，那么如果客户端与服务端的时间因为某些原因（例如时区不同；客户端和服务端有一方的时间不准确）发生误差，那么强制缓存则会直接失效，这样的话强制缓存的存在则毫无意义，那么Cache-Control又是如何控制的呢？&lt;/p&gt;
-
-&lt;h5 id=&quot;cache-control&quot;&gt;Cache-Control&lt;/h5&gt;
-
-&lt;p&gt;在HTTP/1.1中，Cache-Control是最重要的规则，主要用于控制网页缓存，主要取值为：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;public：所有内容都将被缓存（客户端和代理服务器都可缓存）&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;private：所有内容只有客户端可以缓存，Cache-Control的默认取值&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;no-cache：客户端缓存内容，但是是否使用缓存则需要经过协商缓存来验证决定&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;no-store：所有内容都不会被缓存，即不使用强制缓存，也不使用协商缓存&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;max-age=xxx (xxx is numeric)：缓存内容将在xxx秒后失效&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;看一个例子&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20180511/20180511-7.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;由上面的例子我们可以知道：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;HTTP响应报文中expires的时间值，是一个绝对值&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;HTTP响应报文中Cache-Control为max-age=600，是相对值&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;由于Cache-Control的优先级比expires，那么直接根据Cache-Control的值进行缓存，意思就是说在600秒内再次发起该请求，则会直接使用缓存结果，强制缓存生效。&lt;/p&gt;
-
-&lt;p&gt;注：在无法确定客户端的时间是否与服务端的时间同步的情况下，Cache-Control相比于expires是更好的选择，所以同时存在时，只有Cache-Control生效。&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;浏览器的缓存存放在哪里，如何在浏览器中判断强制缓存是否生效？&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20180511/20180511-8.png&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;状态码为灰色的请求则代表使用了强制缓存，请求对应的Size值则代表该缓存存放的位置，分别为from memory cache 和 from disk cache。&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;那么from memory cache 和 from disk cache又分别代表的是什么呢？什么时候会使用from disk cache，什么时候会使用from memory cache呢？&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;from memory cache代表使用内存中的缓存，from disk cache则代表使用的是硬盘中的缓存，浏览器读取缓存的顺序为memory –&amp;gt; disk。&lt;/p&gt;
-
-&lt;p&gt;接下来再一起详细分析一下缓存读取问题：&lt;/p&gt;
-
-&lt;p&gt;访问https://www.babytree.com –&amp;gt; 200 –&amp;gt; 关闭网站的标签页 –&amp;gt; 重新打开https://www.babytree.com –&amp;gt; 200(from disk cache) –&amp;gt; 刷新 –&amp;gt; 200(from memory cache)&lt;/p&gt;
-
-&lt;p&gt;过程如下：&lt;/p&gt;
-
-&lt;p&gt;1) 访问www.babytree.com&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20180511/20180511-9.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;2) 关闭页面&lt;/p&gt;
-
-&lt;p&gt;3) 重新打开&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20180511/20180511-10.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;4) 刷新&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20180511/20180511-11.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;最后一个步骤刷新的时候，不是同时存在着from disk cache和from memory cache吗？&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;对于这个问题，需要了解内存缓存(from memory cache)和硬盘缓存(from disk cache)，如下:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;内存缓存(from memory cache)：内存缓存具有两个特点，分别是快速读取和时效性：&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;快速读取：内存缓存会将编译解析后的文件，直接存入该进程的内存中，占据该进程一定的内存资源，以方便下次运行使用时的快速读取。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;时效性：一旦该进程关闭，则该进程的内存则会清空。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;硬盘缓存(from disk cache)：硬盘缓存则是直接将缓存写入硬盘文件中，读取缓存需要对该缓存存放的硬盘文件进行I/O操作，然后重新解析该缓存内容，读取复杂，速度比内存缓存慢。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;在浏览器中，浏览器会在js和图片等文件解析执行后直接存入内存缓存中，那么当刷新页面时只需直接从内存缓存中读取(from memory cache)；而css文件则会存入硬盘文件中，所以每次渲染页面都需要从硬盘读取缓存(from disk cache)。&lt;/p&gt;
-
-&lt;h3 id=&quot;协商缓存&quot;&gt;协商缓存&lt;/h3&gt;
-
-&lt;p&gt;协商缓存就是强制缓存失效后，浏览器携带缓存标识向服务器发起请求，由服务器根据缓存标识决定是否使用缓存的过程，主要有以下两种情况：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;协商缓存生效，返回304，如下&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20180511/20180511-12.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;协商缓存失效，返回200和请求结果结果，如下&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20180511/20180511-13.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;同样，协商缓存的标识也是在响应报文的HTTP头中和请求结果一起返回给浏览器的，控制协商缓存的字段分别有：Last-Modified / If-Modified-Since和Etag / If-None-Match，其中Etag / If-None-Match的优先级比Last-Modified / If-Modified-Since高。&lt;/p&gt;
-
-&lt;h5 id=&quot;last-modified--if-modified-since&quot;&gt;Last-Modified / If-Modified-Since&lt;/h5&gt;
-
-&lt;p&gt;Last-Modified是服务器响应请求时，返回该资源文件在服务器最后被修改的时间，如下。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20180511/20180511-14.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;If-Modified-Since则是客户端再次发起该请求时，携带上次请求返回的Last-Modified值，通过此字段值告诉服务器该资源上次请求返回的最后被修改时间。服务器收到该请求，发现请求头含有If-Modified-Since字段，则会根据If-Modified-Since的字段值与该资源在服务器的最后被修改时间做对比，若服务器的资源最后被修改时间大于If-Modified-Since的字段值，则重新返回资源，状态码为200；否则则返回304，代表资源无更新，可继续使用缓存文件，如下&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20180511/20180511-15.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
-
-&lt;h5 id=&quot;etag--if-none-match&quot;&gt;Etag / If-None-Match&lt;/h5&gt;
-
-&lt;p&gt;Etag是服务器响应请求时，返回当前资源文件的一个唯一标识(由服务器生成)，如下。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20180511/20180511-16.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;If-None-Match是客户端再次发起该请求时，携带上次请求返回的唯一标识Etag值，通过此字段值告诉服务器该资源上次请求返回的唯一标识值。服务器收到该请求后，发现该请求头中含有If-None-Match，则会根据If-None-Match的字段值与该资源在服务器的Etag值做对比，一致则返回304，代表资源无更新，继续使用缓存文件；不一致则重新返回资源文件，状态码为200，如下&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20180511/20180511-17.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;注：Etag / If-None-Match优先级高于Last-Modified / If-Modified-Since，同时存在则只有Etag / If-None-Match生效。&lt;/p&gt;
-
-&lt;h2 id=&quot;总结&quot;&gt;总结&lt;/h2&gt;
-
-&lt;p&gt;强制缓存优先于协商缓存进行，若强制缓存(Expires和Cache-Control)生效则直接使用缓存，若不生效则进行协商缓存(Last-Modified / If-Modified-Since和Etag / If-None-Match)，协商缓存由服务器决定是否使用缓存，若协商缓存失效，那么代表该请求的缓存失效，重新获取请求结果，再存入浏览器缓存中；生效则返回304，继续使用缓存，主要过程如下：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://lilywei739.github.io/img/20180511/20180511-18.jpg&quot; alt=&quot;image01&quot; /&gt;&lt;/p&gt;</content><author><name>weili</name></author><category term="JS" /><category term="缓存机制" /><summary type="html">定义 浏览器的缓存机制也就是我们说的HTTP缓存机制，其机制是根据HTTP报文的缓存标识进行的，所以在分析浏览器缓存机制之前，我们先使用图文简单介绍一下HTTP报文，HTTP报文分为两种： HTTP请求(Request)报文，报文格式为：请求行 – HTTP头(通用信息头，请求头，实体头) – 请求报文主体(只有POST才有报文主体)，如下图 HTTP响应(Response)报文，报文格式为：状态行 – HTTP头(通用信息头，响应头，实体头) – 响应报文主体，如下图 注： 通用信息头指的是请求和响应报文都支持的头域，分别为Cache-Control、Connection、Date、Pragma、Transfer-Encoding、Upgrade、Via； 实体头则是实体信息的实体头域，分别为Allow、Content-Base、Content-Encoding、Content-Language、Content-Length、Content-Location、Content-MD5、Content-Range、Content-Type、Etag、Expires、Last-Modified、extension-header。 这里只是为了方便理解，将通用信息头，响应头/请求头，实体头都归为了HTTP头。 缓存过程分析 浏览器与服务器通信的方式为应答模式，即是：浏览器发起HTTP请求 – 服务器响应该请求。那么浏览器第一次向服务器发起该请求后拿到请求结果，会根据响应报文中HTTP头的缓存标识，决定是否缓存结果，是则将请求结果和缓存标识存入浏览器缓存中，简单的过程如下图： 由上图我们可以知道： 浏览器每次发起请求，都会先在浏览器缓存中查找该请求的结果以及缓存标识 浏览器每次拿到返回的请求结果都会将该结果和缓存标识存入浏览器缓存中 以上两点结论就是浏览器缓存机制的关键，他确保了每个请求的缓存存入与读取，只要我们再理解浏览器缓存的使用规则，那么所有的问题就迎刃而解了，本文也将围绕着这点进行详细分析。为了方便理解，这里根据是否需要向服务器重新发起HTTP请求将缓存过程分为两个部分，分别是强制缓存和协商缓存。 强制缓存 强制缓存就是向浏览器缓存查找该请求结果，并根据该结果的缓存规则来决定是否使用该缓存结果的过程，强制缓存的情况主要有三种(暂不分析协商缓存过程)，如下： 不存在该缓存结果和缓存标识，强制缓存失效，则直接向服务器发起请求（跟第一次发起请求一致），如下图： 存在该缓存结果和缓存标识，但该结果已失效，强制缓存失效，则使用协商缓存(暂不分析)，如下图 存在该缓存结果和缓存标识，且该结果尚未失效，强制缓存生效，直接返回该结果，如下图 强制缓存的缓存规则 当浏览器向服务器发起请求时，服务器会将缓存规则放入HTTP响应报文的HTTP头中和请求结果一起返回给浏览器，控制强制缓存的字段分别是Expires和Cache-Control，其中Cache-Control优先级比Expires高。 Expires Expires是HTTP/1.0控制网页缓存的字段，其值为服务器返回该请求结果缓存的到期时间，即再次发起该请求时，如果客户端的时间小于Expires的值时，直接使用缓存结果。 Expires是HTTP/1.0的字段，但是现在浏览器默认使用的是HTTP/1.1，那么在HTTP/1.1中网页缓存还是否由Expires控制？ 到了HTTP/1.1，Expire已经被Cache-Control替代，原因在于Expires控制缓存的原理是使用客户端的时间与服务端返回的时间做对比，那么如果客户端与服务端的时间因为某些原因（例如时区不同；客户端和服务端有一方的时间不准确）发生误差，那么强制缓存则会直接失效，这样的话强制缓存的存在则毫无意义，那么Cache-Control又是如何控制的呢？ Cache-Control 在HTTP/1.1中，Cache-Control是最重要的规则，主要用于控制网页缓存，主要取值为： public：所有内容都将被缓存（客户端和代理服务器都可缓存） private：所有内容只有客户端可以缓存，Cache-Control的默认取值 no-cache：客户端缓存内容，但是是否使用缓存则需要经过协商缓存来验证决定 no-store：所有内容都不会被缓存，即不使用强制缓存，也不使用协商缓存 max-age=xxx (xxx is numeric)：缓存内容将在xxx秒后失效 看一个例子 由上面的例子我们可以知道： HTTP响应报文中expires的时间值，是一个绝对值 HTTP响应报文中Cache-Control为max-age=600，是相对值 由于Cache-Control的优先级比expires，那么直接根据Cache-Control的值进行缓存，意思就是说在600秒内再次发起该请求，则会直接使用缓存结果，强制缓存生效。 注：在无法确定客户端的时间是否与服务端的时间同步的情况下，Cache-Control相比于expires是更好的选择，所以同时存在时，只有Cache-Control生效。 浏览器的缓存存放在哪里，如何在浏览器中判断强制缓存是否生效？ 状态码为灰色的请求则代表使用了强制缓存，请求对应的Size值则代表该缓存存放的位置，分别为from memory cache 和 from disk cache。 那么from memory cache 和 from disk cache又分别代表的是什么呢？什么时候会使用from disk cache，什么时候会使用from memory cache呢？ from memory cache代表使用内存中的缓存，from disk cache则代表使用的是硬盘中的缓存，浏览器读取缓存的顺序为memory –&amp;gt; disk。 接下来再一起详细分析一下缓存读取问题： 访问https://www.babytree.com –&amp;gt; 200 –&amp;gt; 关闭网站的标签页 –&amp;gt; 重新打开https://www.babytree.com –&amp;gt; 200(from disk cache) –&amp;gt; 刷新 –&amp;gt; 200(from memory cache) 过程如下： 1) 访问www.babytree.com 2) 关闭页面 3) 重新打开 4) 刷新 最后一个步骤刷新的时候，不是同时存在着from disk cache和from memory cache吗？ 对于这个问题，需要了解内存缓存(from memory cache)和硬盘缓存(from disk cache)，如下: 内存缓存(from memory cache)：内存缓存具有两个特点，分别是快速读取和时效性： 快速读取：内存缓存会将编译解析后的文件，直接存入该进程的内存中，占据该进程一定的内存资源，以方便下次运行使用时的快速读取。 时效性：一旦该进程关闭，则该进程的内存则会清空。 硬盘缓存(from disk cache)：硬盘缓存则是直接将缓存写入硬盘文件中，读取缓存需要对该缓存存放的硬盘文件进行I/O操作，然后重新解析该缓存内容，读取复杂，速度比内存缓存慢。 在浏览器中，浏览器会在js和图片等文件解析执行后直接存入内存缓存中，那么当刷新页面时只需直接从内存缓存中读取(from memory cache)；而css文件则会存入硬盘文件中，所以每次渲染页面都需要从硬盘读取缓存(from disk cache)。 协商缓存 协商缓存就是强制缓存失效后，浏览器携带缓存标识向服务器发起请求，由服务器根据缓存标识决定是否使用缓存的过程，主要有以下两种情况： 协商缓存生效，返回304，如下 协商缓存失效，返回200和请求结果结果，如下 同样，协商缓存的标识也是在响应报文的HTTP头中和请求结果一起返回给浏览器的，控制协商缓存的字段分别有：Last-Modified / If-Modified-Since和Etag / If-None-Match，其中Etag / If-None-Match的优先级比Last-Modified / If-Modified-Since高。 Last-Modified / If-Modified-Since Last-Modified是服务器响应请求时，返回该资源文件在服务器最后被修改的时间，如下。 If-Modified-Since则是客户端再次发起该请求时，携带上次请求返回的Last-Modified值，通过此字段值告诉服务器该资源上次请求返回的最后被修改时间。服务器收到该请求，发现请求头含有If-Modified-Since字段，则会根据If-Modified-Since的字段值与该资源在服务器的最后被修改时间做对比，若服务器的资源最后被修改时间大于If-Modified-Since的字段值，则重新返回资源，状态码为200；否则则返回304，代表资源无更新，可继续使用缓存文件，如下 Etag / If-None-Match Etag是服务器响应请求时，返回当前资源文件的一个唯一标识(由服务器生成)，如下。 If-None-Match是客户端再次发起该请求时，携带上次请求返回的唯一标识Etag值，通过此字段值告诉服务器该资源上次请求返回的唯一标识值。服务器收到该请求后，发现该请求头中含有If-None-Match，则会根据If-None-Match的字段值与该资源在服务器的Etag值做对比，一致则返回304，代表资源无更新，继续使用缓存文件；不一致则重新返回资源文件，状态码为200，如下 注：Etag / If-None-Match优先级高于Last-Modified / If-Modified-Since，同时存在则只有Etag / If-None-Match生效。 总结 强制缓存优先于协商缓存进行，若强制缓存(Expires和Cache-Control)生效则直接使用缓存，若不生效则进行协商缓存(Last-Modified / If-Modified-Since和Etag / If-None-Match)，协商缓存由服务器决定是否使用缓存，若协商缓存失效，那么代表该请求的缓存失效，重新获取请求结果，再存入浏览器缓存中；生效则返回304，继续使用缓存，主要过程如下：</summary></entry></feed>
+&lt;p&gt;这个时候注意个问题，在循环一个数组时，不能以数组的下标做为key值定义每个子组件，key值变来变去的无规则也会引起不必要的重新加载或者更新创建。&lt;/p&gt;</content><author><name>weili</name></author><category term="JS" /><category term="前端" /><category term="深入浅出React和Redux读书笔记" /><summary type="html">虽然react已经提供了很好的渲染性能，但要让程序发挥到极致，还需要进一步了解性能优化的方法，本章节主要从三个方面讲解： 单个react组件的性能优化 多个react组件的性能优化 用reselect提高数据获取性能 单个react组件的性能优化 react渲染之所以快，是因为利用Virtual DOM来计算出DOM树的最少修改，只渲染修改的部分，而不是所有。 如果能够在开始计算Virtual DOM之前就可以判断结果不会变化，那干脆不要再去计算和比较，速度就会更快。 借助react perf工具，发现浪费的渲染时间 react perf 这个工具的安装和使用这里不再讲述。 这个工具记录在点击start和stop按钮之间的所有react的渲染，如果有组件计算Virtual DOM之后，和之前的Virtual DOM相同，就认为是一次浪费。 这里所说的浪费是计算Virtual DOM的浪费，并不是访问DOM的浪费。 可以借助这个工具清晰的知道哪个组件被无意义的渲染了，达到优化性能的目的。 性能优化的时机 过早的优化是万恶之源—–高德纳 很多人对这句话有个错误的认识，认为高前辈不让做过早的优化，很显然我们误会老高了，他的全句是这样的 “我们应该忘记忽略很小的性能优化，可以说97%的情况下，过早的优化是万恶之源，而我们应该关心对性能影响最关键的那另外3%的代码”—–高德纳 前辈的这句话有三个重要的点： 1、不要把精力放在对整体性能优化提高不大的代码上，而对于性能有关键影响的部分，优化并不嫌早。 2、所谓过早的优化，是指在没有任何数据体现下开发者对性能优化的猜测，没有可测量的性能指标，完成优化后，也不知道是否达到了预期的结果。 3、高德纳认为过早的优化是万恶之源，是因为这些优化往往让代码过于复杂和难于维护，但如果早期的优化能够让代码结构更加合理更加容易维护，为什么不呢？ 多个react组件的性能优化 多个组件和单个组件一样，都需要经历组件装载、更新、卸载三个步骤。 其中装载这个部分没有什么可以性能优化的事情做，卸载部分是会出现组件加载后添加的事件监听等收尾工作，也没有太多的可优化空间。 重要的放在更新过程。 react的调和过程 什么叫调和？ 就是render后和更新后，生成的这个树，相互比较找不同，这个找不同的过程就叫调和。 react怎么找不同呢？ 1、先检查两个节点的类型 这个类型分为两类：一类是dom元素类型，就是div span； 另一类是react组件，也就是利用react库定制的类型。 1.1 如果不同 举个例子，组件包裹外层原来是div，更新为span，这个时候，react一看这完全不相同，那后面的子节点也别看了，直接重新构建一份吧，这就造成了性能上面的浪费。 解决办法：作为开发者尽量不要改动做为包裹层的类型。 1.2 如果相同 上面说了类型有两种，如果是dom类型加同，就只对比这个节点的属性和内容，然后更新修改的部分，如下面的代码 原来的： &amp;lt;div style=&amp;gt;hello&amp;lt;/div&amp;gt; 更改后的： &amp;lt;div style=&amp;gt;hello&amp;lt;/div&amp;gt; DOM节点类型没变，只需要修改它的属性，变动少。 另外一种类型是react组件类型，它更新时只能根据新节点的props去更新原来的组件，引发这个组件实例的更新过程，按照下面的顺序引发下面的函数： shouldComponentUpdate componentWillReceiveProps componentWillUpdate render componentDidUpdate 这个时候就需要合理的使用shouldComonentUpdate函数了，如果没有必要渲染，就返回false。 好了，对比了根节点之后，会对这个根节点的每一个小节点重复相同的动作，该更新更新，该创建创建。 2、key的作用 key就相当于组件的身份证号，标识组件的位置，react可以根据根据key值的有无变化，从而决定是否更新它。 这个时候注意个问题，在循环一个数组时，不能以数组的下标做为key值定义每个子组件，key值变来变去的无规则也会引起不必要的重新加载或者更新创建。</summary></entry></feed>
